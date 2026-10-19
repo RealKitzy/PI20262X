@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Observatório de Propriedade Intelectual e Hardware Aberto | Projeto Integrador</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+
+    <!-- Barra de Rolagem Inteligente (Oculta por padrão; aparece ao levar o mouse ao canto direito) -->
+    <div class="edge-scroll-zone" id="edge-scroll-zone" title="Role a página ou arraste">
+        <div class="edge-scroll-track" id="edge-scroll-track">
+            <div class="edge-scroll-thumb" id="edge-scroll-thumb"></div>
+        </div>
+    </div>
+
+    <!-- Cabeçalho Superior -->
+    <header class="topbar">
+        <div class="topbar-inner">
+            <div class="brand">
+                <div class="brand-icon">
+                    <img src="assets/img/logo-anime.svg" alt="Emblema Observatório de PI">
+                </div>
+                <div class="brand-text">
+                    <h1>Observatório de Propriedade Intelectual &amp; Hardware Aberto</h1>
+                    <span>Projeto Integrador: Informática e Legislação • Matriz de Proteção Multicamada (A–F), INPI e Licenças OSHW</span>
+                </div>
+            </div>
+            <div class="topbar-actions">
+                <div class="engine-badge">
+                    <span class="engine-dot"></span>
+                    <span id="engine-status-text">Motor de Decisão Ativo</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Painel de Orientação Técnica (Autor / Projeto Final) -->
+    <section class="hero-banner">
+        <div class="anime-dialog-stage">
+            <div class="mascot-frame">
+                <img src="assets/img/umaru-logo.jpg" alt="Guia do Projeto" style="border-radius: 18px; border: 3px solid #f97316; object-fit: cover;">
+                <span class="mascot-status">PROJETO INTEGRADOR</span>
+            </div>
+
+            <div class="manga-speech-bubble">
+                <span class="bubble-speaker-tag" id="mascote-tag">PREMISSA TEÓRICA — OBJETO HÍBRIDO E MULTICAMADA</span>
+                <h2 id="mascote-titulo">Por que o hardware é juridicamente mais complexo que o software no Brasil?</h2>
+                <p id="mascote-fala">
+                    Diferente de um programa ou livro composto apenas por código ou texto, o hardware não possui um "Código do Hardware Aberto" único no Brasil. Ele é um <strong>objeto híbrido dividido em 6 camadas</strong>: Documentação Técnica (Lei 9.610/98), Design Externo (LPI), Semicondutores/Chips (Lei 11.484/07), Marca (Art. 129 da LPI), Software Embarcado (Lei 9.609/98) e Solução Técnica (Patentes PI/MU). Construímos este sistema para diagnosticar cada camada, avaliar o uso de <strong>Publicação Defensiva</strong> e gerar as minutas contratuais adequadas.
+                </p>
+            </div>
+
+            <div class="hero-stats">
+                <div class="hero-stat-item">
+                    <strong>6 Camadas</strong>
+                    <span>Matriz A–F Completa</span>
+                </div>
+                <div class="hero-stat-item">
+                    <strong>9 Licenças</strong>
+                    <span>CERN, TAPR, Solderpad, CC, GPL</span>
+                </div>
+                <div class="hero-stat-item">
+                    <strong>4 Minutas</strong>
+                    <span>Contratos e Dossiê INPI</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Navegação Principal por Abas -->
+    <nav class="nav-tabs">
+        <button class="tab-btn active" data-target="aba-diagnostico" onclick="alternarAba('aba-diagnostico')">
+            <span class="tab-num">01</span> Arquitetura (6 Camadas)
+        </button>
+        <button class="tab-btn" data-target="aba-relatorio" onclick="alternarAba('aba-relatorio')">
+            <span class="tab-num">02</span> Diagnóstico Multicamada
+        </button>
+        <button class="tab-btn" data-target="aba-minutas" onclick="alternarAba('aba-minutas')">
+            <span class="tab-num">03</span> Minutas e Contratos
+        </button>
+        <button class="tab-btn" data-target="aba-catalogo" onclick="alternarAba('aba-catalogo')">
+            <span class="tab-num">04</span> Matriz Legal e Licenças
+        </button>
+        <button class="tab-btn" data-target="aba-arquitetura" onclick="alternarAba('aba-arquitetura')">
+            <span class="tab-num">05</span> Modelo de Dados (DER)
+        </button>
+    </nav>
+
+    <main class="container">
+
+        <!-- ==================================================================
+             ABA 1: FORMULÁRIO DE ENTRADA DE ARQUITETURA HARDWARE / FIRMWARE
+             ================================================================== -->
+        <section id="aba-diagnostico" class="tab-panel active">
+
+            <!-- MODO 1: INTERPRETADOR DE CENÁRIO LIVRE (O USUÁRIO CONTA O PRÓPRIO CASO COM SUAS PALAVRAS) -->
+            <div class="card" style="margin-bottom: 2rem; border-color: rgba(249, 115, 22, 0.55);">
+                <div class="card-header" style="margin-bottom: 1.2rem; padding-bottom: 1rem;">
+                    <div>
+                        <span class="inpi-badge">OPÇÃO A • INTERPRETAÇÃO POR LINGUAGEM NATURAL</span>
+                        <h2>Relate seu Caso ou Descreva seu Projeto com Suas Palavras</h2>
+                        <p class="card-subtitle">Escreva sua situação livremente abaixo (ou carregue um exemplo cotidiano na lista) para o motor identificar automaticamente as camadas (A–F), vínculos e riscos.</p>
+                    </div>
+                    <button type="button" class="btn-secondary" style="padding: 0.55rem 1rem; font-size: 0.82rem;" onclick="limparFormularioCompleto()">Limpar Tudo (Criar do Zero)</button>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label for="relato_livre_usuario">Conte o que você está desenvolvendo, onde foi criado, o que usou e o que pretende fazer:</label>
+                    <textarea id="relato_livre_usuario" rows="3" placeholder="Exemplo: Criei um robô de irrigação com placa PCB própria no meu TCC da faculdade, fiz uma carcaça impressa em 3D e usei código em C++ com biblioteca GPL. Postei um vídeo no YouTube há 3 meses e agora quero abrir uma empresa para vender fechado..."></textarea>
+                </div>
+
+                <div id="feedback-relato-livre" style="display: none; margin-bottom: 1.1rem; padding: 1rem 1.25rem; border-radius: var(--radius-md); background: rgba(249, 115, 22, 0.1); border-left: 4px solid var(--accent-primary); font-size: 0.92rem; color: var(--text-secondary); line-height: 1.6;"></div>
+
+                <div style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; align-items: center;">
+                    <div style="display: flex; align-items: center; gap: 0.65rem; flex-wrap: wrap; flex: 1; min-width: 260px;">
+                        <label for="seletor_exemplo_relato" style="font-size: 0.82rem; font-weight: 700; color: var(--text-muted); margin: 0; white-space: nowrap;">Testar relato cotidiano:</label>
+                        <select id="seletor_exemplo_relato" onchange="if(this.value) preencherExemploRelato(this.value)" style="max-width: 360px; padding: 0.55rem 0.9rem; font-size: 0.86rem;">
+                            <option value="">-- Escolha um exemplo de relato para preencher --</option>
+                            <option value="tcc_youtube">Estudante com TCC já divulgado no YouTube/GitHub</option>
+                            <option value="clone_concorrente">Concorrente clonou a função da minha placa aberta</option>
+                            <option value="startup_agrotech">Startup AgroTech dividindo placa aberta e código fechado</option>
+                            <option value="wearable_medico">Dispositivo médico usando Publicação Defensiva</option>
+                        </select>
+                    </div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.8rem;">
+                        <button type="button" class="btn-secondary" style="padding: 0.75rem 1.2rem; font-size: 0.88rem;" onclick="interpretarRelatoLivre(false)">
+                            Preencher Formulário com Meu Relato
+                        </button>
+                        <button type="button" class="btn-primary" style="padding: 0.75rem 1.4rem; font-size: 0.88rem;" onclick="interpretarRelatoLivre(true)">
+                            Diagnosticar Meu Relato Agora →
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MODO 2: OS 4 ESTUDOS DE CASO OFICIAIS DA ENTREGA 1 -->
+            <div class="scenarios-bar">
+                <div class="scenarios-header">
+                    <h3>Opção B • Simular os 4 Estudos de Caso Reais da Disciplina (Entrega 1)</h3>
+                    <p>Clique em um dos 4 casos paradigmáticos estudados pela equipe para carregar os parâmetros técnicos e testar o Motor de Decisão:</p>
+                </div>
+                <div class="scenario-buttons">
+                    <button type="button" class="btn-scenario" onclick="carregarCenario('cenario1_arduino')">
+                        <strong>Caso 1: Ecossistema Aberto &amp; Marca (Arduino LLC vs. SRL)</strong>
+                        <span>Placa aberta sob CC BY-SA / CERN-OHL e firmware LGPL, utilizando o Registro de Marca (Art. 129 LPI) como único vetor de exclusividade.</span>
+                    </button>
+                    <button type="button" class="btn-scenario" onclick="carregarCenario('cenario2_waymo_lidar')">
+                        <strong>Caso 2: Sensor LiDAR Embarcado (Waymo vs. Uber)</strong>
+                        <span>Hardware óptico inédito com processo assistido por software (efeito técnico físico), contrastando Segredo Industrial, Patente (PI) e Publicação Defensiva.</span>
+                    </button>
+                    <button type="button" class="btn-scenario" onclick="carregarCenario('cenario3_intel_amd_chip')">
+                        <strong>Caso 3: Semicondutor e Layout de Silício (Intel vs. AMD)</strong>
+                        <span>Projeto de microarquitetura e máscara tridimensional de chip (Topografia de Circuito Integrado — Lei 11.484/07 e PADIS) com HDL e firmware próprio.</span>
+                    </button>
+                    <button type="button" class="btn-scenario" onclick="carregarCenario('cenario4_conflito_ict')">
+                        <strong>Caso 4: Conflito em Laboratório Universitário (ICT / NIT + GPLv3)</strong>
+                        <span>Projeto acadêmico regido pela Lei de Inovação (Lei 10.973/04) que mistura CERN-OHL-S e biblioteca GPLv3 tentando fechamento comercial.</span>
+                    </button>
+                </div>
+            </div>
+
+            <form id="form-arquitetura" onsubmit="processarDiagnostico(event)" class="section-stack">
+
+                <!-- SEÇÃO 1: IDENTIFICAÇÃO, MARCA (CAMADA D) E TITULARIDADE -->
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <h2>1. Identificação do Projeto, Signos Distintivos (Camada D) e Titularidade</h2>
+                            <p class="card-subtitle">Construtor Técnico Personalizado (mais de 1.500 combinações): edite livremente qualquer parâmetro abaixo para refletir a realidade do seu projeto.</p>
+                        </div>
+                        <span class="step-badge">Etapa 1 de 3</span>
+                    </div>
+
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label for="nome_projeto">Nome do Projeto e Signo Distintivo / Marca Pretendida (Camada D)</label>
+                            <input type="text" id="nome_projeto" required placeholder="Ex: Arduino / Genuino — Plataforma de Prototipagem Eletrônica">
+                            <span class="form-help">Em projetos de Hardware Aberto, a Marca Registrada (Art. 129 da LPI) é frequentemente o único vetor de exclusividade patrimonial.</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="titularidade_tipo">Origem do Desenvolvimento e Titularidade (Art. 88 LPI / Lei 10.973/04)</label>
+                            <select id="titularidade_tipo">
+                                <option value="AUTONOMO_EMPRESA">Desenvolvimento Independente (Projetista Autônomo, Startup ou Empresa Privada)</option>
+                                <option value="PARCERIA_COAUTORIA">Sociedade de Cofundadores / Coautoria sem Acordo Prévio de Marca</option>
+                                <option value="VINCULO_EMPREGATICIO_ICT">Laboratório Universitário (ICT — Gestão via NIT) ou Contrato de Trabalho (Art. 4º Lei 9.609/98)</option>
+                            </select>
+                            <span class="form-help">Avalia titularidade laboral do empregador e a competência do Núcleo de Inovação Tecnológica (NIT) nas ICTs.</span>
+                        </div>
+                    </div>
+
+                    <div class="grid-3" style="margin-top: 0.5rem;">
+                        <div class="form-group">
+                            <label for="autor_nome">Projetista(s) / Autor(es) Responsável(is)</label>
+                            <input type="text" id="autor_nome" required placeholder="Nome completo dos criadores">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="autor_documento">CPF ou CNPJ do Titular / Depositante</label>
+                            <input type="text" id="autor_documento" required placeholder="00.000.000/0001-00">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="instituicao_empresa">Organização / Empresa / ICT Vinculada</label>
+                            <input type="text" id="instituicao_empresa" required placeholder="Razão social ou instituição">
+                        </div>
+                    </div>
+
+                    <div class="grid-2" style="margin-top: 0.5rem;">
+                        <div class="form-group">
+                            <label for="autor_email">E-mail de Contato Técnico</label>
+                            <input type="email" id="autor_email" required placeholder="contato@instituicao.com.br">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="resumo_tecnico">Síntese Arquitetural e Funcional do Dispositivo</label>
+                            <textarea id="resumo_tecnico" rows="3" required placeholder="Descreva os módulos mecânicos, circuitos, chips, documentação e funcionalidade técnica..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SEÇÃO 2: CAMADAS FÍSICAS E DOCUMENTAIS (CAMADAS A, B, C e F) -->
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <h2>2. Camadas Físicas e Documentais: Documentação (A), Design (B), Chips (C) e Solução Técnica (F)</h2>
+                            <p class="card-subtitle">Análise da fragmentação normativa entre Direito Autoral (Lei 9.610/98), LPI (Lei 9.279/96) e Lei de Semicondutores (Lei 11.484/07).</p>
+                        </div>
+                        <span class="step-badge">Etapa 2 de 3</span>
+                    </div>
+
+                    <div class="grid-3">
+                        <div class="form-group">
+                            <label for="grau_novidade_hardware">Camada F — Solução Técnica e Funcionalidade (Lei 9.279/96)</label>
+                            <select id="grau_novidade_hardware">
+                                <option value="INEDITO_INVENTIVO">Invenção Técnica Inédita ou Processo Assistido por Software com Efeito Físico (Patente PI)</option>
+                                <option value="MELHORIA_FUNCIONAL">Nova Disposição Construtiva Prática com Melhoria Funcional (Modelo de Utilidade - MU)</option>
+                                <option value="MODULOS_PRONTOS_COTS">Circuito Baseado em Componentes Comerciais / Reprodução Funcional sem Ineditismo Patentário</option>
+                            </select>
+                            <span class="form-help">O Art. 10, V da LPI veda patente ao software "em si", mas admite para processo técnico com efeito físico.</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="usa_hardware_aberto_terceiros">Camada A — Licenciamento dos Esquemáticos e PCB</label>
+                            <select id="usa_hardware_aberto_terceiros">
+                                <option value="NENHUM">Projeto 100% Próprio (Sem derivação de esquemáticos de terceiros)</option>
+                                <option value="CERN_OHL_P">Baseado em Licença Permissiva de Hardware (CERN-OHL-P v2 / TAPR OHL / Solderpad)</option>
+                                <option value="CERN_OHL_W">Baseado em Reciprocidade Fraca / Modular (CERN-OHL-W v2)</option>
+                                <option value="CERN_OHL_S">Baseado em Reciprocidade Forte (CERN-OHL-S v2 ou Creative Commons CC BY-SA 4.0)</option>
+                            </select>
+                            <span class="form-help">A Lei 9.610/98 protege apenas o desenho gráfico do esquemático, não a função elétrica.</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="divulgacao_previa">Situação de Divulgação Pública Prévia (Art. 11 e 12 LPI)</label>
+                            <select id="divulgacao_previa">
+                                <option value="SIGILO_MANTIDO">Mantido em Sigilo / Ainda Não Divulgado ao Público</option>
+                                <option value="DIVULGADO_MENOS_12M">Já Divulgado há Menos de 12 Meses (YouTube, GitHub, TCC, Feira — Período de Graça Art. 12 LPI)</option>
+                                <option value="DIVULGADO_MAIS_12M">Já Divulgado há Mais de 12 Meses (Caiu no Estado da Técnica — Art. 11 LPI)</option>
+                            </select>
+                            <span class="form-help">Avalia se a publicação anterior destruiu a novidade ou se está salva pelo Período de Graça de 12 meses.</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 1rem;">
+                        <label>Selecione os Ativos Presentes nas Camadas A, B, C e D do Aparelho:</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-item">
+                                <input type="checkbox" id="possui_pcb_customizada" checked>
+                                <div>
+                                    <strong>Camada A e D — Documentação Técnica (PCB/Esquemático) e Marca Própria</strong>
+                                    <span>Desenhos de esquemático, leiaute de PCB e manuais (tutelados pela Lei 9.610/98) e nome comercial/logotipo (Art. 129 da LPI).</span>
+                                </div>
+                            </label>
+
+                            <label class="checkbox-item">
+                                <input type="checkbox" id="possui_topografia_chip">
+                                <div>
+                                    <strong>Camada C — Semicondutores e Topografia de Circuito Integrado (Lei 11.484/07)</strong>
+                                    <span>Configuração tridimensional das camadas de microchips/silício (nível máximo de especialização; elegível a incentivos do PADIS).</span>
+                                </div>
+                            </label>
+
+                            <label class="checkbox-item">
+                                <input type="checkbox" id="possui_design_externo_novo">
+                                <div>
+                                    <strong>Camada B — Design do Produto / Forma Plástica Ornamental (Lei 9.279/96)</strong>
+                                    <span>Aspectos plásticos externos e linhas ornamentais ("a cara do aparelho"), protegidos por Desenho Industrial (10 a 25 anos).</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SEÇÃO 3: CAMADA E (SOFTWARE EMBARCADO), PUBLICAÇÃO DEFENSIVA E INSPEÇÃO DE CÓDIGO -->
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <h2>3. Camada E — Software Embarcado (Lei 9.609/98), Publicação Defensiva e Inspeção de Código</h2>
+                            <p class="card-subtitle">Avaliação do firmware funcional, estratégia de Estado da Técnica (Art. 11 e 12 da LPI) e verificador automático de licenças em código.</p>
+                        </div>
+                        <span class="step-badge">Etapa 3 de 3</span>
+                    </div>
+
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label for="linguagem_firmware">Linguagem do Firmware / HDL Sintetizável (Camada E)</label>
+                            <input type="text" id="linguagem_firmware" value="C/C++ (Arduino / ESP-IDF / FreeRTOS)" placeholder="Ex: C/C++, Rust, MicroPython, Verilog/VHDL">
+                            <span class="form-help">Equiparado a obra literária pela Lei nº 9.609/98 (proteção de 50 anos, sendo o registro no INPI facultativo para fins probatórios).</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="vinculacao_firmware">Modo de Vinculação do Firmware e Reconfiguração Lógica</label>
+                            <select id="vinculacao_firmware">
+                                <option value="ESTATICA_MONOLITICA">Binário Monolítico Estático na Memória Flash (Microcontrolador / Bare-Metal / RTOS)</option>
+                                <option value="DINAMICA_SO">Linkedição Dinâmica sob Sistema Operacional Embarcado (Linux Embarcado)</option>
+                            </select>
+                            <span class="form-help">Define o alcance das obrigações de relinkagem de bibliotecas LGPL e da cláusula Anti-Tivoização da GPLv3.</span>
+                        </div>
+                    </div>
+
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label for="licenca_bibliotecas_terceiros">Licenças das Bibliotecas Incorporadas ao Firmware</label>
+                            <select id="licenca_bibliotecas_terceiros">
+                                <option value="MIT_BSD_APACHE">Permissivas (MIT, BSD, Apache 2.0, Solderpad) ou Código 100% Autoral</option>
+                                <option value="LGPL_ESTATICA">GNU LGPL v2.1 / v3 (Copyleft Fraco — Exige arquivos-objeto em linkedição estática)</option>
+                                <option value="GPL_V2_V3">GNU GPL v2 / v3 (Copyleft Forte — Exige abertura integral do código derivado)</option>
+                            </select>
+                            <span class="form-help">Licenças não são leis, mas negócios jurídicos contratuais apoiados no monopólio do Direito Autoral (Lei 9.610/98).</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="modelo_negocio">Estratégia Patrimonial: Exclusividade, Publicação Defensiva ou Hardware Aberto</label>
+                            <select id="modelo_negocio">
+                                <option value="COMERCIAL_FECHADO">Exclusividade Industrial / Segredo (Hardware Fechado + Firmware Fechado)</option>
+                                <option value="PUBLICACAO_DEFENSIVA">Publicação Defensiva (Tornar Estado da Técnica — Art. 11 LPI para impedir patentes alheias)</option>
+                                <option value="HIBRIDO_HW_ABERTO_SW_FECHADO">Híbrido: Hardware Aberto (Retendo Marca Exclusiva) + Firmware/Serviços Proprietários</option>
+                                <option value="OPEN_SOURCE_TOTAL">Ecossistema 100% Aberto (Padrão OSHWA: CERN-OHL / CC BY-SA + GPL/MIT)</option>
+                            </select>
+                            <span class="form-help">A Publicação Defensiva destrói o ineditismo para criar um escudo de domínio público, evitando cobrança futura de royalties.</span>
+                        </div>
+                    </div>
+
+                    <!-- Inspetor Automático de Código/Cabeçalho (Cumpre literalmente "motor que avalia código/circuito") -->
+                    <div class="form-group" style="margin-top: 1rem;">
+                        <label for="trecho_codigo_inspecao">Inspetor Automático de Código-Fonte / Cabeçalho de Licença ou Lista BOM (Opcional)</label>
+                        <textarea id="trecho_codigo_inspecao" rows="3" oninput="inspecionarTrechoCodigo()" placeholder="Cole aqui um trecho do seu código-fonte (.c, .h, .ino), arquivo LICENSE ou cabeçalho de esquemático (ex: SPDX-License-Identifier: GPL-3.0, CERN-OHL-S, MIT...) para detecção automática pelo motor..."></textarea>
+                        <span class="form-help" id="resultado-inspecao-codigo">O motor analisa automaticamente menções a SPDX, GPL, LGPL, MIT, CERN-OHL, CC BY-SA, TAPR e Solderpad no texto colado.</span>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 0.5rem;">
+                        <label class="checkbox-item" style="max-width: 760px;">
+                            <input type="checkbox" id="possui_firmware_proprio" checked>
+                            <div>
+                                <strong>O dispositivo possui código-fonte / firmware funcional autoral (Camada E)</strong>
+                                <span>Tutelado pelo regime especial da Lei nº 9.609/1998 por 50 anos a partir de 1º de janeiro do ano subsequente à publicação.</span>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div style="margin-top: 2.4rem; padding-top: 1.6rem; border-top: 2px dashed var(--border-color); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.2rem;">
+                        <span style="font-size: 0.94rem; color: var(--text-secondary);">
+                            O Motor de Decisão processará as 6 camadas da Matriz do Hardware e emitirá o diagnóstico e as minutas.
+                        </span>
+                        <button type="submit" class="btn-primary">
+                            Processar Diagnóstico Multicamada (A–F) →
+                        </button>
+                    </div>
+                </div>
+
+            </form>
+        </section>
+
+        <!-- ==================================================================
+             ABA 2: RELATÓRIO DE DIAGNÓSTICO DO MOTOR DE DECISÃO
+             ================================================================== -->
+        <section id="aba-relatorio" class="tab-panel">
+            <div class="section-stack">
+
+                <!-- Card Principal de Resumo Executivo -->
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <span class="inpi-badge">DIAGNÓSTICO MULTICAMADA CONSOLIDADO (MATRIZ A–F)</span>
+                            <h2 id="rel-nome-projeto">Projeto Avaliado</h2>
+                            <p id="rel-autor-projeto" class="card-subtitle">Autor / Titular</p>
+                        </div>
+                        <div style="display: flex; gap: 1rem; flex-wrap: wrap;" class="no-print">
+                            <button class="btn-secondary" onclick="window.print()">Exportar Parecer (PDF)</button>
+                            <button class="btn-primary" style="padding: 0.95rem 1.8rem; font-size: 0.95rem;" onclick="alternarAba('aba-minutas')">
+                                Acessar Minutas Contratuais →
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- KPIs -->
+                    <div class="kpi-row">
+                        <div class="kpi-box">
+                            <div class="kpi-label">Índice de Protegibilidade</div>
+                            <div class="kpi-value" id="kpi-score">--/100</div>
+                        </div>
+                        <div class="kpi-box">
+                            <div class="kpi-label">Risco de Conflito / Copyleft</div>
+                            <div class="kpi-value" id="kpi-risco">--</div>
+                        </div>
+                        <div class="kpi-box">
+                            <div class="kpi-label">Proteção Primária no INPI</div>
+                            <div class="kpi-value" id="kpi-inpi" style="font-size: 1.12rem;">--</div>
+                        </div>
+                        <div class="kpi-box">
+                            <div class="kpi-label">Licença Hardware / Esquemático</div>
+                            <div class="kpi-value" id="kpi-licenca-hw" style="font-size: 1.02rem;">--</div>
+                        </div>
+                        <div class="kpi-box">
+                            <div class="kpi-label">Licença Firmware Embarcado</div>
+                            <div class="kpi-value" id="kpi-licenca-sw" style="font-size: 1.02rem;">--</div>
+                        </div>
+                    </div>
+
+                    <!-- Mapa Visual das 6 Camadas Tecnológicas (A até F do Trabalho do Grupo) -->
+                    <h3 style="margin-bottom: 1.35rem; font-size: 1.15rem; color: var(--orange-light);">
+                        Matriz de Proteção Multicamada do Hardware (Camadas A a F — CF/88 Art. 5º, XXVII a XXIX)
+                    </h3>
+                    <div class="grid-3" id="mapa-camadas-grid"></div>
+                </div>
+
+                <!-- Recomendações INPI e Auditoria Dogmática Lado a Lado -->
+                <div class="grid-2">
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <h2>Enquadramento Legal perante o INPI</h2>
+                                <p class="card-subtitle">Incidência das Leis nº 9.279/96 (LPI), nº 9.609/98 (Software), nº 9.610/98 (LDA) e nº 11.484/07 (TCI/PADIS).</p>
+                            </div>
+                        </div>
+                        <div id="lista-recomendacoes-inpi"></div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <h2>Análise Dogmática: Licenças, Copyleft e Estado da Técnica</h2>
+                                <p class="card-subtitle">Fragilidade do copyleft em PCB, Publicação Defensiva (Art. 11/12 LPI), Marca e Titularidade (NIT/ICT).</p>
+                            </div>
+                        </div>
+                        <div id="lista-alertas-licenca"></div>
+                    </div>
+                </div>
+
+                <!-- Estimativa de Taxas Oficiais do INPI e Prazos -->
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <h2>Planejamento de Submissão ao INPI: Taxas Oficiais (GRU) e Vigências</h2>
+                            <p class="card-subtitle">Valores de referência com desconto de 60% para Pessoas Físicas, MEI, ME, EPP, Startups e ICTs públicas.</p>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Camada / Modalidade</th>
+                                <th>Sistema Eletrônico INPI</th>
+                                <th>Taxa GRU (Redução de 60%)</th>
+                                <th>Taxa GRU (Valor Integral)</th>
+                                <th>Vigência Legal e Observações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabela-custos-inpi"></tbody>
+                    </table>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ==================================================================
+             ABA 3: GERADOR AUTOMATIZADO DE MINUTAS E CONTRATOS CUSTOMIZADOS
+             ================================================================== -->
+        <section id="aba-minutas" class="tab-panel">
+            <div class="card">
+                <div class="card-header no-print">
+                    <div>
+                        <h2>Gerador Automatizado de Minutas Contratuais, Licenças OSHW e Dossiê INPI</h2>
+                        <p class="card-subtitle">
+                            Como as licenças são negócios jurídicos celebrados no âmbito da autonomia privada (e não leis), o sistema gera os instrumentos abaixo já parametrizados.
+                        </p>
+                    </div>
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                        <button class="btn-secondary" onclick="baixarMinutaArquivo()">Baixar Documento (.DOC / .TXT)</button>
+                        <button class="btn-primary" style="padding: 0.9rem 1.7rem; font-size: 0.95rem;" onclick="window.print()">
+                            Imprimir ou Salvar em PDF
+                        </button>
+                    </div>
+                </div>
+
+                <div class="scenario-buttons no-print" style="margin-bottom: 2.2rem;">
+                    <button class="btn-scenario" onclick="gerarMinutaAutomatizada('CESSAO_DIREITOS')">
+                        <strong>1. Contrato de Cessão de Direitos Patrimoniais (6 Camadas)</strong>
+                        <span>Transfere a titularidade sobre documentação (LDA), firmware (Art. 4º Lei 9.609/98), chips e patentes para a organização ou ICT.</span>
+                    </button>
+                    <button class="btn-scenario" onclick="gerarMinutaAutomatizada('TERMO_OPEN_HARDWARE_CERN')">
+                        <strong>2. Licenciamento Híbrido OSHW (CERN-OHL v2 / CC BY-SA + Reserva de Marca)</strong>
+                        <span>Autoriza reprodução do esquemático e firmware, mas retém o controle exclusivo sobre a Marca (lição do caso Arduino LLC vs. SRL).</span>
+                    </button>
+                    <button class="btn-scenario" onclick="gerarMinutaAutomatizada('LICENCIAMENTO_COMERCIAL_IOT')">
+                        <strong>3. Contrato de Licenciamento Industrial e Segredo de Negócio</strong>
+                        <span>Instrumento B2B com proteção contra espionagem industrial e vazamento de layouts (prevenção aos casos Waymo vs. Uber e Intel vs. AMD).</span>
+                    </button>
+                    <button class="btn-scenario" onclick="gerarMinutaAutomatizada('MEMORIAL_INPI')">
+                        <strong>4. Dossiê Multicamada para Depósito no INPI ou Publicação Defensiva</strong>
+                        <span>Relatório técnico estruturado nas Camadas A–F para protocolo no INPI ou formalização de Estado da Técnica (Art. 11 e 12 da LPI).</span>
+                    </button>
+                </div>
+
+                <div id="contract-viewer-box" class="contract-viewer"></div>
+            </div>
+        </section>
+
+        <!-- ==================================================================
+             ABA 4: MATRIZ MULTICAMADA (A-F), CASOS REAIS DA ENTREGA 1 E HISTÓRICO
+             ================================================================== -->
+        <section id="aba-catalogo" class="tab-panel">
+            <div class="section-stack">
+
+                <!-- Matriz Exata da Seção 1.2 do Documento de Diretrizes do Grupo -->
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <h2>Matriz de Proteção Multicamada do Hardware no Brasil (Camadas A a F)</h2>
+                            <p class="card-subtitle">Fundamento Constitucional: Art. 5º, incisos XXVII, XXVIII e XXIX da Constituição Federal de 1988.</p>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Camada do Projeto</th>
+                                <th>Objeto Tutelado</th>
+                                <th>Regime de Proteção</th>
+                                <th>Diploma Legal Aplicável</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="inpi-badge">Camada A</span> <strong>Documentação Técnica</strong></td>
+                                <td>Esquemáticos, leiaute de PCB, manuais e gráficos</td>
+                                <td>Direito Autoral (Obra literária e artística — protege a expressão gráfica, não a função técnica)</td>
+                                <td>Lei nº 9.610/1998 (LDA) e Convenção de Berna (Dec. 75.699/75)</td>
+                            </tr>
+                            <tr>
+                                <td><span class="inpi-badge">Camada B</span> <strong>Design do Produto</strong></td>
+                                <td>Forma ornamental e aspectos plásticos externos ("a cara do aparelho")</td>
+                                <td>Desenho Industrial (10 anos, renováveis até 25 anos)</td>
+                                <td>Lei nº 9.279/1996 (LPI — Art. 94 a 121)</td>
+                            </tr>
+                            <tr>
+                                <td><span class="inpi-badge">Camada C</span> <strong>Semicondutores</strong></td>
+                                <td>Configuração tridimensional das camadas do microchip</td>
+                                <td>Topografia de Circuito Integrado (10 anos a contar do depósito ou 1ª exploração)</td>
+                                <td>Lei nº 11.484/2007 (Institui também o programa PADIS)</td>
+                            </tr>
+                            <tr>
+                                <td><span class="inpi-badge">Camada D</span> <strong>Signos Distintivos</strong></td>
+                                <td>Nome comercial, marca e logotipo do produto</td>
+                                <td>Registro de Marca (10 anos, renovável indefinidamente — Sistema Atributivo)</td>
+                                <td>Lei nº 9.279/1996 (LPI — Art. 129 e Art. 189)</td>
+                            </tr>
+                            <tr>
+                                <td><span class="inpi-badge">Camada E</span> <strong>Software Embarcado</strong></td>
+                                <td>Firmware e código-fonte funcional gravado no dispositivo</td>
+                                <td>Direito Autoral (Regime especial de software — 50 anos; registro facultativo no INPI)</td>
+                                <td>Lei nº 9.609/1998 (Art. 4º regula titularidade laboral)</td>
+                            </tr>
+                            <tr>
+                                <td><span class="inpi-badge">Camada F</span> <strong>Solução Técnica</strong></td>
+                                <td>Funcionalidade, invenção mecânica/elétrica ou processo assistido por software com efeito físico</td>
+                                <td>Patente de Invenção (20 anos) ou Modelo de Utilidade (15 anos)</td>
+                                <td>Lei nº 9.279/1996 (LPI — Art. 8º, 9º e ressalva do Art. 10, V)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+
+                <!-- Catálogo Comparativo de Licenças de Hardware Aberto e Software Embarcado (Entrega 1) -->
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <h2>Catálogo Comparativo de Licenças: Hardware Aberto (OSHWA) vs. Software Embarcado</h2>
+                            <p class="card-subtitle">Natureza jurídica contratual (autonomia privada apoiada na Lei nº 9.610/98 e na LPI) e grau de reciprocidade.</p>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Licença / Instrumento</th>
+                                <th>Camada Alvo</th>
+                                <th>Grau de Reciprocidade</th>
+                                <th>Cláusula de Patentes e Implicação Prática no Brasil</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>CERN-OHL-S v2</strong> (Strongly Reciprocal)</td>
+                                <td>Camadas A e F (PCB, CAD, Esquemáticos)</td>
+                                <td>Copyleft Forte</td>
+                                <td>Inclui concessão recíproca de patentes; exige abrir integralmente esquemáticos, Gerbers e BOM de placas derivadas comercializadas.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>CERN-OHL-W v2</strong> (Weakly Reciprocal)</td>
+                                <td>Camada A (Módulos de Hardware)</td>
+                                <td>Copyleft Fraco / Modular</td>
+                                <td>Exige publicar modificações feitas no bloco aberto, mas permite acoplar módulos periféricos e firmwares proprietários fechados.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>CERN-OHL-P v2 / Solderpad / TAPR OHL</strong></td>
+                                <td>Camada A e HDL (Verilog/VHDL)</td>
+                                <td>Permissiva</td>
+                                <td>Permite reprodução, modificação e fechamento comercial de projetos derivados sem obrigação de abrir as melhorias introduzidas.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Creative Commons CC BY-SA 4.0</strong></td>
+                                <td>Camada A (Documentação e Desenho)</td>
+                                <td>Copyleft Literário/Gráfico</td>
+                                <td>Usada historicamente pelo Arduino; tutela apenas o desenho gráfico (Lei 9.610/98) e não possui cláusula explícita de patentes funcionais.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>GNU GPL v2 / v3</strong></td>
+                                <td>Camada E (Firmware e Bootloader)</td>
+                                <td>Copyleft Forte (Anti-Tivoização na v3)</td>
+                                <td>Incompatível com distribuição em binário fechado; a GPLv3 proíbe travas criptográficas que impeçam o usuário de atualizar o código modificado no aparelho.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>GNU LGPL v2.1 / v3</strong></td>
+                                <td>Camada E (Bibliotecas Embarcadas)</td>
+                                <td>Copyleft Fraco</td>
+                                <td>Em microcontroladores com linkedição estática monolítica, exige fornecer os arquivos-objeto (<code>.o</code>) para permitir relinkagem pelo adquirente.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>MIT / BSD / Apache 2.0</strong></td>
+                                <td>Camada E (Firmware e Pilhas IoT)</td>
+                                <td>Permissiva</td>
+                                <td>Plena compatibilidade com modelos comerciais fechados ou híbridos; a Apache 2.0 inclui proteção contra litígio patentário (retaliação defensiva).</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+
+                <!-- Jurisprudência e Precedentes Analisados na Entrega 1 -->
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <h2>Precedentes Jurídicos e Doutrinários da Entrega 1</h2>
+                            <p class="card-subtitle">Síntese dos casos reais que fundamentam as regras de Marca, Segredo Industrial, Semicondutores e Engenharia Reversa.</p>
+                        </div>
+                    </div>
+                    <div class="grid-2">
+                        <div class="layer-card">
+                            <span class="layer-tag">Precedente 1 • STF Tema 1205 e Caso Arduino</span>
+                            <h4>Gradiente vs. Apple ("iPhone") &amp; Arduino LLC vs. SRL</h4>
+                            <p>Consolidam o papel do sistema atributivo brasileiro (Art. 129 da LPI): no hardware aberto, onde esquemáticos e código são livres, o <strong>Registro de Marca no INPI</strong> é o principal ativo de exclusividade econômica e proteção contra contrafação (Art. 189 da LPI).</p>
+                        </div>
+                        <div class="layer-card">
+                            <span class="layer-tag">Precedente 2 • Segredo Industrial vs. Estado da Técnica</span>
+                            <h4>Waymo (Google) vs. Uber &amp; Intel vs. AMD</h4>
+                            <p>Evidenciam a vulnerabilidade do segredo industrial puro diante da mobilidade de engenheiros e demonstram quando recorrer à <strong>Patente (Camada F)</strong>, à <strong>Topografia de Chip (Lei 11.484/07 — Camada C)</strong> ou à <strong>Publicação Defensiva (Art. 11 da LPI)</strong>.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Histórico -->
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <h2>Registro de Avaliações Processadas na Sessão</h2>
+                            <p class="card-subtitle">Histórico consolidado dos diagnósticos submetidos ao motor de decisão.</p>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Projeto Avaliado</th>
+                                <th>Enquadramento Primário INPI</th>
+                                <th>Regime de Hardware</th>
+                                <th>Regime de Firmware</th>
+                                <th>Índice</th>
+                                <th>Risco de Conflito</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabela-historico-body"></tbody>
+                    </table>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ==================================================================
+             ABA 5: MODELAGEM DE DADOS (DER) E ARQUITETURA DO SISTEMA
+             ================================================================== -->
+        <section id="aba-arquitetura" class="tab-panel">
+            <div class="section-stack">
+
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <h2>Modelo Relacional de Dados (DER — 7 Entidades SQL)</h2>
+                            <p class="card-subtitle">Esquema físico implementado em <code>database/schema.sql</code> com persistência relacional via PDO em <code>config/database.php</code>.</p>
+                        </div>
+                        <span class="step-badge">SQLite / MySQL</span>
+                    </div>
+
+                    <div class="schema-grid">
+                        <div class="schema-table-card">
+                            <div class="schema-table-header">1. usuarios</div>
+                            <ul class="schema-table-body">
+                                <li><span>id</span> <strong>PK INT</strong></li>
+                                <li><span>nome_completo</span> <span>VARCHAR(150)</span></li>
+                                <li><span>documento_cpf_cnpj</span> <span>VARCHAR(25)</span></li>
+                                <li><span>email</span> <span>VARCHAR(120)</span></li>
+                                <li><span>instituicao_empresa</span> <span>VARCHAR(150)</span></li>
+                                <li><span>perfil</span> <span>VARCHAR(50)</span></li>
+                            </ul>
+                        </div>
+
+                        <div class="schema-table-card">
+                            <div class="schema-table-header">2. modalidades_inpi</div>
+                            <ul class="schema-table-body">
+                                <li><span>id</span> <strong>PK INT</strong></li>
+                                <li><span>codigo (LDA, DI, TCI, MARCA, RPC, PI, MU)</span> <strong>UNIQUE</strong></li>
+                                <li><span>nome</span> <span>VARCHAR(120)</span></li>
+                                <li><span>base_legal</span> <span>VARCHAR(150)</span></li>
+                                <li><span>prazo_vigencia</span> <span>VARCHAR(80)</span></li>
+                                <li><span>escopo_protecao</span> <span>TEXT</span></li>
+                            </ul>
+                        </div>
+
+                        <div class="schema-table-card">
+                            <div class="schema-table-header">3. licencas_catalogo</div>
+                            <ul class="schema-table-body">
+                                <li><span>id</span> <strong>PK INT</strong></li>
+                                <li><span>codigo (CERN, TAPR, Solderpad, CC, GPL, MIT)</span> <strong>UNIQUE</strong></li>
+                                <li><span>camada_alvo</span> <span>VARCHAR(40)</span></li>
+                                <li><span>tipo_permissividade</span> <span>VARCHAR(40)</span></li>
+                                <li><span>efeito_viral</span> <span>BOOLEAN</span></li>
+                                <li><span>exige_abertura_derivados</span> <span>BOOLEAN</span></li>
+                            </ul>
+                        </div>
+
+                        <div class="schema-table-card">
+                            <div class="schema-table-header">4. regras_classificacao</div>
+                            <ul class="schema-table-body">
+                                <li><span>id</span> <strong>PK INT</strong></li>
+                                <li><span>codigo_regra</span> <strong>UNIQUE</strong></li>
+                                <li><span>camada_avaliada (A a F)</span> <span>VARCHAR(40)</span></li>
+                                <li><span>modalidade_inpi_codigo</span> <strong>FK</strong></li>
+                                <li><span>licenca_recomendada_codigo</span> <strong>FK</strong></li>
+                                <li><span>parecer_tecnico_juridico</span> <span>TEXT</span></li>
+                            </ul>
+                        </div>
+
+                        <div class="schema-table-card">
+                            <div class="schema-table-header">5. projetos_avaliados</div>
+                            <ul class="schema-table-body">
+                                <li><span>id</span> <strong>PK INT</strong></li>
+                                <li><span>usuario_id</span> <strong>FK usuarios</strong></li>
+                                <li><span>nome_projeto</span> <span>VARCHAR(180)</span></li>
+                                <li><span>grau_novidade_hardware</span> <span>VARCHAR(40)</span></li>
+                                <li><span>possui_pcb / chip / design</span> <span>BOOLEAN</span></li>
+                                <li><span>licenca_bibliotecas_terceiros</span> <span>VARCHAR(40)</span></li>
+                                <li><span>modelo_negocio</span> <span>VARCHAR(50)</span></li>
+                            </ul>
+                        </div>
+
+                        <div class="schema-table-card">
+                            <div class="schema-table-header">6. diagnosticos_gerados</div>
+                            <ul class="schema-table-body">
+                                <li><span>id</span> <strong>PK INT</strong></li>
+                                <li><span>projeto_id</span> <strong>FK projetos</strong></li>
+                                <li><span>score_protegibilidade</span> <span>INT (0-100)</span></li>
+                                <li><span>risco_contaminacao_licenca</span> <span>VARCHAR(30)</span></li>
+                                <li><span>protecao_inpi_primaria</span> <span>VARCHAR(80)</span></li>
+                                <li><span>json_parecer_completo</span> <span>TEXT (JSON)</span></li>
+                            </ul>
+                        </div>
+
+                        <div class="schema-table-card">
+                            <div class="schema-table-header">7. minutas_geradas</div>
+                            <ul class="schema-table-body">
+                                <li><span>id</span> <strong>PK INT</strong></li>
+                                <li><span>diagnostico_id</span> <strong>FK diag</strong></li>
+                                <li><span>tipo_documento</span> <span>VARCHAR(60)</span></li>
+                                <li><span>partes_qualificacao</span> <span>TEXT</span></li>
+                                <li><span>conteudo_minuta</span> <span>TEXT</span></li>
+                                <li><span>hash_verificacao</span> <span>CHAR(64)</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <h2>Fluxo de Execução e Camadas da Aplicação Web</h2>
+                            <p class="card-subtitle">Integração entre Interface Responsiva, API Backend PHP e Persistência SQL.</p>
+                        </div>
+                    </div>
+                    <div class="grid-3">
+                        <div class="layer-card">
+                            <span class="layer-tag">Camada 1 • Apresentação e NLP</span>
+                            <h4>HTML5 + CSS3 + JS (<code>app.js</code>)</h4>
+                            <p>Recebe o relato livre em linguagem natural ou os seletores técnicos das 6 camadas, executa o inspetor de cabeçalhos SPDX e renderiza os relatórios responsivos.</p>
+                        </div>
+                        <div class="layer-card">
+                            <span class="layer-tag">Camada 2 • Regra de Negócio</span>
+                            <h4>API REST em PHP (<code>api/diagnostico.php</code>)</h4>
+                            <p>Processa a árvore de decisão determinística sobre as Camadas A a F, calcula o índice de protegibilidade (0–100) e autentica as minutas via resumo criptográfico SHA-256.</p>
+                        </div>
+                        <div class="layer-card">
+                            <span class="layer-tag">Camada 3 • Persistência Relacional</span>
+                            <h4>PDO SQLite / MySQL (<code>database/schema.sql</code>)</h4>
+                            <p>Inicializa automaticamente o banco relacional zero-config ou conecta-se a instâncias MySQL/MariaDB em nuvem (Railway / Docker) mantendo histórico auditável.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Rodapé Institucional com os Nomes do Grupo -->
+    <footer class="footer">
+        <div>
+            <strong>Observatório de Propriedade Intelectual e Hardware Aberto</strong> • Projeto Integrador: Informática e Legislação<br>
+            <span>Equipe: Antonio Kayky Gonçalves Vieira • Giullian Bernard Alencar Maia • Ítalo Brito da Costa • Luís Aquiles Lucena Sá</span>
+        </div>
+        <div>
+            Marco Legal: CF/88 (Art. 5º, XXVII–XXIX) • Lei 9.279/96 (LPI) • Lei 9.609/98 (Software) • Lei 9.610/98 (LDA) • Lei 11.484/07 (TCI/PADIS)
+        </div>
+    </footer>
+
+    <script src="assets/js/app.js"></script>
+</body>
+</html>
