@@ -1,18 +1,18 @@
-FROM php:8.2-apache
+FROM php:8.2-cli
 
-# Instala extensões PDO para SQLite e MySQL/MariaDB
+# Instala SQLite e extensões PDO (SQLite e MySQL)
 RUN apt-get update && apt-get install -y \
     libsqlite3-dev \
     && docker-php-ext-install pdo pdo_sqlite pdo_mysql \
-    && a2enmod rewrite \
     && rm -rf /var/lib/apt/lists/*
 
-# Copia os arquivos da aplicação para o diretório público do Apache
-COPY . /var/www/html/
+WORKDIR /app
+COPY . /app
 
 # Garante permissão de escrita na pasta database para o banco SQLite
-RUN chown -R www-data:www-data /var/www/html/database \
-    && chmod -R 775 /var/www/html/database
+RUN chmod -R 777 /app/database
 
-# Ajusta dinamicamente a porta do Apache para a variável $PORT do Railway (ou 80 por padrão)
-CMD sh -c "sed -i \"s/80/\${PORT:-80}/g\" /etc/apache2/sites-available/000-default.conf /etc/apache2/ports.conf && apache2-foreground"
+EXPOSE 8080
+
+# Mantém o servidor web PHP ativo continuamente na porta 8080 (ou $PORT do Railway)
+CMD ["sh", "-c", "php -S 0.0.0.0:${PORT:-8080} -t /app"]
