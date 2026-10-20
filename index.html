@@ -91,72 +91,34 @@
     <main class="container">
 
         <!-- ==================================================================
-             ABA 1: FORMULÁRIO DE ENTRADA DE ARQUITETURA HARDWARE / FIRMWARE
+             ABA 1: FORMULÁRIO DE ENTRADA DE ARQUITETURA HARDWARE / FIRMWARE / IOT
              ================================================================== -->
         <section id="aba-diagnostico" class="tab-panel active">
 
-            <!-- MODO 1: INTERPRETADOR DE CENÁRIO LIVRE (O USUÁRIO CONTA O PRÓPRIO CASO COM SUAS PALAVRAS) -->
+            <!-- RELATO DO CASO DO PRÓPRIO USUÁRIO (LINGUAGEM NATURAL -> CORRELAÇÃO JURÍDICA E PATENTÁRIA REAL) -->
             <div class="card" style="margin-bottom: 2rem; border-color: rgba(249, 115, 22, 0.55);">
                 <div class="card-header" style="margin-bottom: 1.2rem; padding-bottom: 1rem;">
                     <div>
-                        <span class="inpi-badge">OPÇÃO A • INTERPRETAÇÃO POR LINGUAGEM NATURAL</span>
-                        <h2>Relate seu Caso ou Descreva seu Projeto com Suas Palavras</h2>
-                        <p class="card-subtitle">Escreva sua situação livremente abaixo (ou carregue um exemplo cotidiano na lista) para o motor identificar automaticamente as camadas (A–F), vínculos e riscos.</p>
+                        <span class="inpi-badge">ANÁLISE DE CASO REAL • ENGENHARIA DE HARDWARE, IOT E LEGISLAÇÃO</span>
+                        <h2>Descreva seu Projeto de Hardware/IoT e o que Você Deseja Patentear ou Proteger</h2>
+                        <p class="card-subtitle">Explique com suas palavras qual dispositivo você está desenvolvendo, quais sensores, microcontroladores, placas, protocolos de rede (Wi-Fi, LoRa, Bluetooth) e códigos utilizou, e qual parte exata você deseja patentear ou comercializar.</p>
                     </div>
-                    <button type="button" class="btn-secondary" style="padding: 0.55rem 1rem; font-size: 0.82rem;" onclick="limparFormularioCompleto()">Limpar Tudo (Criar do Zero)</button>
+                    <button type="button" class="btn-secondary" style="padding: 0.55rem 1rem; font-size: 0.82rem;" onclick="limparFormularioCompleto()">Limpar Campos</button>
                 </div>
 
                 <div class="form-group" style="margin-bottom: 1rem;">
-                    <label for="relato_livre_usuario">Conte o que você está desenvolvendo, onde foi criado, o que usou e o que pretende fazer:</label>
-                    <textarea id="relato_livre_usuario" rows="3" placeholder="Exemplo: Criei um robô de irrigação com placa PCB própria no meu TCC da faculdade, fiz uma carcaça impressa em 3D e usei código em C++ com biblioteca GPL. Postei um vídeo no YouTube há 3 meses e agora quero abrir uma empresa para vender fechado..."></textarea>
+                    <label for="relato_livre_usuario">Relato técnico do seu dispositivo e pretensão de patenteamento / proteção jurídica:</label>
+                    <textarea id="relato_livre_usuario" rows="4" placeholder="Descreva seu caso real aqui. Exemplo: Desenvolvi um sistema IoT de monitoramento agrícola com placa PCB própria, microcontrolador ESP32 via LoRaWAN, carcaça impressa em 3D e um algoritmo embarcado em C++ que controla válvulas físicas reduzindo o consumo de água em 35%. Quero saber o que exatamente posso patentear no INPI (já que software puro não é patenteável pelo Art. 10, V da LPI), quais leis da ANATEL e LGPD incidem e como proteger minha marca..."></textarea>
                 </div>
 
                 <div id="feedback-relato-livre" style="display: none; margin-bottom: 1.1rem; padding: 1rem 1.25rem; border-radius: var(--radius-md); background: rgba(249, 115, 22, 0.1); border-left: 4px solid var(--accent-primary); font-size: 0.92rem; color: var(--text-secondary); line-height: 1.6;"></div>
 
-                <div style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; align-items: center;">
-                    <div style="display: flex; align-items: center; gap: 0.65rem; flex-wrap: wrap; flex: 1; min-width: 260px;">
-                        <label for="seletor_exemplo_relato" style="font-size: 0.82rem; font-weight: 700; color: var(--text-muted); margin: 0; white-space: nowrap;">Testar relato cotidiano:</label>
-                        <select id="seletor_exemplo_relato" onchange="if(this.value) preencherExemploRelato(this.value)" style="max-width: 360px; padding: 0.55rem 0.9rem; font-size: 0.86rem;">
-                            <option value="">-- Escolha um exemplo de relato para preencher --</option>
-                            <option value="tcc_youtube">Estudante com TCC já divulgado no YouTube/GitHub</option>
-                            <option value="clone_concorrente">Concorrente clonou a função da minha placa aberta</option>
-                            <option value="startup_agrotech">Startup AgroTech dividindo placa aberta e código fechado</option>
-                            <option value="wearable_medico">Dispositivo médico usando Publicação Defensiva</option>
-                        </select>
-                    </div>
-                    <div style="display: flex; flex-wrap: wrap; gap: 0.8rem;">
-                        <button type="button" class="btn-secondary" style="padding: 0.75rem 1.2rem; font-size: 0.88rem;" onclick="interpretarRelatoLivre(false)">
-                            Preencher Formulário com Meu Relato
-                        </button>
-                        <button type="button" class="btn-primary" style="padding: 0.75rem 1.4rem; font-size: 0.88rem;" onclick="interpretarRelatoLivre(true)">
-                            Diagnosticar Meu Relato Agora →
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- MODO 2: OS 4 ESTUDOS DE CASO OFICIAIS DA ENTREGA 1 -->
-            <div class="scenarios-bar">
-                <div class="scenarios-header">
-                    <h3>Opção B • Simular os 4 Estudos de Caso Reais da Disciplina (Entrega 1)</h3>
-                    <p>Clique em um dos 4 casos paradigmáticos estudados pela equipe para carregar os parâmetros técnicos e testar o Motor de Decisão:</p>
-                </div>
-                <div class="scenario-buttons">
-                    <button type="button" class="btn-scenario" onclick="carregarCenario('cenario1_arduino')">
-                        <strong>Caso 1: Ecossistema Aberto &amp; Marca (Arduino LLC vs. SRL)</strong>
-                        <span>Placa aberta sob CC BY-SA / CERN-OHL e firmware LGPL, utilizando o Registro de Marca (Art. 129 LPI) como único vetor de exclusividade.</span>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.85rem; justify-content: flex-end; align-items: center;">
+                    <button type="button" class="btn-secondary" style="padding: 0.78rem 1.25rem; font-size: 0.88rem;" onclick="interpretarRelatoLivre(false)">
+                        1. Extrair Parâmetros Técnicos e Preencher Formulário
                     </button>
-                    <button type="button" class="btn-scenario" onclick="carregarCenario('cenario2_waymo_lidar')">
-                        <strong>Caso 2: Sensor LiDAR Embarcado (Waymo vs. Uber)</strong>
-                        <span>Hardware óptico inédito com processo assistido por software (efeito técnico físico), contrastando Segredo Industrial, Patente (PI) e Publicação Defensiva.</span>
-                    </button>
-                    <button type="button" class="btn-scenario" onclick="carregarCenario('cenario3_intel_amd_chip')">
-                        <strong>Caso 3: Semicondutor e Layout de Silício (Intel vs. AMD)</strong>
-                        <span>Projeto de microarquitetura e máscara tridimensional de chip (Topografia de Circuito Integrado — Lei 11.484/07 e PADIS) com HDL e firmware próprio.</span>
-                    </button>
-                    <button type="button" class="btn-scenario" onclick="carregarCenario('cenario4_conflito_ict')">
-                        <strong>Caso 4: Conflito em Laboratório Universitário (ICT / NIT + GPLv3)</strong>
-                        <span>Projeto acadêmico regido pela Lei de Inovação (Lei 10.973/04) que mistura CERN-OHL-S e biblioteca GPLv3 tentando fechamento comercial.</span>
+                    <button type="button" class="btn-primary" style="padding: 0.78rem 1.45rem; font-size: 0.88rem;" onclick="interpretarRelatoLivre(true)">
+                        2. Analisar Meu Caso e Gerar Correlação Legal Completa →
                     </button>
                 </div>
             </div>
@@ -168,42 +130,42 @@
                     <div class="card-header">
                         <div>
                             <h2>1. Identificação do Projeto, Signos Distintivos (Camada D) e Titularidade</h2>
-                            <p class="card-subtitle">Construtor Técnico Personalizado (mais de 1.500 combinações): edite livremente qualquer parâmetro abaixo para refletir a realidade do seu projeto.</p>
+                            <p class="card-subtitle">Qualificação técnica do titular, vínculo institucional (Art. 88 a 93 da LPI, Art. 4º da Lei 9.609/98 e Lei 10.973/04) e tutela da Marca (Art. 129 da LPI).</p>
                         </div>
                         <span class="step-badge">Etapa 1 de 3</span>
                     </div>
 
                     <div class="grid-2">
                         <div class="form-group">
-                            <label for="nome_projeto">Nome do Projeto e Signo Distintivo / Marca Pretendida (Camada D)</label>
-                            <input type="text" id="nome_projeto" required placeholder="Ex: Arduino / Genuino — Plataforma de Prototipagem Eletrônica">
-                            <span class="form-help">Em projetos de Hardware Aberto, a Marca Registrada (Art. 129 da LPI) é frequentemente o único vetor de exclusividade patrimonial.</span>
+                            <label for="nome_projeto">Nome Técnico do Dispositivo e Marca Pretendida no INPI (Camada D)</label>
+                            <input type="text" id="nome_projeto" required placeholder="Ex: AgroNode LoRa — Controlador Autônomo de Irrigação de Precisão">
+                            <span class="form-help">Correlação: Art. 129 e Art. 189 da Lei nº 9.279/96 (sistema atributivo de exclusividade sobre o signo distintivo).</span>
                         </div>
 
                         <div class="form-group">
-                            <label for="titularidade_tipo">Origem do Desenvolvimento e Titularidade (Art. 88 LPI / Lei 10.973/04)</label>
+                            <label for="titularidade_tipo">Relação Jurídica de Desenvolvimento e Titularidade Originária</label>
                             <select id="titularidade_tipo">
-                                <option value="AUTONOMO_EMPRESA">Desenvolvimento Independente (Projetista Autônomo, Startup ou Empresa Privada)</option>
-                                <option value="PARCERIA_COAUTORIA">Sociedade de Cofundadores / Coautoria sem Acordo Prévio de Marca</option>
-                                <option value="VINCULO_EMPREGATICIO_ICT">Laboratório Universitário (ICT — Gestão via NIT) ou Contrato de Trabalho (Art. 4º Lei 9.609/98)</option>
+                                <option value="AUTONOMO_EMPRESA">Desenvolvimento Independente (Projetista Autônomo, Startup ou Empresa Privada — Art. 6º LPI)</option>
+                                <option value="PARCERIA_COAUTORIA">Sociedade de Cofundadores / Coautoria em Condomínio (Art. 6º, § 3º LPI e Código Civil)</option>
+                                <option value="VINCULO_EMPREGATICIO_ICT">Laboratório Universitário (ICT/NIT — Lei 10.973/04) ou Contrato de Trabalho (Art. 88 LPI e Art. 4º Lei 9.609/98)</option>
                             </select>
-                            <span class="form-help">Avalia titularidade laboral do empregador e a competência do Núcleo de Inovação Tecnológica (NIT) nas ICTs.</span>
+                            <span class="form-help">Define a quem pertence legalmente o direito de requerer a patente e o registro do firmware no Brasil.</span>
                         </div>
                     </div>
 
                     <div class="grid-3" style="margin-top: 0.5rem;">
                         <div class="form-group">
-                            <label for="autor_nome">Projetista(s) / Autor(es) Responsável(is)</label>
-                            <input type="text" id="autor_nome" required placeholder="Nome completo dos criadores">
+                            <label for="autor_nome">Inventor(es) / Projetista(s) Responsável(is)</label>
+                            <input type="text" id="autor_nome" required placeholder="Nome completo dos criadores técnicos">
                         </div>
 
                         <div class="form-group">
-                            <label for="autor_documento">CPF ou CNPJ do Titular / Depositante</label>
+                            <label for="autor_documento">CPF ou CNPJ do Depositante</label>
                             <input type="text" id="autor_documento" required placeholder="00.000.000/0001-00">
                         </div>
 
                         <div class="form-group">
-                            <label for="instituicao_empresa">Organização / Empresa / ICT Vinculada</label>
+                            <label for="instituicao_empresa">Organização / Startup / ICT Vinculada</label>
                             <input type="text" id="instituicao_empresa" required placeholder="Razão social ou instituição">
                         </div>
                     </div>
@@ -211,67 +173,90 @@
                     <div class="grid-2" style="margin-top: 0.5rem;">
                         <div class="form-group">
                             <label for="autor_email">E-mail de Contato Técnico</label>
-                            <input type="email" id="autor_email" required placeholder="contato@instituicao.com.br">
+                            <input type="email" id="autor_email" required placeholder="engenharia@projeto.com.br">
                         </div>
 
                         <div class="form-group">
-                            <label for="resumo_tecnico">Síntese Arquitetural e Funcional do Dispositivo</label>
-                            <textarea id="resumo_tecnico" rows="3" required placeholder="Descreva os módulos mecânicos, circuitos, chips, documentação e funcionalidade técnica..."></textarea>
+                            <label for="resumo_tecnico">Descrição do Problema Técnico e do Funcionamento Físico/Lógico (Base para o Art. 24 e 25 da LPI)</label>
+                            <textarea id="resumo_tecnico" rows="3" required placeholder="Detalhe como o hardware interage com sensores, atuadores e software para resolver um problema técnico concreto..."></textarea>
                         </div>
                     </div>
                 </div>
 
-                <!-- SEÇÃO 2: CAMADAS FÍSICAS E DOCUMENTAIS (CAMADAS A, B, C e F) -->
+                <!-- SEÇÃO 2: OBJETO DA PATENTE, ENGENHARIA IOT E CAMADAS FÍSICAS (A, B, C, F + ANATEL e LGPD) -->
                 <div class="card">
                     <div class="card-header">
                         <div>
-                            <h2>2. Camadas Físicas e Documentais: Documentação (A), Design (B), Chips (C) e Solução Técnica (F)</h2>
-                            <p class="card-subtitle">Análise da fragmentação normativa entre Direito Autoral (Lei 9.610/98), LPI (Lei 9.279/96) e Lei de Semicondutores (Lei 11.484/07).</p>
+                            <h2>2. Objeto da Patente, Arquitetura IoT (RF/Telemetria) e Camadas Físicas (A, B, C e F)</h2>
+                            <p class="card-subtitle">Correlação direta entre o que se pretende patentear (Arts. 8º, 9º, 10 V, 24 e 25 da LPI + Resolução INPI 158/2016) e a regulação técnica (ANATEL e LGPD).</p>
                         </div>
                         <span class="step-badge">Etapa 2 de 3</span>
                     </div>
 
                     <div class="grid-3">
                         <div class="form-group">
-                            <label for="grau_novidade_hardware">Camada F — Solução Técnica e Funcionalidade (Lei 9.279/96)</label>
+                            <label for="grau_novidade_hardware">Camada F — O que Exatamente Você Deseja Patentear no INPI?</label>
                             <select id="grau_novidade_hardware">
-                                <option value="INEDITO_INVENTIVO">Invenção Técnica Inédita ou Processo Assistido por Software com Efeito Físico (Patente PI)</option>
-                                <option value="MELHORIA_FUNCIONAL">Nova Disposição Construtiva Prática com Melhoria Funcional (Modelo de Utilidade - MU)</option>
-                                <option value="MODULOS_PRONTOS_COTS">Circuito Baseado em Componentes Comerciais / Reprodução Funcional sem Ineditismo Patentário</option>
+                                <option value="INEDITO_INVENTIVO">Sistema Físico Inédito ou Processo Embarcado em IoT com Efeito Técnico Físico (Patente de Invenção — Art. 8º LPI e Res. INPI 158/16)</option>
+                                <option value="MELHORIA_FUNCIONAL">Novo Arranjo Construtivo em Placa/Dispositivo com Melhoria Funcional Prática (Modelo de Utilidade — Art. 9º LPI)</option>
+                                <option value="MODULOS_PRONTOS_COTS">Integração de Módulos Comerciais Prontos (ESP32/Arduino COTS) sem Novo Efeito Físico (Vedação Art. 8º/10 V LPI)</option>
                             </select>
-                            <span class="form-help">O Art. 10, V da LPI veda patente ao software "em si", mas admite para processo técnico com efeito físico.</span>
+                            <span class="form-help">Correlaciona seu núcleo inventivo aos requisitos de Novidade, Atividade/Ato Inventivo e Aplicação Industrial.</span>
                         </div>
 
                         <div class="form-group">
-                            <label for="usa_hardware_aberto_terceiros">Camada A — Licenciamento dos Esquemáticos e PCB</label>
+                            <label for="usa_hardware_aberto_terceiros">Camada A — Origem dos Esquemáticos Elétricos e Layout de PCB</label>
                             <select id="usa_hardware_aberto_terceiros">
-                                <option value="NENHUM">Projeto 100% Próprio (Sem derivação de esquemáticos de terceiros)</option>
-                                <option value="CERN_OHL_P">Baseado em Licença Permissiva de Hardware (CERN-OHL-P v2 / TAPR OHL / Solderpad)</option>
-                                <option value="CERN_OHL_W">Baseado em Reciprocidade Fraca / Modular (CERN-OHL-W v2)</option>
-                                <option value="CERN_OHL_S">Baseado em Reciprocidade Forte (CERN-OHL-S v2 ou Creative Commons CC BY-SA 4.0)</option>
+                                <option value="NENHUM">Traçado de PCB e Esquemático 100% Autorais (Sem derivação de projetos abertos)</option>
+                                <option value="CERN_OHL_P">Derivado de Hardware Permissivo (CERN-OHL-P v2 / TAPR OHL / Solderpad)</option>
+                                <option value="CERN_OHL_W">Derivado de Hardware sob Reciprocidade Fraca / Modular (CERN-OHL-W v2)</option>
+                                <option value="CERN_OHL_S">Derivado de Hardware sob Reciprocidade Forte (CERN-OHL-S v2 ou CC BY-SA 4.0)</option>
                             </select>
-                            <span class="form-help">A Lei 9.610/98 protege apenas o desenho gráfico do esquemático, não a função elétrica.</span>
+                            <span class="form-help">A Lei 9.610/98 (Art. 7º, XI) protege o desenho gráfico da PCB, mas não impede engenharia reversa funcional limpa.</span>
                         </div>
 
                         <div class="form-group">
-                            <label for="divulgacao_previa">Situação de Divulgação Pública Prévia (Art. 11 e 12 LPI)</label>
+                            <label for="divulgacao_previa">Exposição Pública Anterior e Estado da Técnica (Art. 11 e 12 LPI)</label>
                             <select id="divulgacao_previa">
-                                <option value="SIGILO_MANTIDO">Mantido em Sigilo / Ainda Não Divulgado ao Público</option>
-                                <option value="DIVULGADO_MENOS_12M">Já Divulgado há Menos de 12 Meses (YouTube, GitHub, TCC, Feira — Período de Graça Art. 12 LPI)</option>
-                                <option value="DIVULGADO_MAIS_12M">Já Divulgado há Mais de 12 Meses (Caiu no Estado da Técnica — Art. 11 LPI)</option>
+                                <option value="SIGILO_MANTIDO">Mantido em Sigilo Absoluto (Novidade Intacta — Art. 11 LPI)</option>
+                                <option value="DIVULGADO_MENOS_12M">Divulgado há Menos de 12 Meses (YouTube, GitHub, TCC, Feira — Período de Graça Art. 12 LPI)</option>
+                                <option value="DIVULGADO_MAIS_12M">Divulgado há Mais de 12 Meses (Já Pertence ao Estado da Técnica — Art. 11 LPI)</option>
                             </select>
-                            <span class="form-help">Avalia se a publicação anterior destruiu a novidade ou se está salva pelo Período de Graça de 12 meses.</span>
+                            <span class="form-help">Verifica se a novidade absoluta exigida pelo Art. 8º/11 da LPI está preservada ou amparada pelo Art. 12.</span>
+                        </div>
+                    </div>
+
+                    <!-- Novos Seletores Reais de Engenharia IoT (Conexão ANATEL Lei 9.472/97 e LGPD Lei 13.709/18) -->
+                    <div class="grid-2" style="margin-top: 0.75rem;">
+                        <div class="form-group">
+                            <label for="conectividade_iot_rf">Arquitetura de Rádio / Conectividade IoT (Conformidade ANATEL — Lei 9.472/97)</label>
+                            <select id="conectividade_iot_rf">
+                                <option value="MODULO_RF_HOMOLOGADO">Utiliza Módulo RF Pré-Homologado na PCB (Ex: ESP32 / LoRa / BLE com selo ANATEL — Res. 715/2019)</option>
+                                <option value="TRANSCEPTOR_RF_CUSTOM">Circuito de Rádio / Antena Própria na PCB (Wi-Fi, LoRaWAN 915MHz, ZigBee, 4G/NB-IoT — Exige Ensaio Completo ANATEL)</option>
+                                <option value="SEM_RF_CABEADO">Sem Emissão de Radiofrequência (Ethernet Cabeado, RS-485/Modbus ou Operação Isolada)</option>
+                            </select>
+                            <span class="form-help">Pelo Art. 162 da Lei Geral de Telecomunicações (Lei 9.472/97), é vedada a comercialização de emissores RF sem homologação.</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="telemetria_dados_iot">Natureza dos Dados Capturados pelos Sensores IoT (LGPD — Lei 13.709/18 e ANVISA)</label>
+                            <select id="telemetria_dados_iot">
+                                <option value="DADOS_AMBIENTAIS_MAQUINA">Telemetria Ambiental, Agrícola ou Industrial (Temperatura, Umidade, Pressão, Corrente — Segredo Art. 195, XI LPI)</option>
+                                <option value="DADOS_PESSOAIS_IOT">Telemetria Residencial, Geolocalização GPS, Voz/Imagem ou Identificação de Usuário (LGPD Art. 6º e Art. 46)</option>
+                                <option value="DADOS_BIOMETRICOS_SAUDE">Sinais Vitais, Biometria ou Dispositivo Médico Vestível / IoMT (LGPD Art. 11 + RDC ANVISA 751/22 e 657/22)</option>
+                            </select>
+                            <span class="form-help">Conecta o tipo de sensor físico às exigências de criptografia embarcada (Privacy by Design) e regulação sanitária.</span>
                         </div>
                     </div>
 
                     <div class="form-group" style="margin-top: 1rem;">
-                        <label>Selecione os Ativos Presentes nas Camadas A, B, C e D do Aparelho:</label>
+                        <label>Selecione os Ativos Físicos e Intelectuais Presentes nas Camadas A, B, C e D do Dispositivo:</label>
                         <div class="checkbox-group">
                             <label class="checkbox-item">
                                 <input type="checkbox" id="possui_pcb_customizada" checked>
                                 <div>
-                                    <strong>Camada A e D — Documentação Técnica (PCB/Esquemático) e Marca Própria</strong>
-                                    <span>Desenhos de esquemático, leiaute de PCB e manuais (tutelados pela Lei 9.610/98) e nome comercial/logotipo (Art. 129 da LPI).</span>
+                                    <strong>Camada A e D — Projeto de Placa (PCB/Esquemático) e Marca Própria</strong>
+                                    <span>Desenhos de esquemático, máscara de PCB e manuais (Art. 7º, XI da Lei 9.610/98) e signo distintivo (Art. 129 da LPI).</span>
                                 </div>
                             </label>
 
@@ -279,15 +264,15 @@
                                 <input type="checkbox" id="possui_topografia_chip">
                                 <div>
                                     <strong>Camada C — Semicondutores e Topografia de Circuito Integrado (Lei 11.484/07)</strong>
-                                    <span>Configuração tridimensional das camadas de microchips/silício (nível máximo de especialização; elegível a incentivos do PADIS).</span>
+                                    <span>Configuração tridimensional de camadas de silício/ASIC (Art. 26 a 55 da Lei 11.484/07 e incentivos fiscais do PADIS).</span>
                                 </div>
                             </label>
 
                             <label class="checkbox-item">
                                 <input type="checkbox" id="possui_design_externo_novo">
                                 <div>
-                                    <strong>Camada B — Design do Produto / Forma Plástica Ornamental (Lei 9.279/96)</strong>
-                                    <span>Aspectos plásticos externos e linhas ornamentais ("a cara do aparelho"), protegidos por Desenho Industrial (10 a 25 anos).</span>
+                                    <strong>Camada B — Design Externo do Produto / Forma Plástica Ornamental (Lei 9.279/96)</strong>
+                                    <span>Gabinete plástico/metálico original impresso em 3D ou injetado, tutelado por Desenho Industrial (Art. 94 a 121 da LPI).</span>
                                 </div>
                             </label>
                         </div>
@@ -306,45 +291,45 @@
 
                     <div class="grid-2">
                         <div class="form-group">
-                            <label for="linguagem_firmware">Linguagem do Firmware / HDL Sintetizável (Camada E)</label>
-                            <input type="text" id="linguagem_firmware" value="C/C++ (Arduino / ESP-IDF / FreeRTOS)" placeholder="Ex: C/C++, Rust, MicroPython, Verilog/VHDL">
-                            <span class="form-help">Equiparado a obra literária pela Lei nº 9.609/98 (proteção de 50 anos, sendo o registro no INPI facultativo para fins probatórios).</span>
+                            <label for="linguagem_firmware">Linguagem do Firmware / Pilha IoT / HDL Sintetizável (Camada E)</label>
+                            <input type="text" id="linguagem_firmware" value="C/C++ (ESP-IDF / FreeRTOS / MQTT)" placeholder="Ex: C/C++, Rust, MicroPython, Verilog/VHDL">
+                            <span class="form-help">Equiparado a obra literária pela Lei nº 9.609/98 (proteção de 50 anos, sendo o registro Hash SHA-512 no INPI probatório).</span>
                         </div>
 
                         <div class="form-group">
-                            <label for="vinculacao_firmware">Modo de Vinculação do Firmware e Reconfiguração Lógica</label>
+                            <label for="vinculacao_firmware">Modo de Vinculação do Firmware na Memória do Hardware</label>
                             <select id="vinculacao_firmware">
-                                <option value="ESTATICA_MONOLITICA">Binário Monolítico Estático na Memória Flash (Microcontrolador / Bare-Metal / RTOS)</option>
-                                <option value="DINAMICA_SO">Linkedição Dinâmica sob Sistema Operacional Embarcado (Linux Embarcado)</option>
+                                <option value="ESTATICA_MONOLITICA">Binário Monolítico Estático na Memória Flash (Microcontrolador Bare-Metal / FreeRTOS / Zephyr)</option>
+                                <option value="DINAMICA_SO">Linkedição Dinâmica sob Sistema Operacional Embarcado (Linux Embarcado / Yocto / Raspberry)</option>
                             </select>
-                            <span class="form-help">Define o alcance das obrigações de relinkagem de bibliotecas LGPL e da cláusula Anti-Tivoização da GPLv3.</span>
+                            <span class="form-help">Define a incidência jurídica da relinkagem estática na LGPL (Seção 4) e da cláusula Anti-Tivoização da GPLv3.</span>
                         </div>
                     </div>
 
                     <div class="grid-2">
                         <div class="form-group">
-                            <label for="licenca_bibliotecas_terceiros">Licenças das Bibliotecas Incorporadas ao Firmware</label>
+                            <label for="licenca_bibliotecas_terceiros">Licenças das Bibliotecas e Drivers Incorporados ao Firmware</label>
                             <select id="licenca_bibliotecas_terceiros">
                                 <option value="MIT_BSD_APACHE">Permissivas (MIT, BSD, Apache 2.0, Solderpad) ou Código 100% Autoral</option>
-                                <option value="LGPL_ESTATICA">GNU LGPL v2.1 / v3 (Copyleft Fraco — Exige arquivos-objeto em linkedição estática)</option>
+                                <option value="LGPL_ESTATICA">GNU LGPL v2.1 / v3 (Copyleft Fraco — Exige arquivos-objeto .o em linkedição estática)</option>
                                 <option value="GPL_V2_V3">GNU GPL v2 / v3 (Copyleft Forte — Exige abertura integral do código derivado)</option>
                             </select>
-                            <span class="form-help">Licenças não são leis, mas negócios jurídicos contratuais apoiados no monopólio do Direito Autoral (Lei 9.610/98).</span>
+                            <span class="form-help">Licenças são negócios jurídicos contratuais amparados no Direito Autoral (Art. 9º da Lei 9.609/98 e Lei 9.610/98).</span>
                         </div>
 
                         <div class="form-group">
                             <label for="modelo_negocio">Estratégia Patrimonial: Exclusividade, Publicação Defensiva ou Hardware Aberto</label>
                             <select id="modelo_negocio">
-                                <option value="COMERCIAL_FECHADO">Exclusividade Industrial / Segredo (Hardware Fechado + Firmware Fechado)</option>
-                                <option value="PUBLICACAO_DEFENSIVA">Publicação Defensiva (Tornar Estado da Técnica — Art. 11 LPI para impedir patentes alheias)</option>
-                                <option value="HIBRIDO_HW_ABERTO_SW_FECHADO">Híbrido: Hardware Aberto (Retendo Marca Exclusiva) + Firmware/Serviços Proprietários</option>
+                                <option value="COMERCIAL_FECHADO">Exclusividade Industrial / Patente + Segredo (Hardware Fechado + Firmware Fechado)</option>
+                                <option value="PUBLICACAO_DEFENSIVA">Publicação Defensiva (Converter em Estado da Técnica — Art. 11 LPI para barrar patentes alheias)</option>
+                                <option value="HIBRIDO_HW_ABERTO_SW_FECHADO">Híbrido: Hardware Aberto (Retendo Marca Exclusiva) + Firmware/Nuvem Proprietários</option>
                                 <option value="OPEN_SOURCE_TOTAL">Ecossistema 100% Aberto (Padrão OSHWA: CERN-OHL / CC BY-SA + GPL/MIT)</option>
                             </select>
-                            <span class="form-help">A Publicação Defensiva destrói o ineditismo para criar um escudo de domínio público, evitando cobrança futura de royalties.</span>
+                            <span class="form-help">Define a combinação entre monopólio temporário no INPI, segredo industrial (Art. 195, XI LPI) e licenciamento livre.</span>
                         </div>
                     </div>
 
-                    <!-- Inspetor Automático de Código/Cabeçalho (Cumpre literalmente "motor que avalia código/circuito") -->
+                    <!-- Inspetor Automático de Código/Cabeçalho -->
                     <div class="form-group" style="margin-top: 1rem;">
                         <label for="trecho_codigo_inspecao">Inspetor Automático de Código-Fonte / Cabeçalho de Licença ou Lista BOM (Opcional)</label>
                         <textarea id="trecho_codigo_inspecao" rows="3" oninput="inspecionarTrechoCodigo()" placeholder="Cole aqui um trecho do seu código-fonte (.c, .h, .ino), arquivo LICENSE ou cabeçalho de esquemático (ex: SPDX-License-Identifier: GPL-3.0, CERN-OHL-S, MIT...) para detecção automática pelo motor..."></textarea>
@@ -363,10 +348,10 @@
 
                     <div style="margin-top: 2.4rem; padding-top: 1.6rem; border-top: 2px dashed var(--border-color); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.2rem;">
                         <span style="font-size: 0.94rem; color: var(--text-secondary);">
-                            O Motor de Decisão processará as 6 camadas da Matriz do Hardware e emitirá o diagnóstico e as minutas.
+                            O Motor de Decisão correlacionará cada componente físico e lógico do seu projeto aos artigos de lei e às diretrizes de exame do INPI.
                         </span>
                         <button type="submit" class="btn-primary">
-                            Processar Diagnóstico Multicamada (A–F) →
+                            Processar Diagnóstico e Correlação Legal →
                         </button>
                     </div>
                 </div>
@@ -384,7 +369,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div>
-                            <span class="inpi-badge">DIAGNÓSTICO MULTICAMADA CONSOLIDADO (MATRIZ A–F)</span>
+                            <span class="inpi-badge">DIAGNÓSTICO TÉCNICO-JURÍDICO E PATENTÁRIO CONSOLIDADO</span>
                             <h2 id="rel-nome-projeto">Projeto Avaliado</h2>
                             <p id="rel-autor-projeto" class="card-subtitle">Autor / Titular</p>
                         </div>
@@ -420,11 +405,36 @@
                         </div>
                     </div>
 
-                    <!-- Mapa Visual das 6 Camadas Tecnológicas (A até F do Trabalho do Grupo) -->
+                    <!-- Mapa Visual das 6 Camadas Tecnológicas (A até F) -->
                     <h3 style="margin-bottom: 1.35rem; font-size: 1.15rem; color: var(--orange-light);">
                         Matriz de Proteção Multicamada do Hardware (Camadas A a F — CF/88 Art. 5º, XXVII a XXIX)
                     </h3>
                     <div class="grid-3" id="mapa-camadas-grid"></div>
+                </div>
+
+                <!-- NOVO PAINEL: CORRELAÇÃO REAL ENTRE O QUE SE DESEJA PATENTEAR, ENGENHARIA IOT E ARTIGOS DE LEI -->
+                <div class="card" id="card-correlacao-patentaria">
+                    <div class="card-header">
+                        <div>
+                            <span class="inpi-badge">CONEXÃO ENGENHARIA DE COMPUTAÇÃO / IOT ↔ SETOR JURÍDICO REAL</span>
+                            <h2>Correlação Direta: O que Patentear no INPI, Classificação CIP e Conformidade Legal (LPI, ANATEL e LGPD)</h2>
+                            <p class="card-subtitle">Análise individualizada de cada componente do seu dispositivo frente aos artigos da Lei nº 9.279/96, Resolução INPI nº 158/2016 (Software com Efeito Técnico), Lei nº 9.472/97 (ANATEL) e Lei nº 13.709/18 (LGPD).</p>
+                        </div>
+                    </div>
+                    <div id="painel-reivindicacao-inpi" style="margin-bottom: 1.5rem;"></div>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Elemento Técnico do Seu Projeto (Hardware / IoT / Software)</th>
+                                    <th>O que Pode (ou Não) ser Protegido / Patenteado</th>
+                                    <th>Dispositivo Legal Exato Correlacionado</th>
+                                    <th>Providência Prática no Setor Jurídico / INPI</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabela-correlacao-engenharia-lei"></tbody>
+                        </table>
+                    </div>
                 </div>
 
                 <!-- Recomendações INPI e Auditoria Dogmática Lado a Lado -->
@@ -442,8 +452,8 @@
                     <div class="card">
                         <div class="card-header">
                             <div>
-                                <h2>Análise Dogmática: Licenças, Copyleft e Estado da Técnica</h2>
-                                <p class="card-subtitle">Fragilidade do copyleft em PCB, Publicação Defensiva (Art. 11/12 LPI), Marca e Titularidade (NIT/ICT).</p>
+                                <h2>Análise Dogmática: Licenças, Copyleft, ANATEL e LGPD</h2>
+                                <p class="card-subtitle">Fragilidade do copyleft em PCB, Publicação Defensiva (Art. 11/12 LPI), Homologação RF e Titularidade (NIT/ICT).</p>
                             </div>
                         </div>
                         <div id="lista-alertas-licenca"></div>

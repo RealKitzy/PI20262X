@@ -35,10 +35,10 @@ function inspecionarTrechoCodigo() {
 
     if (texto.includes('GPL-3') || texto.includes('GPLV3') || texto.includes('GPL-2') || texto.includes('GNU GENERAL PUBLIC')) {
         document.getElementById('licenca_bibliotecas_terceiros').value = 'GPL_V2_V3';
-        detectados.push('GNU GPL (Copyleft Forte no Firmware)');
+        detectados.push('GNU GPL (Copyleft Forte no Firmware — Art. 9º Lei 9.609/98)');
     } else if (texto.includes('LGPL') || texto.includes('LESSER GENERAL PUBLIC')) {
         document.getElementById('licenca_bibliotecas_terceiros').value = 'LGPL_ESTATICA';
-        detectados.push('GNU LGPL (Copyleft Fraco)');
+        detectados.push('GNU LGPL (Copyleft Fraco — Exige arquivos .o em linkedição estática)');
     } else if (texto.includes('MIT') || texto.includes('APACHE') || texto.includes('BSD')) {
         document.getElementById('licenca_bibliotecas_terceiros').value = 'MIT_BSD_APACHE';
         detectados.push('Licença Permissiva de Software (MIT/BSD/Apache)');
@@ -68,21 +68,21 @@ function inspecionarTrechoCodigo() {
 const TABELA_CUSTOS_INPI = {
     PI: {
         sistema: 'e-Patentes (INPI) — Camada F',
-        taxa_desconto: 'R$ 70,00 (Depósito) + R$ 236,00 (Exame)',
-        taxa_cheia: 'R$ 175,00 (Depósito) + R$ 590,00 (Exame)',
-        prazo_medio: 'Vigência de 20 anos (Art. 40 da Lei 9.279/96)'
+        taxa_desconto: 'R$ 70,00 (Depósito) + R$ 236,00 (Exame Técnico)',
+        taxa_cheia: 'R$ 175,00 (Depósito) + R$ 590,00 (Exame Técnico)',
+        prazo_medio: 'Vigência de 20 anos (Art. 8º e Art. 40 da Lei 9.279/96)'
     },
     MU: {
         sistema: 'e-Patentes (INPI) — Camada F',
-        taxa_desconto: 'R$ 70,00 (Depósito) + R$ 152,00 (Exame)',
-        taxa_cheia: 'R$ 175,00 (Depósito) + R$ 380,00 (Exame)',
-        prazo_medio: 'Vigência de 15 anos (Art. 40 da Lei 9.279/96)'
+        taxa_desconto: 'R$ 70,00 (Depósito) + R$ 152,00 (Exame Técnico)',
+        taxa_cheia: 'R$ 175,00 (Depósito) + R$ 380,00 (Exame Técnico)',
+        prazo_medio: 'Vigência de 15 anos (Art. 9º e Art. 40 da Lei 9.279/96)'
     },
     TCI: {
         sistema: 'e-Chip / Topografia (INPI) — Camada C',
         taxa_desconto: 'R$ 166,00 (Pedido de Registro Único)',
         taxa_cheia: 'R$ 415,00 (Pedido de Registro Único)',
-        prazo_medio: 'Vigência de 10 anos a contar do depósito ou 1ª exploração (Lei 11.484/07)'
+        prazo_medio: 'Vigência de 10 anos a contar do depósito ou 1ª exploração (Lei 11.484/07, Art. 35)'
     },
     MARCA: {
         sistema: 'e-Marcas (INPI) — Camada D',
@@ -92,204 +92,43 @@ const TABELA_CUSTOS_INPI = {
     },
     RPC: {
         sistema: 'e-Software (INPI — Hash SHA-512) — Camada E',
-        taxa_desconto: 'R$ 185,00 (Taxa Única — Registro Facultativo)',
-        taxa_cheia: 'R$ 185,00 (Taxa Única — Registro Facultativo)',
-        prazo_medio: 'Vigência de 50 anos a partir de 1º/jan do ano seguinte (Lei 9.609/98)'
+        taxa_desconto: 'R$ 185,00 (Taxa Única — Registro Probatório)',
+        taxa_cheia: 'R$ 185,00 (Taxa Única — Registro Probatório)',
+        prazo_medio: 'Vigência de 50 anos a partir de 1º/jan do ano seguinte (Lei 9.609/98, Art. 2º, § 2º)'
     },
     DI: {
         sistema: 'e-Desenho Industrial (INPI) — Camada B',
         taxa_desconto: 'R$ 94,00 (Depósito Inicial)',
         taxa_cheia: 'R$ 235,00 (Depósito Inicial)',
-        prazo_medio: 'Vigência de 10 anos, renovável até 25 anos (Art. 108 da LPI)'
+        prazo_medio: 'Vigência de 10 anos, renovável até 25 anos (Art. 94 e Art. 108 da LPI)'
     }
 };
 
-// Os 8 Cenários (4 Casos Reais da Entrega 1 + 4 Cenários Práticos de Projetos Cotidianos)
-const CENARIOS_TESTE = {
-    cenario1_arduino: {
-        nome_projeto: 'Plataforma Aberta de Prototipagem Eletrônica (Estudo de Caso Arduino LLC vs. Arduino SRL / Genuino)',
-        autor_nome: 'Ítalo Brito, Luís Aquiles, Giullian Bernard e Antonio Kayky',
-        autor_documento: '12.345.678/0001-90',
-        autor_email: 'observatorio.pi@projetointegrador.edu.br',
-        instituicao_empresa: 'Consórcio Open Hardware Brasil (Padrão OSHWA)',
-        resumo_tecnico: 'Placa controladora aberta com esquemáticos e leiaute de PCB disponibilizados sob licença Creative Commons CC BY-SA 4.0 / CERN-OHL, bootloader e IDE sob GPL/LGPL, mantendo o signo distintivo (Marca e Logotipo) como ativo exclusivo de controle patrimonial.',
-        grau_novidade_hardware: 'MODULOS_PRONTOS_COTS',
-        divulgacao_previa: 'DIVULGADO_MAIS_12M',
-        possui_pcb_customizada: true,
-        possui_topografia_chip: false,
-        possui_design_externo_novo: false,
-        usa_hardware_aberto_terceiros: 'CERN_OHL_S',
-        possui_firmware_proprio: true,
-        linguagem_firmware: 'C/C++ (AVR / ARM Core e Bootloader)',
-        licenca_bibliotecas_terceiros: 'LGPL_ESTATICA',
-        vinculacao_firmware: 'ESTATICA_MONOLITICA',
-        modelo_negocio: 'OPEN_SOURCE_TOTAL',
-        titularidade_tipo: 'PARCERIA_COAUTORIA',
-        trecho_codigo: '/* SPDX-License-Identifier: LGPL-2.1-or-later AND CC-BY-SA-4.0 */\n// Esquemático aberto segundo diretrizes OSHWA; Marca retida sob Art. 129 da Lei 9.279/96.'
-    },
-    cenario2_waymo_lidar: {
-        nome_projeto: 'Sistema LiDAR de Navegação Autônoma (Estudo de Caso Waymo / Google vs. Uber)',
-        autor_nome: 'Equipe de Engenharia Óptica e Sistemas Embarcados',
-        autor_documento: '23.456.789/0001-11',
-        autor_email: 'engenharia.lidar@autonomo.tech.br',
-        instituicao_empresa: 'Divisão de Sensores Fotônicos e Veículos Autônomos',
-        resumo_tecnico: 'Transdutor óptico LiDAR de varredura tridimensional com circuito eletrônico inédito de disparo de pulsos laser e processo técnico funcional assistido por firmware que gera efeito físico mensurável, exigindo decisão entre Patente (PI), Segredo Industrial ou Publicação Defensiva.',
-        grau_novidade_hardware: 'INEDITO_INVENTIVO',
-        divulgacao_previa: 'SIGILO_MANTIDO',
-        possui_pcb_customizada: true,
-        possui_topografia_chip: false,
-        possui_design_externo_novo: true,
-        usa_hardware_aberto_terceiros: 'NENHUM',
-        possui_firmware_proprio: true,
-        linguagem_firmware: 'C/C++ / FPGA HDL (Controle de Tempo Real)',
-        licenca_bibliotecas_terceiros: 'MIT_BSD_APACHE',
-        vinculacao_firmware: 'ESTATICA_MONOLITICA',
-        modelo_negocio: 'COMERCIAL_FECHADO',
-        titularidade_tipo: 'AUTONOMO_EMPRESA',
-        trecho_codigo: '/* PROPRIETARY & CONFIDENTIAL - TRADE SECRET */\n// Controle de feixe LiDAR com efeito técnico físico (Ressalva Art. 10, V da LPI).'
-    },
-    cenario3_intel_amd_chip: {
-        nome_projeto: 'Microarquitetura de Processador e Layout de Silício (Estudo de Caso Intel vs. AMD — Lei 11.484/07)',
-        autor_nome: 'Grupo de Projeto de Circuitos Integrados e Semicondutores',
-        autor_documento: '45.678.901/0001-23',
-        autor_email: 'semicondutores@padis.org.br',
-        instituicao_empresa: 'Centro Nacional de Microeletrônica (Elegível ao PADIS)',
-        resumo_tecnico: 'Desenvolvimento da configuração tridimensional das camadas de máscara de um microchip processador (19 desenhos de layout GDSII e especificações de portas lógicas em silício), acompanhado de microcódigo em HDL/C e placa de validação.',
-        grau_novidade_hardware: 'INEDITO_INVENTIVO',
-        divulgacao_previa: 'SIGILO_MANTIDO',
-        possui_pcb_customizada: true,
-        possui_topografia_chip: true,
-        possui_design_externo_novo: false,
-        usa_hardware_aberto_terceiros: 'CERN_OHL_P',
-        possui_firmware_proprio: true,
-        linguagem_firmware: 'SystemVerilog / VHDL / C (Microcódigo)',
-        licenca_bibliotecas_terceiros: 'MIT_BSD_APACHE',
-        vinculacao_firmware: 'ESTATICA_MONOLITICA',
-        modelo_negocio: 'COMERCIAL_FECHADO',
-        titularidade_tipo: 'AUTONOMO_EMPRESA',
-        trecho_codigo: '/* SPDX-License-Identifier: Solderpad-2.1 */\n// Topografia de Circuito Integrado protegida pela Lei nº 11.484/2007 (Art. 26 a 55).'
-    },
-    cenario4_conflito_ict: {
-        nome_projeto: 'Dispositivo Biomédico Universitário com Conflito de Licenças (Marco Legal CT&I — Lei 10.973/04)',
-        autor_nome: 'Pesquisadores do Laboratório de Sistemas Embarcados',
-        autor_documento: '98.765.432/0001-55',
-        autor_email: 'nit@universidade.edu.br',
-        instituicao_empresa: 'Instituto Científico, Tecnológico e de Inovação (ICT / Gestão NIT)',
-        resumo_tecnico: 'Equipamento de monitoramento desenvolvido em laboratório universitário a partir de esquemático aberto CERN-OHL-S v2 e biblioteca de processamento de sinais sob licença GNU GPLv3, no qual se pretende bloquear o código e explorar comercialmente sem abertura dos derivados.',
-        grau_novidade_hardware: 'MELHORIA_FUNCIONAL',
-        divulgacao_previa: 'SIGILO_MANTIDO',
-        possui_pcb_customizada: true,
-        possui_topografia_chip: false,
-        possui_design_externo_novo: true,
-        usa_hardware_aberto_terceiros: 'CERN_OHL_S',
-        possui_firmware_proprio: true,
-        linguagem_firmware: 'C/C++ (FreeRTOS)',
-        licenca_bibliotecas_terceiros: 'GPL_V2_V3',
-        vinculacao_firmware: 'ESTATICA_MONOLITICA',
-        modelo_negocio: 'COMERCIAL_FECHADO',
-        titularidade_tipo: 'VINCULO_EMPREGATICIO_ICT',
-        trecho_codigo: '/* SPDX-License-Identifier: GPL-3.0-only AND CERN-OHL-S-2.0 */\n#include <gpl_dsp_filter.h>'
-    },
-    cenario5_tcc_youtube: {
-        nome_projeto: 'Robô Autônomo de Inspeção Solar — Protótipo de TCC Divulgado no YouTube e GitHub',
-        autor_nome: 'Graduandos do Último Semestre e Professor Orientador',
-        autor_documento: '34.567.890/0001-44',
-        autor_email: 'tcc.robotica@universidade.edu.br',
-        instituicao_empresa: 'Laboratório de Robótica Universitária (ICT / NIT)',
-        resumo_tecnico: 'Robô móvel com mecanismo magnético de limpeza de painéis solares e placa PCB própria desenvolvida no TCC. O grupo publicou um vídeo demonstrativo no YouTube e o repositório preliminar há 4 meses em mostra acadêmica, e agora pretende depositar patente antes de perder a novidade.',
-        grau_novidade_hardware: 'INEDITO_INVENTIVO',
-        divulgacao_previa: 'DIVULGADO_MENOS_12M',
-        possui_pcb_customizada: true,
-        possui_topografia_chip: false,
-        possui_design_externo_novo: true,
-        usa_hardware_aberto_terceiros: 'CERN_OHL_P',
-        possui_firmware_proprio: true,
-        linguagem_firmware: 'C/C++ e Python (ROS2 / ESP32)',
-        licenca_bibliotecas_terceiros: 'MIT_BSD_APACHE',
-        vinculacao_firmware: 'ESTATICA_MONOLITICA',
-        modelo_negocio: 'COMERCIAL_FECHADO',
-        titularidade_tipo: 'VINCULO_EMPREGATICIO_ICT',
-        trecho_codigo: '/* SPDX-License-Identifier: Apache-2.0 */\n// Protótipo divulgado há 4 meses em banca pública — Aciona Período de Graça (Art. 12 da LPI).'
-    },
-    cenario6_startup_agrotech: {
-        nome_projeto: 'AgroSense LoRaWAN — Estação de Telemetria de Solo em Modelo Híbrido',
-        autor_nome: 'Cofundadores da Startup AgroSense IoT',
-        autor_documento: '56.789.012/0001-66',
-        autor_email: 'juridico@agrosense.io',
-        instituicao_empresa: 'AgroSense Telemetria Agrícola Ltda.',
-        resumo_tecnico: 'Estação de campo com nova disposição mecânica de sonda capacitiva (melhoria funcional), na qual os esquemáticos da placa-base são abertos sob CERN-OHL-W v2 para reduzir custos de manutenção rural, mantendo o firmware de calibração e a Marca AgroSense sob controle exclusivo.',
-        grau_novidade_hardware: 'MELHORIA_FUNCIONAL',
-        divulgacao_previa: 'SIGILO_MANTIDO',
-        possui_pcb_customizada: true,
-        possui_topografia_chip: false,
-        possui_design_externo_novo: true,
-        usa_hardware_aberto_terceiros: 'CERN_OHL_W',
-        possui_firmware_proprio: true,
-        linguagem_firmware: 'C/C++ / Rust (STM32 LoRaWAN)',
-        licenca_bibliotecas_terceiros: 'MIT_BSD_APACHE',
-        vinculacao_firmware: 'ESTATICA_MONOLITICA',
-        modelo_negocio: 'HIBRIDO_HW_ABERTO_SW_FECHADO',
-        titularidade_tipo: 'PARCERIA_COAUTORIA',
-        trecho_codigo: '/* SPDX-License-Identifier: CERN-OHL-W-2.0 AND LicenseRef-Proprietary-Firmware */\n// Placa modular aberta + Firmware proprietário de calibração.'
-    },
-    cenario7_wearable_hospitalar: {
-        nome_projeto: 'Pulseira Oxímetro Hospitalar de Baixo Custo com Publicação Defensiva',
-        autor_nome: 'Consórcio de Engenharia Clínica Aberta',
-        autor_documento: '67.890.123/0001-77',
-        autor_email: 'contato@engenhariaclinica.org.br',
-        instituicao_empresa: 'Rede Brasileira de Dispositivos Médicos Acessíveis',
-        resumo_tecnico: 'Dispositivo vestível de monitoramento multiparamétrico com gabinete anatômico original (Desenho Industrial). O grupo optou por publicar integralmente o circuito óptico para convertê-lo em Estado da Técnica (Art. 11 da LPI) e impedir que grandes corporações patenteiem a solução.',
-        grau_novidade_hardware: 'INEDITO_INVENTIVO',
-        divulgacao_previa: 'DIVULGADO_MENOS_12M',
-        possui_pcb_customizada: true,
-        possui_topografia_chip: false,
-        possui_design_externo_novo: true,
-        usa_hardware_aberto_terceiros: 'CERN_OHL_P',
-        possui_firmware_proprio: true,
-        linguagem_firmware: 'C/C++ (Zephyr RTOS / ARM Cortex-M4)',
-        licenca_bibliotecas_terceiros: 'MIT_BSD_APACHE',
-        vinculacao_firmware: 'ESTATICA_MONOLITICA',
-        modelo_negocio: 'PUBLICACAO_DEFENSIVA',
-        titularidade_tipo: 'AUTONOMO_EMPRESA',
-        trecho_codigo: '/* SPDX-License-Identifier: MIT AND CERN-OHL-P-2.0 */\n// Publicação Defensiva intencional para constituição de Estado da Técnica (Art. 11 da LPI).'
-    },
-    cenario8_console_reversa: {
-        nome_projeto: 'Console Portátil FPGA & Recriação Funcional (Inspirado no Caso ReStory e Engenharia Reversa)',
-        autor_nome: 'Estúdio Independente de Hardware Retro-Gamer',
-        autor_documento: '78.901.234/0001-88',
-        autor_email: 'hardware@retrolab.com.br',
-        instituicao_empresa: 'RetroLab Sistemas Digitais Ltda.',
-        resumo_tecnico: 'Placa compatível desenvolvida por engenharia reversa limpa (clean-room) a partir da função elétrica de um hardware clássico sem copiar o desenho gráfico da PCB original, com gabinete plástico autoral inédito (evitando violação de trade dress e Desenho Industrial de terceiros).',
-        grau_novidade_hardware: 'MODULOS_PRONTOS_COTS',
-        divulgacao_previa: 'SIGILO_MANTIDO',
-        possui_pcb_customizada: true,
-        possui_topografia_chip: false,
-        possui_design_externo_novo: true,
-        usa_hardware_aberto_terceiros: 'NENHUM',
-        possui_firmware_proprio: true,
-        linguagem_firmware: 'Verilog / VHDL e C ( Núcleos FPGA )',
-        licenca_bibliotecas_terceiros: 'LGPL_ESTATICA',
-        vinculacao_firmware: 'ESTATICA_MONOLITICA',
-        modelo_negocio: 'COMERCIAL_FECHADO',
-        titularidade_tipo: 'AUTONOMO_EMPRESA',
-        trecho_codigo: '/* Clean-Room Functional Reimplementation */\n// A Lei 9.610/98 protege o desenho gráfico do esquemático, não a função elétrica.'
-    }
+// Caso base inicial (IoT + Hardware + Software Embarcado real) para demonstração imediata
+const CASO_BASE_INICIAL = {
+    relato_livre: 'Desenvolvemos um sistema IoT de telemetria e controle autônomo de irrigação agrícola (AgroNode LoRaWAN) com placa PCB de 4 camadas desenhada no KiCad, sonda capacitiva multifrequência acoplada ao solo, microcontrolador ESP32/STM32 operando com módulo LoRa 915MHz e gabinete externo impermeável impresso em 3D. O firmware embarcado em C/C++ (FreeRTOS) processa a impedância dielétrica do solo em tempo real e aciona válvulas solenoides físicas economizando 38% de água. Queremos patentear o sistema sensor-atuador no INPI sem esbarrar na vedação de software puro (Art. 10, V da LPI), proteger a marca e cumprir as exigências da ANATEL e da LGPD.',
+    nome_projeto: 'AgroNode LoRaWAN — Sistema Embarcado de Telemetria e Irrigação Autônoma',
+    autor_nome: 'Antonio Kayky, Giullian Bernard, Ítalo Brito e Luís Aquiles',
+    autor_documento: '12.345.678/0001-90',
+    autor_email: 'engenharia.iot@observatoriopi.com.br',
+    instituicao_empresa: 'Laboratório de Sistemas Embarcados & IoT (Startup / ICT)',
+    resumo_tecnico: 'Dispositivo embarcado IoT compreendendo sonda capacitiva multifrequência em PCB multicamada, unidade microcontroladora (ESP32/STM32) com transceptor LoRaWAN 915MHz e malha fechada de acionamento de válvulas hidráulicas assistida por firmware em C/C++, gerando efeito técnico físico mensurável de redução de consumo hídrico.',
+    grau_novidade_hardware: 'INEDITO_INVENTIVO',
+    divulgacao_previa: 'SIGILO_MANTIDO',
+    conectividade_iot_rf: 'MODULO_RF_HOMOLOGADO',
+    telemetria_dados_iot: 'DADOS_AMBIENTAIS_MAQUINA',
+    possui_pcb_customizada: true,
+    possui_topografia_chip: false,
+    possui_design_externo_novo: true,
+    usa_hardware_aberto_terceiros: 'NENHUM',
+    possui_firmware_proprio: true,
+    linguagem_firmware: 'C/C++ (ESP-IDF / FreeRTOS / LoRaWAN / MQTT)',
+    licenca_bibliotecas_terceiros: 'MIT_BSD_APACHE',
+    vinculacao_firmware: 'ESTATICA_MONOLITICA',
+    modelo_negocio: 'HIBRIDO_HW_ABERTO_SW_FECHADO',
+    titularidade_tipo: 'PARCERIA_COAUTORIA',
+    trecho_codigo: '/* SPDX-License-Identifier: MIT */\n// Firmware de controle físico em malha fechada (Enquadramento: Resolução INPI/PR nº 158/2016).'
 };
-
-// Exemplos de relatos em linguagem natural para o usuário testar ou editar livremente
-const EXEMPLOS_RELATO_LIVRE = {
-    tcc_youtube: 'Estou no último semestre da faculdade e desenvolvi no laboratório (TCC) um robô alimentador automático com uma placa PCB que eu mesmo desenhei no KiCad e uma carcaça impressa em 3D. Usei código em C++ com uma biblioteca GPL que achei na internet. Apresentei o protótipo numa feira e postei no YouTube há 3 meses, mas agora quero abrir uma empresa e vender o produto fechado sem liberar meu código.',
-    clone_concorrente: 'Criei uma placa controladora para automação residencial e liberei o esquemático sob licença Creative Commons CC BY-SA para a comunidade ajudar, mas um concorrente baixou os arquivos, redesenhou a placa do zero com a mesma função elétrica e está vendendo no mercado usando um nome muito parecido com a minha marca.',
-    startup_agrotech: 'Eu e dois sócios criamos uma startup de agronegócio e desenvolvemos um sensor inédito de umidade do solo assistido por firmware que economiza 40% de água na irrigação. Queremos abrir os esquemáticos da placa-mãe para facilitar reparos no campo, mas queremos proteger a invenção do sensor, o nosso logotipo e manter o firmware fechado.',
-    wearable_medico: 'Nossa equipe desenvolveu uma pulseira inteligente para monitorar batimentos cardíacos com formato anatômico exclusivo e um microchip ASIC dedicado em silício. Não temos verba para patentear tudo em vários países, então queremos publicar o funcionamento elétrico para nenhum concorrente patentear e cobrar royalties da gente, mas garantindo o registro do design externo e da topografia do chip no Brasil.'
-};
-
-function preencherExemploRelato(chave) {
-    const campo = document.getElementById('relato_livre_usuario');
-    if (!campo || !EXEMPLOS_RELATO_LIVRE[chave]) return;
-    campo.value = EXEMPLOS_RELATO_LIVRE[chave];
-    interpretarRelatoLivre(false);
-}
 
 function limparFormularioCompleto() {
     const campoRelato = document.getElementById('relato_livre_usuario');
@@ -307,12 +146,18 @@ function limparFormularioCompleto() {
     if (document.getElementById('divulgacao_previa')) {
         document.getElementById('divulgacao_previa').value = 'SIGILO_MANTIDO';
     }
+    if (document.getElementById('conectividade_iot_rf')) {
+        document.getElementById('conectividade_iot_rf').value = 'MODULO_RF_HOMOLOGADO';
+    }
+    if (document.getElementById('telemetria_dados_iot')) {
+        document.getElementById('telemetria_dados_iot').value = 'DADOS_AMBIENTAIS_MAQUINA';
+    }
     document.getElementById('possui_pcb_customizada').checked = true;
     document.getElementById('possui_topografia_chip').checked = false;
     document.getElementById('possui_design_externo_novo').checked = false;
     document.getElementById('usa_hardware_aberto_terceiros').value = 'NENHUM';
     document.getElementById('possui_firmware_proprio').checked = true;
-    document.getElementById('linguagem_firmware').value = 'C/C++';
+    document.getElementById('linguagem_firmware').value = 'C/C++ (FreeRTOS / Embarcado)';
     document.getElementById('licenca_bibliotecas_terceiros').value = 'MIT_BSD_APACHE';
     document.getElementById('vinculacao_firmware').value = 'ESTATICA_MONOLITICA';
     document.getElementById('modelo_negocio').value = 'COMERCIAL_FECHADO';
@@ -325,13 +170,13 @@ function limparFormularioCompleto() {
     }
 
     atualizarBalaoMascote(
-        'MODO DE CRIAÇÃO LIVRE ATIVADO',
-        'Formulário limpo: monte um projeto 100% personalizado ou descreva seu caso.',
-        'Você tem liberdade total: escreva sua situação com suas próprias palavras na caixa de relato livre ou preencha os seletores das Etapas 1, 2 e 3 para testar qualquer combinação de hardware, firmware e estratégia no INPI.'
+        'ANÁLISE PERSONALIZADA • DESCREVA SEU PROJETO DE HARDWARE E IOT',
+        'Relate seu dispositivo com suas próprias palavras para gerarmos o enquadramento jurídico e patentário.',
+        'Escreva na caixa de relato livre qual problema técnico seu hardware/IoT resolve, quais sensores, placas e protocolos de comunicação você utiliza e o que deseja patentear. O motor correlacionará cada elemento aos artigos da <strong>Lei nº 9.279/96 (LPI)</strong>, <strong>Resolução INPI nº 158/2016</strong>, <strong>Lei de Software (9.609/98)</strong>, <strong>ANATEL (Lei 9.472/97)</strong> e <strong>LGPD (Lei 13.709/18)</strong>.'
     );
 }
 
-// Interpretador de Linguagem Natural: lê o relato livre do usuário, identifica camadas/leis e preenche o formulário
+// Interpretador de Linguagem Natural: lê o caso descrito pelo usuário e correlaciona IoT, Hardware, Patente e Leis
 function interpretarRelatoLivre(gerarDireto) {
     const campo = document.getElementById('relato_livre_usuario');
     const feedback = document.getElementById('feedback-relato-livre');
@@ -339,7 +184,7 @@ function interpretarRelatoLivre(gerarDireto) {
 
     const textoOriginal = campo.value.trim();
     if (!textoOriginal) {
-        alert('Por favor, escreva um breve relato do seu caso ou clique em um dos botões de exemplo acima.');
+        alert('Por favor, descreva seu projeto de hardware/IoT e o que você deseja patentear ou proteger no campo de texto.');
         campo.focus();
         return;
     }
@@ -347,102 +192,135 @@ function interpretarRelatoLivre(gerarDireto) {
     const t = textoOriginal.toLowerCase();
     const achados = [];
 
-    // 1. Identificar Titularidade / Vínculo (ICT, Sócios ou Autônomo)
+    // 1. Identificar Titularidade / Vínculo (Art. 6º, 88-93 LPI, Art. 4º Lei 9.609/98 e Lei 10.973/04)
     let titularidade = 'AUTONOMO_EMPRESA';
-    let instituicao = 'Projeto Independente / Empresa Privada';
-    if (/(faculdade|universidade|tcc|laborat[oó]rio|ict|inicia[cç][aã]o cient[ií]fica|orientador|professor|mestrado|instituto federal)/i.test(t)) {
+    let instituicao = 'Desenvolvimento Independente / Startup de Hardware & IoT';
+    if (/(faculdade|universidade|tcc|laborat[oó]rio|ict|inicia[cç][aã]o cient[ií]fica|orientador|professor|mestrado|instituto federal|academic)/i.test(t)) {
         titularidade = 'VINCULO_EMPREGATICIO_ICT';
         instituicao = 'Universidade / ICT (Gestão via Núcleo de Inovação Tecnológica — NIT)';
-        achados.push('<strong>Vínculo Universitário / ICT detectado:</strong> incidência da Lei de Inovação (Lei 10.973/04) e avaliação obrigatória pelo NIT');
-    } else if (/(s[oó]cio|cofundador|amigo|parceria|dupla|equipe|dividir)/i.test(t)) {
+        achados.push('<strong>Titularidade Acadêmica / ICT (Lei nº 10.973/2004, Art. 16 e Art. 88 da LPI):</strong> projetos desenvolvidos utilizando infraestrutura universitária exigem comunicação formal ao NIT para definição de cotitularidade e depósito no INPI.');
+    } else if (/(s[oó]cio|cofundador|amigo|parceria|dupla|equipe|dividir|grupo|nossa equipe|desenvolvemos)/i.test(t)) {
         titularidade = 'PARCERIA_COAUTORIA';
-        instituicao = 'Sociedade de Cofundadores / Parceria Técnica';
-        achados.push('<strong>Coautoria / Sociedade detectada:</strong> alerta preventivo contra disputa societária de Marca (lição do caso Arduino LLC vs. SRL)');
+        instituicao = 'Sociedade de Cofundadores / Cotitularidade Técnica';
+        achados.push('<strong>Cotitularidade Societária (Art. 6º, § 3º e Art. 129 da LPI):</strong> recomendada formalização imediata de Cessão/Condomínio Patrimonial e unificação do registro de Marca para evitar cisão societária (precedente Arduino LLC vs. Arduino SRL).');
     }
 
-    // 2. Identificar Divulgação Pública Prévia (Período de Graça Art. 12 LPI vs. Estado da Técnica Art. 11 LPI)
+    // 2. Identificar Divulgação Pública Prévia (Art. 11 Estado da Técnica vs. Art. 12 Período de Graça da LPI)
     let divulgacao = 'SIGILO_MANTIDO';
-    if (/(mais de 1 ano|mais de um ano|h[aá] 2 anos|h[aá] dois anos|antigo|dom[ií]nio p[uú]blico)/i.test(t)) {
+    if (/(mais de 1 ano|mais de um ano|h[aá] 2 anos|h[aá] dois anos|h[aá] 18 meses|dom[ií]nio p[uú]blico)/i.test(t)) {
         divulgacao = 'DIVULGADO_MAIS_12M';
-        achados.push('<strong>Divulgação superior a 12 meses:</strong> perda da novidade patentária (Art. 11 da LPI — foco deve migrar para Marca e Software)');
-    } else if (/(youtube|github|feira|congresso|mostra|postei|publiquei|divulguei|apresentei|artigo|banca|vídeo|video|m[eê]s|meses)/i.test(t)) {
+        achados.push('<strong>Perda de Novidade Absoluta (Art. 11 da Lei nº 9.279/96):</strong> divulgação anterior a 12 meses impede concessão de Patente (PI/MU), convertendo a arquitetura em Estado da Técnica (proteção deve focar em Marca, Desenho Industrial residual e Software).');
+    } else if (/(youtube|github|feira|congresso|mostra|postei|publiquei|divulguei|apresentei|artigo|banca|v[ií]deo|m[eê]s|meses)/i.test(t)) {
         divulgacao = 'DIVULGADO_MENOS_12M';
-        achados.push('<strong>Divulgação pública recente (YouTube/GitHub/Feira):</strong> acionamento do Período de Graça de 12 meses (Art. 12 da LPI)');
+        achados.push('<strong>Incidência do Período de Graça de 12 Meses (Art. 12 da Lei nº 9.279/96):</strong> a divulgação feita pelo próprio inventor há menos de 365 dias não prejudica a novidade, desde que o pedido de patente seja depositado no INPI antes de completar 1 ano.');
+    } else {
+        achados.push('<strong>Sigilo Técnico Preservado (Art. 11 da LPI e Art. 195, XI da LPI):</strong> requisito de novidade absoluta intacto para depósito imediato no INPI.');
     }
 
-    // 3. Identificar Camadas A, B, C, D, E e F no texto do usuário
-    const temPcb = /(pcb|placa|esquem[aá]tico|kicad|altium|gerber|circuito|eletr[oô]nic)/i.test(t) || true;
-    const temChip = /(chip|semicondutor|sil[ií]cio|asic|topografia|m[aá]scara|padis|vlsi|fpga)/i.test(t);
-    const temDesign = /(carca[cç]a|gabinete|3d|design|est[eé]tic|pl[aá]stic|formato|anat[oô]mic|pulseira|caixa|ornamental)/i.test(t);
+    // 3. Identificar Conectividade IoT / Radiofrequência e Regulação ANATEL (Lei 9.472/97 Art. 162 e Res. 715/2019)
+    let conectividadeRf = 'MODULO_RF_HOMOLOGADO';
+    if (/(sem r[aá]dio|cabeado|ethernet|rs-485|rs485|modbus|canbus|usb|isolado|offline)/i.test(t) && !/(wifi|wi-fi|lora|lorawan|bluetooth|ble|zigbee|rf|4g|5g|nb-iot)/i.test(t)) {
+        conectividadeRf = 'SEM_RF_CABEADO';
+        achados.push('<strong>Comunicação Cabeada / Sem Radiofrequência:</strong> dispensa homologação de espectro de rádio na ANATEL, mantendo exigências de compatibilidade eletromagnética.');
+    } else if (/(antena pr[oó]pria|transceptor pr[oó]prio|r[aá]dio customizado|rf discreto|amplificador rf|sdr|circuito de r[aá]dio na pcb)/i.test(t)) {
+        conectividadeRf = 'TRANSCEPTOR_RF_CUSTOM';
+        achados.push('<strong>Transceptor de Rádio Customizado (Lei nº 9.472/97, Art. 162 e Res. ANATEL nº 715/2019):</strong> exige ensaios laboratoriais completos em OCD credenciado (Atos ANATEL nº 14448/2017) antes da comercialização no Brasil.');
+    } else if (/(esp32|esp8266|lora|lorawan|915\s*mhz|wifi|wi-fi|bluetooth|ble|zigbee|nrf52|mqtt|iot|4g|nb-iot|sem fio|wireless)/i.test(t)) {
+        conectividadeRf = 'MODULO_RF_HOMOLOGADO';
+        achados.push('<strong>Conectividade IoT em Radiofrequência Detectada (Lei nº 9.472/97, Art. 162 e Res. ANATEL nº 715/2019):</strong> o uso de módulos pré-homologados (ex: ESP32/LoRa) simplifica a certificação, exigindo identificação do código ANATEL no produto final.');
+    }
+
+    // 4. Identificar Natureza dos Dados IoT / Sensores e Conformidade LGPD (Lei 13.709/18) + ANVISA
+    let telemetriaIot = 'DADOS_AMBIENTAIS_MAQUINA';
+    if (/(batimento|card[ií]ac|ox[ií]metro|ecg|sinais vitais|m[eé]dic|hospital|sa[uú]de|paciente|biom[eé]tric|vest[ií]vel|wearable|press[aã]o arterial|glicose)/i.test(t)) {
+        telemetriaIot = 'DADOS_BIOMETRICOS_SAUDE';
+        achados.push('<strong>Dispositivo IoT Biomédico / Dados Sensíveis (LGPD Lei nº 13.709/18, Art. 11 e Art. 46 + ANVISA RDC 751/2022 e RDC 657/2022):</strong> exige criptografia fim-a-fim da telemetria de saúde, consentimento específico ou tutela da saúde e enquadramento sanitário como Dispositivo Médico / SaMD.');
+    } else if (/(c[aâ]mera|voz|microfone|gps|localiza[cç][aã]o|residencial|casa inteligente|smart home|usu[aá]rio|consumidor|rosto|facial|presen[cç]a humana|cpf|pessoal)/i.test(t)) {
+        telemetriaIot = 'DADOS_PESSOAIS_IOT';
+        achados.push('<strong>Coleta de Dados Pessoais em Borda IoT (LGPD Lei nº 13.709/18, Arts. 6º, 7º e 46):</strong> impõe arquitetura <em>Privacy by Design</em> no firmware (autenticação mútua, TLS/AES e minimização da coleta na borda).');
+    } else {
+        telemetriaIot = 'DADOS_AMBIENTAIS_MAQUINA';
+        achados.push('<strong>Telemetria Física / Ambiental / Industrial (Art. 195, XI da LPI):</strong> dados não pessoais de sensores de campo (umidade, temperatura, vibração, tensão) são tutelados como Segredo de Negócio e Know-How operacional.');
+    }
+
+    // 5. Identificar Camadas Físicas (A, B, C) e Linguagem Embarcada (Camada E)
+    const temPcb = /(pcb|placa|esquem[aá]tico|kicad|altium|gerber|circuito|eletr[oô]nic|sonda|sensor|malha)/i.test(t) || true;
+    const temChip = /(chip|semicondutor|sil[ií]cio|asic|topografia|m[aá]scara|padis|vlsi|gdsii|cmos)/i.test(t);
+    const temDesign = /(carca[cç]a|gabinete|3d|design|est[eé]tic|pl[aá]stic|formato|anat[oô]mic|pulseira|caixa|ornamental|inv[oó]lucro|imperme[aá]vel)/i.test(t);
     const temFirmware = !/(sem software|sem firmware|apenas mec[aâ]nico)/i.test(t);
 
-    if (temChip) achados.push('<strong>Camada C (Semicondutores):</strong> detectada menção a chip/silício/FPGA (Lei nº 11.484/2007 e PADIS)');
-    if (temDesign) achados.push('<strong>Camada B (Design Externo):</strong> detectada menção a gabinete/carcaça 3D/forma plástica (Desenho Industrial — LPI)');
+    if (temChip) achados.push('<strong>Camada C — Semicondutores / Topografia de Chip (Lei nº 11.484/2007, Arts. 26 a 55):</strong> proteção específica de 10 anos para o leiaute tridimensional de máscaras de silício e elegibilidade fiscal ao PADIS.');
+    if (temDesign) achados.push('<strong>Camada B — Design Externo / Gabinete (Lei nº 9.279/96, Arts. 94 a 121):</strong> forma plástica ornamental externa protegível por Registro de Desenho Industrial no INPI (até 25 anos).');
 
-    // 4. Solução Técnica (Camada F)
-    let novidade = 'MODULOS_PRONTOS_COTS';
-    if (/(in[eé]dit|inven[cç][aã]o|novo sensor|efeito f[ií]sico|economiza|[oó]ptic|lidar|patente|inovador)/i.test(t)) {
-        novidade = 'INEDITO_INVENTIVO';
-        achados.push('<strong>Camada F (Solução Técnica Inédita):</strong> potencial para Patente de Invenção (PI) ou processo técnico com efeito físico (ressalva do Art. 10, V LPI)');
-    } else if (/(melhoria|ergon[oô]mic|disposi[cç][aã]o|adapta[cç][aã]o|pr[aá]tic|autom[aá]tic|rob[oô]|esta[cç][aã]o)/i.test(t)) {
+    // Extrair linguagem e plataforma embarcada mencionada pelo usuário
+    const linguagensDetectadas = [];
+    if (/(c\+\+|cpp|\bc\b|ino|arduino|esp-idf|stm32|freertos|zephyr)/i.test(t)) linguagensDetectadas.push('C/C++ Embarcado');
+    if (/(python|micropython|circuitpython)/i.test(t)) linguagensDetectadas.push('Python / MicroPython');
+    if (/(rust)/i.test(t)) linguagensDetectadas.push('Rust Embarcado');
+    if (/(verilog|vhdl|systemverilog|fpga|hdl)/i.test(t)) linguagensDetectadas.push('HDL (Verilog/VHDL)');
+    if (/(mqtt|lorawan|coap|ble|http)/i.test(t)) linguagensDetectadas.push('Pilha IoT (MQTT/LoRaWAN)');
+    const linguagemFinal = linguagensDetectadas.length > 0 ? linguagensDetectadas.join(' + ') : 'C/C++ (Firmware de Controle e Telemetria IoT)';
+
+    // 6. Correlacionar o Objeto da Patente (Camada F — Arts. 8º, 9º, 10 V da LPI e Resolução INPI nº 158/2016)
+    let novidade = 'INEDITO_INVENTIVO';
+    if (/(m[oó]dulos prontos|apenas juntei|protoboard|jumpers|sem altera[cç][aã]o f[ií]sica|apenas aplicativo|s[oó] software)/i.test(t) && !/(in[eé]dit|novo circuito|efeito f[ií]sico|economiza|sonda|atuador|v[aá]lvula|malha fechada)/i.test(t)) {
+        novidade = 'MODULOS_PRONTOS_COTS';
+        achados.push('<strong>Impedimento Patentário (Art. 8º e Art. 10, V da LPI):</strong> a mera agregação de módulos comerciais (COTS) ou software puro sem novo efeito técnico físico não atende ao requisito de atividade inventiva. Proteção redirecionada para Registro de Marca (Art. 129 LPI) e Direito Autoral de Software (Lei 9.609/98).');
+    } else if (/(disposi[cç][aã]o construtiva|melhoria funcional|adapta[cç][aã]o mec[aâ]nica|ergonomia|modelo de utilidade|arranjo f[ií]sico)/i.test(t) && !/(in[eé]dit|processo|algoritmo embarcado|efeito f[ií]sico|lidar|[oó]ptic)/i.test(t)) {
         novidade = 'MELHORIA_FUNCIONAL';
-        achados.push('<strong>Camada F (Melhoria Funcional):</strong> potencial para Modelo de Utilidade (MU — Art. 9º da LPI)');
+        achados.push('<strong>Enquadramento em Modelo de Utilidade (Art. 9º da Lei nº 9.279/96):</strong> objeto de uso prático com nova forma ou disposição construtiva na PCB/equipamento que resulta em melhoria funcional no uso ou fabricação (vigência de 15 anos).');
     } else {
-        achados.push('<strong>Camada F (Circuito de Módulos/Reprodução Funcional):</strong> foco estratégico direcionado ao Registro de Marca (Camada D) e Direito Autoral');
+        novidade = 'INEDITO_INVENTIVO';
+        achados.push('<strong>Enquadramento em Patente de Invenção IoT/Hardware (Art. 8º da LPI c/c Resolução INPI nº 158/2016):</strong> embora o código-fonte em si não seja patenteável (Art. 10, V da LPI), a integração hardware + sensores + firmware que produz efeito técnico físico mensurável é patenteável como Sistema e Processo de Controle Embarcado (20 anos).');
     }
 
-    // 5. Licenças de Software e Hardware mencionadas
+    // 7. Licenças de Software e Hardware mencionadas
     let licSw = 'MIT_BSD_APACHE';
     if (/(\bgpl|gplv3|gplv2|copyleft forte)/i.test(t)) {
         licSw = 'GPL_V2_V3';
-        achados.push('<strong>Licença de Software GNU GPL detectada:</strong> atenção ao efeito recíproco (copyleft forte) se tentar fechar o firmware');
+        achados.push('<strong>Conflito Potencial com GNU GPLv2/v3 (Art. 9º da Lei 9.609/98 e Lei 9.610/98):</strong> bibliotecas GPL exigem abertura do código derivado e vedam bloqueio de gravação em hardware (cláusula Anti-Tivoização).');
     } else if (/(lgpl|copyleft fraco)/i.test(t)) {
         licSw = 'LGPL_ESTATICA';
-        achados.push('<strong>Licença GNU LGPL detectada:</strong> exige arquivos-objeto para relinkagem em firmware estático');
+        achados.push('<strong>Cuidado Técnico com GNU LGPL em Microcontroladores:</strong> linkedição estática em imagem monolítica Flash exige fornecer arquivos-objeto (<code>.o</code>) para relinkagem pelo usuário.');
     }
 
     let licHw = 'NENHUM';
     if (/(cc by-sa|cc-by-sa|creative commons|cern-ohl-s|copyleft)/i.test(t)) {
         licHw = 'CERN_OHL_S';
-        achados.push('<strong>Hardware Aberto Recíproco (CERN-OHL-S / CC BY-SA) detectado:</strong> lembre-se da fragilidade do copyleft na Camada A (engenharia reversa limpa é lícita sem patente)');
+        achados.push('<strong>Licença Recíproca de Hardware (CERN-OHL-S / CC BY-SA) e Assimetria da Lei 9.610/98:</strong> obriga abrir esquemáticos derivados, mas não impede que concorrentes façam engenharia reversa funcional limpa caso não haja Patente depositada no INPI.');
     } else if (/(cern-ohl-w|modular|abrir a placa|abrir os esquem[aá]ticos)/i.test(t)) {
         licHw = 'CERN_OHL_W';
     } else if (/(cern-ohl-p|tapr|solderpad|hardware aberto|open hardware)/i.test(t)) {
         licHw = 'CERN_OHL_P';
     }
 
-    // 6. Estratégia de Negócio / Publicação Defensiva / Clonagem
+    // 8. Estratégia de Negócio / Publicação Defensiva
     let modelo = 'COMERCIAL_FECHADO';
     if (/(publica[cç][aã]o defensiva|impedir que.*patente|n[aã]o cobrar royalties|estado da t[eé]cnica|barrar patente)/i.test(t)) {
         modelo = 'PUBLICACAO_DEFENSIVA';
-        achados.push('<strong>Estratégia de Publicação Defensiva (Art. 11 LPI):</strong> publicação técnica como escudo contra patentes de concorrentes');
+        achados.push('<strong>Escudo de Publicação Defensiva (Art. 11 da LPI):</strong> publicação técnica estruturada para destruir a novidade perante terceiros e impedir que concorrentes patenteiem sua arquitetura.');
     } else if (/(abrir.*placa.*manter.*fechado|h[ií]brido|esquem[aá]tico aberto.*firmware fechado|liberar.*esquem[aá]tico.*proteger.*marca)/i.test(t)) {
         modelo = 'HIBRIDO_HW_ABERTO_SW_FECHADO';
-        achados.push('<strong>Modelo Híbrido detectado:</strong> abertura da placa física combinada com retenção de Marca e Software proprietário');
-    } else if (/(100% aberto|totalmente aberto|comunidade ajudar|open source total)/i.test(t) && !/(fechado|vender fechado)/i.test(t)) {
+    } else if (/(100% aberto|totalmente aberto|comunidade ajudar|open source total)/i.test(t) && !/(fechado|vender fechado|patentear)/i.test(t)) {
         modelo = 'OPEN_SOURCE_TOTAL';
     }
 
-    if (/(clon|copi|concorrente|engenharia reversa|mesma fun[cç][aã]o|nome parecido)/i.test(t)) {
-        achados.push('<strong>Disputa contra Clone / Engenharia Reversa detectada:</strong> análise da fragilidade da Lei 9.610/98 perante recriação funcional e tutela da Marca (Art. 129 e 189 LPI)');
-    }
-
-    // Extrair um título amigável a partir da primeira frase do usuário
+    // Extrair título técnico do projeto a partir do relato do usuário
     const primeiraFrase = textoOriginal.split(/[.!?]/)[0].trim();
-    const tituloGerado = primeiraFrase.length > 72
-        ? `Caso Personalizado: ${primeiraFrase.substring(0, 72)}...`
-        : `Caso Personalizado: ${primeiraFrase}`;
+    const tituloGerado = primeiraFrase.length > 78
+        ? `${primeiraFrase.substring(0, 78)}...`
+        : primeiraFrase;
 
     // Preencher o formulário
     document.getElementById('nome_projeto').value = tituloGerado;
     if (!document.getElementById('autor_nome').value.trim()) {
-        document.getElementById('autor_nome').value = 'Autor / Equipe do Caso Relatado';
+        document.getElementById('autor_nome').value = 'Projetista(s) / Inventor(es) do Dispositivo';
     }
     if (!document.getElementById('autor_documento').value.trim()) {
         document.getElementById('autor_documento').value = '00.000.000/0001-00';
     }
     if (!document.getElementById('autor_email').value.trim()) {
-        document.getElementById('autor_email').value = 'contato@projetoavaliado.com.br';
+        document.getElementById('autor_email').value = 'engenharia@projetoavaliado.com.br';
     }
     document.getElementById('instituicao_empresa').value = instituicao;
     document.getElementById('resumo_tecnico').value = textoOriginal;
@@ -451,35 +329,215 @@ function interpretarRelatoLivre(gerarDireto) {
     if (document.getElementById('divulgacao_previa')) {
         document.getElementById('divulgacao_previa').value = divulgacao;
     }
+    if (document.getElementById('conectividade_iot_rf')) {
+        document.getElementById('conectividade_iot_rf').value = conectividadeRf;
+    }
+    if (document.getElementById('telemetria_dados_iot')) {
+        document.getElementById('telemetria_dados_iot').value = telemetriaIot;
+    }
     document.getElementById('possui_pcb_customizada').checked = temPcb;
     document.getElementById('possui_topografia_chip').checked = temChip;
     document.getElementById('possui_design_externo_novo').checked = temDesign;
     document.getElementById('usa_hardware_aberto_terceiros').value = licHw;
     document.getElementById('possui_firmware_proprio').checked = temFirmware;
+    document.getElementById('linguagem_firmware').value = linguagemFinal;
     document.getElementById('licenca_bibliotecas_terceiros').value = licSw;
     document.getElementById('modelo_negocio').value = modelo;
 
     if (feedback) {
         feedback.style.display = 'block';
         feedback.innerHTML = `
-            <strong style="color: var(--accent-secondary); display: block; margin-bottom: 0.4rem;">
-                Leitura Jurídico-Técnica do Seu Relato Concluída (${achados.length} pontos-chave identificados):
+            <strong style="color: var(--accent-secondary); display: block; margin-bottom: 0.45rem;">
+                Correlação Engenharia ↔ Legislação Extraída do Seu Caso (${achados.length} vínculos normativos diretos):
             </strong>
             <ul style="margin: 0; padding-left: 1.25rem;">
-                ${achados.map(item => `<li style="margin-bottom: 0.25rem;">${item}</li>`).join('')}
+                ${achados.map(item => `<li style="margin-bottom: 0.3rem;">${item}</li>`).join('')}
             </ul>
         `;
     }
 
     atualizarBalaoMascote(
-        'CENÁRIO DO USUÁRIO INTERPRETADO COM SUCESSO',
-        'O motor traduziu seu relato para as 6 Camadas do Hardware (A–F).',
-        'Todos os seletores do formulário foram ajustados de acordo com a sua história. Você pode revisar qualquer detalhe nas Etapas 1, 2 e 3 ou conferir diretamente o parecer jurídico e as minutas geradas para o seu caso.'
+        'CORRELAÇÃO TÉCNICO-JURÍDICA REALIZADA SOBRE O SEU PROJETO',
+        'Seu dispositivo de Hardware/IoT foi decomposto nas 6 camadas e vinculado aos artigos exatos da lei.',
+        'Identificamos como contornar legalmente o <strong>Art. 10, V da LPI</strong> pela <strong>Resolução INPI nº 158/2016</strong> (efeito técnico físico do firmware no hardware), além das obrigações perante a <strong>ANATEL (Lei 9.472/97)</strong> e a <strong>LGPD (Lei 13.709/18)</strong>. Confira o parecer completo e a minuta de reivindicação patentária na Aba 02.'
     );
 
     if (gerarDireto) {
         processarDiagnostico(null);
     }
+}
+
+// Gera a Classificação Internacional de Patentes (CIP/IPC), a Reivindicação Independente nº 1 (Art. 24 e 25 LPI)
+// e a Matriz de Correlação Componente de Engenharia IoT/Hardware <-> Artigo Exato de Lei
+function gerarCorrelacaoPatentariaReal(dados, diag) {
+    const textoContexto = `${dados.nome_projeto} ${dados.resumo_tecnico} ${dados.linguagem_firmware}`.toLowerCase();
+
+    // 1. Determinar a Classificação Internacional de Patentes (CIP / IPC — Padrão OMPI/INPI)
+    const codigosCip = [];
+    if (/(irrig|solo|agr[ií]col|agro|umidade|planta|estufa)/i.test(textoContexto)) {
+        codigosCip.push('A01G 25/16 (Sistemas de controle automático de irrigação agrícola)');
+    }
+    if (/(iot|lora|lorawan|mqtt|sem fio|wireless|esp32|ble|zigbee|telemetria|rede de sensores)/i.test(textoContexto)) {
+        codigosCip.push('H04W 4/38 (Redes de comunicação sem fio para coleta de dados de sensores / IoT)');
+        codigosCip.push('H04L 67/12 (Protocolos dedicados a dispositivos embarcados M2M / telemetria)');
+    }
+    if (/(m[eé]dic|sa[uú]de|batimento|ox[ií]metro|ecg|vital|wearable|pulseira|paciente)/i.test(textoContexto)) {
+        codigosCip.push('A61B 5/00 (Dispositivos de medição para diagnóstico biomédico e monitoramento de sinais vitais)');
+        codigosCip.push('G16H 40/67 (Sistemas de TIC para operação remota de dispositivos médicos / IoMT)');
+    }
+    if (/(rob[oô]|aut[oô]nom|lidar|[oó]ptic|laser|navega[cç][aã]o|motor|atuador|v[aá]lvula|controle)/i.test(textoContexto)) {
+        codigosCip.push('G05B 19/042 (Sistemas de controle funcional em malha fechada utilizando unidades microcontroladoras)');
+    }
+    if (dados.possui_topografia_chip || /(chip|sil[ií]cio|asic|fpga|semicondutor|verilog|vhdl)/i.test(textoContexto)) {
+        codigosCip.push('H01L 27/02 (Dispositivos semicondutores integrados e topografia de circuitos em silício)');
+    }
+    if (codigosCip.length === 0) {
+        codigosCip.push('G05B 19/042 (Sistemas eletrônicos de controle digital programável com sensores e atuadores)');
+        codigosCip.push('H05K 1/02 (Detalhes construtivos de Placas de Circuito Impresso — PCB)');
+    }
+
+    // 2. Construir a Minuta de Reivindicação Independente nº 1 (Art. 24 e 25 da LPI + IN INPI nº 30/2013)
+    const divulgacao = dados.divulgacao_previa || 'SIGILO_MANTIDO';
+    let tituloQuadroPatentario = '';
+    let explicacaoArt10V = '';
+    let textoReivindicacao1 = '';
+
+    if (divulgacao === 'DIVULGADO_MAIS_12M') {
+        tituloQuadroPatentario = 'Impedimento de Patente por Expiração do Período de Graça (Art. 11 e Art. 12 da Lei nº 9.279/96)';
+        explicacaoArt10V = 'Como a arquitetura técnica foi divulgada há mais de 12 meses, ela ingressou definitivamente no <strong>Estado da Técnica (Art. 11, § 1º da LPI)</strong>, extinguindo o requisito de novidade absoluta exigido pelo Art. 8º da LPI. Embora não seja mais possível reivindicar monopólio patentário próprio, essa divulgação atua como <strong>Publicação Defensiva</strong> (impedindo que concorrentes patenteiem seu hardware). Sua proteção jurídica real recai sobre o <strong>Registro de Marca (Art. 129 da LPI)</strong> e o <strong>Direito Autoral do Firmware (Art. 2º da Lei 9.609/98)</strong>.';
+        textoReivindicacao1 = `NOTA TÉCNICA DO MOTOR: Pedido de Patente (PI/MU) bloqueado pelo Art. 11 da Lei nº 9.279/96 (divulgação anterior > 12 meses). O ativo "${dados.nome_projeto}" encontra-se protegido contra apropriação patentária por terceiros (efeito de Estado da Técnica), devendo ser depositado no INPI exclusivamente via e-Marcas (Art. 129 LPI) e e-Software (Hash SHA-512 — Lei 9.609/98).`;
+    } else if (dados.grau_novidade_hardware === 'INEDITO_INVENTIVO') {
+        tituloQuadroPatentario = 'Como Patentear Seu Sistema IoT/Hardware sem Esbarrar na Vedação de Software (Art. 8º e Art. 10, V da LPI + Resolução INPI nº 158/2016)';
+        explicacaoArt10V = `Muitos engenheiros de computação perdem patentes no INPI porque redigem o pedido focando no "código-fonte ou aplicativo", o que sofre indeferimento imediato pelo <strong>Art. 10, inciso V da Lei nº 9.279/96</strong> (que proíbe patentes para <em>"programas de computador em si"</em>). Contudo, segundo a <strong>Resolução INPI/PR nº 158/2016</strong> e a <strong>Instrução Normativa INPI nº 30/2013</strong>, quando o seu firmware embarcado (${dados.linguagem_firmware}) processa grandezas físicas reais de sensores na PCB e comanda transdutores/atuadores ou otimiza o transceptor de rádio, ele produz um <strong>efeito técnico físico concreto</strong>. Nesse caso, protege-se o código-fonte pelo Direito Autoral (Lei 9.609/98) e reivindica-se a <strong>Patente de Invenção (Art. 8º da LPI)</strong> como <em>"Sistema Físico Embarcado e Processo de Controle..."</em> redigido com a cláusula obrigatória <strong>"CARACTERIZADO POR" (Art. 25 da LPI)</strong>:`;
+        textoReivindicacao1 = `REIVINDICAÇÃO INDEPENDENTE Nº 1 (Minuta conforme Art. 24 e Art. 25 da Lei nº 9.279/96 e IN INPI nº 30/2013):
+"1. SISTEMA ELETRÔNICO EMBARCADO E PROCESSO DE MONITORAMENTO E CONTROLE FÍSICO (${dados.nome_projeto.toUpperCase()}), compreendendo uma placa de circuito impresso (PCB) dotada de unidade de processamento microcontrolada, interface de condicionamento de sinais conectada a elementos sensores/transdutores físicos e estágio de comunicação de dados (${dados.conectividade_iot_rf === 'SEM_RF_CABEADO' ? 'barramento físico cabeado' : 'transceptor de radiofrequência IoT'}), CARACTERIZADO POR a referida unidade de processamento operar em malha fechada físico-lógica segundo a arquitetura descrita (${dados.resumo_tecnico.replace(/\s+/g, ' ').trim()}), na qual os sinais elétricos brutos capturados pelos sensores são convertidos, filtrados em memória não volátil e transformados em sinais físicos de atuação/modulação técnica, produzindo efeito técnico mensurável de otimização energética e operacional no dispositivo físico."`;
+    } else if (dados.grau_novidade_hardware === 'MELHORIA_FUNCIONAL') {
+        tituloQuadroPatentario = 'Enquadramento como Patente de Modelo de Utilidade — Nova Forma ou Disposição Construtiva (Art. 9º e Art. 25 da LPI)';
+        explicacaoArt10V = `Como o seu projeto introduz um novo arranjo espacial/construtivo na placa de circuito impresso, sonda ou gabinete eletromecânico que resulta em <strong>melhoria funcional no seu uso ou na sua fabricação</strong>, o caminho jurídico exato no INPI é o <strong>Modelo de Utilidade (Art. 9º da Lei nº 9.279/96 — vigência de 15 anos)</strong>. Importante: pelo Art. 9º da LPI, o Modelo de Utilidade protege apenas a disposição tridimensional/construtiva do objeto físico (não abrangendo processos de software, os quais ficam protegidos separadamente pela Lei nº 9.609/98).`;
+        textoReivindicacao1 = `REIVINDICAÇÃO ÚNICA DE MODELO DE UTILIDADE (Minuta conforme Art. 9º, Art. 24 e Art. 25 da Lei nº 9.279/96):
+"1. DISPOSIÇÃO CONSTRUTIVA INTRODUZIDA EM DISPOSITIVO ELETRÔNICO EMBARCADO (${dados.nome_projeto.toUpperCase()}), constituída por um conjunto eletromecânico integrando placa de circuito impresso (PCB), conectores de sensoriamento e invólucro estrutural, CARACTERIZADA POR apresentar arranjo geométrico e topológico integrado (${dados.resumo_tecnico.replace(/\s+/g, ' ').trim()}), configurando melhoria funcional prática na montagem, dissipação térmica, acoplamento físico dos sensores e manutenção em campo."`;
+    } else {
+        tituloQuadroPatentario = 'Diagnóstico de Barreira Patentária: Integração de Módulos Comerciais COTS (Art. 8º, Art. 10, V e VIII da LPI)';
+        explicacaoArt10V = `Na engenharia de computação, conectar módulos comerciais prontos de prateleira (como um kit Arduino/ESP32 ligado por jumpers a sensores comerciais sem circuito inédito ou sem novo efeito físico resultante) configura <strong>justaposição de meios conhecidos sem atividade inventiva (Art. 8º e Art. 13 da LPI)</strong>, enquanto a lógica puramente abstrata do programa esbarra no <strong>Art. 10, inciso V da LPI</strong>. Tentar depositar patente neste cenário geraria gasto financeiro e indeferimento no exame técnico do INPI. A blindagem jurídica real e eficaz para o seu produto concentra-se no <strong>Registro do Código-Fonte no e-Software (Lei 9.609/98)</strong>, no <strong>Registro da Marca no e-Marcas (Art. 129 da LPI)</strong> e, se houver gabinete próprio, no <strong>Desenho Industrial (Art. 94 da LPI)</strong>.`;
+        textoReivindicacao1 = `RECOMENDAÇÃO TÉCNICO-JURÍDICA: Não protocolar pedido de patente (PI/MU) para evitar indeferimento por ausência de atividade inventiva (Art. 8º e 13 da LPI) e vedação a software em si (Art. 10, V da LPI). Proteger imediatamente: (1) Código-fonte em ${dados.linguagem_firmware} via Hash SHA-512 (Lei 9.609/98); (2) Marca nominativa/mista (Art. 129 da LPI); e (3) Segredo Industrial sobre parâmetros de calibração (Art. 195, XI da LPI).`;
+    }
+
+    // 3. Construir as linhas da Tabela de Correlação Direta (Engenharia IoT/Hardware <-> Artigos Exatos de Lei)
+    const linhasCorrelacao = [];
+
+    // Linha 1: Núcleo Físico / Eletromecânico / Solução Técnica IoT (Camada F)
+    linhasCorrelacao.push({
+        elemento: `<strong>1. Arquitetura Eletromecânica e Processo Físico Embarcado (Camada F)</strong><br><span style="font-size:0.82rem;color:var(--text-secondary);">Sensores, condicionamento de sinal, atuadores e efeito técnico físico</span>`,
+        protecao: divulgacao === 'DIVULGADO_MAIS_12M'
+            ? 'Domínio Público / Estado da Técnica (Protegido contra patentes de terceiros)'
+            : (dados.grau_novidade_hardware === 'INEDITO_INVENTIVO'
+                ? '<strong>Patenteável como Invenção (PI — 20 anos)</strong>: sistema físico + processo embarcado com efeito técnico'
+                : (dados.grau_novidade_hardware === 'MELHORIA_FUNCIONAL'
+                    ? '<strong>Patenteável como Modelo de Utilidade (MU — 15 anos)</strong>: nova disposição construtiva funcional'
+                    : '<strong>Não patenteável (Módulos COTS)</strong>: ausência de atividade inventiva física')),
+        base_legal: `<strong>Lei nº 9.279/96 (LPI):</strong> Arts. 8º, 9º, 11, 12, 13, 24, 25 e 40<br><strong>Resolução INPI/PR nº 158/2016</strong> (Exame de Invenções Implementadas por Software em Hardware)<br><strong>IN INPI nº 30/2013</strong>`,
+        providencia: divulgacao === 'DIVULGADO_MENOS_12M'
+            ? 'Protocolar no <strong>e-Patentes</strong> imediatamente invocando o <strong>Período de Graça (Art. 12 da LPI)</strong> com provas da 1ª divulgação.'
+            : (dados.grau_novidade_hardware === 'MODULOS_PRONTOS_COTS' || divulgacao === 'DIVULGADO_MAIS_12M'
+                ? 'Economizar taxas de patente e formalizar <strong>Publicação Defensiva (Art. 11 LPI)</strong> para impedir bloqueio por concorrentes.'
+                : 'Redigir Relatório Descritivo com suficiência descritiva (<strong>Art. 24 LPI</strong>) e Reivindicações com <em>"Caracterizado por..."</em> (<strong>Art. 25 LPI</strong>).')
+    });
+
+    // Linha 2: Código-Fonte do Firmware, RTOS, Pilha IoT e Algoritmos (Camada E)
+    linhasCorrelacao.push({
+        elemento: `<strong>2. Código-Fonte do Firmware, Drivers e Lógica IoT (Camada E)</strong><br><span style="font-size:0.82rem;color:var(--text-secondary);">Desenvolvido em ${dados.linguagem_firmware} (${dados.vinculacao_firmware === 'ESTATICA_MONOLITICA' ? 'Binário Monolítico Flash' : 'Linkedição Dinâmica SO'})</span>`,
+        protecao: `<strong>Vedada patente para o código "em si"</strong> (Art. 10, V da LPI), mas <strong>100% protegido por Direito Autoral de Software por 50 anos</strong> contra cópia literal ou descompilação ilícita.`,
+        base_legal: `<strong>Lei nº 9.279/96:</strong> Art. 10, inciso V<br><strong>Lei nº 9.609/98 (Lei do Software):</strong> Art. 2º, § 2º (50 anos), Art. 3º (Hash INPI), Art. 4º (Titularidade), Art. 6º, III e Art. 9º<br><strong>Lei nº 9.610/98 (LDA):</strong> Art. 7º, XII`,
+        providencia: `Gerar resumo criptográfico <strong>Hash SHA-512</strong> dos arquivos-fonte (<code>.c/.cpp/.h/.py</code>) e depositar no sistema <strong>e-Software do INPI</strong> (R$ 185,00 — prova plena de autoria anterior). Regime recomendado: <strong>${diag.licenca_sw_recomendada}</strong>.`
+    });
+
+    // Linha 3: Esquemático Elétrico, Traçado de PCB (KiCad/Altium), Gerbers e BOM (Camada A)
+    linhasCorrelacao.push({
+        elemento: `<strong>3. Desenho de Esquemático Elétrico, Layout de PCB e Gerbers (Camada A)</strong><br><span style="font-size:0.82rem;color:var(--text-secondary);">Arquivos CAD de roteamento de trilhas, máscara de solda e documentação técnica</span>`,
+        protecao: `<strong>Proteção Autoral sobre a expressão gráfica do desenho</strong> (impede fotocópia/clonagem literal do arquivo Gerber), mas <strong>não impede engenharia reversa limpa</strong> da função elétrica se não houver patente na Camada F.`,
+        base_legal: `<strong>Lei nº 9.610/98 (LDA):</strong> Art. 7º, inciso XI (projetos, esboços e obras plásticas concernentes à engenharia e topografia)<br><strong>Licenciamento Contratual:</strong> ${diag.licenca_hw_recomendada}`,
+        providencia: dados.modelo_negocio === 'COMERCIAL_FECHADO'
+            ? 'Manter arquivos editáveis e Gerbers sob <strong>Segredo Industrial (Art. 195, XI da LPI)</strong> com cláusula de confidencialidade (NDA) junto à fábrica montadora de PCB.'
+            : 'Publicar esquemáticos sob licença <strong>CERN-OHL v2 / OSHWA</strong> exigindo remoção da sua Marca Oficial em placas fabricadas por terceiros.'
+    });
+
+    // Linha 4: Conectividade IoT / Radiofrequência e Homologação ANATEL
+    const mapaAnatel = {
+        MODULO_RF_HOMOLOGADO: {
+            prot: '<strong>Comercialização condicionada à Homologação de RF</strong>: uso de módulo pré-certificado (ex: ESP32/LoRa com selo ANATEL) permite aproveitamento de ensaios de RF.',
+            lei: '<strong>Lei nº 9.472/1997 (Lei Geral de Telecomunicações):</strong> Art. 162 (vedação de uso/comercialização de emissor RF sem certificação)<br><strong>Resolução ANATEL nº 715/2019</strong> e <strong>Ato nº 14448/2017</strong> (Radiação Restrita: Wi-Fi, BLE, LoRa 915MHz)',
+            acao: 'Incluir na serigrafia da PCB ou etiqueta externa do gabinete a expressão <em>"Contém módulo homologado pela ANATEL sob nº HHHHH-AA-FFFFF"</em> e verificar ensaios de EMC/Segurança do produto final.'
+        },
+        TRANSCEPTOR_RF_CUSTOM: {
+            prot: '<strong>Obrigatoriedade Crítica de Certificação Completa de RF</strong>: circuito de rádio/antena discretos na PCB exige homologação própria antes de qualquer venda ou operação comercial em campo.',
+            lei: '<strong>Lei nº 9.472/1997 (LGT):</strong> Art. 162 e Art. 173<br><strong>Resolução ANATEL nº 715/2019</strong> (Avaliação da Conformidade e Homologação)<br><strong>Ato ANATEL nº 14448/2017</strong> (Limites de potência EIRP e faixa ISM 915MHz / 2.4GHz)',
+            acao: 'Contratar Organismo de Certificação Designado (OCD) e laboratório acreditado pelo INMETRO para ensaios de espectro, emissões espúrias, SAR e compatibilidade eletromagnética (CISPR).'
+        },
+        SEM_RF_CABEADO: {
+            prot: '<strong>Dispensado de Homologação de Radiofrequência</strong> (ausência de transceptor radiante intencional).',
+            lei: '<strong>Lei nº 9.472/1997:</strong> Art. 162 (Inaplicável por ausência de emissão RF)<br><strong>Código de Defesa do Consumidor (Lei nº 8.078/90):</strong> Arts. 8º, 12 e 39, VIII (normas técnicas ABNT/IEC)',
+            acao: 'Manter documentação de isolamento elétrico e compatibilidade eletromagnética para operação segura em barramento cabeado.'
+        }
+    };
+    const infoAnatel = mapaAnatel[dados.conectividade_iot_rf || 'MODULO_RF_HOMOLOGADO'];
+    linhasCorrelacao.push({
+        elemento: `<strong>4. Transceptor de Radiofrequência e Conectividade IoT</strong><br><span style="font-size:0.82rem;color:var(--text-secondary);">Módulo sem fio, antena na PCB e protocolo de comunicação</span>`,
+        protecao: infoAnatel.prot,
+        base_legal: infoAnatel.lei,
+        providencia: infoAnatel.acao
+    });
+
+    // Linha 5: Telemetria de Sensores IoT, Nuvem/Borda, LGPD e ANVISA
+    const mapaLgpd = {
+        DADOS_AMBIENTAIS_MAQUINA: {
+            prot: '<strong>Tutelado como Segredo Industrial e Know-How Técnico</strong>: grandezas puramente físicas/ambientais não constituem dado pessoal, mas compõem ativo estratégico do negócio.',
+            lei: '<strong>Lei nº 9.279/96 (LPI):</strong> Art. 195, inciso XI (crime de concorrência desleal por divulgação/exploração de dados confidenciais ou testes)<br><strong>Marco Civil da Internet (Lei nº 12.965/14)</strong>',
+            acao: 'Implementar autenticação de dispositivo (chaves simétricas LoRaWAN AppKey / TLS no MQTT) e incluir cláusula de titularidade sobre o banco de telemetria nos contratos (Aba 03).'
+        },
+        DADOS_PESSOAIS_IOT: {
+            prot: '<strong>Regime Obrigatório de Proteção de Dados Pessoais em IoT</strong>: coleta de localização, hábitos residenciais, voz, imagem ou identificadores vinculáveis a pessoa natural.',
+            lei: '<strong>Lei nº 13.709/2018 (LGPD):</strong> Art. 5º, I (dado pessoal), Art. 6º (princípios da finalidade e necessidade), Art. 7º (bases legais) e <strong>Art. 46, § 2º (Privacy by Design desde a concepção do produto)</strong>',
+            acao: 'Embarcar criptografia TLS 1.3 / AES-128 no microcontrolador, impedir senhas padrão de fábrica, anonimizar telemetria na borda e disponibilizar Termo de Privacidade ao usuário.'
+        },
+        DADOS_BIOMETRICOS_SAUDE: {
+            prot: '<strong>Regime Estrito de Dado Pessoal Sensível + Regulação Sanitária de Dispositivo Médico (IoMT)</strong>: sinais vitais, biometria e apoio diagnóstico.',
+            lei: '<strong>Lei nº 13.709/2018 (LGPD):</strong> Art. 5º, II e <strong>Art. 11</strong> (tratamento de dados sensíveis de saúde/biometria) e Art. 46<br><strong>ANVISA RDC nº 751/2022</strong> (Dispositivos Médicos) e <strong>RDC nº 657/2022</strong> (Software como Dispositivo Médico — SaMD)',
+            acao: 'Implementar criptografia em repouso na Flash e em trânsito, exigir consentimento destacado (Art. 11, I LGPD) ou tutela da saúde (Art. 11, II, f) e classificar o risco sanitário (Classes I a IV) na ANVISA.'
+        }
+    };
+    const infoLgpd = mapaLgpd[dados.telemetria_dados_iot || 'DADOS_AMBIENTAIS_MAQUINA'];
+    linhasCorrelacao.push({
+        elemento: `<strong>5. Coleta de Telemetria pelos Sensores Físicos e Segurança Embarcada</strong><br><span style="font-size:0.82rem;color:var(--text-secondary);">Fluxo de dados do sensor físico até o broker/nuvem</span>`,
+        protecao: infoLgpd.prot,
+        base_legal: infoLgpd.lei,
+        providencia: infoLgpd.acao
+    });
+
+    // Linha 6: Design Externo (Camada B) e Semicondutores / Topografia (Camada C)
+    linhasCorrelacao.push({
+        elemento: `<strong>6. Invólucro Físico Externo (Camada B) e Silício / Semicondutores (Camada C)</strong><br><span style="font-size:0.82rem;color:var(--text-secondary);">Gabinete 3D/injetado e topografia de circuitos integrados</span>`,
+        protecao: `${dados.possui_design_externo_novo ? '<strong>Desenho Industrial Registrável (10 a 25 anos)</strong> sobre a configuração plástica ornamental externa.' : 'Sem pedido de Desenho Industrial (gabinete padrão).'} ${dados.possui_topografia_chip ? '<br><strong>Topografia de Circuito Integrado Registrável (10 anos)</strong> sobre máscaras 3D de silício.' : ''}`,
+        base_legal: `<strong>Lei nº 9.279/96 (LPI):</strong> Arts. 94 a 121 (Desenho Industrial) e Art. 195, III (repressão à violação de <em>trade dress</em>)<br><strong>Lei nº 11.484/2007:</strong> Arts. 26 a 55 (Topografia de CI e incentivos fiscais do PADIS)`,
+        providencia: dados.possui_design_externo_novo || dados.possui_topografia_chip
+            ? 'Depositar vistas ortogonais/perspectivas do gabinete no <strong>e-Desenho Industrial</strong> e/ou arquivos GDSII no <strong>e-Chip (INPI)</strong>.'
+            : 'Caso desenvolva carenagem personalizada no futuro, depositar Desenho Industrial antes da comercialização para bloquear clones visuais.'
+    });
+
+    // Linha 7: Marca Comercial (Camada D) e Titularidade Societária / Universitária
+    linhasCorrelacao.push({
+        elemento: `<strong>7. Identidade Comercial (Camada D) e Titularidade Jurídica do Projeto</strong><br><span style="font-size:0.82rem;color:var(--text-secondary);">Marca "${dados.nome_projeto.split('—')[0].trim()}" e relação entre criadores/instituição</span>`,
+        protecao: `<strong>Exclusividade Nacional sobre o Nome e Logotipo (10 anos renováveis indefinidamente)</strong>. Em projetos de hardware aberto, é o único ativo que impede clones de usarem o nome oficial.`,
+        base_legal: `<strong>Lei nº 9.279/96 (LPI):</strong> Art. 129 (sistema atributivo de marca), Art. 189 (crime contra registro de marca), Arts. 6º e 88 a 93 (titularidade)<br><strong>Lei nº 10.973/2004:</strong> Arts. 6º, 11 e 16 (NIT/ICT)<br><strong>Lei nº 9.609/98:</strong> Art. 4º`,
+        providencia: `Protocolar pedido no <strong>e-Marcas (Classe NCL 9 — Aparelhos científicos, sensores e controladores eletrônicos)</strong> e assinar o <strong>Instrumento de Cessão/Titularidade</strong> gerado na Aba 03.`
+    });
+
+    return {
+        codigos_cip: codigosCip,
+        titulo_quadro_patentario: tituloQuadroPatentario,
+        explicacao_art10v: explicacaoArt10V,
+        texto_reivindicacao_1: textoReivindicacao1,
+        linhas_correlacao: linhasCorrelacao
+    };
 }
 
 // Navegação entre abas
@@ -496,8 +554,8 @@ function alternarAba(abaId) {
     if (abaId === 'aba-minutas') {
         atualizarBalaoMascote(
             'AUTONOMIA PRIVADA E NEGÓCIOS JURÍDICOS CONTRATUAIS',
-            'Licenças não são leis: elas operam como autorizações contratuais apoiadas na Lei nº 9.610/98.',
-            'Como demonstramos na fundamentação teórica do grupo, a lei cria o monopólio autoral ou industrial, enquanto a licença é o instrumento jurídico pelo qual o titular concede permissões sob condições. Abaixo você pode gerar os 4 documentos parametrizados para proteger a marca, os esquemáticos e o código.'
+            'Licenças e contratos parametrizados com os dados técnicos e artigos de lei do seu projeto.',
+            'Como demonstramos na fundamentação teórica do grupo, a lei cria o monopólio autoral ou industrial, enquanto a licença e os contratos são os instrumentos jurídicos pelos quais o titular exerce seu direito. Abaixo você pode gerar os 4 documentos completos — incluindo a minuta de reivindicação patentária e conformidade ANATEL/LGPD.'
         );
     } else if (abaId === 'aba-catalogo') {
         atualizarBalaoMascote(
@@ -517,90 +575,7 @@ function alternarAba(abaId) {
     setTimeout(() => window.dispatchEvent(new Event('resize')), 60);
 }
 
-// Preenche o formulário com um dos 8 cenários da biblioteca
-function carregarCenario(chave) {
-    const c = CENARIOS_TESTE[chave];
-    if (!c) return;
-
-    document.getElementById('nome_projeto').value = c.nome_projeto;
-    document.getElementById('autor_nome').value = c.autor_nome;
-    document.getElementById('autor_documento').value = c.autor_documento;
-    document.getElementById('autor_email').value = c.autor_email;
-    document.getElementById('instituicao_empresa').value = c.instituicao_empresa;
-    document.getElementById('resumo_tecnico').value = c.resumo_tecnico;
-
-    document.getElementById('grau_novidade_hardware').value = c.grau_novidade_hardware;
-    if (document.getElementById('divulgacao_previa')) {
-        document.getElementById('divulgacao_previa').value = c.divulgacao_previa || 'SIGILO_MANTIDO';
-    }
-    document.getElementById('possui_pcb_customizada').checked = c.possui_pcb_customizada;
-    document.getElementById('possui_topografia_chip').checked = c.possui_topografia_chip;
-    document.getElementById('possui_design_externo_novo').checked = c.possui_design_externo_novo;
-    document.getElementById('usa_hardware_aberto_terceiros').value = c.usa_hardware_aberto_terceiros;
-
-    document.getElementById('possui_firmware_proprio').checked = c.possui_firmware_proprio;
-    document.getElementById('linguagem_firmware').value = c.linguagem_firmware;
-    document.getElementById('licenca_bibliotecas_terceiros').value = c.licenca_bibliotecas_terceiros;
-    document.getElementById('vinculacao_firmware').value = c.vinculacao_firmware;
-    document.getElementById('modelo_negocio').value = c.modelo_negocio;
-    document.getElementById('titularidade_tipo').value = c.titularidade_tipo;
-
-    const campoCodigo = document.getElementById('trecho_codigo_inspecao');
-    if (campoCodigo) {
-        campoCodigo.value = c.trecho_codigo || '';
-        inspecionarTrechoCodigo();
-    }
-
-    const mensagensCenarios = {
-        cenario1_arduino: [
-            'CASO 1 — LIÇÃO DO CONFLITO ARDUINO LLC vs. ARDUINO SRL (GENUINO)',
-            'Quando o hardware e o código são livres, a Marca (Camada D) é o único vetor de controle patrimonial.',
-            'Neste cenário reproduzimos o estudo de caso do nosso documento: qualquer concorrente pode fabricar a placa física aberta sob CC BY-SA / CERN-OHL, mas ninguém pode comercializá-la com o nome oficial sem o <strong>Registro de Marca no INPI (Art. 129 da LPI)</strong> e um acordo sólido entre os cofundadores.'
-        ],
-        cenario2_waymo_lidar: [
-            'CASO 2 — WAYMO (GOOGLE) vs. UBER E A PUBLICAÇÃO DEFENSIVA',
-            'O dilema entre guardar Segredo Industrial, depositar Patente ou abrir como Estado da Técnica.',
-            'No caso do sensor LiDAR da Waymo, manter tudo apenas em segredo industrial expôs a empresa ao furto de milhares de arquivos técnicos. Processando este cenário, o motor avalia a proteção patentária da solução técnica (Camada F) e contrasta com a <strong>Publicação Defensiva (Art. 11 da LPI)</strong>.'
-        ],
-        cenario3_intel_amd_chip: [
-            'CASO 3 — INTEL vs. AMD E A TOPOGRAFIA DE CIRCUITOS INTEGRADOS (CAMADA C)',
-            'Nível máximo de especialização no hardware: proteção do leiaute tridimensional de microchips.',
-            'Como vimos no caso do ex-engenheiro que copiou 19 desenhos de chips da Intel, o projeto físico de semicondutores atrai a <strong>Lei nº 11.484/2007 (Topografia de Circuitos Integrados e PADIS)</strong>, além de levantar o debate sobre a fronteira entre lógica em silício (hardware) e firmware (Art. 10, V da LPI).'
-        ],
-        cenario4_conflito_ict: [
-            'CASO 4 — INOVAÇÃO UNIVERSITÁRIA (MARCO LEGAL DE CT&I) E EFEITO VIRAL',
-            'O papel do NIT nas ICTs (Lei nº 10.973/2004) e o conflito com licenças fortemente recíprocas.',
-            'Este cenário aborda a nossa provocação jurídica sobre pesquisa universitária: além da titularidade pertencer originariamente à instituição de ensino (gerida pelo <strong>NIT</strong>), a tentativa de fechar comercialmente um projeto derivado de <strong>GPLv3</strong> e <strong>CERN-OHL-S</strong> gera impedimento jurídico imediato.'
-        ],
-        cenario5_tcc_youtube: [
-            'CASO 5 — TCC / ROBÓTICA JÁ EXPOSTA NO YOUTUBE E O PERÍODO DE GRAÇA (ART. 12 LPI)',
-            'Divulgou o projeto antes de pedir a patente? Você tem exatamente 12 meses para salvar o ineditismo.',
-            'Muitos estudantes publicam vídeos ou artigos do TCC achando que perderam o direito à patente. Pelo <strong>Art. 12 da Lei nº 9.279/1996 (Período de Graça)</strong>, a divulgação feita pelo próprio inventor nos 12 meses anteriores ao depósito no INPI não destrói a novidade!'
-        ],
-        cenario6_startup_agrotech: [
-            'CASO 6 — STARTUP AGROTECH EM MODELO HÍBRIDO (CERN-OHL-W + FIRMWARE FECHADO)',
-            'Equilíbrio estratégico entre abertura modular da PCB e retenção de algoritmos e marca.',
-            'Ao adotar a <strong>CERN-OHL-W v2 (Reciprocidade Fraca)</strong> na placa-base, a startup permite manutenção em campo pelos produtores rurais, mas protege a sonda como <strong>Modelo de Utilidade (Art. 9º LPI)</strong> e mantém o firmware de calibração proprietário.'
-        ],
-        cenario7_wearable_hospitalar: [
-            'CASO 7 — DISPOSITIVO MÉDICO E ESCUDO DE PUBLICAÇÃO DEFENSIVA (ART. 11 LPI)',
-            'Como impedir que grandes corporações patenteiem uma tecnologia acessível e cobrem royalties.',
-            'Ao publicar deliberadamente os esquemáticos e o princípio técnico, o projeto entra no <strong>Estado da Técnica (Art. 11 da LPI)</strong>, impedindo patentes alheias, enquanto o grupo protege a estética externa via <strong>Desenho Industrial (Camada B)</strong> e o nome via <strong>Marca (Camada D)</strong>.'
-        ],
-        cenario8_console_reversa: [
-            'CASO 8 — ENGENHARIA REVERSA LIMPA E TRADE DRESS (CASO RESTORY)',
-            'Recriar a função elétrica sem copiar o desenho da PCB é lícito se não houver patente vigente.',
-            'Este cenário demonstra na prática a <strong>fragilidade do Direito Autoral no hardware (Lei 9.610/98)</strong>: como a lei protege apenas o desenho gráfico do esquemático, a reimplementação funcional limpa é permitida, desde que crie um gabinete externo próprio para não violar o Desenho Industrial ou <em>trade dress</em> alheio.'
-        ]
-    };
-
-    if (mensagensCenarios[chave]) {
-        const [tag, tit, txt] = mensagensCenarios[chave];
-        atualizarBalaoMascote(tag, tit, txt);
-    }
-}
-
-// Motor de Decisão fundamentado nas 6 Camadas (A a F) do Documento de Diretrizes do Grupo
+// Motor de Decisão fundamentado nas 6 Camadas (A a F), Resolução INPI 158/2016, ANATEL (Lei 9.472/97) e LGPD (Lei 13.709/18)
 function motorDecisaoLocal(dados) {
     const recomendacoesInpi = [];
     const alertasLicenca = [];
@@ -608,16 +583,18 @@ function motorDecisaoLocal(dados) {
     let score = 45;
     let risco = 'NULO';
     const divulgacao = dados.divulgacao_previa || 'SIGILO_MANTIDO';
+    const conectividadeRf = dados.conectividade_iot_rf || 'MODULO_RF_HOMOLOGADO';
+    const telemetriaIot = dados.telemetria_dados_iot || 'DADOS_AMBIENTAIS_MAQUINA';
 
     // CAMADA D: SIGNOS DISTINTIVOS (MARCA E LOGOTIPO — Art. 129 e 189 da LPI)
     score += 10;
     recomendacoesInpi.push({
         codigo: 'MARCA',
-        titulo: 'Camada D — Registro de Marca e Signo Distintivo (INPI)',
-        base_legal: 'Lei nº 9.279/1996 (LPI — Art. 129 e Art. 189)',
+        titulo: 'Camada D — Registro de Marca e Signo Distintivo (INPI • Classe NCL 9)',
+        base_legal: 'Lei nº 9.279/1996 (LPI — Arts. 122, 129, 133 e 189)',
         prioridade: 'Vetor Patrimonial Essencial',
         prazo: '10 anos (renovável indefinidamente)',
-        justificativa: 'Pelo sistema atributivo brasileiro (Art. 129 da LPI), a propriedade e o uso exclusivo do nome comercial decorrem do registro no INPI. Como demonstrado no caso Arduino LLC vs. Arduino SRL (Genuino), mesmo quando o hardware e o software são abertos, a retenção da marca é o principal instrumento jurídico para garantir sustentabilidade financeira e impedir contrafação (Art. 189 da LPI).'
+        justificativa: 'Pelo sistema atributivo brasileiro (Art. 129 da LPI), a propriedade e o uso exclusivo do nome comercial decorrem do registro no INPI. Como demonstrado no caso Arduino LLC vs. Arduino SRL (Genuino), mesmo quando o hardware e o software são abertos, a retenção da marca na Classe NCL 9 (aparelhos científicos, sensores e controladores) é o principal instrumento jurídico para impedir contrafação (Art. 189 da LPI).'
     });
 
     // ANÁLISE DE DIVULGAÇÃO PRÉVIA: PERÍODO DE GRAÇA (ART. 12 LPI) VS. ESTADO DA TÉCNICA (ART. 11 LPI)
@@ -636,39 +613,39 @@ function motorDecisaoLocal(dados) {
         });
     }
 
-    // CAMADA F: SOLUÇÃO TÉCNICA (PATENTE PI / MU e Ressalva do Art. 10, V da LPI)
+    // CAMADA F: SOLUÇÃO TÉCNICA (PATENTE PI / MU, Art. 10, V da LPI e Resolução INPI nº 158/2016)
     if (dados.modelo_negocio === 'PUBLICACAO_DEFENSIVA') {
         score += 15;
         alertasLicenca.push({
             nivel: 'INFO',
             titulo: 'Estratégia de Publicação Defensiva e Estado da Técnica (Art. 11 e 12 da LPI)',
-            descricao: 'Ao optar pela Publicação Defensiva, a divulgação ampla da documentação técnica converte o projeto em "Estado da Técnica" (Art. 11 da LPI), destruindo o requisito de novidade e criando um escudo jurídico: nenhuma empresa concorrente poderá patentear a solução e cobrar royalties de você no futuro. Caso deseje converter essa publicação em pedido de patente próprio no Brasil, observe o Período de Graça de 12 meses (Art. 12 da LPI).'
+            descricao: 'Ao optar pela Publicação Defensiva, a divulgação ampla da documentação técnica converte o projeto em "Estado da Técnica" (Art. 11 da LPI), destruindo o requisito de novidade perante terceiros e criando um escudo jurídico: nenhuma empresa concorrente poderá patentear a solução e cobrar royalties de você no futuro.'
         });
     } else if (divulgacao !== 'DIVULGADO_MAIS_12M' && dados.grau_novidade_hardware === 'INEDITO_INVENTIVO') {
         score += 25;
         recomendacoesInpi.unshift({
             codigo: 'PI',
-            titulo: 'Camada F — Patente de Invenção (PI) / Processo Técnico com Efeito Físico',
-            base_legal: 'Lei nº 9.279/1996 (Art. 8º, Art. 40 e interpretação do Art. 10, V)',
+            titulo: 'Camada F — Patente de Invenção (PI) / Sistema Embarcado com Efeito Técnico Físico',
+            base_legal: 'Lei nº 9.279/1996 (Arts. 8º, 24, 25, 40 e Art. 10, V) + Resolução INPI/PR nº 158/2016',
             prioridade: 'Prioridade Primária (Exclusividade Técnica)',
             prazo: '20 anos de vigência',
-            justificativa: 'Embora o Art. 10, inciso V, da LPI vede patente para programa de computador "em si", os circuitos inéditos e os processos técnicos funcionais assistidos por software que gerem efeito técnico no mundo físico são plenamente patenteáveis. Atenção à lição do caso Waymo vs. Uber: manter a invenção apenas em segredo industrial sem patente ou publicação defensiva eleva o risco em caso de vazamento técnico.'
+            justificativa: 'Embora o Art. 10, inciso V, da LPI vede patente para programa de computador "em si", a Resolução INPI nº 158/2016 reconhece a patenteabilidade de sistemas embarcados e processos de controle implementados por software que interajam com o hardware (sensores/atuadores/transceptores) gerando efeito técnico físico concreto.'
         });
     } else if (divulgacao !== 'DIVULGADO_MAIS_12M' && dados.grau_novidade_hardware === 'MELHORIA_FUNCIONAL' && dados.possui_pcb_customizada) {
         score += 15;
         recomendacoesInpi.unshift({
             codigo: 'MU',
-            titulo: 'Camada F — Patente de Modelo de Utilidade (MU)',
-            base_legal: 'Lei nº 9.279/1996 (Art. 9º e 40)',
+            titulo: 'Camada F — Patente de Modelo de Utilidade (MU — Disposição Construtiva)',
+            base_legal: 'Lei nº 9.279/1996 (Arts. 9º, 24, 25 e 40) + IN INPI nº 30/2013',
             prioridade: 'Prioridade Primária (Forma Funcional)',
             prazo: '15 anos de vigência',
-            justificativa: 'A nova disposição construtiva na placa ou equipamento confere melhoria funcional no uso ou fabricação, atendendo ao requisito de ato inventivo do Modelo de Utilidade.'
+            justificativa: 'A nova disposição construtiva tridimensional na placa, sonda ou equipamento confere melhoria funcional no uso ou fabricação, atendendo ao requisito de ato inventivo do Art. 9º da LPI.'
         });
     } else {
         camadasAnalise.push({
-            camada: 'Camada F • Solução Técnica (Ausência de Ineditismo Patentário)',
-            status: 'Foco em Marca (Camada D), Software (Camada E) e Documentação (Camada A)',
-            detalhe: 'Como o circuito baseia-se em módulos comerciais ou já ingressou no estado da técnica (Art. 11 da LPI), não cabe depósito de Patente (PI/MU). A sustentabilidade jurídica do projeto deve apoiar-se no Registro de Marca (Art. 129 da LPI) e no licenciamento do firmware e da documentação.'
+            camada: 'Camada F • Solução Técnica (Barreira dos Arts. 8º, 10 V e 11 da LPI)',
+            status: 'Redirecionamento Estratégico para Marca (Camada D) e Software (Camada E)',
+            detalhe: 'Como o circuito baseia-se na agregação de módulos comerciais (COTS) sem novo efeito técnico físico ou já ingressou no estado da técnica (Art. 11 da LPI), não cabe depósito de Patente (PI/MU). A blindagem jurídica deve apoiar-se no Registro de Marca (Art. 129 da LPI) e no registro do código-fonte (Lei 9.609/98).'
         });
     }
 
@@ -678,10 +655,10 @@ function motorDecisaoLocal(dados) {
         recomendacoesInpi.push({
             codigo: 'TCI',
             titulo: 'Camada C — Topografia de Circuito Integrado (Microchips / Silício)',
-            base_legal: 'Lei nº 11.484/2007 (Art. 26 a 55 — Institui também o PADIS)',
+            base_legal: 'Lei nº 11.484/2007 (Arts. 26 a 55 — Institui também o PADIS)',
             prioridade: 'Especialização Máxima em Semicondutores',
             prazo: '10 anos (a contar do depósito ou 1ª exploração econômica)',
-            justificativa: 'Tutela o leiaute tridimensional das camadas que compõem o microchip (arquivos GDSII/OASIS), ressalvadas as exceções legais para ensino, pesquisa acadêmica e engenharia reversa lícita. O projeto também pode pleitear enquadramento nos incentivos fiscais do PADIS.'
+            justificativa: 'Tutela o leiaute tridimensional das camadas que compõem o microchip (arquivos GDSII/OASIS), ressalvadas as exceções legais para ensino, pesquisa acadêmica e engenharia reversa lícita (Art. 37 da Lei 11.484/07). O projeto também pode pleitear incentivos fiscais do PADIS.'
         });
     }
 
@@ -691,10 +668,10 @@ function motorDecisaoLocal(dados) {
         recomendacoesInpi.push({
             codigo: 'DI',
             titulo: 'Camada B — Registro de Desenho Industrial (Design Externo)',
-            base_legal: 'Lei nº 9.279/1996 (Art. 94 a 121)',
+            base_legal: 'Lei nº 9.279/1996 (Arts. 94 a 121)',
             prioridade: 'Proteção Estética ("A Cara do Aparelho")',
             prazo: '10 anos (renováveis até 25 anos)',
-            justificativa: 'Protege a forma plástica ornamental e os aspectos visuais externos do dispositivo contra imitação estética.'
+            justificativa: 'Protege a forma plástica ornamental e a configuração visual externa do gabinete contra imitação estética e violação de conjunto-imagem (trade dress — Art. 195, III da LPI).'
         });
     }
 
@@ -704,17 +681,46 @@ function motorDecisaoLocal(dados) {
         recomendacoesInpi.push({
             codigo: 'RPC',
             titulo: 'Camada E — Regime Especial de Software Embarcado (e-Software INPI)',
-            base_legal: 'Lei nº 9.609/1998 (Art. 2º e Art. 4º) e Lei nº 9.610/1998',
-            prioridade: 'Tutela Autoral de 50 Anos (Registro Facultativo)',
+            base_legal: 'Lei nº 9.609/1998 (Arts. 2º, 3º e 4º) e Lei nº 9.610/1998 (Art. 7º, XII)',
+            prioridade: 'Tutela Autoral de 50 Anos (Prova de Autoria SHA-512)',
             prazo: '50 anos a partir de 1º de janeiro do ano subsequente à publicação',
-            justificativa: 'O firmware equipara-se às obras literárias. Embora o registro junto ao INPI seja facultativo, o depósito do resumo Hash SHA-512 garante segurança probatória imediata e resguarda a titularidade laboral prevista no Art. 4º da Lei nº 9.609/1998.'
+            justificativa: 'O código-fonte do firmware é protegido como obra literária (independentemente de patente). O depósito do resumo Hash SHA-512 no INPI garante presunção juris tantum de autoria anterior e resguarda a titularidade prevista no Art. 4º da Lei nº 9.609/1998.'
+        });
+    }
+
+    // REGULAÇÃO SETORIAL DE IOT: ANATEL (Lei 9.472/97) E LGPD (Lei 13.709/18)
+    if (conectividadeRf === 'TRANSCEPTOR_RF_CUSTOM') {
+        alertasLicenca.push({
+            nivel: 'ATENCAO',
+            titulo: 'Obrigação Regulatória de Telecomunicações — Homologação de Rádio Customizado na ANATEL (Lei nº 9.472/1997, Art. 162)',
+            descricao: 'Como o seu hardware implementa transceptor de radiofrequência ou antena própria na PCB, o Art. 162 da Lei Geral de Telecomunicações proíbe sua comercialização ou utilização sem prévia homologação da ANATEL (Resolução nº 715/2019 e Ato nº 14448/2017 para radiação restrita em 915MHz/2.4GHz). Programe ensaios em laboratório acreditado junto a um OCD antes de lançar o produto.'
+        });
+    } else if (conectividadeRf === 'MODULO_RF_HOMOLOGADO') {
+        alertasLicenca.push({
+            nivel: 'INFO',
+            titulo: 'Conformidade ANATEL para Dispositivos IoT com Módulo RF Pré-Homologado (Resolução ANATEL nº 715/2019)',
+            descricao: 'Ao utilizar um módulo de rádio já certificado pela ANATEL na sua PCB (ex: ESP32-WROOM ou módulo LoRa homologado), você reduz drasticamente os custos laboratoriais de RF, devendo exibir o código de homologação do módulo no gabinete/manual e observar os ensaios de compatibilidade eletromagnética (EMC) do produto final.'
+        });
+    }
+
+    if (telemetriaIot === 'DADOS_BIOMETRICOS_SAUDE') {
+        alertasLicenca.push({
+            nivel: 'ATENCAO',
+            titulo: 'Incidência Cumulativa: Dados Sensíveis na LGPD (Lei nº 13.709/18, Art. 11) e Regulação Sanitária ANVISA (RDC 751/22 e 657/22)',
+            descricao: 'Dispositivos vestíveis ou sensores que coletam sinais vitais/biometria tratam Dados Pessoais Sensíveis (Art. 5º, II e Art. 11 da LGPD), exigindo criptografia em trânsito e em repouso (Art. 46 da LGPD) e enquadramento perante a ANVISA como Dispositivo Médico (RDC nº 751/2022) e Software como Dispositivo Médico — SaMD (RDC nº 657/2022).'
+        });
+    } else if (telemetriaIot === 'DADOS_PESSOAIS_IOT') {
+        alertasLicenca.push({
+            nivel: 'INFO',
+            titulo: 'Segurança e Privacy by Design em IoT (LGPD — Lei nº 13.709/2018, Art. 6º e Art. 46, § 2º)',
+            descricao: 'Como o dispositivo coleta dados vinculados a pessoas naturais (localização GPS, áudio, imagem ou telemetria residencial), o Art. 46, § 2º da LGPD exige que medidas técnicas de segurança (autenticação forte, comunicação criptografada TLS/MQTTs e minimização de dados na borda) sejam adotadas desde a fase de concepção do hardware e do firmware.'
         });
     }
 
     // CAMADA A: DOCUMENTAÇÃO TÉCNICA E FRAGILIDADE DO COPYLEFT NO HARDWARE (Lei 9.610/98)
     alertasLicenca.push({
         nivel: 'INFO',
-        titulo: 'Camada A — Fragilidade Jurídica do Copyleft no Hardware (Lei nº 9.610/1998)',
+        titulo: 'Camada A — Fragilidade Jurídica do Copyleft no Hardware (Lei nº 9.610/1998, Art. 7º, XI)',
         descricao: 'Diferente do software — onde o Direito Autoral impede a cópia do código funcional —, na Camada A (esquemáticos, leiaute de PCB e manuais) a Lei nº 9.610/1998 protege apenas a expressão gráfica do desenho, e não a função elétrica. Se não houver patente depositada na Camada F, um terceiro pode recriar do zero o mesmo circuito funcional sem copiar o desenho gráfico do esquemático, afastando a incidência de licenças copyleft.'
     });
 
@@ -733,16 +739,16 @@ function motorDecisaoLocal(dados) {
         score -= 25;
         alertasLicenca.unshift({
             nivel: 'CRITICO',
-            titulo: 'Impedimento Contratual: Biblioteca GNU GPLv3 em Firmware Fechado',
-            descricao: 'As licenças apoiam-se no monopólio autoral (Lei 9.610/98): como a alternativa ao cumprimento da licença é a proibição de uso, você não pode distribuir código derivado de biblioteca GPLv3 em binário fechado. A GPLv3 exige disponibilizar todo o código-fonte do firmware e proíbe travas de gravação física (Anti-Tivoização).'
+            titulo: 'Impedimento Contratual: Biblioteca GNU GPLv3 em Firmware Fechado (Art. 9º da Lei 9.609/98 e Lei 9.610/98)',
+            descricao: 'As licenças apoiam-se no monopólio autoral: como a alternativa ao cumprimento da licença é a proibição de uso, você não pode distribuir código derivado de biblioteca GPLv3 em binário fechado. A GPLv3 exige disponibilizar todo o código-fonte do firmware e proíbe travas de gravação física na Flash (cláusula Anti-Tivoização).'
         });
         licencaSw = 'GNU GPLv3 (Obrigatória por derivação) ou Substituição da Biblioteca';
     } else if (dados.licenca_bibliotecas_terceiros === 'LGPL_ESTATICA' && dados.vinculacao_firmware === 'ESTATICA_MONOLITICA' && querFecharSw) {
         risco = 'MEDIO';
         alertasLicenca.unshift({
             nivel: 'ATENCAO',
-            titulo: 'Condição de Relinkagem Estática (GNU LGPL em Microcontrolador)',
-            descricao: 'Ao compilar estaticamente uma biblioteca LGPL dentro de uma imagem monolítica de firmware fechado, você deve disponibilizar os arquivos-objeto (.o) para que o usuário possa relinkar versões modificadas da biblioteca LGPL.'
+            titulo: 'Condição de Relinkagem Estática (GNU LGPL Seção 4 em Microcontrolador)',
+            descricao: 'Ao compilar estaticamente uma biblioteca LGPL dentro de uma imagem monolítica de firmware fechado na memória Flash, você deve disponibilizar os arquivos-objeto (.o) para que o usuário possa relinkar versões modificadas da biblioteca LGPL.'
         });
     } else {
         alertasLicenca.push({
@@ -754,7 +760,7 @@ function motorDecisaoLocal(dados) {
 
     // Licenças de Hardware Aberto (CERN-OHL v2 / TAPR / Solderpad / CC BY-SA)
     let licencaHw = 'Proprietária (Tutela Gráfica LDA + Patente LPI)';
-    const querFecharHw = ($m = dados.modelo_negocio) === 'COMERCIAL_FECHADO';
+    const querFecharHw = dados.modelo_negocio === 'COMERCIAL_FECHADO';
 
     if (dados.usa_hardware_aberto_terceiros === 'CERN_OHL_S' && querFecharHw) {
         risco = 'ALTO_CRITICO';
@@ -778,19 +784,19 @@ function motorDecisaoLocal(dados) {
     if (dados.titularidade_tipo === 'VINCULO_EMPREGATICIO_ICT') {
         alertasLicenca.push({
             nivel: 'ATENCAO',
-            titulo: 'Marco Legal de CT&I (Lei nº 10.973/2004 e Lei nº 13.243/2016) e Art. 4º da Lei de Software',
-            descricao: 'Projetos desenvolvidos em Instituições Científicas, Tecnológicas e de Inovação (ICTs) possuem titularidade originária vinculada à instituição de ensino e devem ser geridos pelo Núcleo de Inovação Tecnológica (NIT), que decidirá entre a busca do privilégio patentário ou a disponibilização em hardware aberto. No caso de vínculo empregatício/prestação de serviços, aplica-se a titularidade do empregador (Art. 4º da Lei nº 9.609/98).'
+            titulo: 'Marco Legal de CT&I (Lei nº 10.973/2004, Art. 16), Art. 88 da LPI e Art. 4º da Lei de Software',
+            descricao: 'Projetos desenvolvidos em Instituições Científicas, Tecnológicas e de Inovação (ICTs) ou sob contrato de trabalho possuem titularidade originária vinculada à instituição/empregador e devem ser submetidos ao Núcleo de Inovação Tecnológica (NIT), que conduzirá o depósito patentário ou autorizará a publicação em hardware aberto.'
         });
     } else if (dados.titularidade_tipo === 'PARCERIA_COAUTORIA') {
         alertasLicenca.push({
             nivel: 'ATENCAO',
-            titulo: 'Prevenção de Litígio Societário sobre a Marca (Lição Arduino LLC vs. Arduino SRL)',
-            descricao: 'Quando há múltiplos cofundadores, é indispensável firmar imediatamente a Cessão de Direitos e o Acordo de Cotitularidade (Aba 03) unificando o depósito da Marca no INPI sob uma única entidade jurídica, evitando que sócios registrem a mesma marca separadamente em diferentes jurisdições.'
+            titulo: 'Prevenção de Litígio Societário sobre a Marca (Lição Arduino LLC vs. Arduino SRL — Art. 6º, § 3º e Art. 129 da LPI)',
+            descricao: 'Quando há múltiplos cofundadores, é indispensável firmar imediatamente a Cessão de Direitos e o Acordo de Cotitularidade (Aba 03) unificando o depósito da Marca no INPI sob uma única entidade jurídica.'
         });
     }
 
     score = Math.max(15, Math.min(100, score));
-    return {
+    const resultadoParcial = {
         score_protegibilidade: score,
         risco_contaminacao_licenca: risco,
         protecao_inpi_primaria: recomendacoesInpi[0] ? recomendacoesInpi[0].titulo : 'Registro de Marca (Art. 129 LPI) + Direito Autoral',
@@ -802,6 +808,9 @@ function motorDecisaoLocal(dados) {
         camadas_analise: camadasAnalise,
         timestamp_avaliacao: new Date().toLocaleString('pt-BR')
     };
+
+    resultadoParcial.correlacao_patentaria = gerarCorrelacaoPatentariaReal(dados, resultadoParcial);
+    return resultadoParcial;
 }
 
 // Submissão do Formulário de Arquitetura
@@ -817,6 +826,8 @@ async function processarDiagnostico(event) {
         resumo_tecnico: document.getElementById('resumo_tecnico').value.trim(),
         grau_novidade_hardware: document.getElementById('grau_novidade_hardware').value,
         divulgacao_previa: document.getElementById('divulgacao_previa') ? document.getElementById('divulgacao_previa').value : 'SIGILO_MANTIDO',
+        conectividade_iot_rf: document.getElementById('conectividade_iot_rf') ? document.getElementById('conectividade_iot_rf').value : 'MODULO_RF_HOMOLOGADO',
+        telemetria_dados_iot: document.getElementById('telemetria_dados_iot') ? document.getElementById('telemetria_dados_iot').value : 'DADOS_AMBIENTAIS_MAQUINA',
         possui_pcb_customizada: document.getElementById('possui_pcb_customizada').checked,
         possui_topografia_chip: document.getElementById('possui_topografia_chip').checked,
         possui_design_externo_novo: document.getElementById('possui_design_externo_novo').checked,
@@ -868,14 +879,14 @@ async function processarDiagnostico(event) {
         );
     } else {
         atualizarBalaoMascote(
-            'RESULTADO DO DIAGNÓSTICO — MATRIZ MULTICAMADA (A–F) PROCESSADA',
+            'RESULTADO DO DIAGNÓSTICO — CORRELAÇÃO ENGENHARIA IOT ↔ SETOR JURÍDICO CONCLUÍDA',
             `Índice de Protegibilidade: ${ultimoDiagnostico.score_protegibilidade}/100 — Foco Primário: ${ultimoDiagnostico.protecao_inpi_primaria}`,
-            `As 6 camadas do dispositivo foram mapeadas com sucesso segundo a legislação brasileira. Verifique abaixo o enquadramento individual de cada camada e acesse a <strong>Aba 03</strong> para emitir os contratos e o dossiê do INPI.`
+            `Cada componente físico e lógico do seu dispositivo foi correlacionado aos artigos da <strong>Lei nº 9.279/96 (LPI)</strong>, <strong>Resolução INPI nº 158/2016</strong>, <strong>ANATEL (Lei 9.472/97)</strong> e <strong>LGPD (Lei 13.709/18)</strong>. Confira abaixo a minuta da <strong>Reivindicação Patentária nº 1</strong> e a tabela de enquadramento componente por componente.`
         );
     }
 }
 
-// Renderiza as 6 Camadas (A a F) e tabelas do diagnóstico na Aba 2
+// Renderiza as 6 Camadas (A a F), a Matriz de Correlação Engenharia-Lei e as tabelas do diagnóstico na Aba 2
 function renderizarRelatorioDiagnostico(dados, diag) {
     document.getElementById('rel-nome-projeto').textContent = dados.nome_projeto;
     document.getElementById('rel-autor-projeto').textContent = `${dados.autor_nome} • ${dados.instituicao_empresa} (${dados.autor_documento})`;
@@ -889,33 +900,33 @@ function renderizarRelatorioDiagnostico(dados, diag) {
     kpiRiscoEl.style.color = diag.risco_contaminacao_licenca === 'ALTO_CRITICO' ? '#ef4444'
         : (diag.risco_contaminacao_licenca === 'MEDIO' ? '#f59e0b' : '#10b981');
 
-    // Mapa das 6 Camadas Tecnológicas (A a F — Exatamente como no Slide 6 e Documento de Diretrizes do Grupo)
+    // Mapa das 6 Camadas Tecnológicas (A a F)
     const camadasGrid = document.getElementById('mapa-camadas-grid');
     if (camadasGrid) {
         const statusCamadaA = dados.possui_pcb_customizada
-            ? `Direito Autoral sobre Desenho/Esquemático (Lei 9.610/98 — LDA)`
+            ? `Direito Autoral sobre Desenho/Esquemático (Lei 9.610/98, Art. 7º, XI)`
             : `Documentação Padrão de Terceiros`;
 
         const statusCamadaB = dados.possui_design_externo_novo
-            ? `Desenho Industrial no INPI (10 a 25 anos — Lei 9.279/96)`
+            ? `Desenho Industrial no INPI (10 a 25 anos — Lei 9.279/96, Art. 94)`
             : `Sem forma plástica ornamental nova`;
 
         const statusCamadaC = dados.possui_topografia_chip
-            ? `Topografia de Circuito Integrado (10 anos — Lei 11.484/2007 e PADIS)`
-            : `Não aplicável (Usa chip comercial de prateleira)`;
+            ? `Topografia de Circuito Integrado (10 anos — Lei 11.484/2007, Art. 26)`
+            : `Não aplicável (Usa microcontrolador/chip comercial)`;
 
         const statusCamadaD = `Registro de Marca no INPI (10 anos renováveis — Art. 129 da LPI)`;
 
         const statusCamadaE = dados.possui_firmware_proprio
-            ? `Direito Autoral de Software (50 anos — Lei 9.609/98 • ${dados.linguagem_firmware})`
+            ? `Direito Autoral de Software (50 anos — Lei 9.609/98, Art. 2º • ${dados.linguagem_firmware})`
             : `Sem firmware próprio declarado`;
 
         const statusCamadaF = dados.modelo_negocio === 'PUBLICACAO_DEFENSIVA'
             ? `Publicação Defensiva / Estado da Técnica (Art. 11 e 12 da LPI)`
             : (dados.grau_novidade_hardware === 'INEDITO_INVENTIVO'
-                ? `Patente de Invenção (20 anos — Lei 9.279/96 Art. 8º)`
+                ? `Patente de Invenção (20 anos — Art. 8º LPI e Res. INPI 158/2016)`
                 : (dados.grau_novidade_hardware === 'MELHORIA_FUNCIONAL' && dados.possui_pcb_customizada
-                    ? `Modelo de Utilidade (15 anos — Lei 9.279/96 Art. 9º)`
+                    ? `Modelo de Utilidade (15 anos — Lei 9.279/96, Art. 9º)`
                     : `Sem monopólio patentário (Livre reprodução funcional)`));
 
         camadasGrid.innerHTML = `
@@ -950,6 +961,37 @@ function renderizarRelatorioDiagnostico(dados, diag) {
                 <p>Funcionalidade eletromecânica ou processo assistido por software com efeito físico no mundo real.</p>
             </div>
         `;
+    }
+
+    // Renderizar o Painel de Correlação Patentária Real (CIP + Art. 10 V vs. Res. INPI 158/2016 + Reivindicação nº 1) e a Tabela Componente <-> Lei
+    const correlacao = diag.correlacao_patentaria || gerarCorrelacaoPatentariaReal(dados, diag);
+    const painelReivindicacao = document.getElementById('painel-reivindicacao-inpi');
+    if (painelReivindicacao && correlacao) {
+        painelReivindicacao.innerHTML = `
+            <div class="alert-card alert-INFO" style="margin-bottom: 1.1rem;">
+                <span class="inpi-badge">CLASSIFICAÇÃO INTERNACIONAL DE PATENTES (CIP / IPC — OMPI & INPI)</span>
+                <h4>Classes Tecnológicas Identificadas para Busca de Anterioridade e Depósito no INPI:</h4>
+                <p style="margin-top: 0.35rem;">${correlacao.codigos_cip.map(c => `<code style="display:inline-block;margin:0.2rem 0.35rem 0.2rem 0;padding:0.25rem 0.6rem;background:rgba(249,115,22,0.14);border:1px solid rgba(249,115,22,0.4);border-radius:6px;color:#fed7aa;">${c}</code>`).join('')}</p>
+            </div>
+            <div class="alert-card alert-SUCESSO" style="margin-bottom: 0.5rem;">
+                <span class="inpi-badge">ENGENHARIA PATENTÁRIA NO INPI • ART. 8º, 9º, 10 V, 24 E 25 DA LPI</span>
+                <h4>${correlacao.titulo_quadro_patentario}</h4>
+                <p style="margin-bottom: 0.85rem;">${correlacao.explicacao_art10v}</p>
+                <div style="background: rgba(15, 12, 24, 0.85); border: 1px solid rgba(249, 115, 22, 0.45); border-radius: 10px; padding: 1rem 1.2rem; font-family: 'JetBrains Mono', monospace; font-size: 0.84rem; color: #ffedd5; line-height: 1.65; white-space: pre-wrap;">${correlacao.texto_reivindicacao_1}</div>
+            </div>
+        `;
+    }
+
+    const tbodyCorrelacao = document.getElementById('tabela-correlacao-engenharia-lei');
+    if (tbodyCorrelacao && correlacao && correlacao.linhas_correlacao) {
+        tbodyCorrelacao.innerHTML = correlacao.linhas_correlacao.map(linha => `
+            <tr>
+                <td>${linha.elemento}</td>
+                <td>${linha.protecao}</td>
+                <td>${linha.base_legal}</td>
+                <td>${linha.providencia}</td>
+            </tr>
+        `).join('');
     }
 
     // Renderizar recomendações INPI
@@ -1013,8 +1055,9 @@ function renderizarRelatorioDiagnostico(dados, diag) {
 
 // Gerador Automatizado de Minutas Contratuais e Dossiê Multicamada (Aba 3)
 function gerarMinutaAutomatizada(tipoDocumento) {
-    const p = ultimoProjetoAvaliado || CENARIOS_TESTE.cenario1_arduino;
+    const p = ultimoProjetoAvaliado || CASO_BASE_INICIAL;
     const d = ultimoDiagnostico || motorDecisaoLocal(p);
+    const corr = d.correlacao_patentaria || gerarCorrelacaoPatentariaReal(p, d);
     const dataHoje = new Date().toLocaleDateString('pt-BR');
     const hashSimulado = Array.from(p.nome_projeto + tipoDocumento + dataHoje)
         .reduce((acc, char) => ((acc << 5) - acc) + char.charCodeAt(0), 0)
@@ -1023,26 +1066,27 @@ function gerarMinutaAutomatizada(tipoDocumento) {
     let texto = '';
 
     if (tipoDocumento === 'CESSAO_DIREITOS') {
-        texto = `INSTRUMENTO PARTICULAR DE CESSÃO DE DIREITOS PATRIMONIAIS SOBRE PROJETO MULTICAMADA DE HARDWARE E SOFTWARE EMBARCADO
+        texto = `INSTRUMENTO PARTICULAR DE CESSÃO DE DIREITOS PATRIMONIAIS SOBRE PROJETO MULTICAMADA DE HARDWARE, IOT E SOFTWARE EMBARCADO
 
-Fundamentação Constitucional e Legal: Art. 5º, incisos XXVII, XXVIII e XXIX da Constituição Federal de 1988; Lei nº 9.279/1996 (LPI); Lei nº 9.609/1998 (Lei de Software); Lei nº 9.610/1998 (Lei de Direitos Autorais — LDA); Lei nº 11.484/2007 (Topografia de Circuitos Integrados) e Lei nº 10.973/2004 (Marco Legal de CT&I).
+Fundamentação Constitucional e Legal: Art. 5º, incisos XXVII, XXVIII e XXIX da Constituição Federal de 1988; Lei nº 9.279/1996 (LPI — Arts. 6º, 8º, 9º, 10 V, 24, 25, 88 a 93 e 129); Resolução INPI/PR nº 158/2016; Lei nº 9.609/1998 (Lei de Software — Arts. 2º e 4º); Lei nº 9.610/1998 (LDA — Art. 7º, XI e XII); Lei nº 11.484/2007 (Topografia de Circuitos Integrados); Lei nº 9.472/1997 (ANATEL, Art. 162); Lei nº 13.709/2018 (LGPD, Arts. 6º, 11 e 46) e Lei nº 10.973/2004 (Marco Legal de CT&I).
 
 1. QUALIFICAÇÃO DAS PARTES
 CEDENTE(S) (CRIADORES / PROJETISTAS): ${p.autor_nome}, inscrito(s) sob CPF/CNPJ nº ${p.autor_documento}, e-mail ${p.autor_email}.
 CESSIONÁRIA (ORGANIZAÇÃO / TITULAR / ICT): ${p.instituicao_empresa}.
 
 2. DO OBJETO HÍBRIDO E MULTICAMADA CEDIDO
-Cláusula 2.1. O presente instrumento formaliza a cessão definitiva dos direitos patrimoniais relativos ao ativo tecnológico denominado "${p.nome_projeto}".
-Cláusula 2.2. Síntese Técnica: ${p.resumo_tecnico}
+Cláusula 2.1. O presente instrumento formaliza a cessão definitiva dos direitos patrimoniais relativos ao ativo tecnológico de hardware e IoT denominado "${p.nome_projeto}".
+Cláusula 2.2. Síntese Técnica e Problema Resolvido: ${p.resumo_tecnico}
 Cláusula 2.3. Considerando a ausência de estatuto único para o hardware no ordenamento brasileiro, a presente transferência abrange expressamente as 6 (seis) camadas de proteção aplicáveis:
-  • Camada A (Documentação Técnica — Lei nº 9.610/98): esquemáticos elétricos, leiaute de PCB, arquivos Gerber, BOM e manuais técnicos;
+  • Camada A (Documentação Técnica — Lei nº 9.610/98, Art. 7º, XI): esquemáticos elétricos, leiaute de PCB, arquivos Gerber, BOM e manuais técnicos;
   • Camada B (Design do Produto — Lei nº 9.279/96, Art. 94): forma plástica ornamental e configuração estética externa do aparelho;
-  • Camada C (Semicondutores — Lei nº 11.484/2007): configuração tridimensional das camadas de microchips/silício, quando aplicável;
-  • Camada D (Signos Distintivos — Lei nº 9.279/96, Art. 129): direitos de depósito e uso exclusivo sobre o nome comercial, marca e logotipo (prevenindo cisões societárias nos moldes do precedente Arduino LLC vs. Arduino SRL);
-  • Camada E (Software Embarcado — Lei nº 9.609/98, Art. 4º): código-fonte funcional desenvolvido em ${p.linguagem_firmware};
-  • Camada F (Solução Técnica — Lei nº 9.279/96, Art. 8º e 9º): direitos de requerer Patente de Invenção ou Modelo de Utilidade sobre a funcionalidade eletromecânica ou processo assistido por software com efeito técnico físico.
+  • Camada C (Semicondutores — Lei nº 11.484/2007, Arts. 26 a 55): configuração tridimensional das camadas de microchips/silício, quando aplicável;
+  • Camada D (Signos Distintivos — Lei nº 9.279/96, Art. 129): direitos de depósito e uso exclusivo sobre o nome comercial, marca e logotipo na Classe NCL 9 (prevenindo cisões societárias nos moldes do precedente Arduino LLC vs. Arduino SRL);
+  • Camada E (Software Embarcado — Lei nº 9.609/98, Art. 2º e Art. 4º): código-fonte funcional desenvolvido em ${p.linguagem_firmware};
+  • Camada F (Solução Técnica — Lei nº 9.279/96, Arts. 8º, 9º, 24 e 25 c/c Resolução INPI nº 158/2016): direitos de requerer Patente de Invenção ou Modelo de Utilidade sobre a funcionalidade eletromecânica ou processo assistido por software com efeito técnico físico.
 
 3. DO ENQUADRAMENTO RECOMENDADO PELO OBSERVATÓRIO DE PI
+  • Classificação Internacional de Patentes (CIP/IPC): ${corr.codigos_cip.join(' | ')}
   • Proteção Primária no INPI: ${d.protecao_inpi_primaria}
   • Proteção Complementar no INPI: ${d.protecao_inpi_secundaria}
   • Regime Definido para a Camada A (Hardware): ${d.licenca_hw_recomendada}
@@ -1078,31 +1122,36 @@ Nos termos da Lei nº 9.610/1998 (LDA) e da Lei nº 9.279/1996 (LPI), a presente
 4.1. Em estrita observância ao Art. 129 e Art. 189 da Lei nº 9.279/1996 (LPI), esta licença técnica NÃO concede qualquer direito de uso sobre a denominação comercial, marca ou logotipo associados a "${p.nome_projeto}" ou "${p.instituicao_empresa}".
 4.2. Terceiros podem fabricar e vender livremente placas derivadas deste projeto, mas estão proibidos de comercializá-las utilizando a marca oficial dos titulares sem contrato específico de licenciamento de marca, mantendo-se o signo distintivo como vetor exclusivo de controle de qualidade e sustentabilidade financeira do projeto.
 
-5. EFEITO DE PUBLICAÇÃO DEFENSIVA (ART. 11 DA LPI)
-A publicação irrestrita desta documentação incorpora a arquitetura ao estado da técnica, impedindo a apropriação patentária indevida por terceiros.
+5. EFEITO DE PUBLICAÇÃO DEFENSIVA (ART. 11 DA LPI) E CONFORMIDADE REGULATÓRIA (ANATEL)
+5.1. A publicação irrestrita desta documentação incorpora a arquitetura ao estado da técnica (Art. 11 da LPI), impedindo a apropriação patentária indevida por terceiros.
+5.2. O fabricante de placas derivadas que contenham transceptores de radiofrequência é integralmente responsável pela observância do Art. 162 da Lei nº 9.472/1997 e da Resolução ANATEL nº 715/2019.
 
 Brasil, ${dataHoje}.
 Resumo de Auditoria: SHA-${hashSimulado}`;
     } else if (tipoDocumento === 'LICENCIAMENTO_COMERCIAL_IOT') {
-        texto = `CONTRATO DE LICENCIAMENTO INDUSTRIAL, CONFIDENCIALIDADE E PROTEÇÃO DE TOPOGRAFIA E HARDWARE
+        texto = `CONTRATO DE LICENCIAMENTO INDUSTRIAL DE HARDWARE/IOT, CONFIDENCIALIDADE E CONFORMIDADE REGULATÓRIA (ANATEL E LGPD)
 
 ATIVO TECNOLÓGICO: ${p.nome_projeto}
 LICENCIANTE: ${p.instituicao_empresa} (${p.autor_nome} — Doc: ${p.autor_documento})
 
 1. OBJETO DO LICENCIAMENTO INDUSTRIAL
-1.1. Concessão de licença de exploração comercial da tecnologia "${p.nome_projeto}", abrangendo circuitos, layouts e firmware embarcado (${p.linguagem_firmware}).
-1.2. Especificação: ${p.resumo_tecnico}
+1.1. Concessão de licença de exploração comercial da tecnologia "${p.nome_projeto}", abrangendo circuitos, layouts de PCB, sensores e firmware embarcado (${p.linguagem_firmware}).
+1.2. Especificação Funcional: ${p.resumo_tecnico}
 
-2. TUTELA CONTRA ESPIONAGEM INDUSTRIAL E COPIA DE SEMICONDUTORES
+2. TUTELA CONTRA ESPIONAGEM INDUSTRIAL, CLONAGEM E COPIA DE SEMICONDUTORES
 2.1. O presente contrato protege ativos enquadrados em:
   • ${d.protecao_inpi_primaria}
   • ${d.protecao_inpi_secundaria}
 2.2. Em prevenção a ilícitos de apropriação indevida de projetos (a exemplo dos precedentes Waymo vs. Uber sobre sensores LiDAR e Intel vs. AMD sobre layouts de processadores), é estritamente vedado à LICENCIADA:
-  a) Realizar cópia não autorizada de configurações tridimensionais de máscaras de semicondutores (Lei nº 11.484/2007);
-  b) Extrair binários gravados em memória não volátil ou reproduzir a expressão gráfica dos esquemáticos confidenciais (Art. 195 da Lei nº 9.279/96 e Lei nº 9.609/98).
+  a) Realizar cópia não autorizada de configurações tridimensionais de máscaras de semicondutores (Lei nº 11.484/2007, Arts. 26 a 55);
+  b) Extrair binários gravados em memória Flash ou reproduzir a expressão gráfica dos esquemáticos confidenciais (Art. 195, inciso XI da Lei nº 9.279/96 e Lei nº 9.609/98).
 
-3. REMUNERAÇÃO E FORO
-3.1. A exploração comercial sujeita-se ao pagamento de royalties por unidade fabricada, permanecendo o dever de sigilo técnico vigente por 10 (dez) anos.
+3. CONFORMIDADE REGULATÓRIA EM TELECOMUNICAÇÕES (ANATEL) E DADOS (LGPD)
+3.1. A comercialização de unidades físicas dotadas de radiofrequência observará o Art. 162 da Lei nº 9.472/1997 e a Resolução ANATEL nº 715/2019.
+3.2. O tratamento de telemetria coletada pelos sensores observará o Art. 6º, Art. 11 e Art. 46, § 2º (Privacy by Design) da Lei nº 13.709/2018 (LGPD).
+
+4. REMUNERAÇÃO E FORO
+4.1. A exploração comercial sujeita-se ao pagamento de royalties por unidade fabricada, permanecendo o dever de sigilo técnico vigente por 10 (dez) anos.
 
 Brasil, ${dataHoje}.
 
@@ -1111,33 +1160,38 @@ LICENCIANTE: ${p.instituicao_empresa}
 
 [Resumo de Verificação: SHA-${hashSimulado}]`;
     } else if (tipoDocumento === 'MEMORIAL_INPI') {
-        texto = `DOSSIÊ TÉCNICO MULTICAMADA (A–F) PARA SUBMISSÃO AO INPI OU PUBLICAÇÃO DEFENSIVA
+        texto = `DOSSIÊ TÉCNICO-PATENTÁRIO MULTICAMADA (A–F) E MINUTA DE REIVINDICAÇÃO PARA SUBMISSÃO AO INPI
 
 1. IDENTIFICAÇÃO DO PROJETO E AUTORIA
 • Projeto: ${p.nome_projeto}
-• Autores: ${p.autor_nome} (${p.autor_documento})
-• Organização / ICT: ${p.instituicao_empresa}
+• Autores / Inventores: ${p.autor_nome} (${p.autor_documento})
+• Organização / ICT Depositante: ${p.instituicao_empresa}
 • Data de Emissão: ${dataHoje}
 • Índice de Protegibilidade: ${d.score_protegibilidade}/100 | Risco de Conflito: ${d.risco_contaminacao_licenca}
+• Classificação Internacional de Patentes (CIP / IPC): ${corr.codigos_cip.join(' ; ')}
 
-2. SÍNTESE DESCRITIVA DO APARELHO
+2. SÍNTESE DESCRITIVA DO PROBLEMA TÉCNICO E DA SOLUÇÃO FÍSICA (ART. 24 DA LPI)
 "${p.resumo_tecnico}"
 
-3. DIAGNÓSTICO NAS 6 CAMADAS DO HARDWARE (FUNDAMENTO: CF/88 ART. 5º, XXVII–XXIX)
-  • Camada A (Documentação Técnica — Lei 9.610/98): ${d.licenca_hw_recomendada}
-  • Camada B (Design do Produto — Lei 9.279/96 Art. 94): ${p.possui_design_externo_novo ? 'Registro de Desenho Industrial (10 a 25 anos)' : 'Não requerido'}
-  • Camada C (Semicondutores — Lei 11.484/2007): ${p.possui_topografia_chip ? 'Registro de Topografia de Circuito Integrado (10 anos / PADIS)' : 'Não requerido'}
-  • Camada D (Signos Distintivos — Lei 9.279/96 Art. 129): Registro de Marca no INPI (10 anos, renovável indefinidamente)
-  • Camada E (Software Embarcado — Lei 9.609/98): ${d.licenca_sw_recomendada} (Vigência de 50 anos)
-  • Camada F (Solução Técnica — Lei 9.279/96 Art. 8º/9º): ${d.protecao_inpi_primaria}
+3. MINUTA DA REIVINDICAÇÃO PATENTÁRIA INDEPENDENTE Nº 1 (ART. 25 DA LPI E IN INPI Nº 30/2013)
+${corr.texto_reivindicacao_1}
 
-4. PARECERES E APONTAMENTOS DOGMÁTICOS DO MOTOR DE DECISÃO
+4. DIAGNÓSTICO NAS 6 CAMADAS DO HARDWARE (FUNDAMENTO: CF/88 ART. 5º, XXVII–XXIX)
+  • Camada A (Documentação Técnica — Lei 9.610/98, Art. 7º, XI): ${d.licenca_hw_recomendada}
+  • Camada B (Design do Produto — Lei 9.279/96, Art. 94): ${p.possui_design_externo_novo ? 'Registro de Desenho Industrial (10 a 25 anos)' : 'Não requerido'}
+  • Camada C (Semicondutores — Lei 11.484/2007, Arts. 26–55): ${p.possui_topografia_chip ? 'Registro de Topografia de Circuito Integrado (10 anos / PADIS)' : 'Não requerido'}
+  • Camada D (Signos Distintivos — Lei 9.279/96, Art. 129): Registro de Marca no INPI — Classe NCL 9 (10 anos, renovável indefinidamente)
+  • Camada E (Software Embarcado — Lei 9.609/98, Art. 2º e 3º): ${d.licenca_sw_recomendada} (Vigência de 50 anos — Depósito Hash SHA-512)
+  • Camada F (Solução Técnica — Lei 9.279/96, Art. 8º/9º e Res. INPI 158/2016): ${d.protecao_inpi_primaria}
+
+5. PARECERES E APONTAMENTOS DOGMÁTICOS DO MOTOR DE DECISÃO (INCLUINDO ANATEL E LGPD)
 ${d.alertas_licenca.map(a => `  • [${a.nivel}] ${a.titulo}:\n    ${a.descricao}`).join('\n\n')}
 
-5. ROTEIRO DE PROVIDÊNCIAS JUNTO AO INPI E AO NIT
-  [ ] Protocolar pedido de Registro de Marca (Camada D) no sistema e-Marcas para garantir exclusividade nominativa (Art. 129 da LPI).
-  [ ] Gerar hash SHA-512 do código-fonte em ${p.linguagem_firmware} para depósito probatório no e-Software (Camada E).
-  [ ] Avaliar depósito patentário (Camada F) dentro do Período de Graça de 12 meses (Art. 12 da LPI) ou formalizar Publicação Defensiva (Art. 11 da LPI).
+6. ROTEIRO DE PROVIDÊNCIAS PRÁTICAS JUNTO AO SETOR JURÍDICO, INPI, ANATEL E NIT
+  [ ] Protocolar pedido de Registro de Marca (Camada D) no sistema e-Marcas (Classe NCL 9) para garantir exclusividade nominativa (Art. 129 da LPI).
+  [ ] Gerar hash SHA-512 do código-fonte em ${p.linguagem_firmware} para depósito probatório no e-Software (Camada E — Art. 3º da Lei 9.609/98).
+  [ ] Submeter o Relatório Descritivo (Art. 24 LPI) e o Quadro Reivindicatório acima (Art. 25 LPI) no sistema e-Patentes, observando a Resolução INPI nº 158/2016.
+  [ ] Verificar a conformidade do transceptor de radiofrequência perante o Art. 162 da Lei nº 9.472/97 e Resolução ANATEL nº 715/2019.
   [ ] Caso haja vínculo com ICT pública, submeter este dossiê ao Núcleo de Inovação Tecnológica (NIT) nos termos da Lei nº 10.973/2004.
 
 Observatório de Propriedade Intelectual e Hardware Aberto.
@@ -1195,7 +1249,7 @@ function renderizarTabelaHistorico() {
     if (!tbody) return;
     const lista = JSON.parse(localStorage.getItem('historico_observatorio_pi') || '[]');
     if (lista.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#cbd5e1;">Nenhuma avaliação processada nesta sessão. Selecione um caso na Aba 01 e clique em Processar Diagnóstico.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#cbd5e1;">Nenhuma avaliação processada nesta sessão. Descreva seu caso na Aba 01 e clique em Analisar Meu Caso.</td></tr>';
         return;
     }
     tbody.innerHTML = lista.map(item => `
@@ -1289,9 +1343,12 @@ function inicializarBarraRolagemCantoDireito() {
     setTimeout(atualizarPosicaoThumb, 80);
 }
 
-// Inicialização automática com o Caso 1 (Arduino) carregado
+// Inicialização automática com um caso real de IoT + Hardware + Patente para o relatório já iniciar populado
 document.addEventListener('DOMContentLoaded', () => {
-    const c = CENARIOS_TESTE.cenario1_arduino;
+    const c = CASO_BASE_INICIAL;
+    const campoRelato = document.getElementById('relato_livre_usuario');
+    if (campoRelato) campoRelato.value = c.relato_livre;
+
     document.getElementById('nome_projeto').value = c.nome_projeto;
     document.getElementById('autor_nome').value = c.autor_nome;
     document.getElementById('autor_documento').value = c.autor_documento;
@@ -1299,6 +1356,15 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('instituicao_empresa').value = c.instituicao_empresa;
     document.getElementById('resumo_tecnico').value = c.resumo_tecnico;
     document.getElementById('grau_novidade_hardware').value = c.grau_novidade_hardware;
+    if (document.getElementById('divulgacao_previa')) {
+        document.getElementById('divulgacao_previa').value = c.divulgacao_previa;
+    }
+    if (document.getElementById('conectividade_iot_rf')) {
+        document.getElementById('conectividade_iot_rf').value = c.conectividade_iot_rf;
+    }
+    if (document.getElementById('telemetria_dados_iot')) {
+        document.getElementById('telemetria_dados_iot').value = c.telemetria_dados_iot;
+    }
     document.getElementById('possui_pcb_customizada').checked = c.possui_pcb_customizada;
     document.getElementById('possui_topografia_chip').checked = c.possui_topografia_chip;
     document.getElementById('possui_design_externo_novo').checked = c.possui_design_externo_novo;
@@ -1309,6 +1375,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('vinculacao_firmware').value = c.vinculacao_firmware;
     document.getElementById('modelo_negocio').value = c.modelo_negocio;
     document.getElementById('titularidade_tipo').value = c.titularidade_tipo;
+
     const campoCodigo = document.getElementById('trecho_codigo_inspecao');
     if (campoCodigo) {
         campoCodigo.value = c.trecho_codigo || '';

@@ -140,17 +140,49 @@ function executarMotorDecisao(array $dados): array {
         $recomendacoesInpi[] = [
             'codigo' => 'RPC',
             'titulo' => 'Camada E — Regime Especial de Software Embarcado (e-Software INPI)',
-            'base_legal' => 'Lei nº 9.609/1998 (Art. 2º e Art. 4º) e Lei nº 9.610/1998',
-            'prioridade' => 'Tutela Autoral de 50 Anos (Registro Facultativo)',
+            'base_legal' => 'Lei nº 9.609/1998 (Arts. 2º, 3º e 4º) e Lei nº 9.610/1998 (Art. 7º, XII)',
+            'prioridade' => 'Tutela Autoral de 50 Anos (Prova de Autoria SHA-512)',
             'prazo' => '50 anos a partir de 1º de janeiro do ano subsequente à publicação',
             'justificativa' => 'O firmware equipara-se às obras literárias. O depósito do resumo Hash SHA-512 no INPI garante segurança probatória imediata e resguarda a titularidade laboral prevista no Art. 4º da Lei nº 9.609/1998.'
+        ];
+    }
+
+    // REGULAÇÃO SETORIAL DE IOT: ANATEL (Lei 9.472/97) E LGPD (Lei 13.709/18)
+    $conectividadeRf = $dados['conectividade_iot_rf'] ?? 'MODULO_RF_HOMOLOGADO';
+    $telemetriaIot = $dados['telemetria_dados_iot'] ?? 'DADOS_AMBIENTAIS_MAQUINA';
+
+    if ($conectividadeRf === 'TRANSCEPTOR_RF_CUSTOM') {
+        $alertasLicenca[] = [
+            'nivel' => 'ATENCAO',
+            'titulo' => 'Obrigação Regulatória de Telecomunicações — Homologação de Rádio Customizado na ANATEL (Lei nº 9.472/1997, Art. 162)',
+            'descricao' => 'Como o hardware implementa transceptor de radiofrequência ou antena própria na PCB, o Art. 162 da Lei Geral de Telecomunicações proíbe sua comercialização sem prévia homologação da ANATEL (Resolução nº 715/2019 e Ato nº 14448/2017).'
+        ];
+    } elseif ($conectividadeRf === 'MODULO_RF_HOMOLOGADO') {
+        $alertasLicenca[] = [
+            'nivel' => 'INFO',
+            'titulo' => 'Conformidade ANATEL para Dispositivos IoT com Módulo RF Pré-Homologado (Resolução ANATEL nº 715/2019)',
+            'descricao' => 'O uso de módulo de rádio já certificado pela ANATEL na PCB (ex: ESP32/LoRa) permite aproveitar os ensaios de RF, devendo exibir o código ANATEL no produto final.'
+        ];
+    }
+
+    if ($telemetriaIot === 'DADOS_BIOMETRICOS_SAUDE') {
+        $alertasLicenca[] = [
+            'nivel' => 'ATENCAO',
+            'titulo' => 'Dados Sensíveis na LGPD (Lei nº 13.709/18, Art. 11) e Regulação Sanitária ANVISA (RDC 751/22 e 657/22)',
+            'descricao' => 'Sensores que coletam sinais vitais/biometria tratam Dados Pessoais Sensíveis (Art. 11 da LGPD), exigindo criptografia (Art. 46 da LGPD) e enquadramento perante a ANVISA (Dispositivo Médico / SaMD).'
+        ];
+    } elseif ($telemetriaIot === 'DADOS_PESSOAIS_IOT') {
+        $alertasLicenca[] = [
+            'nivel' => 'INFO',
+            'titulo' => 'Segurança e Privacy by Design em IoT (LGPD — Lei nº 13.709/2018, Art. 6º e Art. 46, § 2º)',
+            'descricao' => 'A coleta de dados vinculados a pessoas naturais em dispositivos IoT exige medidas técnicas de segurança (criptografia TLS/AES e minimização na borda) desde a concepção do produto (Art. 46, § 2º da LGPD).'
         ];
     }
 
     // CAMADA A: DOCUMENTAÇÃO TÉCNICA E FRAGILIDADE DO COPYLEFT NO HARDWARE (Lei 9.610/98)
     $alertasLicenca[] = [
         'nivel' => 'INFO',
-        'titulo' => 'Camada A — Fragilidade Jurídica do Copyleft no Hardware (Lei nº 9.610/1998)',
+        'titulo' => 'Camada A — Fragilidade Jurídica do Copyleft no Hardware (Lei nº 9.610/1998, Art. 7º, XI)',
         'descricao' => 'Na Camada A (esquemáticos, leiaute de PCB e manuais), a Lei nº 9.610/1998 protege apenas a expressão gráfica do desenho, e não a função elétrica. Sem patente na Camada F, terceiros podem recriar o circuito funcional por engenharia reversa limpa sem violar a licença copyleft.'
     ];
 
