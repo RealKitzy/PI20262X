@@ -236,6 +236,7 @@ function inspecionarTrechoCodigo() {
         aviso.textContent = 'Trecho analisado: nenhum identificador restritivo (GPL/CERN-OHL-S) detectado até o momento.';
         aviso.style.color = '#10b981';
     }
+    atualizarBadgesAutoMarcacao();
 }
 
 // Tabela de Referência de Custos Oficiais (GRU INPI) e Vigências das 6 Camadas
@@ -260,8 +261,8 @@ const TABELA_CUSTOS_INPI = {
     },
     MARCA: {
         sistema: 'e-Marcas (INPI) — Camada D',
-        taxa_desconto: 'R$ 142,00 (Pedido com especificação pré-aprovada)',
         taxa_cheia: 'R$ 355,00 (Pedido com especificação pré-aprovada)',
+        taxa_desconto: 'R$ 142,00 (Pedido com especificação pré-aprovada)',
         prazo_medio: 'Vigência de 10 anos, renovável indefinidamente (Art. 129 e 133 da LPI)'
     },
     RPC: {
@@ -343,27 +344,108 @@ function limparFormularioCompleto() {
         inspecionarTrechoCodigo();
     }
 
+    atualizarBadgesAutoMarcacao();
+
     atualizarBalaoMascote(
-        'ANÁLISE PERSONALIZADA • VERIFIQUE SE SUA CRIAÇÃO JÁ EXISTE E REGISTRE SUA TITULARIDADE',
-        'Relate seu dispositivo com suas próprias palavras para verificarmos a anterioridade e se você pode reivindicá-lo.',
-        'Escreva na caixa de relato livre qual dispositivo você criou, quais sensores, placas e códigos utilizou e qual marca pretende usar. O sistema verificará no banco fixo e nas bases mundiais se o projeto já existe e permitirá <strong>fixar a titularidade em seu nome</strong>.'
+        'AUTO-MARCAÇÃO INTELIGENTE PRONTA • APENAS DESCREVA SEU PROJETO',
+        'Digite o nome e a descrição da sua criação. O sistema marca todos os parâmetros jurídicos sozinho!',
+        'Você não precisa escolher leis nem preencher dezenas de seletores. Basta escrever o que o seu projeto faz no campo principal e o motor auto-identificará as 6 camadas, as normas do INPI/ANATEL/LGPD e verificará se a criação já existe.'
     );
 }
 
-// Interpretador de Linguagem Natural: lê o caso descrito pelo usuário e correlaciona IoT, Hardware, Patente e Leis
-function interpretarRelatoLivre(gerarDireto) {
+// Renderiza as pílulas visuais (badges) do que o sistema auto-identificou e auto-marcou para o usuário
+function atualizarBadgesAutoMarcacao() {
+    const container = document.getElementById('badges-automarcacao');
+    if (!container) return;
+
+    const dados = coletarDadosFormularioAtual();
+    const mapaNovidade = {
+        INEDITO_INVENTIVO: 'Patente de Invenção IoT/HW (Art. 8º LPI + Res. 158/2016)',
+        MELHORIA_FUNCIONAL: 'Modelo de Utilidade (Art. 9º LPI)',
+        MODULOS_PRONTOS_COTS: 'Módulos Prontos COTS (Foco em Marca + Software)'
+    };
+    const mapaDivulgacao = {
+        SIGILO_MANTIDO: 'Sigilo Preservado (Art. 11 LPI)',
+        DIVULGADO_MENOS_12M: 'Período de Graça 12m (Art. 12 LPI)',
+        DIVULGADO_MAIS_12M: 'Domínio Público >12m (Art. 11 LPI)'
+    };
+    const mapaRf = {
+        MODULO_RF_HOMOLOGADO: 'Rádio IoT Pré-Homologado (ANATEL Res. 715)',
+        TRANSCEPTOR_RF_CUSTOM: 'Transceptor RF Customizado (Ensaio ANATEL Art. 162)',
+        SEM_RF_CABEADO: 'Cabeado / Sem Rádio RF'
+    };
+    const mapaLgpd = {
+        DADOS_AMBIENTAIS_MAQUINA: 'Telemetria Ambiental/Industrial (Segredo Art. 195 XI)',
+        DADOS_PESSOAIS_IOT: 'Dados Pessoais IoT (LGPD Privacy by Design)',
+        DADOS_BIOMETRICOS_SAUDE: 'Biometria / Saúde (LGPD Art. 11 + ANVISA SaMD)'
+    };
+    const mapaTitularidade = {
+        AUTONOMO_EMPRESA: 'Titularidade Própria / Startup',
+        PARCERIA_COAUTORIA: 'Coautoria / Sócios (Cessão + Marca Unificada)',
+        VINCULO_EMPREGATICIO_ICT: 'Vínculo ICT / Universidade (Submissão ao NIT)'
+    };
+    const mapaModelo = {
+        COMERCIAL_FECHADO: 'Exploração Industrial / Comercial',
+        HIBRIDO_HW_ABERTO_SW_FECHADO: 'Híbrido (Placa Aberta + Marca/SW Protegidos)',
+        OPEN_SOURCE_TOTAL: 'Open Source Hardware & Software (OSHWA)',
+        PUBLICACAO_DEFENSIVA: 'Publicação Defensiva (Art. 11 LPI)'
+    };
+
+    const camadas = [
+        dados.possui_pcb_customizada ? 'Camada A (PCB)' : null,
+        dados.possui_design_externo_novo ? 'Camada B (Design 3D)' : null,
+        dados.possui_topografia_chip ? 'Camada C (Chip/Silício)' : null,
+        'Camada D (Marca NCL 9)',
+        dados.possui_firmware_proprio ? `Camada E (${dados.linguagem_firmware || 'Firmware'})` : null,
+        dados.grau_novidade_hardware !== 'MODULOS_PRONTOS_COTS' ? 'Camada F (Patente)' : null
+    ].filter(Boolean);
+
+    const itens = [
+        { rotulo: 'Enquadramento INPI', valor: mapaNovidade[dados.grau_novidade_hardware] || dados.grau_novidade_hardware, cor: 'rgba(249,115,22,0.18)', borda: 'rgba(249,115,22,0.5)' },
+        { rotulo: 'Camadas Ativadas', valor: camadas.join(' + '), cor: 'rgba(16,185,129,0.14)', borda: 'rgba(16,185,129,0.45)' },
+        { rotulo: 'Status de Sigilo', valor: mapaDivulgacao[dados.divulgacao_previa] || 'Sigilo Mantido', cor: 'rgba(56,189,248,0.14)', borda: 'rgba(56,189,248,0.45)' },
+        { rotulo: 'Regulação ANATEL', valor: mapaRf[dados.conectividade_iot_rf] || 'Módulo RF', cor: 'rgba(249,115,22,0.12)', borda: 'rgba(249,115,22,0.35)' },
+        { rotulo: 'Regulação LGPD/Dados', valor: mapaLgpd[dados.telemetria_dados_iot] || 'Telemetria', cor: 'rgba(168,85,247,0.14)', borda: 'rgba(168,85,247,0.4)' },
+        { rotulo: 'Titularidade & Negócio', valor: `${mapaTitularidade[dados.titularidade_tipo] || ''} • ${mapaModelo[dados.modelo_negocio] || ''}`, cor: 'rgba(255,255,255,0.05)', borda: 'rgba(255,255,255,0.18)' }
+    ];
+
+    container.innerHTML = itens.map(item => `
+        <span style="display:inline-flex;align-items:center;gap:0.35rem;padding:0.32rem 0.7rem;border-radius:999px;background:${item.cor};border:1px solid ${item.borda};font-size:0.77rem;color:#f8fafc;">
+            <strong style="color:var(--orange-light);">${item.rotulo}:</strong> ${item.valor}
+        </span>
+    `).join('');
+}
+
+// Auto-marca todos os 14 parâmetros técnicos e jurídicos em tempo real enquanto o usuário digita (sem exigir clique extra)
+function autoMarcarEnquantoDigita() {
+    const campo = document.getElementById('relato_livre_usuario');
+    if (!campo) return;
+    const textoOriginal = campo.value.trim();
+    if (!textoOriginal) {
+        atualizarBadgesAutoMarcacao();
+        return;
+    }
+    interpretarRelatoLivre(false, true);
+}
+
+// Interpretador de Linguagem Natural: lê o caso descrito pelo usuário e auto-marca IoT, Hardware, Patente e Leis
+function interpretarRelatoLivre(gerarDireto, modoSilencioso = false) {
     const campo = document.getElementById('relato_livre_usuario');
     const feedback = document.getElementById('feedback-relato-livre');
     if (!campo) return;
 
     const textoOriginal = campo.value.trim();
     if (!textoOriginal) {
-        alert('Por favor, descreva seu projeto de hardware/IoT e o que você deseja patentear ou proteger no campo de texto.');
-        campo.focus();
+        if (!modoSilencioso) {
+            alert('Por favor, descreva seu projeto de hardware/IoT e o que você deseja patentear ou proteger no campo de texto.');
+            campo.focus();
+        }
         return;
     }
 
-    const t = textoOriginal.toLowerCase();
+    const campoNome = document.getElementById('nome_projeto');
+    const nomeDigitado = campoNome ? campoNome.value.trim() : '';
+    const t = `${nomeDigitado} ${textoOriginal}`.toLowerCase();
     const achados = [];
 
     // 1. Identificar Titularidade / Vínculo (Art. 6º, 88-93 LPI, Art. 4º Lei 9.609/98 e Lei 10.973/04)
@@ -373,7 +455,7 @@ function interpretarRelatoLivre(gerarDireto) {
         titularidade = 'VINCULO_EMPREGATICIO_ICT';
         instituicao = 'Universidade / ICT (Gestão via Núcleo de Inovação Tecnológica — NIT)';
         achados.push('<strong>Titularidade Acadêmica / ICT (Lei nº 10.973/2004, Art. 16 e Art. 88 da LPI):</strong> projetos desenvolvidos utilizando infraestrutura universitária exigem comunicação formal ao NIT para definição de cotitularidade e depósito no INPI.');
-    } else if (/(s[oó]cio|cofundador|amigo|parceria|dupla|equipe|dividir|grupo|nossa equipe|desenvolvemos)/i.test(t)) {
+    } else if (/(s[oó]cio|cofundador|amigo|parceria|dupla|equipe|dividir|grupo|nossa equipe|desenvolvemos|criamos)/i.test(t)) {
         titularidade = 'PARCERIA_COAUTORIA';
         instituicao = 'Sociedade de Cofundadores / Cotitularidade Técnica';
         achados.push('<strong>Cotitularidade Societária (Art. 6º, § 3º e Art. 129 da LPI):</strong> recomendada formalização imediata de Cessão/Condomínio Patrimonial e unificação do registro de Marca para evitar cisão societária (precedente Arduino LLC vs. Arduino SRL).');
@@ -384,7 +466,7 @@ function interpretarRelatoLivre(gerarDireto) {
     if (/(mais de 1 ano|mais de um ano|h[aá] 2 anos|h[aá] dois anos|h[aá] 18 meses|dom[ií]nio p[uú]blico)/i.test(t)) {
         divulgacao = 'DIVULGADO_MAIS_12M';
         achados.push('<strong>Perda de Novidade Absoluta (Art. 11 da Lei nº 9.279/96):</strong> divulgação anterior a 12 meses impede concessão de Patente (PI/MU), convertendo a arquitetura em Estado da Técnica (proteção deve focar em Marca, Desenho Industrial residual e Software).');
-    } else if (/(youtube|github|feira|congresso|mostra|postei|publiquei|divulguei|apresentei|artigo|banca|v[ií]deo|m[eê]s|meses)/i.test(t)) {
+    } else if (/(youtube|github|feira|congresso|mostra|postei|publiquei|divulguei|apresentei|artigo|banca|v[ií]deo|h[aá] \d+ m[eê]s|h[aá] \d+ meses)/i.test(t)) {
         divulgacao = 'DIVULGADO_MENOS_12M';
         achados.push('<strong>Incidência do Período de Graça de 12 Meses (Art. 12 da Lei nº 9.279/96):</strong> a divulgação feita pelo próprio inventor há menos de 365 dias não prejudica a novidade, desde que o pedido de patente seja depositado no INPI antes de completar 1 ano.');
     } else {
@@ -418,7 +500,7 @@ function interpretarRelatoLivre(gerarDireto) {
     }
 
     // 5. Identificar Camadas Físicas (A, B, C) e Linguagem Embarcada (Camada E)
-    const temPcb = /(pcb|placa|esquem[aá]tico|kicad|altium|gerber|circuito|eletr[oô]nic|sonda|sensor|malha)/i.test(t) || true;
+    const temPcb = !/(sem placa|sem pcb|apenas software)/i.test(t);
     const temChip = /(chip|semicondutor|sil[ií]cio|asic|topografia|m[aá]scara|padis|vlsi|gdsii|cmos)/i.test(t);
     const temDesign = /(carca[cç]a|gabinete|3d|design|est[eé]tic|pl[aá]stic|formato|anat[oô]mic|pulseira|caixa|ornamental|inv[oó]lucro|imperme[aá]vel)/i.test(t);
     const temFirmware = !/(sem software|sem firmware|apenas mec[aâ]nico)/i.test(t);
@@ -478,13 +560,14 @@ function interpretarRelatoLivre(gerarDireto) {
         modelo = 'OPEN_SOURCE_TOTAL';
     }
 
-    // Extrair título técnico do projeto a partir do relato do usuário (se o campo nome_projeto estiver vazio ou genérico)
-    const primeiraFrase = textoOriginal.split(/[.!?]/)[0].trim();
-    const tituloGerado = primeiraFrase.length > 78
-        ? `${primeiraFrase.substring(0, 78)}...`
-        : primeiraFrase;
-
-    document.getElementById('nome_projeto').value = tituloGerado;
+    // Preservar o nome do projeto digitado pelo usuário, ou gerar automaticamente caso esteja em branco
+    if (!nomeDigitado) {
+        const primeiraFrase = textoOriginal.split(/[.!?]/)[0].trim();
+        const tituloGerado = primeiraFrase.length > 78
+            ? `${primeiraFrase.substring(0, 78)}...`
+            : primeiraFrase;
+        document.getElementById('nome_projeto').value = tituloGerado;
+    }
     if (!document.getElementById('autor_nome').value.trim()) {
         document.getElementById('autor_nome').value = 'Projetista(s) / Inventor(es) do Dispositivo';
     }
@@ -516,11 +599,19 @@ function interpretarRelatoLivre(gerarDireto) {
     document.getElementById('licenca_bibliotecas_terceiros').value = licSw;
     document.getElementById('modelo_negocio').value = modelo;
 
+    // Reaplicar inspeção de cabeçalho de código caso o usuário também tenha colado código
+    const campoCodigo = document.getElementById('trecho_codigo_inspecao');
+    if (campoCodigo && campoCodigo.value.trim()) {
+        inspecionarTrechoCodigo();
+    } else {
+        atualizarBadgesAutoMarcacao();
+    }
+
     if (feedback) {
         feedback.style.display = 'block';
         feedback.innerHTML = `
             <strong style="color: var(--accent-secondary); display: block; margin-bottom: 0.45rem;">
-                Correlação Engenharia ↔ Legislação Extraída do Seu Caso (${achados.length} vínculos normativos diretos):
+                Auto-Identificação Jurídica Concluída em Tempo Real (${achados.length} vínculos normativos marcados automaticamente):
             </strong>
             <ul style="margin: 0; padding-left: 1.25rem;">
                 ${achados.map(item => `<li style="margin-bottom: 0.3rem;">${item}</li>`).join('')}
@@ -528,11 +619,13 @@ function interpretarRelatoLivre(gerarDireto) {
         `;
     }
 
-    atualizarBalaoMascote(
-        'CORRELAÇÃO TÉCNICO-JURÍDICA E BUSCA DE EXISTÊNCIA REALIZADAS',
-        'Seu dispositivo foi decomposto nas 6 camadas e confrontado com o banco de anterioridade.',
-        'Identificamos se a sua criação já existe na base fixa ou nas bases globais e se você pode reivindicá-la em seu nome. Confira na <strong>Aba 02</strong> o painel de verificação de existência e o botão para <strong>fixar a titularidade no banco de dados</strong>.'
-    );
+    if (!modoSilencioso) {
+        atualizarBalaoMascote(
+            'CORRELAÇÃO TÉCNICO-JURÍDICA E BUSCA DE EXISTÊNCIA REALIZADAS',
+            'Seu dispositivo foi decomposto nas 6 camadas e confrontado com o banco de anterioridade.',
+            'Identificamos se a sua criação já existe na base fixa ou nas bases globais e se você pode reivindicá-la em seu nome. Confira na <strong>Aba 02</strong> o painel de verificação de existência e o botão para <strong>fixar a titularidade no banco de dados</strong>.'
+        );
+    }
 
     if (gerarDireto) {
         processarDiagnostico(null);
@@ -1485,6 +1578,18 @@ function coletarDadosFormularioAtual() {
 async function processarDiagnostico(event) {
     if (event) event.preventDefault();
 
+    // Garante que o relato livre sempre sincronize e auto-marque os parâmetros caso a gaveta avançada esteja fechada
+    const gaveta = document.getElementById('gaveta-parametros-avancados');
+    const relatoEl = document.getElementById('relato_livre_usuario');
+    const resumoEl = document.getElementById('resumo_tecnico');
+    if (relatoEl && relatoEl.value.trim()) {
+        if (!gaveta || !gaveta.open) {
+            autoMarcarEnquantoDigita();
+        } else if (resumoEl && !resumoEl.value.trim()) {
+            resumoEl.value = relatoEl.value.trim();
+        }
+    }
+
     const dados = coletarDadosFormularioAtual();
     ultimoProjetoAvaliado = dados;
 
@@ -2084,6 +2189,26 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (campoCodigo) {
         campoCodigo.value = c.trecho_codigo || '';
         inspecionarTrechoCodigo();
+    }
+
+    // Dispara auto-identificação inicial para preencher o resumo visual de badges e correlações
+    autoMarcarEnquantoDigita();
+    // Mantém os valores exatos do caso base inicial após exibir os achados
+    document.getElementById('modelo_negocio').value = c.modelo_negocio;
+    document.getElementById('titularidade_tipo').value = c.titularidade_tipo;
+    atualizarBadgesAutoMarcacao();
+
+    const campoNome = document.getElementById('nome_projeto');
+    if (campoNome) {
+        campoNome.addEventListener('input', () => autoMarcarEnquantoDigita());
+    }
+
+    const gaveta = document.getElementById('gaveta-parametros-avancados');
+    if (gaveta) {
+        gaveta.querySelectorAll('select, input').forEach(el => {
+            el.addEventListener('change', () => atualizarBadgesAutoMarcacao());
+            el.addEventListener('input', () => atualizarBadgesAutoMarcacao());
+        });
     }
 
     ultimoProjetoAvaliado = c;
