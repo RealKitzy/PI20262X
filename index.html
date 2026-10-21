@@ -28,6 +28,13 @@
                 </div>
             </div>
             <div class="topbar-actions">
+                <div class="engine-badge" id="badge-perfil-sessao" style="display: none;">
+                    <span class="engine-dot"></span>
+                    <span id="texto-perfil-sessao">Modo Guiado</span>
+                </div>
+                <button type="button" id="btn-trocar-perfil" class="btn-secondary no-print" style="display: none; padding: 0.48rem 0.95rem; font-size: 0.78rem;" onclick="voltarParaTelaInicial()">
+                    🔄 Trocar Perfil / Sair
+                </button>
                 <div class="engine-badge">
                     <span class="engine-dot"></span>
                     <span id="engine-status-text">Motor de Decisão Ativo</span>
@@ -36,292 +43,440 @@
         </div>
     </header>
 
-    <!-- Painel de Orientação Técnica (Autor / Projeto Final) -->
-    <section class="hero-banner">
-        <div class="anime-dialog-stage">
-            <div class="mascot-frame">
-                <img src="assets/img/umaru-logo.jpg" alt="Guia do Projeto" style="border-radius: 18px; border: 3px solid #f97316; object-fit: cover;">
-                <span class="mascot-status">PROJETO INTEGRADOR</span>
+    <!-- ======================================================================
+         PÁGINA INICIAL DE ACESSO: ESCOLHA ENTRE USUÁRIO (ETAPAS) E ADMINISTRADOR
+         ====================================================================== -->
+    <section id="tela-inicial-acesso" class="container" style="padding-top: clamp(1.8rem, 4vw, 3.2rem); padding-bottom: 3rem;">
+        <div class="card" style="border: 3px solid var(--orange-primary); max-width: 1120px; margin: 0 auto;">
+            <div style="display: grid; grid-template-columns: auto 1fr; gap: 1.6rem; align-items: center; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border-color);">
+                <div class="mascot-frame" style="width: 115px; height: 115px;">
+                    <img src="assets/img/umaru-logo.jpg" alt="Guia do Observatório" style="width: 100%; height: 100%; border-radius: 18px; border: 3px solid #f97316; object-fit: cover;">
+                </div>
+                <div>
+                    <span class="inpi-badge">PORTAL DE ENTRADA • OBSERVATÓRIO DE PROPRIEDADE INTELECTUAL E HARDWARE ABERTO</span>
+                    <h2 style="font-size: clamp(1.35rem, 2.2vw, 1.85rem); color: #fff; margin: 0.35rem 0 0.5rem;">
+                        Bem-vindo! Escolha como deseja acessar o sistema:
+                    </h2>
+                    <p style="color: var(--text-secondary); font-size: 0.95rem; margin: 0;">
+                        Selecione <strong>Usuário</strong> para registrar e proteger seu projeto passo a passo (um bloco por vez, com auto-marcação automática das leis), ou acesse como <strong>Administrador</strong> mediante login e senha para ter liberdade total sobre todas as abas e ferramentas do sistema.
+                    </p>
+                </div>
             </div>
 
-            <div class="manga-speech-bubble">
-                <span class="bubble-speaker-tag" id="mascote-tag">PREMISSA TEÓRICA — OBJETO HÍBRIDO E MULTICAMADA</span>
-                <h2 id="mascote-titulo">Por que o hardware é juridicamente mais complexo que o software no Brasil?</h2>
-                <p id="mascote-fala">
-                    Diferente de um programa ou livro composto apenas por código ou texto, o hardware não possui um "Código do Hardware Aberto" único no Brasil. Ele é um <strong>objeto híbrido dividido em 6 camadas</strong>: Documentação Técnica (Lei 9.610/98), Design Externo (LPI), Semicondutores/Chips (Lei 11.484/07), Marca (Art. 129 da LPI), Software Embarcado (Lei 9.609/98) e Solução Técnica (Patentes PI/MU). Construímos este sistema para diagnosticar cada camada, avaliar o uso de <strong>Publicação Defensiva</strong> e gerar as minutas contratuais adequadas.
-                </p>
-            </div>
+            <div class="grid-2" style="align-items: stretch; gap: 1.6rem;">
+                <!-- OPÇÃO 1: USUÁRIO / CLIENTE (SEM SENHA, POR ETAPAS BLOQUEADAS) -->
+                <div class="portal-role-card" id="card-escolha-usuario" style="background: rgba(24, 20, 34, 0.9); border: 2px solid rgba(249, 115, 22, 0.55); border-radius: var(--radius-md); padding: 1.75rem; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <span class="inpi-badge" style="background: rgba(16, 185, 129, 0.18); border-color: #10b981; color: #6ee7b7;">
+                            OPÇÃO 1 • ACESSO LIVRE DE SENHA (POR ETAPAS)
+                        </span>
+                        <h3 style="font-size: 1.35rem; color: #fff; margin: 0.6rem 0 0.5rem;">
+                            👤 Entrar como Usuário / Criador
+                        </h3>
+                        <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1.1rem;">
+                            Fluxo guiado e focado para quem deseja verificar se sua criação já existe e protegê-la sem precisar estudar leis. Você preencherá <strong>um bloco por vez</strong>, liberando cada etapa conforme avança:
+                        </p>
+                        <ul style="list-style: none; padding: 0; margin: 0 0 1.5rem 0; font-size: 0.86rem; color: var(--text-primary);">
+                            <li style="margin-bottom: 0.5rem;">🔒 <strong>Bloco 1:</strong> Identificação do Criador e Nome da Marca/Projeto</li>
+                            <li style="margin-bottom: 0.5rem;">🔒 <strong>Bloco 2:</strong> Relato Livre do Dispositivo (Liberado após o Bloco 1)</li>
+                            <li style="margin-bottom: 0.5rem;">🔒 <strong>Bloco 3:</strong> Auto-Marcação Jurídica e Busca de Existência (Liberado após o Bloco 2)</li>
+                            <li style="margin-bottom: 0.2rem;">🔒 <strong>Etapas 02 e 03:</strong> Diagnóstico de Anterioridade e Certificado SHA-512 (Liberados após envio)</li>
+                        </ul>
+                    </div>
+                    <button type="button" class="btn-primary" style="width: 100%; justify-content: center; padding: 1rem 1.4rem; font-size: 1rem;" onclick="entrarComoUsuario()">
+                        Iniciar Atendimento como Usuário (Passo a Passo) →
+                    </button>
+                </div>
 
-            <div class="hero-stats">
-                <div class="hero-stat-item">
-                    <strong>6 Camadas</strong>
-                    <span>Matriz A–F Completa</span>
-                </div>
-                <div class="hero-stat-item">
-                    <strong>9 Licenças</strong>
-                    <span>CERN, TAPR, Solderpad, CC, GPL</span>
-                </div>
-                <div class="hero-stat-item">
-                    <strong>4 Minutas</strong>
-                    <span>Contratos e Dossiê INPI</span>
+                <!-- OPÇÃO 2: ADMINISTRADOR (PEDE USUÁRIO owner E SENHA 2k26enjoyer) -->
+                <div class="portal-role-card" id="card-escolha-admin" style="background: rgba(24, 20, 34, 0.9); border: 2px solid var(--border-color); border-radius: var(--radius-md); padding: 1.75rem; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <span class="inpi-badge">
+                            OPÇÃO 2 • LIBERDADE TOTAL NO SITE (REQUER SENHA)
+                        </span>
+                        <h3 style="font-size: 1.35rem; color: #fff; margin: 0.6rem 0 0.5rem;">
+                            🛡️ Entrar como Administrador
+                        </h3>
+                        <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1rem;">
+                            Desbloqueia <strong>100% do sistema de uma só vez</strong>: navegação livre entre todas as 5 abas, todos os blocos abertos simultaneamente, gaveta dos 14 parâmetros legais, simulador de cópia por terceiros, catálogo legal e modelo DER.
+                        </p>
+
+                        <form id="form-login-admin" onsubmit="autenticarAdministrador(event)" style="background: rgba(12, 10, 20, 0.75); border: 1px solid rgba(249, 115, 22, 0.35); border-radius: var(--radius-sm); padding: 1.1rem; margin-bottom: 1rem;">
+                            <div class="form-group" style="margin-bottom: 0.75rem;">
+                                <label for="admin_user_input" style="font-size: 0.82rem;">Usuário do Administrador</label>
+                                <input type="text" id="admin_user_input" placeholder="Digite o usuário administrador" autocomplete="username" required>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0.75rem;">
+                                <label for="admin_pass_input" style="font-size: 0.82rem;">Senha de Acesso</label>
+                                <input type="password" id="admin_pass_input" placeholder="Digite a senha do administrador" autocomplete="current-password" required>
+                            </div>
+                            <div id="admin-login-erro" style="display: none; margin-bottom: 0.75rem; padding: 0.6rem 0.85rem; border-radius: 8px; background: rgba(239, 68, 68, 0.18); border: 1px solid #ef4444; color: #fca5a5; font-size: 0.82rem; font-weight: 600;"></div>
+                            <button type="submit" class="btn-secondary" style="width: 100%; justify-content: center; padding: 0.9rem 1.2rem; font-size: 0.95rem; border-color: var(--orange-primary); color: #fff;">
+                                🔓 Autenticar Administrador e Liberar Acesso Total →
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Navegação Principal por Abas -->
-    <nav class="nav-tabs">
-        <button class="tab-btn active" data-target="aba-diagnostico" onclick="alternarAba('aba-diagnostico')">
-            <span class="tab-num">01</span> Arquitetura (6 Camadas)
-        </button>
-        <button class="tab-btn" data-target="aba-relatorio" onclick="alternarAba('aba-relatorio')">
-            <span class="tab-num">02</span> Diagnóstico Multicamada
-        </button>
-        <button class="tab-btn" data-target="aba-minutas" onclick="alternarAba('aba-minutas')">
-            <span class="tab-num">03</span> Minutas e Contratos
-        </button>
-        <button class="tab-btn" data-target="aba-catalogo" onclick="alternarAba('aba-catalogo')">
-            <span class="tab-num">04</span> Matriz Legal e Licenças
-        </button>
-        <button class="tab-btn" data-target="aba-arquitetura" onclick="alternarAba('aba-arquitetura')">
-            <span class="tab-num">05</span> Modelo de Dados (DER)
-        </button>
-    </nav>
+    <!-- ======================================================================
+         CONTEÚDO PRINCIPAL DO SISTEMA (EXIBIDO APÓS ESCOLHER USUÁRIO OU ADMIN)
+         ====================================================================== -->
+    <div id="conteudo-sistema-principal" style="display: none;">
 
-    <main class="container">
-
-        <!-- ==================================================================
-             ABA 1: FORMULÁRIO DE ENTRADA DE ARQUITETURA HARDWARE / FIRMWARE / IOT
-             ================================================================== -->
-        <section id="aba-diagnostico" class="tab-panel active">
-
-            <form id="form-arquitetura" onsubmit="processarDiagnostico(event)" class="section-stack">
-
-                <!-- PASSO ÚNICO E DIRETO: O USUÁRIO SÓ DESCREVE O PROJETO E O SISTEMA AUTO-MARCA TUDO SOZINHO -->
-                <div class="card" style="border-color: rgba(249, 115, 22, 0.65);">
-                    <div class="card-header" style="margin-bottom: 1.25rem; padding-bottom: 1rem;">
-                        <div>
-                            <span class="inpi-badge">DIAGNÓSTICO AUTOMÁTICO INTELIGENTE • VOCÊ NÃO PRECISA ENTENDER DE LEIS</span>
-                            <h2>Conte o que Você Criou — O Sistema Identifica e Marca Tudo Automaticamente</h2>
-                            <p class="card-subtitle">Não perca tempo escolhendo filtros jurídicos: basta informar seu nome, o nome do projeto e explicar com suas palavras como ele funciona. Enquanto você digita, nosso motor identifica sensores, placas, conectividade IoT, software e marca todas as opções legais sozinho.</p>
-                        </div>
-                        <button type="button" class="btn-secondary" style="padding: 0.55rem 1rem; font-size: 0.82rem;" onclick="limparFormularioCompleto()">Limpar Tudo</button>
-                    </div>
-
-                    <!-- Identificação Básica Rápida -->
-                    <div class="grid-2" style="margin-bottom: 0.75rem;">
-                        <div class="form-group">
-                            <label for="nome_projeto">1. Qual o Nome do seu Projeto ou Marca? (Se ainda não tiver, deixe que criamos pelo relato)</label>
-                            <input type="text" id="nome_projeto" required oninput="autoMarcarEnquantoDigita()" placeholder="Ex: AgroNode — Sensor Inteligente de Irrigação">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="autor_nome">2. Seu Nome Completo (ou Nome dos Integrantes da Equipe)</label>
-                            <input type="text" id="autor_nome" required placeholder="Ex: João Silva e Maria Souza">
-                        </div>
-                    </div>
-
-                    <div class="grid-2" style="margin-bottom: 0.9rem;">
-                        <div class="form-group">
-                            <label for="autor_documento">3. Seu CPF ou CNPJ (Usado para travar a criação no seu nome)</label>
-                            <input type="text" id="autor_documento" required placeholder="000.000.000-00 ou 00.000.000/0001-00">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="autor_email">4. Seu E-mail de Contato</label>
-                            <input type="email" id="autor_email" required placeholder="voce@email.com.br">
-                        </div>
-                    </div>
-
-                    <!-- Caixa Principal onde a Pessoa Descreve o Projeto e Tudo é Auto-Marcado -->
-                    <div class="form-group" style="margin-bottom: 1rem;">
-                        <label for="relato_livre_usuario">5. Descreva seu Projeto com Suas Palavras (O que ele faz, quais peças/placas/sensores usa, se tem Wi-Fi/Bluetooth/LoRa, se tem carcaça 3D e se já postou em algum lugar):</label>
-                        <textarea id="relato_livre_usuario" rows="4" oninput="autoMarcarEnquantoDigita()" placeholder="Escreva normalmente sem se preocupar com termos jurídicos. Exemplo: Fiz na faculdade uma coleira inteligente para pets com placa PCB própria, ESP32 com GPS e Bluetooth, carcaça impressa em 3D e código em C++ que avisa no celular se o batimento do animal subir. Postei um vídeo no YouTube há 2 meses e quero vender fechado no mercado..."></textarea>
-                    </div>
-
-                    <!-- Inspetor Opcional de Código / Licença -->
-                    <div class="form-group" style="margin-bottom: 1.1rem;">
-                        <label for="trecho_codigo_inspecao">6. Tem algum trecho do código-fonte ou lista de bibliotecas usadas? Cole aqui (Opcional):</label>
-                        <textarea id="trecho_codigo_inspecao" rows="2" oninput="inspecionarTrechoCodigo(); autoMarcarEnquantoDigita();" placeholder="Opcional: cole aqui um pedaço do seu código (.ino, .c, .py) ou nomes de bibliotecas para o sistema detectar licenças automaticamente..."></textarea>
-                        <span class="form-help" id="resultado-inspecao-codigo">O sistema detecta sozinho licenças (MIT, GPL, LGPL, CERN-OHL, CC BY-SA) e linguagens.</span>
-                    </div>
-
-                    <!-- PAINEL VISUAL DE AUTO-MARCAÇÃO EM TEMPO REAL (MOSTRA O QUE O SISTEMA JÁ MARCOU SOZINHO) -->
-                    <div id="painel-resumo-automarcado" style="margin-bottom: 1.25rem; padding: 1.1rem 1.3rem; border-radius: var(--radius-md); background: rgba(249, 115, 22, 0.09); border: 1px solid rgba(249, 115, 22, 0.45);">
-                        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.7rem;">
-                            <strong style="color: var(--orange-light); font-size: 0.94rem;">
-                                ✨ Detecção e Auto-Marcação em Tempo Real (O sistema já preencheu tudo abaixo para você):
-                            </strong>
-                            <span style="font-size: 0.78rem; color: var(--text-secondary);">Atualizado automaticamente conforme sua descrição</span>
-                        </div>
-                        <div id="badges-automarcacao" style="display: flex; flex-wrap: wrap; gap: 0.55rem;"></div>
-                        <div id="feedback-relato-livre" style="display: none; margin-top: 0.85rem; padding-top: 0.75rem; border-top: 1px dashed rgba(249, 115, 22, 0.35); font-size: 0.87rem; color: var(--text-secondary); line-height: 1.55;"></div>
-                    </div>
-
-                    <!-- GAVETA OPCIONAL RECOLHIDA: OS 14 PARÂMETROS TÉCNICOS E JURÍDICOS QUE O SISTEMA AUTO-MARCOU -->
-                    <details id="gaveta-parametros-avancados" style="margin-bottom: 1.4rem; background: rgba(12, 10, 20, 0.65); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 0.9rem 1.2rem;">
-                        <summary style="cursor: pointer; font-weight: 600; color: var(--text-primary); font-size: 0.92rem; user-select: none;">
-                            ⚙️ Ver ou Ajustar Manualmente as 14 Classificações Técnicas e Jurídicas (Já Auto-Marcadas pelo Sistema)
-                        </summary>
-
-                        <div style="margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid var(--border-color);" class="section-stack">
-                            <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0;">
-                                Todos os campos abaixo foram selecionados automaticamente com base no seu texto. Você não precisa alterá-los, mas pode conferir ou ajustar qualquer item se desejar:
-                            </p>
-
-                            <div class="grid-2">
-                                <div class="form-group">
-                                    <label for="titularidade_tipo">Vínculo de Desenvolvimento (Auto-detectado)</label>
-                                    <select id="titularidade_tipo">
-                                        <option value="AUTONOMO_EMPRESA">Desenvolvimento Independente / Startup / Empresa Privada (Art. 6º LPI)</option>
-                                        <option value="PARCERIA_COAUTORIA">Sociedade de Cofundadores / Equipe em Coautoria (Art. 6º, § 3º LPI)</option>
-                                        <option value="VINCULO_EMPREGATICIO_ICT">Faculdade / TCC / Laboratório Universitário (ICT/NIT — Lei 10.973/04 e Art. 88 LPI)</option>
-                                    </select>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="instituicao_empresa">Organização / Startup / Faculdade Vinculada (Auto-preenchido)</label>
-                                    <input type="text" id="instituicao_empresa" required placeholder="Instituição ou Startup">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="resumo_tecnico">Resumo Técnico Estruturado para o INPI (Gerado automaticamente do seu relato)</label>
-                                <textarea id="resumo_tecnico" rows="2" required></textarea>
-                            </div>
-
-                            <div class="grid-3">
-                                <div class="form-group">
-                                    <label for="grau_novidade_hardware">Camada F — Enquadramento Patentário Auto-Detectado</label>
-                                    <select id="grau_novidade_hardware">
-                                        <option value="INEDITO_INVENTIVO">Patente de Invenção — Sistema Físico/IoT com Efeito Técnico (Art. 8º LPI e Res. INPI 158/16)</option>
-                                        <option value="MELHORIA_FUNCIONAL">Modelo de Utilidade — Nova Disposição Construtiva Funcional (Art. 9º LPI)</option>
-                                        <option value="MODULOS_PRONTOS_COTS">Módulos Comerciais Prontos sem Novo Efeito Físico (Proteger via Marca e Software)</option>
-                                    </select>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="usa_hardware_aberto_terceiros">Camada A — Origem dos Esquemáticos e PCB</label>
-                                    <select id="usa_hardware_aberto_terceiros">
-                                        <option value="NENHUM">Traçado de PCB e Esquemático 100% Autorais</option>
-                                        <option value="CERN_OHL_P">Derivado de Hardware Permissivo (CERN-OHL-P / TAPR / Solderpad)</option>
-                                        <option value="CERN_OHL_W">Derivado de Hardware sob Reciprocidade Fraca (CERN-OHL-W v2)</option>
-                                        <option value="CERN_OHL_S">Derivado de Hardware sob Reciprocidade Forte (CERN-OHL-S / CC BY-SA 4.0)</option>
-                                    </select>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="divulgacao_previa">Status de Divulgação Pública (Art. 11 e 12 LPI)</label>
-                                    <select id="divulgacao_previa">
-                                        <option value="SIGILO_MANTIDO">Mantido em Sigilo (Novidade Intacta — Art. 11 LPI)</option>
-                                        <option value="DIVULGADO_MENOS_12M">Divulgado há Menos de 12 Meses (Período de Graça — Art. 12 LPI)</option>
-                                        <option value="DIVULGADO_MAIS_12M">Divulgado há Mais de 12 Meses (Estado da Técnica — Art. 11 LPI)</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="grid-2">
-                                <div class="form-group">
-                                    <label for="conectividade_iot_rf">Conectividade Sem Fio / Rádio IoT (ANATEL — Lei 9.472/97)</label>
-                                    <select id="conectividade_iot_rf">
-                                        <option value="MODULO_RF_HOMOLOGADO">Usa Módulo Sem Fio Pré-Homologado (ESP32, LoRa, Wi-Fi, BLE — Res. 715/2019)</option>
-                                        <option value="TRANSCEPTOR_RF_CUSTOM">Circuito de Rádio / Antena Própria na PCB (Exige Ensaio Completo ANATEL)</option>
-                                        <option value="SEM_RF_CABEADO">Sem Radiofrequência (Cabeado / Isolado)</option>
-                                    </select>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="telemetria_dados_iot">Tipo de Dados Coletados pelos Sensores (LGPD e ANVISA)</label>
-                                    <select id="telemetria_dados_iot">
-                                        <option value="DADOS_AMBIENTAIS_MAQUINA">Dados Ambientais, Agrícolas ou de Máquina (Segredo Art. 195, XI LPI)</option>
-                                        <option value="DADOS_PESSOAIS_IOT">Dados Pessoais, GPS, Voz, Imagem ou Residencial (LGPD Art. 6º e 46)</option>
-                                        <option value="DADOS_BIOMETRICOS_SAUDE">Sinais Vitais, Saúde ou Biometria (LGPD Art. 11 + ANVISA RDC 751/22)</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="checkbox-group">
-                                <label class="checkbox-item">
-                                    <input type="checkbox" id="possui_pcb_customizada" checked>
-                                    <div>
-                                        <strong>Camada A e D — Placa de Circuito Impresso (PCB/Esquemático) e Marca Própria</strong>
-                                        <span>Auto-marcado quando há placa eletrônica, circuito ou marca própria (Lei 9.610/98 e Art. 129 LPI).</span>
-                                    </div>
-                                </label>
-                                <label class="checkbox-item">
-                                    <input type="checkbox" id="possui_topografia_chip">
-                                    <div>
-                                        <strong>Camada C — Projeto de Microchip em Silício / ASIC (Lei 11.484/07)</strong>
-                                        <span>Auto-marcado apenas quando há criação de máscara de semicondutor/silício próprio.</span>
-                                    </div>
-                                </label>
-                                <label class="checkbox-item">
-                                    <input type="checkbox" id="possui_design_externo_novo">
-                                    <div>
-                                        <strong>Camada B — Design Externo / Carcaça 3D / Gabinete Exclusivo (Art. 94 LPI)</strong>
-                                        <span>Auto-marcado quando há gabinete, carenagem, pulseira ou formato externo próprio.</span>
-                                    </div>
-                                </label>
-                                <label class="checkbox-item">
-                                    <input type="checkbox" id="possui_firmware_proprio" checked>
-                                    <div>
-                                        <strong>Camada E — Possui Código-Fonte / Firmware Embarcado (Lei 9.609/98)</strong>
-                                        <span>Auto-marcado quando há programação embarcada no microcontrolador.</span>
-                                    </div>
-                                </label>
-                            </div>
-
-                            <div class="grid-2">
-                                <div class="form-group">
-                                    <label for="linguagem_firmware">Linguagem / Plataforma Embarcada Detectada</label>
-                                    <input type="text" id="linguagem_firmware" value="C/C++ (ESP-IDF / FreeRTOS / MQTT)">
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="vinculacao_firmware">Gravação do Firmware na Memória</label>
-                                    <select id="vinculacao_firmware">
-                                        <option value="ESTATICA_MONOLITICA">Binário Direto na Memória Flash (Microcontrolador Padrão)</option>
-                                        <option value="DINAMICA_SO">Sistema Operacional Embarcado (Linux Embarcado / Raspberry)</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="grid-2">
-                                <div class="form-group">
-                                    <label for="licenca_bibliotecas_terceiros">Licença das Bibliotecas de Código Usadas</label>
-                                    <select id="licenca_bibliotecas_terceiros">
-                                        <option value="MIT_BSD_APACHE">Permissivas (MIT, Apache, BSD) ou Código 100% Próprio</option>
-                                        <option value="LGPL_ESTATICA">GNU LGPL (Copyleft Fraco)</option>
-                                        <option value="GPL_V2_V3">GNU GPL v2/v3 (Copyleft Forte)</option>
-                                    </select>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="modelo_negocio">Objetivo do Projeto (Auto-detectado)</label>
-                                    <select id="modelo_negocio">
-                                        <option value="COMERCIAL_FECHADO">Comercializar Produto Protegido / Patentear (Fechado)</option>
-                                        <option value="PUBLICACAO_DEFENSIVA">Publicação Defensiva (Impedir que concorrentes patenteiem — Art. 11 LPI)</option>
-                                        <option value="HIBRIDO_HW_ABERTO_SW_FECHADO">Híbrido (Placa Aberta + Marca e Código Protegidos)</option>
-                                        <option value="OPEN_SOURCE_TOTAL">100% Hardware e Software Abertos (Comunidade)</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </details>
-
-                    <!-- Botão Único e Direto -->
-                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; padding-top: 0.5rem;">
-                        <span style="font-size: 0.9rem; color: var(--text-secondary);">
-                            ✔ Tudo pronto: clique no botão ao lado para verificar se seu projeto já existe e registrar sua proteção.
-                        </span>
-                        <button type="submit" class="btn-primary" style="padding: 1rem 1.85rem; font-size: 1rem;">
-                            Verificar se Já Existe, Enquadrar nas Leis e Proteger Meu Projeto →
-                        </button>
-                    </div>
+        <!-- Painel de Orientação Técnica (Autor / Projeto Final) -->
+        <section class="hero-banner">
+            <div class="anime-dialog-stage">
+                <div class="mascot-frame">
+                    <img src="assets/img/umaru-logo.jpg" alt="Guia do Projeto" style="border-radius: 18px; border: 3px solid #f97316; object-fit: cover;">
+                    <span class="mascot-status">PROJETO INTEGRADOR</span>
                 </div>
 
-            </form>
+                <div class="manga-speech-bubble">
+                    <span class="bubble-speaker-tag" id="mascote-tag">PREMISSA TEÓRICA — OBJETO HÍBRIDO E MULTICAMADA</span>
+                    <h2 id="mascote-titulo">Por que o hardware é juridicamente mais complexo que o software no Brasil?</h2>
+                    <p id="mascote-fala">
+                        Diferente de um programa ou livro composto apenas por código ou texto, o hardware não possui um "Código do Hardware Aberto" único no Brasil. Ele é um <strong>objeto híbrido dividido em 6 camadas</strong>: Documentação Técnica (Lei 9.610/98), Design Externo (LPI), Semicondutores/Chips (Lei 11.484/07), Marca (Art. 129 da LPI), Software Embarcado (Lei 9.609/98) e Solução Técnica (Patentes PI/MU). Construímos este sistema para diagnosticar cada camada, avaliar o uso de <strong>Publicação Defensiva</strong> e gerar as minutas contratuais adequadas.
+                    </p>
+                </div>
+
+                <div class="hero-stats">
+                    <div class="hero-stat-item">
+                        <strong>6 Camadas</strong>
+                        <span>Matriz A–F Completa</span>
+                    </div>
+                    <div class="hero-stat-item">
+                        <strong>9 Licenças</strong>
+                        <span>CERN, TAPR, Solderpad, CC, GPL</span>
+                    </div>
+                    <div class="hero-stat-item">
+                        <strong>5 Documentos</strong>
+                        <span>Certificado SHA-512, Contratos e INPI</span>
+                    </div>
+                </div>
+            </div>
         </section>
+
+        <!-- Navegação Principal por Abas -->
+        <nav class="nav-tabs" id="nav-tabs-principal">
+            <button class="tab-btn active" id="tab-btn-diagnostico" data-target="aba-diagnostico" onclick="alternarAba('aba-diagnostico')">
+                <span class="tab-num">01</span> <span class="tab-label-text">Arquitetura (6 Camadas)</span>
+            </button>
+            <button class="tab-btn" id="tab-btn-relatorio" data-target="aba-relatorio" onclick="alternarAba('aba-relatorio')">
+                <span class="tab-num">02</span> <span class="tab-label-text">Diagnóstico Multicamada</span>
+            </button>
+            <button class="tab-btn" id="tab-btn-minutas" data-target="aba-minutas" onclick="alternarAba('aba-minutas')">
+                <span class="tab-num">03</span> <span class="tab-label-text">Minutas e Contratos</span>
+            </button>
+            <button class="tab-btn" id="tab-btn-catalogo" data-target="aba-catalogo" onclick="alternarAba('aba-catalogo')">
+                <span class="tab-num">04</span> <span class="tab-label-text">Matriz Legal e Licenças</span>
+            </button>
+            <button class="tab-btn" id="tab-btn-arquitetura" data-target="aba-arquitetura" onclick="alternarAba('aba-arquitetura')">
+                <span class="tab-num">05</span> <span class="tab-label-text">Modelo de Dados (DER)</span>
+            </button>
+        </nav>
+
+        <main class="container">
+
+            <!-- ==================================================================
+                 ABA 1: FORMULÁRIO DE ENTRADA DE ARQUITETURA HARDWARE / FIRMWARE / IOT
+                 ================================================================== -->
+            <section id="aba-diagnostico" class="tab-panel active">
+
+                <form id="form-arquitetura" onsubmit="processarDiagnostico(event)" novalidate class="section-stack">
+
+                    <div class="card" style="border-color: rgba(249, 115, 22, 0.65);">
+                        <div class="card-header" style="margin-bottom: 1.25rem; padding-bottom: 1rem;">
+                            <div>
+                                <span class="inpi-badge" id="badge-modo-formulario">DIAGNÓSTICO AUTOMÁTICO INTELIGENTE • VOCÊ NÃO PRECISA ENTENDER DE LEIS</span>
+                                <h2 id="titulo-card-formulario">Conte o que Você Criou — O Sistema Identifica e Marca Tudo Automaticamente</h2>
+                                <p class="card-subtitle" id="subtitulo-card-formulario">Não perca tempo escolhendo filtros jurídicos: preencha cada bloco em sequência. Enquanto você descreve seu projeto, nosso motor identifica sensores, placas, conectividade IoT, software e marca todas as opções legais sozinho.</p>
+                            </div>
+                            <button type="button" class="btn-secondary" style="padding: 0.55rem 1rem; font-size: 0.82rem;" onclick="limparFormularioCompleto()">Limpar Tudo</button>
+                        </div>
+
+                        <!-- Barra de Progresso de Blocos (Exibida no Modo Usuário para orientar o passo a passo) -->
+                        <div id="barra-etapas-usuario" style="display: none; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 1.4rem;">
+                            <div id="indicador-bloco-1" style="padding: 0.7rem 1rem; border-radius: 10px; border: 2px solid var(--orange-primary); background: rgba(249, 115, 22, 0.16); font-size: 0.83rem; font-weight: 700; color: #fff;">
+                                1️⃣ Bloco 1: Seus Dados e Marca (Ativo)
+                            </div>
+                            <div id="indicador-bloco-2" style="padding: 0.7rem 1rem; border-radius: 10px; border: 1px solid var(--border-color); background: rgba(15, 12, 24, 0.6); font-size: 0.83rem; color: var(--text-muted);">
+                                🔒 Bloco 2: Descrever o Projeto
+                            </div>
+                            <div id="indicador-bloco-3" style="padding: 0.7rem 1rem; border-radius: 10px; border: 1px solid var(--border-color); background: rgba(15, 12, 24, 0.6); font-size: 0.83rem; color: var(--text-muted);">
+                                🔒 Bloco 3: Auto-Marcação e Verificação
+                            </div>
+                        </div>
+
+                        <!-- ==============================================================
+                             BLOCO 1: IDENTIFICAÇÃO DO CRIADOR E NOME DO PROJETO / MARCA
+                             ============================================================== -->
+                        <div id="bloco-form-1" style="padding: 1.25rem; border-radius: var(--radius-md); background: rgba(15, 12, 24, 0.55); border: 1px solid rgba(249, 115, 22, 0.4); margin-bottom: 1.15rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.9rem;">
+                                <h3 style="font-size: 1.05rem; color: var(--orange-light); margin: 0;">
+                                    Bloco 1 — Identificação do Titular e Nome da Criação / Marca
+                                </h3>
+                                <span id="status-tag-bloco-1" class="inpi-badge" style="margin: 0;">ETAPA 1 DE 3</span>
+                            </div>
+
+                            <div class="grid-2" style="margin-bottom: 0.75rem;">
+                                <div class="form-group">
+                                    <label for="nome_projeto">1. Qual o Nome do seu Projeto ou Marca? (Se ainda não tiver, deixe em branco que criamos no Bloco 2)</label>
+                                    <input type="text" id="nome_projeto" placeholder="Ex: AgroNode — Sensor Inteligente de Irrigação">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="autor_nome">2. Seu Nome Completo (ou Nome dos Integrantes da Equipe)</label>
+                                    <input type="text" id="autor_nome" placeholder="Ex: João Silva e Maria Souza">
+                                </div>
+                            </div>
+
+                            <div class="grid-2" style="margin-bottom: 0.5rem;">
+                                <div class="form-group">
+                                    <label for="autor_documento">3. Seu CPF ou CNPJ (Usado para travar a criação no seu nome)</label>
+                                    <input type="text" id="autor_documento" placeholder="000.000.000-00 ou 00.000.000/0001-00">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="autor_email">4. Seu E-mail de Contato</label>
+                                    <input type="email" id="autor_email" placeholder="voce@email.com.br">
+                                </div>
+                            </div>
+
+                            <!-- Botão de Avanço do Bloco 1 (Apenas Modo Usuário) -->
+                            <div id="rodape-bloco-1-usuario" style="display: none; justify-content: flex-end; padding-top: 0.9rem; margin-top: 0.6rem; border-top: 1px solid var(--border-color);">
+                                <button type="button" class="btn-primary" style="padding: 0.8rem 1.5rem; font-size: 0.92rem;" onclick="avancarBlocoUsuario(2)">
+                                    Concluir Bloco 1 e Liberar Bloco 2 (Descrição do Projeto) →
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- ==============================================================
+                             BLOCO 2: RELATO LIVRE DO PROJETO E INSPEÇÃO DE CÓDIGO
+                             ============================================================== -->
+                        <div id="bloco-form-2" style="padding: 1.25rem; border-radius: var(--radius-md); background: rgba(15, 12, 24, 0.55); border: 1px solid rgba(249, 115, 22, 0.4); margin-bottom: 1.15rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.9rem;">
+                                <h3 style="font-size: 1.05rem; color: var(--orange-light); margin: 0;">
+                                    Bloco 2 — Descrição do Projeto com Suas Palavras e Código (Opcional)
+                                </h3>
+                                <span id="status-tag-bloco-2" class="inpi-badge" style="margin: 0;">ETAPA 2 DE 3</span>
+                            </div>
+
+                            <div class="form-group" style="margin-bottom: 1rem;">
+                                <label for="relato_livre_usuario">5. Descreva seu Projeto com Suas Palavras (O que ele faz, quais peças/placas/sensores usa, se tem Wi-Fi/Bluetooth/LoRa, se tem carcaça 3D e se já postou em algum lugar):</label>
+                                <textarea id="relato_livre_usuario" rows="4" oninput="autoMarcarEnquantoDigita()" placeholder="Escreva normalmente sem se preocupar com termos jurídicos. Exemplo: Fiz na faculdade uma coleira inteligente para pets com placa PCB própria, ESP32 com GPS e Bluetooth, carcaça impressa em 3D e código em C++ que avisa no celular se o batimento do animal subir. Postei um vídeo no YouTube há 2 meses e quero vender fechado no mercado..."></textarea>
+                            </div>
+
+                            <div class="form-group" style="margin-bottom: 0.5rem;">
+                                <label for="trecho_codigo_inspecao">6. Tem algum trecho do código-fonte ou lista de bibliotecas usadas? Cole aqui (Opcional):</label>
+                                <textarea id="trecho_codigo_inspecao" rows="2" oninput="inspecionarTrechoCodigo(); autoMarcarEnquantoDigita();" placeholder="Opcional: cole aqui um pedaço do seu código (.ino, .c, .py) ou nomes de bibliotecas para o sistema detectar licenças automaticamente..."></textarea>
+                                <span class="form-help" id="resultado-inspecao-codigo">O sistema detecta sozinho licenças (MIT, GPL, LGPL, CERN-OHL, CC BY-SA) e linguagens.</span>
+                            </div>
+
+                            <!-- Botão de Avanço do Bloco 2 (Apenas Modo Usuário) -->
+                            <div id="rodape-bloco-2-usuario" style="display: none; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.8rem; padding-top: 0.9rem; margin-top: 0.6rem; border-top: 1px solid var(--border-color);">
+                                <button type="button" class="btn-secondary" style="padding: 0.7rem 1.2rem; font-size: 0.85rem;" onclick="avancarBlocoUsuario(1)">
+                                    ← Voltar ao Bloco 1
+                                </button>
+                                <button type="button" class="btn-primary" style="padding: 0.8rem 1.5rem; font-size: 0.92rem;" onclick="avancarBlocoUsuario(3)">
+                                    Concluir Bloco 2 e Liberar Bloco 3 (Ver Auto-Marcação e Enviar) →
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- ==============================================================
+                             BLOCO 3: PAINEL AUTO-MARCADO E BOTÃO FINAL DE VERIFICAÇÃO
+                             ============================================================== -->
+                        <div id="bloco-form-3" style="padding: 1.25rem; border-radius: var(--radius-md); background: rgba(15, 12, 24, 0.55); border: 1px solid rgba(249, 115, 22, 0.4);">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.9rem;">
+                                <h3 style="font-size: 1.05rem; color: var(--orange-light); margin: 0;">
+                                    Bloco 3 — Resumo Jurídico Auto-Marcado pelo Sistema e Verificação de Existência
+                                </h3>
+                                <span id="status-tag-bloco-3" class="inpi-badge" style="margin: 0;">ETAPA 3 DE 3</span>
+                            </div>
+
+                            <!-- PAINEL VISUAL DE AUTO-MARCAÇÃO EM TEMPO REAL (MOSTRA O QUE O SISTEMA JÁ MARCOU SOZINHO) -->
+                            <div id="painel-resumo-automarcado" style="margin-bottom: 1.25rem; padding: 1.1rem 1.3rem; border-radius: var(--radius-md); background: rgba(249, 115, 22, 0.09); border: 1px solid rgba(249, 115, 22, 0.45);">
+                                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.7rem;">
+                                    <strong style="color: var(--orange-light); font-size: 0.94rem;">
+                                        ✨ Detecção e Auto-Marcação em Tempo Real (O sistema já preencheu tudo abaixo para você):
+                                    </strong>
+                                    <span style="font-size: 0.78rem; color: var(--text-secondary);">Atualizado automaticamente conforme sua descrição</span>
+                                </div>
+                                <div id="badges-automarcacao" style="display: flex; flex-wrap: wrap; gap: 0.55rem;"></div>
+                                <div id="feedback-relato-livre" style="display: none; margin-top: 0.85rem; padding-top: 0.75rem; border-top: 1px dashed rgba(249, 115, 22, 0.35); font-size: 0.87rem; color: var(--text-secondary); line-height: 1.55;"></div>
+                            </div>
+
+                            <!-- GAVETA OPCIONAL RECOLHIDA: OS 14 PARÂMETROS TÉCNICOS E JURÍDICOS QUE O SISTEMA AUTO-MARCOU -->
+                            <details id="gaveta-parametros-avancados" style="margin-bottom: 1.4rem; background: rgba(12, 10, 20, 0.65); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 0.9rem 1.2rem;">
+                                <summary style="cursor: pointer; font-weight: 600; color: var(--text-primary); font-size: 0.92rem; user-select: none;">
+                                    ⚙️ Ver ou Ajustar Manualmente as 14 Classificações Técnicas e Jurídicas (Já Auto-Marcadas pelo Sistema)
+                                </summary>
+
+                                <div style="margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid var(--border-color);" class="section-stack">
+                                    <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0;">
+                                        Todos os campos abaixo foram selecionados automaticamente com base no seu texto. Você não precisa alterá-los, mas pode conferir ou ajustar qualquer item se desejar:
+                                    </p>
+
+                                    <div class="grid-2">
+                                        <div class="form-group">
+                                            <label for="titularidade_tipo">Vínculo de Desenvolvimento (Auto-detectado)</label>
+                                            <select id="titularidade_tipo">
+                                                <option value="AUTONOMO_EMPRESA">Desenvolvimento Independente / Startup / Empresa Privada (Art. 6º LPI)</option>
+                                                <option value="PARCERIA_COAUTORIA">Sociedade de Cofundadores / Equipe em Coautoria (Art. 6º, § 3º LPI)</option>
+                                                <option value="VINCULO_EMPREGATICIO_ICT">Faculdade / TCC / Laboratório Universitário (ICT/NIT — Lei 10.973/04 e Art. 88 LPI)</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="instituicao_empresa">Organização / Startup / Faculdade Vinculada (Auto-preenchido)</label>
+                                            <input type="text" id="instituicao_empresa" placeholder="Instituição ou Startup">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="resumo_tecnico">Resumo Técnico Estruturado para o INPI (Gerado automaticamente do seu relato)</label>
+                                        <textarea id="resumo_tecnico" rows="2"></textarea>
+                                    </div>
+
+                                    <div class="grid-3">
+                                        <div class="form-group">
+                                            <label for="grau_novidade_hardware">Camada F — Enquadramento Patentário Auto-Detectado</label>
+                                            <select id="grau_novidade_hardware">
+                                                <option value="INEDITO_INVENTIVO">Patente de Invenção — Sistema Físico/IoT com Efeito Técnico (Art. 8º LPI e Res. INPI 158/16)</option>
+                                                <option value="MELHORIA_FUNCIONAL">Modelo de Utilidade — Nova Disposição Construtiva Funcional (Art. 9º LPI)</option>
+                                                <option value="MODULOS_PRONTOS_COTS">Módulos Comerciais Prontos sem Novo Efeito Físico (Proteger via Marca e Software)</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="usa_hardware_aberto_terceiros">Camada A — Origem dos Esquemáticos e PCB</label>
+                                            <select id="usa_hardware_aberto_terceiros">
+                                                <option value="NENHUM">Traçado de PCB e Esquemático 100% Autorais</option>
+                                                <option value="CERN_OHL_P">Derivado de Hardware Permissivo (CERN-OHL-P / TAPR / Solderpad)</option>
+                                                <option value="CERN_OHL_W">Derivado de Hardware sob Reciprocidade Fraca (CERN-OHL-W v2)</option>
+                                                <option value="CERN_OHL_S">Derivado de Hardware sob Reciprocidade Forte (CERN-OHL-S / CC BY-SA 4.0)</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="divulgacao_previa">Status de Divulgação Pública (Art. 11 e 12 LPI)</label>
+                                            <select id="divulgacao_previa">
+                                                <option value="SIGILO_MANTIDO">Mantido em Sigilo (Novidade Intacta — Art. 11 LPI)</option>
+                                                <option value="DIVULGADO_MENOS_12M">Divulgado há Menos de 12 Meses (Período de Graça — Art. 12 LPI)</option>
+                                                <option value="DIVULGADO_MAIS_12M">Divulgado há Mais de 12 Meses (Estado da Técnica — Art. 11 LPI)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="grid-2">
+                                        <div class="form-group">
+                                            <label for="conectividade_iot_rf">Conectividade Sem Fio / Rádio IoT (ANATEL — Lei 9.472/97)</label>
+                                            <select id="conectividade_iot_rf">
+                                                <option value="MODULO_RF_HOMOLOGADO">Usa Módulo Sem Fio Pré-Homologado (ESP32, LoRa, Wi-Fi, BLE — Res. 715/2019)</option>
+                                                <option value="TRANSCEPTOR_RF_CUSTOM">Circuito de Rádio / Antena Própria na PCB (Exige Ensaio Completo ANATEL)</option>
+                                                <option value="SEM_RF_CABEADO">Sem Radiofrequência (Cabeado / Isolado)</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="telemetria_dados_iot">Tipo de Dados Coletados pelos Sensores (LGPD e ANVISA)</label>
+                                            <select id="telemetria_dados_iot">
+                                                <option value="DADOS_AMBIENTAIS_MAQUINA">Dados Ambientais, Agrícolas ou de Máquina (Segredo Art. 195, XI LPI)</option>
+                                                <option value="DADOS_PESSOAIS_IOT">Dados Pessoais, GPS, Voz, Imagem ou Residencial (LGPD Art. 6º e 46)</option>
+                                                <option value="DADOS_BIOMETRICOS_SAUDE">Sinais Vitais, Saúde ou Biometria (LGPD Art. 11 + ANVISA RDC 751/22)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="checkbox-group">
+                                        <label class="checkbox-item">
+                                            <input type="checkbox" id="possui_pcb_customizada" checked>
+                                            <div>
+                                                <strong>Camada A e D — Placa de Circuito Impresso (PCB/Esquemático) e Marca Própria</strong>
+                                                <span>Auto-marcado quando há placa eletrônica, circuito ou marca própria (Lei 9.610/98 e Art. 129 LPI).</span>
+                                            </div>
+                                        </label>
+                                        <label class="checkbox-item">
+                                            <input type="checkbox" id="possui_topografia_chip">
+                                            <div>
+                                                <strong>Camada C — Projeto de Microchip em Silício / ASIC (Lei 11.484/07)</strong>
+                                                <span>Auto-marcado apenas quando há criação de máscara de semicondutor/silício próprio.</span>
+                                            </div>
+                                        </label>
+                                        <label class="checkbox-item">
+                                            <input type="checkbox" id="possui_design_externo_novo">
+                                            <div>
+                                                <strong>Camada B — Design Externo / Carcaça 3D / Gabinete Exclusivo (Art. 94 LPI)</strong>
+                                                <span>Auto-marcado quando há gabinete, carenagem, pulseira ou formato externo próprio.</span>
+                                            </div>
+                                        </label>
+                                        <label class="checkbox-item">
+                                            <input type="checkbox" id="possui_firmware_proprio" checked>
+                                            <div>
+                                                <strong>Camada E — Possui Código-Fonte / Firmware Embarcado (Lei 9.609/98)</strong>
+                                                <span>Auto-marcado quando há programação embarcada no microcontrolador.</span>
+                                            </div>
+                                        </label>
+                                    </div>
+
+                                    <div class="grid-2">
+                                        <div class="form-group">
+                                            <label for="linguagem_firmware">Linguagem / Plataforma Embarcada Detectada</label>
+                                            <input type="text" id="linguagem_firmware" value="C/C++ (ESP-IDF / FreeRTOS / MQTT)">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="vinculacao_firmware">Gravação do Firmware na Memória</label>
+                                            <select id="vinculacao_firmware">
+                                                <option value="ESTATICA_MONOLITICA">Binário Direto na Memória Flash (Microcontrolador Padrão)</option>
+                                                <option value="DINAMICA_SO">Sistema Operacional Embarcado (Linux Embarcado / Raspberry)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="grid-2">
+                                        <div class="form-group">
+                                            <label for="licenca_bibliotecas_terceiros">Licença das Bibliotecas de Código Usadas</label>
+                                            <select id="licenca_bibliotecas_terceiros">
+                                                <option value="MIT_BSD_APACHE">Permissivas (MIT, Apache, BSD) ou Código 100% Próprio</option>
+                                                <option value="LGPL_ESTATICA">GNU LGPL (Copyleft Fraco)</option>
+                                                <option value="GPL_V2_V3">GNU GPL v2/v3 (Copyleft Forte)</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="modelo_negocio">Objetivo do Projeto (Auto-detectado)</label>
+                                            <select id="modelo_negocio">
+                                                <option value="COMERCIAL_FECHADO">Comercializar Produto Protegido / Patentear (Fechado)</option>
+                                                <option value="PUBLICACAO_DEFENSIVA">Publicação Defensiva (Impedir que concorrentes patenteiem — Art. 11 LPI)</option>
+                                                <option value="HIBRIDO_HW_ABERTO_SW_FECHADO">Híbrido (Placa Aberta + Marca e Código Protegidos)</option>
+                                                <option value="OPEN_SOURCE_TOTAL">100% Hardware e Software Abertos (Comunidade)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </details>
+
+                            <!-- Botão Final do Bloco 3 -->
+                            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; padding-top: 0.5rem;">
+                                <button type="button" id="btn-voltar-bloco-2" class="btn-secondary" style="display: none; padding: 0.75rem 1.2rem; font-size: 0.85rem;" onclick="avancarBlocoUsuario(2)">
+                                    ← Voltar ao Bloco 2
+                                </button>
+                                <span style="font-size: 0.9rem; color: var(--text-secondary);">
+                                    ✔ Tudo pronto: clique no botão ao lado para verificar se seu projeto já existe e liberar o Diagnóstico (Etapa 02).
+                                </span>
+                                <button type="submit" class="btn-primary" style="padding: 1rem 1.85rem; font-size: 1rem;">
+                                    Verificar se Já Existe, Enquadrar nas Leis e Proteger Meu Projeto →
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </section>
 
         <!-- ==================================================================
              ABA 2: RELATÓRIO DE DIAGNÓSTICO DO MOTOR DE DECISÃO
@@ -891,6 +1046,7 @@
         </section>
 
     </main>
+    </div><!-- /#conteudo-sistema-principal -->
 
     <!-- Rodapé Institucional com os Nomes do Grupo -->
     <footer class="footer">

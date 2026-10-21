@@ -10,6 +10,11 @@ let ultimoDiagnostico = null;
 let ultimaVerificacaoExistencia = null;
 let cacheRegistrosFixos = [];
 
+// Estado de Perfil de Acesso (Portal Inicial: 'USUARIO' em etapas guiadas vs. 'ADMIN' com liberdade total)
+let perfilAcessoAtual = null; // 'USUARIO' | 'ADMIN'
+let blocoAtualUsuario = 1; // 1 = Bloco 1, 2 = Bloco 2, 3 = Bloco 3
+let etapaAbaLiberadaUsuario = 1; // 1 = Aba 01, 2 = Aba 02, 3 = Aba 03
+
 // Acervo base inicial do INPI / OMPI / Open Hardware (sincronizado com database/schema.sql e api/anterioridade.php)
 const ACERVO_BASE_INPI_PADRAO = [
     {
@@ -311,7 +316,11 @@ function limparFormularioCompleto() {
     const feedback = document.getElementById('feedback-relato-livre');
     if (feedback) feedback.style.display = 'none';
 
-    document.getElementById('nome_projeto').value = '';
+    const campoNome = document.getElementById('nome_projeto');
+    if (campoNome) {
+        campoNome.value = '';
+        campoNome.dataset.autoGerado = 'true';
+    }
     document.getElementById('autor_nome').value = '';
     document.getElementById('autor_documento').value = '';
     document.getElementById('autor_email').value = '';
@@ -419,9 +428,10 @@ function atualizarBadgesAutoMarcacao() {
 // Auto-marca todos os 14 parâmetros técnicos e jurídicos em tempo real enquanto o usuário digita (sem exigir clique extra)
 function autoMarcarEnquantoDigita() {
     const campo = document.getElementById('relato_livre_usuario');
-    if (!campo) return;
-    const textoOriginal = campo.value.trim();
-    if (!textoOriginal) {
+    const campoNome = document.getElementById('nome_projeto');
+    const textoRelato = campo ? campo.value.trim() : '';
+    const textoNome = campoNome ? campoNome.value.trim() : '';
+    if (!textoRelato && !textoNome) {
         atualizarBadgesAutoMarcacao();
         return;
     }
@@ -431,10 +441,13 @@ function autoMarcarEnquantoDigita() {
 // Interpretador de Linguagem Natural: lê o caso descrito pelo usuário e auto-marca IoT, Hardware, Patente e Leis
 function interpretarRelatoLivre(gerarDireto, modoSilencioso = false) {
     const campo = document.getElementById('relato_livre_usuario');
+    const campoNome = document.getElementById('nome_projeto');
     const feedback = document.getElementById('feedback-relato-livre');
     if (!campo) return;
 
-    const textoOriginal = campo.value.trim();
+    const textoRelato = campo.value.trim();
+    const nomeManual = (campoNome && campoNome.dataset.autoGerado !== 'true') ? campoNome.value.trim() : '';
+    const textoOriginal = textoRelato || nomeManual;
     if (!textoOriginal) {
         if (!modoSilencioso) {
             alert('Por favor, descreva seu projeto de hardware/IoT e o que você deseja patentear ou proteger no campo de texto.');
@@ -443,9 +456,7 @@ function interpretarRelatoLivre(gerarDireto, modoSilencioso = false) {
         return;
     }
 
-    const campoNome = document.getElementById('nome_projeto');
-    const nomeDigitado = campoNome ? campoNome.value.trim() : '';
-    const t = `${nomeDigitado} ${textoOriginal}`.toLowerCase();
+    const t = `${nomeManual} ${textoRelato}`.toLowerCase();
     const achados = [];
 
     // 1. Identificar Titularidade / Vínculo (Art. 6º, 88-93 LPI, Art. 4º Lei 9.609/98 e Lei 10.973/04)
@@ -560,22 +571,25 @@ function interpretarRelatoLivre(gerarDireto, modoSilencioso = false) {
         modelo = 'OPEN_SOURCE_TOTAL';
     }
 
-    // Preservar o nome do projeto digitado pelo usuário, ou gerar automaticamente caso esteja em branco
-    if (!nomeDigitado) {
+    // Preservar o nome do projeto digitado manualmente pelo usuário, ou atualizar dinamicamente caso esteja vazio/autoGerado
+    if (campoNome && (!nomeManual || campoNome.dataset.autoGerado === 'true')) {
         const primeiraFrase = textoOriginal.split(/[.!?]/)[0].trim();
         const tituloGerado = primeiraFrase.length > 78
             ? `${primeiraFrase.substring(0, 78)}...`
             : primeiraFrase;
-        document.getElementById('nome_projeto').value = tituloGerado;
+        campoNome.value = tituloGerado;
+        campoNome.dataset.autoGerado = 'true';
     }
-    if (!document.getElementById('autor_nome').value.trim()) {
-        document.getElementById('autor_nome').value = 'Projetista(s) / Inventor(es) do Dispositivo';
-    }
-    if (!document.getElementById('autor_documento').value.trim()) {
-        document.getElementById('autor_documento').value = '12.345.678/0001-90';
-    }
-    if (!document.getElementById('autor_email').value.trim()) {
-        document.getElementById('autor_email').value = 'engenharia@projetoavaliado.com.br';
+    if (!modoSilencioso) {
+        if (!document.getElementById('autor_nome').value.trim()) {
+            document.getElementById('autor_nome').value = 'Projetista(s) / Inventor(es) do Dispositivo';
+        }
+        if (!document.getElementById('autor_documento').value.trim()) {
+            document.getElementById('autor_documento').value = '12.345.678/0001-90';
+        }
+        if (!document.getElementById('autor_email').value.trim()) {
+            document.getElementById('autor_email').value = 'engenharia@projetoavaliado.com.br';
+        }
     }
     document.getElementById('instituicao_empresa').value = instituicao;
     document.getElementById('resumo_tecnico').value = textoOriginal;
@@ -1016,6 +1030,11 @@ function renderizarPainelVerificacaoExistencia(verif) {
                 ? '<span class="inpi-badge" style="background:rgba(16,185,129,0.2);color:#6ee7b7;border-color:#10b981;">FIXADO NO OBSERVATÓRIO</span>'
                 : '<span class="inpi-badge">ACERVO INPI / OMPI</span>';
             const protoEscapado = (reg.protocolo_registro || '').replace(/'/g, "\\'");
+            const acaoSimular = perfilAcessoAtual === 'ADMIN'
+                ? `<button type="button" class="btn-secondary" style="padding:0.45rem 0.75rem;font-size:0.76rem;" onclick="simularTentativaCopiaTerceiro('${protoEscapado}')">
+                       Simular Terceiro Tentando Copiar
+                   </button>`
+                : `<span style="font-size:0.76rem;color:#10b981;font-weight:600;">🔒 Protegido no Banco</span>`;
             return `
                 <tr>
                     <td>${badgeOrigem}<br><strong>${reg.protocolo_registro}</strong></td>
@@ -1024,9 +1043,7 @@ function renderizarPainelVerificacaoExistencia(verif) {
                     <td><strong>${reg.modalidade_protecao}</strong><br><span style="font-size:0.78rem;color:var(--text-secondary);">${reg.camadas_protegidas || ''}</span></td>
                     <td><code style="font-size:0.76rem;">SHA-512: ${hashCurto}</code><br><span style="font-size:0.76rem;color:var(--text-secondary);">${reg.data_registro || ''}</span></td>
                     <td class="no-print">
-                        <button type="button" class="btn-secondary" style="padding:0.45rem 0.75rem;font-size:0.76rem;" onclick="simularTentativaCopiaTerceiro('${protoEscapado}')">
-                            Simular Terceiro Tentando Copiar
-                        </button>
+                        ${acaoSimular}
                     </td>
                 </tr>
             `;
@@ -1066,6 +1083,10 @@ async function registrarTitularidadeFixaUsuario() {
         return;
     }
 
+    if (perfilAcessoAtual === 'USUARIO') {
+        etapaAbaLiberadaUsuario = 3;
+        aplicarRegrasDePerfilNaInterface();
+    }
     gerarMinutaAutomatizada('CERTIFICADO_TITULARIDADE');
     atualizarBalaoMascote(
         'CRIAÇÃO FIXADA E REGISTRADA EM SEU NOME COM SUCESSO!',
@@ -1276,8 +1297,341 @@ function gerarCorrelacaoPatentariaReal(dados, diag) {
     };
 }
 
-// Navegação entre abas
+// =========================================================================
+// PORTAL INICIAL E CONTROLE DE ACESSO POR PERFIL (USUÁRIO vs ADMINISTRADOR)
+// =========================================================================
+
+function entrarComoUsuario() {
+    perfilAcessoAtual = 'USUARIO';
+    blocoAtualUsuario = 1;
+    etapaAbaLiberadaUsuario = 1;
+
+    const telaInicial = document.getElementById('tela-inicial-acesso');
+    const conteudoSistema = document.getElementById('conteudo-sistema-principal');
+    if (telaInicial) telaInicial.style.display = 'none';
+    if (conteudoSistema) conteudoSistema.style.display = 'block';
+
+    limparFormularioCompleto();
+    aplicarRegrasDePerfilNaInterface();
+    alternarAba('aba-diagnostico');
+
+    atualizarBalaoMascote(
+        'MODO USUÁRIO — PASSO 1 DE 3 (IDENTIFICAÇÃO DO TITULAR)',
+        'Preencha seus dados no Bloco 1 para destravar o Bloco 2.',
+        'No <strong>Modo Usuário</strong>, você avança uma etapa por vez: primeiro identifique quem é o dono do projeto no <strong>Bloco 1</strong> e clique em <strong>"Concluir Bloco 1 e Avançar para o Bloco 2 →"</strong>.'
+    );
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function autenticarAdministrador(event) {
+    if (event) event.preventDefault();
+    const userInput = document.getElementById('admin_user_input');
+    const passInput = document.getElementById('admin_pass_input');
+    const erroBox = document.getElementById('admin-login-erro');
+
+    const usuario = userInput ? userInput.value.trim() : '';
+    const senha = passInput ? passInput.value : '';
+
+    if (usuario !== 'owner' || senha !== '2k26enjoyer') {
+        if (erroBox) {
+            erroBox.style.display = 'block';
+            erroBox.innerHTML = '🚫 <strong>Credenciais inválidas!</strong> Verifique o usuário e a senha de Administrador.';
+        }
+        return;
+    }
+
+    if (erroBox) erroBox.style.display = 'none';
+    perfilAcessoAtual = 'ADMIN';
+    blocoAtualUsuario = 3;
+    etapaAbaLiberadaUsuario = 5;
+
+    const telaInicial = document.getElementById('tela-inicial-acesso');
+    const conteudoSistema = document.getElementById('conteudo-sistema-principal');
+    if (telaInicial) telaInicial.style.display = 'none';
+    if (conteudoSistema) conteudoSistema.style.display = 'block';
+
+    carregarCasoBaseParaAdmin();
+    aplicarRegrasDePerfilNaInterface();
+    alternarAba('aba-diagnostico');
+
+    atualizarBalaoMascote(
+        'MODO ADMINISTRADOR AUTENTICADO (OWNER) — LIBERDADE TOTAL',
+        'Todos os blocos, abas, gaveta de 14 parâmetros e simulador de colisão estão liberados!',
+        'Você acessou como <strong>Administrador (owner)</strong>. Todos os 3 blocos do formulário e todas as 5 abas superiores estão abertas simultaneamente sem restrição de etapas.'
+    );
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function voltarParaTelaInicial() {
+    perfilAcessoAtual = null;
+    const telaInicial = document.getElementById('tela-inicial-acesso');
+    const conteudoSistema = document.getElementById('conteudo-sistema-principal');
+    const badgePerfil = document.getElementById('badge-perfil-sessao');
+    const btnTrocar = document.getElementById('btn-trocar-perfil');
+    const erroBox = document.getElementById('admin-login-erro');
+    const passInput = document.getElementById('admin_pass_input');
+
+    if (telaInicial) telaInicial.style.display = 'block';
+    if (conteudoSistema) conteudoSistema.style.display = 'none';
+    if (badgePerfil) badgePerfil.style.display = 'none';
+    if (btnTrocar) btnTrocar.style.display = 'none';
+    if (erroBox) erroBox.style.display = 'none';
+    if (passInput) passInput.value = '';
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function carregarCasoBaseParaAdmin() {
+    const c = CASO_BASE_INICIAL;
+    const campoRelato = document.getElementById('relato_livre_usuario');
+    if (campoRelato) campoRelato.value = c.relato_livre;
+
+    document.getElementById('nome_projeto').value = c.nome_projeto;
+    document.getElementById('autor_nome').value = c.autor_nome;
+    document.getElementById('autor_documento').value = c.autor_documento;
+    document.getElementById('autor_email').value = c.autor_email;
+    document.getElementById('instituicao_empresa').value = c.instituicao_empresa;
+    document.getElementById('resumo_tecnico').value = c.resumo_tecnico;
+    document.getElementById('grau_novidade_hardware').value = c.grau_novidade_hardware;
+    if (document.getElementById('divulgacao_previa')) document.getElementById('divulgacao_previa').value = c.divulgacao_previa;
+    if (document.getElementById('conectividade_iot_rf')) document.getElementById('conectividade_iot_rf').value = c.conectividade_iot_rf;
+    if (document.getElementById('telemetria_dados_iot')) document.getElementById('telemetria_dados_iot').value = c.telemetria_dados_iot;
+    document.getElementById('possui_pcb_customizada').checked = c.possui_pcb_customizada;
+    document.getElementById('possui_topografia_chip').checked = c.possui_topografia_chip;
+    document.getElementById('possui_design_externo_novo').checked = c.possui_design_externo_novo;
+    document.getElementById('usa_hardware_aberto_terceiros').value = c.usa_hardware_aberto_terceiros;
+    document.getElementById('possui_firmware_proprio').checked = c.possui_firmware_proprio;
+    document.getElementById('linguagem_firmware').value = c.linguagem_firmware;
+    document.getElementById('licenca_bibliotecas_terceiros').value = c.licenca_bibliotecas_terceiros;
+    document.getElementById('vinculacao_firmware').value = c.vinculacao_firmware;
+    document.getElementById('modelo_negocio').value = c.modelo_negocio;
+    document.getElementById('titularidade_tipo').value = c.titularidade_tipo;
+
+    const campoCodigo = document.getElementById('trecho_codigo_inspecao');
+    if (campoCodigo) {
+        campoCodigo.value = c.trecho_codigo || '';
+        inspecionarTrechoCodigo();
+    }
+
+    autoMarcarEnquantoDigita();
+    document.getElementById('nome_projeto').value = c.nome_projeto;
+    document.getElementById('resumo_tecnico').value = c.resumo_tecnico;
+    document.getElementById('modelo_negocio').value = c.modelo_negocio;
+    document.getElementById('titularidade_tipo').value = c.titularidade_tipo;
+    atualizarBadgesAutoMarcacao();
+
+    ultimoProjetoAvaliado = c;
+    ultimoDiagnostico = motorDecisaoLocal(ultimoProjetoAvaliado);
+    renderizarRelatorioDiagnostico(ultimoProjetoAvaliado, ultimoDiagnostico);
+    verificarExistenciaLocalEApi(ultimoProjetoAvaliado, ultimoDiagnostico, 'VERIFICAR').then(verif => {
+        renderizarPainelVerificacaoExistencia(verif);
+    });
+}
+
+function avancarBlocoUsuario(numeroBlocoDestino) {
+    if (perfilAcessoAtual !== 'USUARIO') return;
+
+    // Validação rigorosa antes de liberar o Bloco 2
+    if (numeroBlocoDestino === 2) {
+        const autorNome = document.getElementById('autor_nome').value.trim();
+        const autorDoc = document.getElementById('autor_documento').value.trim();
+        const autorEmail = document.getElementById('autor_email').value.trim();
+
+        if (!autorNome || !autorDoc) {
+            alert('Para avançar para o Bloco 2, preencha seu Nome Completo (ou Equipe) e seu CPF/CNPJ no Bloco 1.');
+            if (!autorNome) document.getElementById('autor_nome').focus();
+            else document.getElementById('autor_documento').focus();
+            return;
+        }
+        if (!autorEmail) {
+            document.getElementById('autor_email').value = 'titular@projeto.com.br';
+        }
+    }
+
+    // Validação rigorosa antes de liberar o Bloco 3
+    if (numeroBlocoDestino === 3) {
+        const relato = document.getElementById('relato_livre_usuario').value.trim();
+        if (!relato || relato.length < 15) {
+            alert('Para avançar para o Bloco 3, descreva o seu projeto de hardware/IoT ou software embarcado no campo 5 (pelo menos uma frase explicando o que você criou).');
+            document.getElementById('relato_livre_usuario').focus();
+            return;
+        }
+        autoMarcarEnquantoDigita();
+    }
+
+    blocoAtualUsuario = numeroBlocoDestino;
+    atualizarVisibilidadeBlocosUsuario();
+
+    if (numeroBlocoDestino === 1) {
+        atualizarBalaoMascote(
+            'MODO USUÁRIO — PASSO 1 DE 3 (IDENTIFICAÇÃO DO TITULAR)',
+            'Revise seus dados de titularidade no Bloco 1.',
+            'Confira seu nome, CPF/CNPJ e o título provisório do projeto e clique em avançar para ir ao Bloco 2.'
+        );
+    } else if (numeroBlocoDestino === 2) {
+        atualizarBalaoMascote(
+            'MODO USUÁRIO — PASSO 2 DE 3 (DESCRIÇÃO DA SUA CRIAÇÃO)',
+            'Bloco 1 concluído! Agora descreva sua criação técnica no Bloco 2.',
+            'Conte com suas próprias palavras como funciona o seu projeto (placa, sensores, microcontrolador, conectividade, gabinete). O sistema vai identificar as leis automaticamente para o Bloco 3.'
+        );
+    } else if (numeroBlocoDestino === 3) {
+        atualizarBalaoMascote(
+            'MODO USUÁRIO — PASSO 3 DE 3 (CONFERÊNCIA AUTOMÁTICA E VERIFICAÇÃO)',
+            'Bloco 2 concluído! Confira o enquadramento automático e gere seu diagnóstico.',
+            'Abaixo está o resumo técnico-jurídico auto-marcado pelo sistema com base no seu relato. Agora clique em <strong>"Verificar se Já Existe, Enquadrar nas Leis e Proteger Meu Projeto →"</strong> para liberar a Etapa 02!'
+        );
+    }
+
+    const cardPrincipal = document.getElementById('aba-diagnostico');
+    if (cardPrincipal) cardPrincipal.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function atualizarVisibilidadeBlocosUsuario() {
+    const b1 = document.getElementById('bloco-form-1');
+    const b2 = document.getElementById('bloco-form-2');
+    const b3 = document.getElementById('bloco-form-3');
+    const ind1 = document.getElementById('indicador-bloco-1');
+    const ind2 = document.getElementById('indicador-bloco-2');
+    const ind3 = document.getElementById('indicador-bloco-3');
+
+    if (perfilAcessoAtual === 'ADMIN') {
+        if (b1) b1.style.display = 'block';
+        if (b2) b2.style.display = 'block';
+        if (b3) b3.style.display = 'block';
+        return;
+    }
+
+    // Modo Usuário: exibe SOMENTE o bloco da etapa atual (sem permitir ver o bloco 2 em diante antes da hora)
+    if (b1) b1.style.display = blocoAtualUsuario === 1 ? 'block' : 'none';
+    if (b2) b2.style.display = blocoAtualUsuario === 2 ? 'block' : 'none';
+    if (b3) b3.style.display = blocoAtualUsuario === 3 ? 'block' : 'none';
+
+    const estilizarIndicador = (el, numero, titulo) => {
+        if (!el) return;
+        if (blocoAtualUsuario === numero) {
+            el.style.background = 'rgba(249, 115, 22, 0.18)';
+            el.style.border = '1px solid rgba(249, 115, 22, 0.55)';
+            el.style.color = '#fed7aa';
+            el.style.opacity = '1';
+            el.textContent = `● Bloco ${numero}: ${titulo} (Em Preenchimento)`;
+        } else if (blocoAtualUsuario > numero) {
+            el.style.background = 'rgba(16, 185, 129, 0.16)';
+            el.style.border = '1px solid rgba(16, 185, 129, 0.45)';
+            el.style.color = '#6ee7b7';
+            el.style.opacity = '1';
+            el.textContent = `✅ Bloco ${numero}: ${titulo} (Concluído)`;
+        } else {
+            el.style.background = 'rgba(255, 255, 255, 0.04)';
+            el.style.border = '1px solid rgba(255, 255, 255, 0.12)';
+            el.style.color = 'var(--text-secondary)';
+            el.style.opacity = '0.55';
+            el.textContent = `🔒 Bloco ${numero}: ${titulo}`;
+        }
+    };
+
+    estilizarIndicador(ind1, 1, 'Dados do Titular');
+    estilizarIndicador(ind2, 2, 'Descrição e Código');
+    estilizarIndicador(ind3, 3, 'Enquadramento e Verificação');
+}
+
+function aplicarRegrasDePerfilNaInterface() {
+    const badgePerfil = document.getElementById('badge-perfil-sessao');
+    const btnTrocar = document.getElementById('btn-trocar-perfil');
+    const barraEtapas = document.getElementById('barra-etapas-usuario');
+    const rodapeB1 = document.getElementById('rodape-bloco-1-usuario');
+    const rodapeB2 = document.getElementById('rodape-bloco-2-usuario');
+    const btnVoltarB2 = document.getElementById('btn-voltar-bloco-2');
+    const gavetaAvancada = document.getElementById('gaveta-parametros-avancados');
+
+    const tab1 = document.querySelector('.tab-btn[data-target="aba-diagnostico"]');
+    const tab2 = document.querySelector('.tab-btn[data-target="aba-relatorio"]');
+    const tab3 = document.querySelector('.tab-btn[data-target="aba-minutas"]');
+    const tab4 = document.querySelector('.tab-btn[data-target="aba-catalogo"]');
+    const tab5 = document.querySelector('.tab-btn[data-target="aba-arquitetura"]');
+
+    if (btnTrocar) btnTrocar.style.display = 'inline-flex';
+
+    if (perfilAcessoAtual === 'ADMIN') {
+        if (badgePerfil) {
+            badgePerfil.style.display = 'inline-flex';
+            badgePerfil.style.borderColor = '#38bdf8';
+            badgePerfil.style.color = '#bae6fd';
+            badgePerfil.textContent = '🛡️ MODO ADMINISTRADOR (OWNER • LIBERDADE TOTAL)';
+        }
+        if (barraEtapas) barraEtapas.style.display = 'none';
+        if (rodapeB1) rodapeB1.style.display = 'none';
+        if (rodapeB2) rodapeB2.style.display = 'none';
+        if (btnVoltarB2) btnVoltarB2.style.display = 'none';
+        if (gavetaAvancada) gavetaAvancada.style.display = 'block';
+
+        if (tab1) { tab1.style.display = ''; tab1.style.opacity = '1'; tab1.innerHTML = '<span class="tab-step">01</span> Meu Projeto & Auto-Enquadramento'; }
+        if (tab2) { tab2.style.display = ''; tab2.style.opacity = '1'; tab2.innerHTML = '<span class="tab-step">02</span> Verificação de Existência & Parecer Legal'; }
+        if (tab3) { tab3.style.display = ''; tab3.style.opacity = '1'; tab3.innerHTML = '<span class="tab-step">03</span> Certificado de Titularidade & Contratos'; }
+        if (tab4) { tab4.style.display = ''; tab4.style.opacity = '1'; }
+        if (tab5) { tab5.style.display = ''; tab5.style.opacity = '1'; }
+
+        atualizarVisibilidadeBlocosUsuario();
+    } else if (perfilAcessoAtual === 'USUARIO') {
+        if (badgePerfil) {
+            badgePerfil.style.display = 'inline-flex';
+            badgePerfil.style.borderColor = 'var(--accent-primary)';
+            badgePerfil.style.color = '#fed7aa';
+            badgePerfil.textContent = '👤 MODO USUÁRIO (JORNADA GUIADA EM ETAPAS)';
+        }
+        if (barraEtapas) barraEtapas.style.display = 'block';
+        if (rodapeB1) rodapeB1.style.display = 'flex';
+        if (rodapeB2) rodapeB2.style.display = 'flex';
+        if (btnVoltarB2) btnVoltarB2.style.display = 'inline-flex';
+        if (gavetaAvancada) gavetaAvancada.style.display = 'none';
+
+        if (tab1) {
+            tab1.style.display = '';
+            tab1.style.opacity = '1';
+            tab1.innerHTML = '<span class="tab-step">01</span> Etapa 1: Cadastro em Blocos';
+        }
+        if (tab2) {
+            tab2.style.display = '';
+            tab2.style.opacity = etapaAbaLiberadaUsuario >= 2 ? '1' : '0.45';
+            tab2.innerHTML = etapaAbaLiberadaUsuario >= 2
+                ? '<span class="tab-step">02</span> Etapa 2: Verificação & Parecer'
+                : '<span class="tab-step">🔒</span> Etapa 2: Verificação (Conclua a Etapa 1)';
+        }
+        if (tab3) {
+            tab3.style.display = '';
+            tab3.style.opacity = etapaAbaLiberadaUsuario >= 3 ? '1' : '0.45';
+            tab3.innerHTML = etapaAbaLiberadaUsuario >= 3
+                ? '<span class="tab-step">03</span> Etapa 3: Certificado & Contratos'
+                : '<span class="tab-step">🔒</span> Etapa 3: Certificado (Conclua a Etapa 2)';
+        }
+        // No Modo Usuário, as abas de consulta global e arquitetura de banco ficam ocultas para manter foco estrito nas etapas
+        if (tab4) tab4.style.display = 'none';
+        if (tab5) tab5.style.display = 'none';
+
+        atualizarVisibilidadeBlocosUsuario();
+    }
+}
+
+// Navegação entre abas (com bloqueio de etapas no Modo Usuário)
 function alternarAba(abaId) {
+    if (perfilAcessoAtual === 'USUARIO') {
+        if (abaId === 'aba-catalogo' || abaId === 'aba-arquitetura') {
+            alert('Esta seção técnica é exclusiva do Modo Administrador.');
+            return;
+        }
+        if (abaId === 'aba-relatorio' && etapaAbaLiberadaUsuario < 2) {
+            alert('Etapa Bloqueada: No Modo Usuário, você precisa primeiro concluir os 3 blocos da Etapa 01 e enviar seu projeto para visualizar a Verificação de Existência e o Parecer Legal.');
+            return;
+        }
+        if (abaId === 'aba-minutas' && etapaAbaLiberadaUsuario < 2) {
+            alert('Etapa Bloqueada: No Modo Usuário, conclua primeiro a Etapa 01 e a Etapa 02 antes de emitir seu Certificado e Contratos.');
+            return;
+        }
+        if (abaId === 'aba-minutas' && etapaAbaLiberadaUsuario === 2) {
+            etapaAbaLiberadaUsuario = 3;
+            aplicarRegrasDePerfilNaInterface();
+        }
+    }
+
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
 
@@ -1578,16 +1932,46 @@ function coletarDadosFormularioAtual() {
 async function processarDiagnostico(event) {
     if (event) event.preventDefault();
 
-    // Garante que o relato livre sempre sincronize e auto-marque os parâmetros caso a gaveta avançada esteja fechada
+    if (perfilAcessoAtual === 'USUARIO' && blocoAtualUsuario < 3) {
+        avancarBlocoUsuario(blocoAtualUsuario + 1);
+        return;
+    }
+
     const gaveta = document.getElementById('gaveta-parametros-avancados');
     const relatoEl = document.getElementById('relato_livre_usuario');
+    const nomeEl = document.getElementById('nome_projeto');
     const resumoEl = document.getElementById('resumo_tecnico');
-    if (relatoEl && relatoEl.value.trim()) {
-        if (!gaveta || !gaveta.open) {
-            autoMarcarEnquantoDigita();
-        } else if (resumoEl && !resumoEl.value.trim()) {
-            resumoEl.value = relatoEl.value.trim();
-        }
+
+    const textoRelato = relatoEl ? relatoEl.value.trim() : '';
+    const textoNome = nomeEl ? nomeEl.value.trim() : '';
+
+    if (!textoRelato && !textoNome) {
+        alert('Por favor, informe o nome do seu projeto ou descreva sua criação na caixa de texto principal para realizarmos a verificação e o diagnóstico.');
+        if (relatoEl) relatoEl.focus();
+        return;
+    }
+
+    // Garante que o relato livre sempre sincronize e auto-marque os parâmetros caso a gaveta avançada esteja fechada
+    if (!gaveta || !gaveta.open) {
+        autoMarcarEnquantoDigita();
+    } else if (resumoEl && !resumoEl.value.trim()) {
+        resumoEl.value = textoRelato || textoNome;
+    }
+
+    if (!document.getElementById('autor_nome').value.trim()) {
+        document.getElementById('autor_nome').value = 'Projetista(s) / Inventor(es) do Dispositivo';
+    }
+    if (!document.getElementById('autor_documento').value.trim()) {
+        document.getElementById('autor_documento').value = '12.345.678/0001-90';
+    }
+    if (!document.getElementById('autor_email').value.trim()) {
+        document.getElementById('autor_email').value = 'engenharia@projetoavaliado.com.br';
+    }
+    if (!document.getElementById('instituicao_empresa').value.trim()) {
+        document.getElementById('instituicao_empresa').value = 'Desenvolvimento Independente / Startup de Hardware & IoT';
+    }
+    if (resumoEl && !resumoEl.value.trim()) {
+        resumoEl.value = textoRelato || textoNome;
     }
 
     const dados = coletarDadosFormularioAtual();
@@ -1624,6 +2008,11 @@ async function processarDiagnostico(event) {
     const verif = await verificarExistenciaLocalEApi(dados, ultimoDiagnostico, 'VERIFICAR');
     renderizarPainelVerificacaoExistencia(verif);
     buscarEstadoDaTecnicaMundialAoVivo(dados, ultimoDiagnostico);
+
+    if (perfilAcessoAtual === 'USUARIO') {
+        etapaAbaLiberadaUsuario = Math.max(etapaAbaLiberadaUsuario, 2);
+        aplicarRegrasDePerfilNaInterface();
+    }
 
     gerarMinutaAutomatizada('CERTIFICADO_TITULARIDADE');
     alternarAba('aba-relatorio');
@@ -2191,17 +2580,23 @@ document.addEventListener('DOMContentLoaded', async () => {
         inspecionarTrechoCodigo();
     }
 
+    const campoNome = document.getElementById('nome_projeto');
+    if (campoNome) {
+        campoNome.dataset.autoGerado = 'false';
+        campoNome.addEventListener('input', () => {
+            campoNome.dataset.autoGerado = campoNome.value.trim() === '' ? 'true' : 'false';
+            autoMarcarEnquantoDigita();
+        });
+    }
+
     // Dispara auto-identificação inicial para preencher o resumo visual de badges e correlações
     autoMarcarEnquantoDigita();
     // Mantém os valores exatos do caso base inicial após exibir os achados
+    document.getElementById('nome_projeto').value = c.nome_projeto;
+    document.getElementById('resumo_tecnico').value = c.resumo_tecnico;
     document.getElementById('modelo_negocio').value = c.modelo_negocio;
     document.getElementById('titularidade_tipo').value = c.titularidade_tipo;
     atualizarBadgesAutoMarcacao();
-
-    const campoNome = document.getElementById('nome_projeto');
-    if (campoNome) {
-        campoNome.addEventListener('input', () => autoMarcarEnquantoDigita());
-    }
 
     const gaveta = document.getElementById('gaveta-parametros-avancados');
     if (gaveta) {
