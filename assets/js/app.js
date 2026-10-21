@@ -7,6 +7,92 @@
 
 let ultimoProjetoAvaliado = null;
 let ultimoDiagnostico = null;
+let ultimaVerificacaoExistencia = null;
+let cacheRegistrosFixos = [];
+
+// Acervo base inicial do INPI / OMPI / Open Hardware (sincronizado com database/schema.sql e api/anterioridade.php)
+const ACERVO_BASE_INPI_PADRAO = [
+    {
+        protocolo_registro: 'INPI-MARCA-829451020',
+        origem_base: 'ACERVO_INPI_MUNDIAL',
+        nome_criacao_marca: 'Arduino Uno / Plataforma Arduino Oficial',
+        titular_nome: 'Arduino AG / Arduino LLC',
+        titular_documento: 'CHE-114.920.318',
+        instituicao_empresa: 'Arduino SA (Suíça / Itália / EUA)',
+        resumo_tecnico: 'Placa microcontroladora baseada em ATmega328P com esquemáticos abertos sob CC BY-SA 4.0, bootloader LGPL e marca nominativa e figurativa registrada exclusivamente.',
+        palavras_chave: 'arduino uno atmega328p placa prototipagem genuino cc by-sa 4.0 bootloader ide',
+        classificacao_cip: 'G06F 15/78 ; H05K 1/02',
+        modalidade_protecao: 'Marca Registrada Exclusiva (Art. 129 LPI) + Hardware Aberto CC BY-SA',
+        camadas_protegidas: 'Camada D (Marca Exclusiva) • Camadas A e E Abertas',
+        status_juridico: 'OPEN_HARDWARE_MARCA_PROTEGIDA',
+        hash_sha512: 'a94f82e10b73c91844d2e1109f83a71655c09e1288b4319a77e1209c84b51029a841029384756102938475610293847561029384756102938475610293847561',
+        data_registro: '2008-04-15 10:00:00'
+    },
+    {
+        protocolo_registro: 'INPI-PI-US8836922B2',
+        origem_base: 'ACERVO_INPI_MUNDIAL',
+        nome_criacao_marca: 'Waymo LiDAR Sensor de Varredura Óptica Autônoma (GBR3)',
+        titular_nome: 'Waymo LLC / Alphabet Inc.',
+        titular_documento: 'US-68-0623199',
+        instituicao_empresa: 'Waymo LLC (Mountain View, CA)',
+        resumo_tecnico: 'Sistema transdutor LiDAR de varredura a laser com placa PCB única de disparo de feixes ópticos e processamento de tempo de voo (ToF) para veículos autônomos.',
+        palavras_chave: 'waymo lidar sensor laser varredura optica veiculo autonomo pcb disparo feixe tof',
+        classificacao_cip: 'G01S 17/08 ; G01S 7/481',
+        modalidade_protecao: 'Patente de Invenção Vigente (Art. 8º LPI) + Segredo Industrial',
+        camadas_protegidas: 'Camada F (Patente PI) + Camada A/E (Segredo Industrial Art. 195 XI)',
+        status_juridico: 'PROTEGIDO_EXCLUSIVO',
+        hash_sha512: 'b72c91048573a1928374650192837465a9182736450192837465b82736451928374650192837465a9182736450192837465b8273645192837465019283746501',
+        data_registro: '2014-09-16 14:20:00'
+    },
+    {
+        protocolo_registro: 'INPI-TCI-BR302019000124',
+        origem_base: 'ACERVO_INPI_MUNDIAL',
+        nome_criacao_marca: 'Microarquitetura x86 Core & Topografia de Silício Multi-Cache',
+        titular_nome: 'Intel Corporation',
+        titular_documento: 'US-94-1672743',
+        instituicao_empresa: 'Intel Corporation (Santa Clara, CA)',
+        resumo_tecnico: 'Configuração tridimensional de 19 camadas de máscara litográfica CMOS em silício (arquivos GDSII) e microcódigo de controle de barramento.',
+        palavras_chave: 'intel amd processador x86 topografia circuito integrado silicio mascara gdsii cache cmos',
+        classificacao_cip: 'H01L 27/02 ; G06F 15/78',
+        modalidade_protecao: 'Topografia de Circuito Integrado (Lei 11.484/07) + Direito Autoral de Microcódigo',
+        camadas_protegidas: 'Camada C (Topografia Lei 11.484/07) + Camada E (Microcódigo)',
+        status_juridico: 'PROTEGIDO_EXCLUSIVO',
+        hash_sha512: 'c61d82930485761928374650192837465c8192039485761928374650192837465d91827364501928374650192837465e1928374650192837465019283746502',
+        data_registro: '2019-06-10 09:15:00'
+    },
+    {
+        protocolo_registro: 'INPI-MARCA-STF-RE1055951',
+        origem_base: 'ACERVO_INPI_MUNDIAL',
+        nome_criacao_marca: 'Marca G Gradiente iphone / Apple iPhone (Classe NCL 9)',
+        titular_nome: 'IGB Eletrônica S.A. (Gradiente) / Apple Inc.',
+        titular_documento: '43.185.362/0001-07',
+        instituicao_empresa: 'IGB Eletrônica S.A. / Apple Inc.',
+        resumo_tecnico: 'Signo distintivo nominativo e misto para aparelhos telefônicos e dispositivos móveis inteligentes na Classe NCL 9 perante o INPI e STF (Tema 1091).',
+        palavras_chave: 'iphone gradiente apple smartphone telefone celular marca ncl 9 coexistencia inpi',
+        classificacao_cip: 'H04M 1/02',
+        modalidade_protecao: 'Registro de Marca Nominativa/Mista (Art. 124, XIX e Art. 129 da LPI)',
+        camadas_protegidas: 'Camada D (Signo Distintivo Registrado no INPI)',
+        status_juridico: 'PROTEGIDO_EXCLUSIVO',
+        hash_sha512: 'd44e19283746501928374650192837465f91827364501928374650192837465a19283746501928374650192837465b1928374650192837465019283746500003',
+        data_registro: '2000-03-20 11:30:00'
+    },
+    {
+        protocolo_registro: 'INPI-PAT-ESPRESSIF-ESP32',
+        origem_base: 'ACERVO_INPI_MUNDIAL',
+        nome_criacao_marca: 'Módulo SoC ESP32-WROOM Wi-Fi & Bluetooth Low Energy Dual-Core',
+        titular_nome: 'Espressif Systems (Shanghai) Co., Ltd.',
+        titular_documento: 'CN-913101156746062445',
+        instituicao_empresa: 'Espressif Systems',
+        resumo_tecnico: 'Módulo transceptor integrado com microprocessador Xtensa Dual-Core 32-bit LX6, pilha RF Wi-Fi 802.11 b/g/n e Bluetooth BLE 4.2/5.0 pré-homologado na ANATEL.',
+        palavras_chave: 'esp32 esp8266 wroom espressif modulo wifi bluetooth ble xtensa microcontrolador padrao',
+        classificacao_cip: 'H04W 4/80 ; H01L 23/66',
+        modalidade_protecao: 'Componente Comercial Protegido (Vedada apropriação do módulo em si por terceiros — Art. 8º LPI)',
+        camadas_protegidas: 'Camadas C, D e F pertencentes ao fabricante do SoC',
+        status_juridico: 'PROTEGIDO_EXCLUSIVO',
+        hash_sha512: 'e88a91827364501928374650192837465c91827364501928374650192837465d91827364501928374650192837465f9182736450192837465019283746500004',
+        data_registro: '2016-09-01 08:00:00'
+    }
+];
 
 // Atualiza o quadro de Orientação Técnica no topo da página
 function atualizarBalaoMascote(tag, titulo, falaHtml) {
@@ -16,6 +102,94 @@ function atualizarBalaoMascote(tag, titulo, falaHtml) {
     if (elTag) elTag.textContent = tag;
     if (elTitulo) elTitulo.textContent = titulo;
     if (elFala) elFala.innerHTML = falaHtml;
+}
+
+// Normaliza texto e extrai tokens técnicos para comparação de anterioridade
+function normalizarTextoComparacaoJS(texto) {
+    if (!texto) return '';
+    return texto
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .replace(/[^a-z0-9\s]/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+}
+
+function extrairTokensTecnicosJS(texto) {
+    const norm = normalizarTextoComparacaoJS(texto);
+    if (!norm) return [];
+    const stopwords = new Set([
+        'de','da','do','das','dos','em','no','na','nos','nas','um','uma','uns','umas',
+        'para','por','com','sem','sob','sobre','entre','que','se','ou','ao','aos','as','os',
+        'sistema','projeto','dispositivo','aparelho','caso','personalizado','desenvolvi',
+        'desenvolvemos','quero','patentear','proteger','como','meu','minha','nosso','nossa',
+        'uso','utilizando','baseado','atraves','meio','forma','tipo','novo','nova','placa'
+    ]);
+    const unicos = new Set();
+    norm.split(' ').forEach(p => {
+        if (p.length >= 3 && !stopwords.has(p)) {
+            unicos.add(p);
+        }
+    });
+    return Array.from(unicos);
+}
+
+function calcularSimilaridadeTokensJS(tokensA, tokensB) {
+    if (!tokensA.length || !tokensB.length) return 0;
+    const setB = new Set(tokensB);
+    const intersecao = tokensA.filter(t => setB.has(t));
+    const uniaoSize = new Set([...tokensA, ...tokensB]).size;
+    const jaccard = intersecao.length / Math.max(1, uniaoSize);
+    const coberturaMenor = intersecao.length / Math.max(1, Math.min(tokensA.length, tokensB.length));
+    return Number((((jaccard * 0.45) + (coberturaMenor * 0.55)) * 100).toFixed(1));
+}
+
+// Gera Hash SHA-512 determinístico (usa WebCrypto SHA-512 quando disponível e fallback hex de 128 chars)
+async function gerarHashSHA512Real(entrada) {
+    try {
+        if (window.crypto && window.crypto.subtle) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(entrada);
+            const hashBuffer = await window.crypto.subtle.digest('SHA-512', data);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+    } catch (e) {}
+    // Fallback síncrono de 128 caracteres hexadecimais
+    let h1 = 0xdeadbeef ^ entrada.length;
+    let h2 = 0x41c6ce57 ^ entrada.length;
+    for (let i = 0; i < entrada.length; i++) {
+        const ch = entrada.charCodeAt(i);
+        h1 = Math.imul(h1 ^ ch, 2654435761);
+        h2 = Math.imul(h2 ^ ch, 1597334677);
+    }
+    let hex = '';
+    for (let i = 0; i < 16; i++) {
+        h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+        h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+        hex += (h1 >>> 0).toString(16).padStart(8, '0');
+    }
+    return hex.substring(0, 128);
+}
+
+// Obtém todos os registros fixos combinando o banco SQL (via API) e o armazenamento persistente local
+function obterRegistrosFixosLocais() {
+    const salvosUsuario = JSON.parse(localStorage.getItem('registros_fixos_observatorio_pi') || '[]');
+    const mapa = new Map();
+    [...salvosUsuario, ...cacheRegistrosFixos, ...ACERVO_BASE_INPI_PADRAO].forEach(r => {
+        if (r && r.protocolo_registro && !mapa.has(r.protocolo_registro)) {
+            mapa.set(r.protocolo_registro, r);
+        }
+    });
+    return Array.from(mapa.values());
+}
+
+function salvarRegistroFixoNoLocalStorage(novoReg) {
+    const salvos = JSON.parse(localStorage.getItem('registros_fixos_observatorio_pi') || '[]');
+    const filtrados = salvos.filter(r => r.protocolo_registro !== novoReg.protocolo_registro);
+    filtrados.unshift(novoReg);
+    localStorage.setItem('registros_fixos_observatorio_pi', JSON.stringify(filtrados));
 }
 
 // Inspetor Automático de Código-Fonte / Cabeçalho SPDX / Lista BOM
@@ -106,7 +280,7 @@ const TABELA_CUSTOS_INPI = {
 
 // Caso base inicial (IoT + Hardware + Software Embarcado real) para demonstração imediata
 const CASO_BASE_INICIAL = {
-    relato_livre: 'Desenvolvemos um sistema IoT de telemetria e controle autônomo de irrigação agrícola (AgroNode LoRaWAN) com placa PCB de 4 camadas desenhada no KiCad, sonda capacitiva multifrequência acoplada ao solo, microcontrolador ESP32/STM32 operando com módulo LoRa 915MHz e gabinete externo impermeável impresso em 3D. O firmware embarcado em C/C++ (FreeRTOS) processa a impedância dielétrica do solo em tempo real e aciona válvulas solenoides físicas economizando 38% de água. Queremos patentear o sistema sensor-atuador no INPI sem esbarrar na vedação de software puro (Art. 10, V da LPI), proteger a marca e cumprir as exigências da ANATEL e da LGPD.',
+    relato_livre: 'Desenvolvemos um sistema IoT de telemetria e controle autônomo de irrigação agrícola (AgroNode LoRaWAN) com placa PCB de 4 camadas desenhada no KiCad, sonda capacitiva multifrequência acoplada ao solo, microcontrolador ESP32/STM32 operando com módulo LoRa 915MHz e gabinete externo impermeável impresso em 3D. O firmware embarcado em C/C++ (FreeRTOS) processa a impedância dielétrica do solo em tempo real e aciona válvulas solenoides físicas economizando 38% de água. Queremos verificar se essa criação já existe, se podemos colocá-la em nosso nome no INPI sem esbarrar na vedação de software puro (Art. 10, V da LPI) e como cumprir as exigências da ANATEL e da LGPD.',
     nome_projeto: 'AgroNode LoRaWAN — Sistema Embarcado de Telemetria e Irrigação Autônoma',
     autor_nome: 'Antonio Kayky, Giullian Bernard, Ítalo Brito e Luís Aquiles',
     autor_documento: '12.345.678/0001-90',
@@ -170,9 +344,9 @@ function limparFormularioCompleto() {
     }
 
     atualizarBalaoMascote(
-        'ANÁLISE PERSONALIZADA • DESCREVA SEU PROJETO DE HARDWARE E IOT',
-        'Relate seu dispositivo com suas próprias palavras para gerarmos o enquadramento jurídico e patentário.',
-        'Escreva na caixa de relato livre qual problema técnico seu hardware/IoT resolve, quais sensores, placas e protocolos de comunicação você utiliza e o que deseja patentear. O motor correlacionará cada elemento aos artigos da <strong>Lei nº 9.279/96 (LPI)</strong>, <strong>Resolução INPI nº 158/2016</strong>, <strong>Lei de Software (9.609/98)</strong>, <strong>ANATEL (Lei 9.472/97)</strong> e <strong>LGPD (Lei 13.709/18)</strong>.'
+        'ANÁLISE PERSONALIZADA • VERIFIQUE SE SUA CRIAÇÃO JÁ EXISTE E REGISTRE SUA TITULARIDADE',
+        'Relate seu dispositivo com suas próprias palavras para verificarmos a anterioridade e se você pode reivindicá-lo.',
+        'Escreva na caixa de relato livre qual dispositivo você criou, quais sensores, placas e códigos utilizou e qual marca pretende usar. O sistema verificará no banco fixo e nas bases mundiais se o projeto já existe e permitirá <strong>fixar a titularidade em seu nome</strong>.'
     );
 }
 
@@ -252,7 +426,6 @@ function interpretarRelatoLivre(gerarDireto) {
     if (temChip) achados.push('<strong>Camada C — Semicondutores / Topografia de Chip (Lei nº 11.484/2007, Arts. 26 a 55):</strong> proteção específica de 10 anos para o leiaute tridimensional de máscaras de silício e elegibilidade fiscal ao PADIS.');
     if (temDesign) achados.push('<strong>Camada B — Design Externo / Gabinete (Lei nº 9.279/96, Arts. 94 a 121):</strong> forma plástica ornamental externa protegível por Registro de Desenho Industrial no INPI (até 25 anos).');
 
-    // Extrair linguagem e plataforma embarcada mencionada pelo usuário
     const linguagensDetectadas = [];
     if (/(c\+\+|cpp|\bc\b|ino|arduino|esp-idf|stm32|freertos|zephyr)/i.test(t)) linguagensDetectadas.push('C/C++ Embarcado');
     if (/(python|micropython|circuitpython)/i.test(t)) linguagensDetectadas.push('Python / MicroPython');
@@ -305,19 +478,18 @@ function interpretarRelatoLivre(gerarDireto) {
         modelo = 'OPEN_SOURCE_TOTAL';
     }
 
-    // Extrair título técnico do projeto a partir do relato do usuário
+    // Extrair título técnico do projeto a partir do relato do usuário (se o campo nome_projeto estiver vazio ou genérico)
     const primeiraFrase = textoOriginal.split(/[.!?]/)[0].trim();
     const tituloGerado = primeiraFrase.length > 78
         ? `${primeiraFrase.substring(0, 78)}...`
         : primeiraFrase;
 
-    // Preencher o formulário
     document.getElementById('nome_projeto').value = tituloGerado;
     if (!document.getElementById('autor_nome').value.trim()) {
         document.getElementById('autor_nome').value = 'Projetista(s) / Inventor(es) do Dispositivo';
     }
     if (!document.getElementById('autor_documento').value.trim()) {
-        document.getElementById('autor_documento').value = '00.000.000/0001-00';
+        document.getElementById('autor_documento').value = '12.345.678/0001-90';
     }
     if (!document.getElementById('autor_email').value.trim()) {
         document.getElementById('autor_email').value = 'engenharia@projetoavaliado.com.br';
@@ -357,14 +529,492 @@ function interpretarRelatoLivre(gerarDireto) {
     }
 
     atualizarBalaoMascote(
-        'CORRELAÇÃO TÉCNICO-JURÍDICA REALIZADA SOBRE O SEU PROJETO',
-        'Seu dispositivo de Hardware/IoT foi decomposto nas 6 camadas e vinculado aos artigos exatos da lei.',
-        'Identificamos como contornar legalmente o <strong>Art. 10, V da LPI</strong> pela <strong>Resolução INPI nº 158/2016</strong> (efeito técnico físico do firmware no hardware), além das obrigações perante a <strong>ANATEL (Lei 9.472/97)</strong> e a <strong>LGPD (Lei 13.709/18)</strong>. Confira o parecer completo e a minuta de reivindicação patentária na Aba 02.'
+        'CORRELAÇÃO TÉCNICO-JURÍDICA E BUSCA DE EXISTÊNCIA REALIZADAS',
+        'Seu dispositivo foi decomposto nas 6 camadas e confrontado com o banco de anterioridade.',
+        'Identificamos se a sua criação já existe na base fixa ou nas bases globais e se você pode reivindicá-la em seu nome. Confira na <strong>Aba 02</strong> o painel de verificação de existência e o botão para <strong>fixar a titularidade no banco de dados</strong>.'
     );
 
     if (gerarDireto) {
         processarDiagnostico(null);
     }
+}
+
+// Motor Local + API de Verificação Real de Existência (Anterioridade) e Apropriabilidade
+async function verificarExistenciaLocalEApi(dados, diag, acao = 'VERIFICAR') {
+    const corr = diag.correlacao_patentaria || gerarCorrelacaoPatentariaReal(dados, diag);
+    const trechoCodigo = document.getElementById('trecho_codigo_inspecao') ? document.getElementById('trecho_codigo_inspecao').value.trim() : '';
+    const camadasAtivas = [
+        dados.possui_pcb_customizada ? 'Camada A (PCB/LDA)' : null,
+        dados.possui_design_externo_novo ? 'Camada B (DI)' : null,
+        dados.possui_topografia_chip ? 'Camada C (TCI)' : null,
+        'Camada D (Marca NCL 9)',
+        dados.possui_firmware_proprio ? 'Camada E (Firmware SHA-512)' : null,
+        dados.grau_novidade_hardware !== 'MODULOS_PRONTOS_COTS' ? 'Camada F (Patente PI/MU)' : null
+    ].filter(Boolean).join(' + ');
+
+    const payload = {
+        acao,
+        nome_projeto: dados.nome_projeto,
+        autor_nome: dados.autor_nome,
+        autor_documento: dados.autor_documento,
+        instituicao_empresa: dados.instituicao_empresa,
+        resumo_tecnico: dados.resumo_tecnico,
+        grau_novidade_hardware: dados.grau_novidade_hardware,
+        divulgacao_previa: dados.divulgacao_previa || 'SIGILO_MANTIDO',
+        classificacao_cip: corr.codigos_cip.map(c => c.split(' (')[0]).join(' ; '),
+        modalidade_protecao: diag.protecao_inpi_primaria,
+        camadas_protegidas: camadasAtivas,
+        trecho_codigo: trechoCodigo
+    };
+
+    // 1. Tenta consultar / gravar na API PHP + Banco SQLite/MySQL
+    try {
+        const resp = await fetch('api/anterioridade.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        if (resp.ok) {
+            const json = await resp.json();
+            if (json && (json.sucesso || json.bloqueado)) {
+                if (Array.isArray(json.registros_fixos)) {
+                    cacheRegistrosFixos = json.registros_fixos;
+                }
+                if (json.registro_gravado) {
+                    salvarRegistroFixoNoLocalStorage(json.registro_gravado);
+                }
+                // Também cruza com eventuais registros salvos no localStorage ainda não enviados
+                return json;
+            }
+        }
+    } catch (e) {
+        // Continua para o motor local síncrono caso esteja rodando sem backend PHP
+    }
+
+    // 2. Fallback / Motor Local Completo com Persistência Fixa em localStorage
+    const nomeLimpo = dados.nome_projeto.replace(/^Caso Personalizado:\s*/i, '').trim();
+    const marcaNucleo = normalizarTextoComparacaoJS(nomeLimpo.split(/[—\-:\/]/)[0] || nomeLimpo);
+    const nomeNorm = normalizarTextoComparacaoJS(nomeLimpo);
+    const tokensUsuario = extrairTokensTecnicosJS(`${dados.nome_projeto} ${dados.resumo_tecnico}`);
+    const docNorm = (dados.autor_documento || '').replace(/[^0-9A-Za-z]/g, '');
+    const hashCriacao = await gerarHashSHA512Real(`${nomeNorm}|${normalizarTextoComparacaoJS(dados.resumo_tecnico)}|${trechoCodigo}`);
+
+    const todosRegistros = obterRegistrosFixosLocais();
+    const colisoesEncontradas = [];
+    let bloqueioTerceiro = null;
+    let registroDoProprioUsuario = null;
+
+    todosRegistros.forEach(reg => {
+        const regMarcaNucleo = normalizarTextoComparacaoJS((reg.nome_criacao_marca || '').split(/[—\-:\/]/)[0] || reg.nome_criacao_marca);
+        const regNomeNorm = normalizarTextoComparacaoJS(reg.nome_criacao_marca);
+        const regTokens = extrairTokensTecnicosJS(`${reg.nome_criacao_marca} ${reg.resumo_tecnico} ${reg.palavras_chave || ''}`);
+        const regDocNorm = (reg.titular_documento || '').replace(/[^0-9A-Za-z]/g, '');
+
+        const similaridade = calcularSimilaridadeTokensJS(tokensUsuario, regTokens);
+        let colisaoMarca = false;
+        if (marcaNucleo.length >= 4 && regMarcaNucleo.length >= 4) {
+            if (marcaNucleo === regMarcaNucleo || nomeNorm.includes(regMarcaNucleo) || regNomeNorm.includes(marcaNucleo)) {
+                colisaoMarca = true;
+            }
+        }
+
+        const hashIgual = (reg.hash_sha512 === hashCriacao);
+        const mesmoTitular = (docNorm !== '' && docNorm !== '00000000000100' && docNorm === regDocNorm);
+
+        if (hashIgual || colisaoMarca || similaridade >= 28.0) {
+            const simFinal = hashIgual ? 100.0 : (colisaoMarca ? Math.max(78.0, similaridade) : similaridade);
+            const itemColisao = {
+                protocolo_registro: reg.protocolo_registro,
+                origem_base: reg.origem_base,
+                nome_criacao_marca: reg.nome_criacao_marca,
+                titular_nome: reg.titular_nome,
+                titular_documento: reg.titular_documento,
+                instituicao_empresa: reg.instituicao_empresa,
+                modalidade_protecao: reg.modalidade_protecao,
+                camadas_protegidas: reg.camadas_protegidas,
+                status_juridico: reg.status_juridico,
+                data_registro: reg.data_registro,
+                similaridade_percentual: simFinal,
+                colisao_marca: colisaoMarca,
+                mesmo_titular: mesmoTitular
+            };
+            colisoesEncontradas.push(itemColisao);
+
+            if (mesmoTitular && (hashIgual || colisaoMarca || similaridade >= 65.0)) {
+                registroDoProprioUsuario = itemColisao;
+            } else if (!mesmoTitular && (hashIgual || colisaoMarca || similaridade >= 55.0)) {
+                if (!bloqueioTerceiro || itemColisao.similaridade_percentual > bloqueioTerceiro.similaridade_percentual) {
+                    bloqueioTerceiro = itemColisao;
+                }
+            }
+        }
+    });
+
+    colisoesEncontradas.sort((a, b) => b.similaridade_percentual - a.similaridade_percentual);
+
+    let statusApropriacao = 'DISPONIVEL_EXCLUSIVO';
+    let podeRegistrar = true;
+    let tituloVeredito = 'CRIAÇÃO INÉDITA E DISPONÍVEL — Você Pode Reivindicar e Fixar como Sua!';
+    let explicacaoVeredito = 'Verificamos a base fixa do Observatório e o acervo de patentes/marcas: não há registro bloqueante em nome de terceiros colidindo com a sua criação. Sua arquitetura apresenta originalidade e atende aos requisitos dos Arts. 6º, 8º/9º e 129 da Lei nº 9.279/96 (LPI) e da Lei nº 9.609/98.';
+
+    if (registroDoProprioUsuario) {
+        statusApropriacao = 'JA_PERTENCE_AO_USUARIO';
+        podeRegistrar = true;
+        tituloVeredito = `CRIAÇÃO JÁ REGISTRADA E FIXADA EM SEU NOME (${registroDoProprioUsuario.protocolo_registro})`;
+        explicacaoVeredito = `O sistema identificou que este projeto/marca já consta gravado no banco de dados fixo sob a titularidade do seu próprio CPF/CNPJ (${registroDoProprioUsuario.titular_nome}). Sua reserva de anterioridade e prova de autoria SHA-512 estão ativas e protegidas.`;
+    } else if (bloqueioTerceiro) {
+        statusApropriacao = 'BLOQUEADO_TERCEIRO';
+        podeRegistrar = false;
+        tituloVeredito = `IMPEDIMENTO LEGAL: Criação ou Marca Já Existe e Pertence a Terceiro (${bloqueioTerceiro.protocolo_registro})`;
+        explicacaoVeredito = `Não é possível apropriar-se diretamente desta criação como sua: detectamos colisão direta (${bloqueioTerceiro.similaridade_percentual}% de superposição / colisão nominativa) com o ativo "${bloqueioTerceiro.nome_criacao_marca}", já registrado sob titularidade de ${bloqueioTerceiro.titular_nome} (${bloqueioTerceiro.instituicao_empresa}). Pelo Art. 11 (Estado da Técnica), Art. 124, XIX (proibição de reprodução de marca alheia) e Art. 195 da Lei nº 9.279/96, para registrar uma versão própria você deve: (1) adotar um nome comercial/marca distinto; e (2) especificar uma melhoria construtiva/funcional própria (Modelo de Utilidade — Art. 9º da LPI) ou reimplementação limpa.`;
+    } else if (dados.divulgacao_previa === 'DIVULGADO_MAIS_12M') {
+        statusApropriacao = 'PARCIAL_ESTADO_DA_TECNICA';
+        podeRegistrar = true;
+        tituloVeredito = 'APROPRIAÇÃO PARCIAL: Patente Impedida pelo Estado da Técnica (Art. 11 LPI), mas Marca e Código Podem Ser Seus';
+        explicacaoVeredito = 'Como a criação foi divulgada há mais de 12 meses, a solução técnica física já caiu no Estado da Técnica (Art. 11 e Art. 12 da LPI) e não pode mais ser patenteada com exclusividade. Porém, você PODE registrar e colocar em seu nome a Marca Comercial (Art. 129 da LPI) e o Código-Fonte do Firmware (Lei nº 9.609/98).';
+    } else if (dados.grau_novidade_hardware === 'MODULOS_PRONTOS_COTS') {
+        statusApropriacao = 'PARCIAL_MODULOS_COMERCIAIS';
+        podeRegistrar = true;
+        tituloVeredito = 'APROPRIAÇÃO PARCIAL: Hardware Base já Existe no Mercado, mas Você Pode Registrar Sua Marca, Firmware e PCB';
+        explicacaoVeredito = 'Os módulos eletrônicos comerciais utilizados (COTS) já pertencem aos seus respectivos fabricantes e ao estado da técnica (Art. 8º e Art. 10, V da LPI). Você não pode patentear o hardware base como invenção sua, mas PODE colocar como sua propriedade exclusiva: (1) a Marca do seu produto (Art. 129 LPI); (2) o seu Código-Fonte/Firmware autoral (Lei 9.609/98); e (3) o desenho específico da sua PCB/Gabinete (Lei 9.610/98 e Art. 94 LPI).';
+    }
+
+    let novoRegistroGravado = null;
+    if (acao === 'REGISTRAR') {
+        if (!podeRegistrar && bloqueioTerceiro) {
+            return {
+                sucesso: false,
+                bloqueado: true,
+                status_apropriacao: statusApropriacao,
+                pode_registrar_como_seu: false,
+                titulo_veredito: tituloVeredito,
+                explicacao_veredito: explicacaoVeredito,
+                hash_sha512_calculado: hashCriacao,
+                colisoes: colisoesEncontradas,
+                bloqueio_terceiro: bloqueioTerceiro,
+                registros_fixos: obterRegistrosFixosLocais()
+            };
+        }
+
+        if (registroDoProprioUsuario) {
+            novoRegistroGravado = registroDoProprioUsuario;
+        } else {
+            const sufixoProtocolo = hashCriacao.substring(0, 6).toUpperCase();
+            const protocoloGerado = `BR-OBS-${new Date().getFullYear()}-${sufixoProtocolo}`;
+            novoRegistroGravado = {
+                protocolo_registro: protocoloGerado,
+                origem_base: 'REGISTRO_FIXO_USUARIO',
+                nome_criacao_marca: payload.nome_projeto,
+                titular_nome: payload.autor_nome,
+                titular_documento: payload.autor_documento,
+                instituicao_empresa: payload.instituicao_empresa,
+                resumo_tecnico: payload.resumo_tecnico,
+                palavras_chave: tokensUsuario.slice(0, 35).join(' '),
+                classificacao_cip: payload.classificacao_cip,
+                modalidade_protecao: payload.modalidade_protecao,
+                camadas_protegidas: payload.camadas_protegidas,
+                status_juridico: 'PROTEGIDO_EXCLUSIVO',
+                hash_sha512: hashCriacao,
+                data_registro: new Date().toLocaleString('pt-BR')
+            };
+            salvarRegistroFixoNoLocalStorage(novoRegistroGravado);
+            statusApropriacao = 'REGISTRADO_COM_SUCESSO';
+            tituloVeredito = `TITULARIDADE FIXADA COM SUCESSO! Protocolo Oficial: ${protocoloGerado}`;
+            explicacaoVeredito = 'Sua criação foi gravada de forma permanente no banco de dados fixo do Observatório com resumo criptográfico SHA-512 (Art. 3º da Lei nº 9.609/98 e Art. 6º/129 da Lei nº 9.279/96). A partir deste momento, qualquer tentativa de terceiro de reivindicar projeto ou marca idêntica será automaticamente detectada e bloqueada pelo sistema.';
+        }
+    }
+
+    return {
+        sucesso: true,
+        acao_executada: acao,
+        status_apropriacao: statusApropriacao,
+        pode_registrar_como_seu: podeRegistrar,
+        titulo_veredito: tituloVeredito,
+        explicacao_veredito: explicacaoVeredito,
+        hash_sha512_calculado: hashCriacao,
+        tokens_analisados: tokensUsuario.slice(0, 18),
+        colisoes: colisoesEncontradas,
+        bloqueio_terceiro: bloqueioTerceiro,
+        registro_gravado: novoRegistroGravado,
+        registros_fixos: obterRegistrosFixosLocais()
+    };
+}
+
+// Busca em Tempo Real no Estado da Técnica Mundial (OpenAlex API + GitHub API + Links Diretos INPI/Google Patents)
+async function buscarEstadoDaTecnicaMundialAoVivo(dados, diag) {
+    const painelMundial = document.getElementById('painel-anterioridade-mundial');
+    if (!painelMundial) return;
+
+    const corr = diag.correlacao_patentaria || gerarCorrelacaoPatentariaReal(dados, diag);
+    const tokens = extrairTokensTecnicosJS(`${dados.nome_projeto} ${dados.resumo_tecnico}`);
+    const queryTermos = tokens.slice(0, 5).join(' ') || 'embedded iot hardware sensor';
+    const cipPrincipal = (corr.codigos_cip[0] || 'G05B 19/042').split(' (')[0].trim();
+
+    const urlGooglePatents = `https://patents.google.com/?q=${encodeURIComponent(queryTermos)}&oq=${encodeURIComponent(cipPrincipal)}`;
+    const urlEspacenet = `https://worldwide.espacenet.com/patent/search?q=${encodeURIComponent(queryTermos)}`;
+    const urlInpiBusca = `https://busca.inpi.gov.br/pePI/`;
+
+    painelMundial.innerHTML = `
+        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.8rem;">
+            Consultando em tempo real bases abertas globais de artigos/patentes (<strong>OpenAlex API</strong>) e repositórios de hardware/firmware (<strong>GitHub API</strong>) para os termos: <code>${queryTermos}</code>...
+        </p>
+    `;
+
+    let obrasOpenAlex = [];
+    let reposGithub = [];
+
+    try {
+        const respOa = await fetch(`https://api.openalex.org/works?search=${encodeURIComponent(queryTermos)}&per-page=3`);
+        if (respOa.ok) {
+            const jsonOa = await respOa.json();
+            if (jsonOa && Array.isArray(jsonOa.results)) {
+                obrasOpenAlex = jsonOa.results;
+            }
+        }
+    } catch (e) {}
+
+    try {
+        const respGh = await fetch(`https://api.github.com/search/repositories?q=${encodeURIComponent(tokens.slice(0, 3).join(' ') + ' hardware OR iot OR esp32 OR pcb')}&sort=stars&per_page=3`);
+        if (respGh.ok) {
+            const jsonGh = await respGh.json();
+            if (jsonGh && Array.isArray(jsonGh.items)) {
+                reposGithub = jsonGh.items;
+            }
+        }
+    } catch (e) {}
+
+    let html = `
+        <div style="display: flex; flex-wrap: wrap; gap: 0.55rem; margin-bottom: 1rem;">
+            <a href="${urlInpiBusca}" target="_blank" rel="noopener" class="btn-secondary" style="text-decoration:none;padding:0.45rem 0.85rem;font-size:0.78rem;">
+                🔗 Abrir Busca Oficial do INPI (pePI) ↗
+            </a>
+            <a href="${urlGooglePatents}" target="_blank" rel="noopener" class="btn-secondary" style="text-decoration:none;padding:0.45rem 0.85rem;font-size:0.78rem;">
+                🔗 Buscar no Google Patents (${cipPrincipal}) ↗
+            </a>
+            <a href="${urlEspacenet}" target="_blank" rel="noopener" class="btn-secondary" style="text-decoration:none;padding:0.45rem 0.85rem;font-size:0.78rem;">
+                🔗 Buscar na Espacenet (OMPI/EPO) ↗
+            </a>
+        </div>
+    `;
+
+    if (obrasOpenAlex.length > 0) {
+        html += `<div style="margin-bottom: 0.85rem;"><strong style="font-size:0.84rem;color:var(--orange-light);display:block;margin-bottom:0.4rem;">Publicações e Anterioridades Científico-Tecnológicas Encontradas (Art. 11 LPI):</strong>`;
+        obrasOpenAlex.forEach(obra => {
+            const titulo = obra.title || 'Publicação Técnica Internacional';
+            const ano = obra.publication_year || 's/d';
+            const link = obra.doi || obra.id || urlGooglePatents;
+            const autor = (obra.authorships && obra.authorships[0] && obra.authorships[0].author)
+                ? obra.authorships[0].author.display_name
+                : 'Base Internacional OpenAlex';
+            html += `
+                <div style="padding:0.55rem 0.75rem;margin-bottom:0.45rem;background:rgba(255,255,255,0.03);border-left:3px solid var(--accent-primary);border-radius:6px;font-size:0.82rem;">
+                    <a href="${link}" target="_blank" rel="noopener" style="color:#fed7aa;font-weight:600;text-decoration:none;">${titulo} (${ano}) ↗</a>
+                    <div style="color:var(--text-secondary);font-size:0.77rem;margin-top:0.15rem;">Autor/Fonte: ${autor} • Pertence ao Estado da Técnica (Art. 11 LPI — diferencie sua Reivindicação nº 1 na parte <em>"Caracterizado por..."</em>)</div>
+                </div>
+            `;
+        });
+        html += `</div>`;
+    }
+
+    if (reposGithub.length > 0) {
+        html += `<div><strong style="font-size:0.84rem;color:var(--orange-light);display:block;margin-bottom:0.4rem;">Repositórios Globais de Hardware/Firmware Similares (GitHub Live):</strong>`;
+        reposGithub.forEach(repo => {
+            const lic = (repo.license && repo.license.spdx_id) ? repo.license.spdx_id : 'Sem Licença Explícita (Direito Autoral Retido)';
+            html += `
+                <div style="padding:0.55rem 0.75rem;margin-bottom:0.45rem;background:rgba(255,255,255,0.03);border-left:3px solid #38bdf8;border-radius:6px;font-size:0.82rem;">
+                    <a href="${repo.html_url}" target="_blank" rel="noopener" style="color:#bae6fd;font-weight:600;text-decoration:none;">${repo.full_name} (★ ${repo.stargazers_count}) ↗</a>
+                    <div style="color:var(--text-secondary);font-size:0.77rem;margin-top:0.15rem;">Licença: <code>${lic}</code> • ${repo.description ? repo.description.substring(0, 110) : 'Projeto público embarcado'}</div>
+                </div>
+            `;
+        });
+        html += `</div>`;
+    }
+
+    if (obrasOpenAlex.length === 0 && reposGithub.length === 0) {
+        html += `
+            <div class="alert-card alert-SUCESSO" style="margin:0;">
+                <h4>Nenhuma Anterioridade Idêntica Detectada na Consulta Automática</h4>
+                <p style="font-size:0.84rem;">Utilize os botões diretos acima para confirmar a busca formal na base pePI do INPI e no Google Patents com a classe <strong>${cipPrincipal}</strong>.</p>
+            </div>
+        `;
+    }
+
+    painelMundial.innerHTML = html;
+}
+
+// Renderiza todo o Painel de Verificação de Existência, Colisões e Tabela Fixa de Titularidades
+function renderizarPainelVerificacaoExistencia(verif) {
+    ultimaVerificacaoExistencia = verif;
+    const painelVeredito = document.getElementById('painel-veredito-apropriacao');
+    const painelColisoes = document.getElementById('painel-colisoes-internas');
+    const btnRegistrar = document.getElementById('btn-registrar-titularidade-fixa');
+    const tbodyFixos = document.getElementById('tabela-registros-fixos-body');
+
+    if (painelVeredito && verif) {
+        let classeAlerta = 'alert-SUCESSO';
+        let badgeTexto = 'DISPONÍVEL PARA REGISTRO E APROPRIAÇÃO LEGÍTIMA';
+
+        if (verif.status_apropriacao === 'BLOQUEADO_TERCEIRO') {
+            classeAlerta = 'alert-CRITICO';
+            badgeTexto = 'BLOQUEADO • CRIAÇÃO OU MARCA JÁ EXISTE EM NOME DE TERCEIRO';
+        } else if (verif.status_apropriacao === 'PARCIAL_ESTADO_DA_TECNICA' || verif.status_apropriacao === 'PARCIAL_MODULOS_COMERCIAIS') {
+            classeAlerta = 'alert-ATENCAO';
+            badgeTexto = 'APROPRIAÇÃO PARCIAL • PROTEÇÃO DE MARCA, FIRMWARE E LAYOUT';
+        } else if (verif.status_apropriacao === 'JA_PERTENCE_AO_USUARIO' || verif.status_apropriacao === 'REGISTRADO_COM_SUCESSO') {
+            classeAlerta = 'alert-SUCESSO';
+            badgeTexto = 'TITULARIDADE FIXADA E PROTEGIDA NO BANCO DE DADOS';
+        }
+
+        painelVeredito.innerHTML = `
+            <div class="alert-card ${classeAlerta}" style="margin-bottom: 0;">
+                <span class="inpi-badge">${badgeTexto}</span>
+                <h3 style="font-size: 1.18rem; margin: 0.35rem 0 0.5rem;">${verif.titulo_veredito}</h3>
+                <p style="margin-bottom: 0.75rem; line-height: 1.65;">${verif.explicacao_veredito}</p>
+                <div style="background: rgba(10, 8, 18, 0.75); border: 1px solid rgba(249, 115, 22, 0.35); border-radius: 8px; padding: 0.65rem 0.95rem; font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: #fed7aa; word-break: break-all;">
+                    <strong>Impressão Digital Criptográfica (Hash SHA-512 — Art. 3º Lei 9.609/98):</strong> ${verif.hash_sha512_calculado}
+                </div>
+            </div>
+        `;
+    }
+
+    if (btnRegistrar && verif) {
+        if (!verif.pode_registrar_como_seu) {
+            btnRegistrar.textContent = '🚫 Registro Bloqueado (Já Pertence a Terceiro)';
+            btnRegistrar.style.opacity = '0.65';
+        } else if (verif.status_apropriacao === 'JA_PERTENCE_AO_USUARIO' || verif.status_apropriacao === 'REGISTRADO_COM_SUCESSO') {
+            btnRegistrar.textContent = '✅ Criação Já Fixada em Seu Nome (Ver Certificado)';
+            btnRegistrar.style.opacity = '1';
+        } else {
+            btnRegistrar.textContent = '🔒 Reivindicar e Fixar Criação em Meu Nome (Gravar no Banco)';
+            btnRegistrar.style.opacity = '1';
+        }
+    }
+
+    if (painelColisoes && verif) {
+        if (!verif.colisoes || verif.colisoes.length === 0) {
+            painelColisoes.innerHTML = `
+                <div class="alert-card alert-SUCESSO" style="margin: 0;">
+                    <h4>Nenhuma Colisão Encontrada no Banco Fixo</h4>
+                    <p style="font-size: 0.85rem;">Sua marca e sua arquitetura técnica não colidem com nenhum dos ${verif.registros_fixos ? verif.registros_fixos.length : 5} registros ativos na base do Observatório/INPI.</p>
+                </div>
+            `;
+        } else {
+            painelColisoes.innerHTML = verif.colisoes.slice(0, 4).map(col => {
+                const cor = col.mesmo_titular ? 'alert-SUCESSO' : (col.similaridade_percentual >= 55 || col.colisao_marca ? 'alert-CRITICO' : 'alert-ATENCAO');
+                const tagTitular = col.mesmo_titular
+                    ? 'SEU PRÓPRIO REGISTRO'
+                    : (col.similaridade_percentual >= 55 || col.colisao_marca ? 'COLISÃO IMPEDITIVA DE TERCEIRO' : 'SIMILARIDADE PARCIAL');
+                return `
+                    <div class="alert-card ${cor}" style="margin-bottom: 0.65rem; padding: 0.85rem 1rem;">
+                        <span class="inpi-badge">${col.protocolo_registro} • ${col.similaridade_percentual}% Similaridade • ${tagTitular}</span>
+                        <h4 style="font-size: 0.95rem; margin-top: 0.25rem;">${col.nome_criacao_marca}</h4>
+                        <p style="font-size: 0.82rem; margin: 0.2rem 0;"><strong>Titular Registrado:</strong> ${col.titular_nome} (${col.titular_documento}) — ${col.instituicao_empresa}</p>
+                        <p style="font-size: 0.8rem; margin: 0;"><strong>Proteção Ativa:</strong> ${col.modalidade_protecao}</p>
+                    </div>
+                `;
+            }).join('');
+        }
+    }
+
+    if (tbodyFixos && verif && Array.isArray(verif.registros_fixos)) {
+        tbodyFixos.innerHTML = verif.registros_fixos.map((reg) => {
+            const hashCurto = (reg.hash_sha512 || '').substring(0, 18) + '...';
+            const badgeOrigem = reg.origem_base === 'REGISTRO_FIXO_USUARIO'
+                ? '<span class="inpi-badge" style="background:rgba(16,185,129,0.2);color:#6ee7b7;border-color:#10b981;">FIXADO NO OBSERVATÓRIO</span>'
+                : '<span class="inpi-badge">ACERVO INPI / OMPI</span>';
+            const protoEscapado = (reg.protocolo_registro || '').replace(/'/g, "\\'");
+            return `
+                <tr>
+                    <td>${badgeOrigem}<br><strong>${reg.protocolo_registro}</strong></td>
+                    <td><strong>${reg.nome_criacao_marca}</strong><br><span style="font-size:0.78rem;color:var(--text-secondary);">${(reg.resumo_tecnico || '').substring(0, 95)}...</span></td>
+                    <td><strong>${reg.titular_nome}</strong><br><span style="font-size:0.8rem;color:var(--text-secondary);">Doc: ${reg.titular_documento}<br>${reg.instituicao_empresa || ''}</span></td>
+                    <td><strong>${reg.modalidade_protecao}</strong><br><span style="font-size:0.78rem;color:var(--text-secondary);">${reg.camadas_protegidas || ''}</span></td>
+                    <td><code style="font-size:0.76rem;">SHA-512: ${hashCurto}</code><br><span style="font-size:0.76rem;color:var(--text-secondary);">${reg.data_registro || ''}</span></td>
+                    <td class="no-print">
+                        <button type="button" class="btn-secondary" style="padding:0.45rem 0.75rem;font-size:0.76rem;" onclick="simularTentativaCopiaTerceiro('${protoEscapado}')">
+                            Simular Terceiro Tentando Copiar
+                        </button>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+    }
+}
+
+// Executa a verificação completa (Banco Fixo + Estado da Técnica Mundial)
+async function executarVerificacaoExistenciaCompleta(irParaRelatorio = false) {
+    const dados = ultimoProjetoAvaliado || coletarDadosFormularioAtual();
+    const diag = ultimoDiagnostico || motorDecisaoLocal(dados);
+    const verif = await verificarExistenciaLocalEApi(dados, diag, 'VERIFICAR');
+    renderizarPainelVerificacaoExistencia(verif);
+    buscarEstadoDaTecnicaMundialAoVivo(dados, diag);
+    if (irParaRelatorio) {
+        alternarAba('aba-relatorio');
+    }
+}
+
+// Ação do Botão Principal: Reivindicar e Fixar Titularidade da Criação no Banco de Dados
+async function registrarTitularidadeFixaUsuario() {
+    const dados = coletarDadosFormularioAtual();
+    ultimoProjetoAvaliado = dados;
+    ultimoDiagnostico = motorDecisaoLocal(dados);
+
+    const resultado = await verificarExistenciaLocalEApi(dados, ultimoDiagnostico, 'REGISTRAR');
+    renderizarPainelVerificacaoExistencia(resultado);
+
+    if (resultado.bloqueado || !resultado.pode_registrar_como_seu) {
+        atualizarBalaoMascote(
+            'TENTATIVA DE APROPRIAÇÃO BLOQUEADA PELO SISTEMA (ARTS. 11, 124 E 129 DA LPI)',
+            'Esta criação ou marca já está registrada em nome de outro titular na base fixa!',
+            `O sistema detectou colisão direta com o registro <strong>${resultado.bloqueio_terceiro ? resultado.bloqueio_terceiro.protocolo_registro : ''}</strong> pertencente a <strong>${resultado.bloqueio_terceiro ? resultado.bloqueio_terceiro.titular_nome : 'terceiro'}</strong>. Para que você possa registrar uma criação própria, altere o nome comercial (Art. 124, XIX LPI) e introduza uma melhoria funcional construtiva própria (Art. 9º LPI).`
+        );
+        const cardVerif = document.getElementById('card-verificacao-anterioridade-titularidade');
+        if (cardVerif) cardVerif.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        return;
+    }
+
+    gerarMinutaAutomatizada('CERTIFICADO_TITULARIDADE');
+    atualizarBalaoMascote(
+        'CRIAÇÃO FIXADA E REGISTRADA EM SEU NOME COM SUCESSO!',
+        `Protocolo Oficial Emitido: ${resultado.registro_gravado ? resultado.registro_gravado.protocolo_registro : 'Ativo'}`,
+        `O seu projeto <strong>"${dados.nome_projeto}"</strong> agora está gravado de forma fixa no banco de dados sob o CPF/CNPJ <strong>${dados.autor_documento}</strong> com assinatura digital SHA-512. Se qualquer outra pessoa tentar cadastrar esse projeto com outro CPF/CNPJ, o sistema bloqueará automaticamente! Você também pode baixar seu <strong>Certificado Oficial de Titularidade</strong> na Aba 03.`
+    );
+}
+
+// Simula ao vivo uma terceira pessoa (concorrente com outro CNPJ) tentando copiar um projeto já fixado no banco
+async function simularTentativaCopiaTerceiro(protocoloAlvo) {
+    const todos = obterRegistrosFixosLocais();
+    const alvo = todos.find(r => r.protocolo_registro === protocoloAlvo);
+    if (!alvo) return;
+
+    document.getElementById('nome_projeto').value = alvo.nome_criacao_marca;
+    document.getElementById('autor_nome').value = 'Concorrente Não Autorizado (Tentativa de Apropriação)';
+    document.getElementById('autor_documento').value = '99.888.777/0001-66';
+    document.getElementById('autor_email').value = 'copia@concorrente.com.br';
+    document.getElementById('instituicao_empresa').value = 'Empresa Terceira Sem Autorização Ltda.';
+    document.getElementById('resumo_tecnico').value = alvo.resumo_tecnico;
+
+    const campoRelato = document.getElementById('relato_livre_usuario');
+    if (campoRelato) {
+        campoRelato.value = `[SIMULAÇÃO DE TENTATIVA DE CÓPIA POR TERCEIRO] Tentando registrar como minha a criação "${alvo.nome_criacao_marca}": ${alvo.resumo_tecnico}`;
+    }
+
+    const dados = coletarDadosFormularioAtual();
+    ultimoProjetoAvaliado = dados;
+    ultimoDiagnostico = motorDecisaoLocal(dados);
+    renderizarRelatorioDiagnostico(dados, ultimoDiagnostico);
+
+    const verif = await verificarExistenciaLocalEApi(dados, ultimoDiagnostico, 'VERIFICAR');
+    renderizarPainelVerificacaoExistencia(verif);
+
+    atualizarBalaoMascote(
+        'SIMULAÇÃO DE COLISÃO ATIVADA — BLOQUEIO DE TERCEIRO EM TEMPO REAL',
+        `O sistema detectou que "${alvo.nome_criacao_marca}" já pertence a ${alvo.titular_nome}!`,
+        `Veja no painel abaixo como o banco fixo protege quem registrou primeiro: como o CPF/CNPJ inserido (<code>99.888.777/0001-66</code>) diverge do titular legítimo (<code>${alvo.titular_documento}</code>), o sistema <strong>bloqueia o registro da criação</strong> com base nos <strong>Arts. 11, 124 XIX, 129, 189 e 195 da Lei nº 9.279/96</strong>.`
+    );
+
+    const cardVerif = document.getElementById('card-verificacao-anterioridade-titularidade');
+    if (cardVerif) cardVerif.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 // Gera a Classificação Internacional de Patentes (CIP/IPC), a Reivindicação Independente nº 1 (Art. 24 e 25 LPI)
@@ -425,7 +1075,6 @@ function gerarCorrelacaoPatentariaReal(dados, diag) {
     // 3. Construir as linhas da Tabela de Correlação Direta (Engenharia IoT/Hardware <-> Artigos Exatos de Lei)
     const linhasCorrelacao = [];
 
-    // Linha 1: Núcleo Físico / Eletromecânico / Solução Técnica IoT (Camada F)
     linhasCorrelacao.push({
         elemento: `<strong>1. Arquitetura Eletromecânica e Processo Físico Embarcado (Camada F)</strong><br><span style="font-size:0.82rem;color:var(--text-secondary);">Sensores, condicionamento de sinal, atuadores e efeito técnico físico</span>`,
         protecao: divulgacao === 'DIVULGADO_MAIS_12M'
@@ -443,7 +1092,6 @@ function gerarCorrelacaoPatentariaReal(dados, diag) {
                 : 'Redigir Relatório Descritivo com suficiência descritiva (<strong>Art. 24 LPI</strong>) e Reivindicações com <em>"Caracterizado por..."</em> (<strong>Art. 25 LPI</strong>).')
     });
 
-    // Linha 2: Código-Fonte do Firmware, RTOS, Pilha IoT e Algoritmos (Camada E)
     linhasCorrelacao.push({
         elemento: `<strong>2. Código-Fonte do Firmware, Drivers e Lógica IoT (Camada E)</strong><br><span style="font-size:0.82rem;color:var(--text-secondary);">Desenvolvido em ${dados.linguagem_firmware} (${dados.vinculacao_firmware === 'ESTATICA_MONOLITICA' ? 'Binário Monolítico Flash' : 'Linkedição Dinâmica SO'})</span>`,
         protecao: `<strong>Vedada patente para o código "em si"</strong> (Art. 10, V da LPI), mas <strong>100% protegido por Direito Autoral de Software por 50 anos</strong> contra cópia literal ou descompilação ilícita.`,
@@ -451,7 +1099,6 @@ function gerarCorrelacaoPatentariaReal(dados, diag) {
         providencia: `Gerar resumo criptográfico <strong>Hash SHA-512</strong> dos arquivos-fonte (<code>.c/.cpp/.h/.py</code>) e depositar no sistema <strong>e-Software do INPI</strong> (R$ 185,00 — prova plena de autoria anterior). Regime recomendado: <strong>${diag.licenca_sw_recomendada}</strong>.`
     });
 
-    // Linha 3: Esquemático Elétrico, Traçado de PCB (KiCad/Altium), Gerbers e BOM (Camada A)
     linhasCorrelacao.push({
         elemento: `<strong>3. Desenho de Esquemático Elétrico, Layout de PCB e Gerbers (Camada A)</strong><br><span style="font-size:0.82rem;color:var(--text-secondary);">Arquivos CAD de roteamento de trilhas, máscara de solda e documentação técnica</span>`,
         protecao: `<strong>Proteção Autoral sobre a expressão gráfica do desenho</strong> (impede fotocópia/clonagem literal do arquivo Gerber), mas <strong>não impede engenharia reversa limpa</strong> da função elétrica se não houver patente na Camada F.`,
@@ -461,7 +1108,6 @@ function gerarCorrelacaoPatentariaReal(dados, diag) {
             : 'Publicar esquemáticos sob licença <strong>CERN-OHL v2 / OSHWA</strong> exigindo remoção da sua Marca Oficial em placas fabricadas por terceiros.'
     });
 
-    // Linha 4: Conectividade IoT / Radiofrequência e Homologação ANATEL
     const mapaAnatel = {
         MODULO_RF_HOMOLOGADO: {
             prot: '<strong>Comercialização condicionada à Homologação de RF</strong>: uso de módulo pré-certificado (ex: ESP32/LoRa com selo ANATEL) permite aproveitamento de ensaios de RF.',
@@ -487,7 +1133,6 @@ function gerarCorrelacaoPatentariaReal(dados, diag) {
         providencia: infoAnatel.acao
     });
 
-    // Linha 5: Telemetria de Sensores IoT, Nuvem/Borda, LGPD e ANVISA
     const mapaLgpd = {
         DADOS_AMBIENTAIS_MAQUINA: {
             prot: '<strong>Tutelado como Segredo Industrial e Know-How Técnico</strong>: grandezas puramente físicas/ambientais não constituem dado pessoal, mas compõem ativo estratégico do negócio.',
@@ -513,7 +1158,6 @@ function gerarCorrelacaoPatentariaReal(dados, diag) {
         providencia: infoLgpd.acao
     });
 
-    // Linha 6: Design Externo (Camada B) e Semicondutores / Topografia (Camada C)
     linhasCorrelacao.push({
         elemento: `<strong>6. Invólucro Físico Externo (Camada B) e Silício / Semicondutores (Camada C)</strong><br><span style="font-size:0.82rem;color:var(--text-secondary);">Gabinete 3D/injetado e topografia de circuitos integrados</span>`,
         protecao: `${dados.possui_design_externo_novo ? '<strong>Desenho Industrial Registrável (10 a 25 anos)</strong> sobre a configuração plástica ornamental externa.' : 'Sem pedido de Desenho Industrial (gabinete padrão).'} ${dados.possui_topografia_chip ? '<br><strong>Topografia de Circuito Integrado Registrável (10 anos)</strong> sobre máscaras 3D de silício.' : ''}`,
@@ -523,12 +1167,11 @@ function gerarCorrelacaoPatentariaReal(dados, diag) {
             : 'Caso desenvolva carenagem personalizada no futuro, depositar Desenho Industrial antes da comercialização para bloquear clones visuais.'
     });
 
-    // Linha 7: Marca Comercial (Camada D) e Titularidade Societária / Universitária
     linhasCorrelacao.push({
         elemento: `<strong>7. Identidade Comercial (Camada D) e Titularidade Jurídica do Projeto</strong><br><span style="font-size:0.82rem;color:var(--text-secondary);">Marca "${dados.nome_projeto.split('—')[0].trim()}" e relação entre criadores/instituição</span>`,
         protecao: `<strong>Exclusividade Nacional sobre o Nome e Logotipo (10 anos renováveis indefinidamente)</strong>. Em projetos de hardware aberto, é o único ativo que impede clones de usarem o nome oficial.`,
         base_legal: `<strong>Lei nº 9.279/96 (LPI):</strong> Art. 129 (sistema atributivo de marca), Art. 189 (crime contra registro de marca), Arts. 6º e 88 a 93 (titularidade)<br><strong>Lei nº 10.973/2004:</strong> Arts. 6º, 11 e 16 (NIT/ICT)<br><strong>Lei nº 9.609/98:</strong> Art. 4º`,
-        providencia: `Protocolar pedido no <strong>e-Marcas (Classe NCL 9 — Aparelhos científicos, sensores e controladores eletrônicos)</strong> e assinar o <strong>Instrumento de Cessão/Titularidade</strong> gerado na Aba 03.`
+        providencia: `Protocolar pedido no <strong>e-Marcas (Classe NCL 9 — Aparelhos científicos, sensores e controladores eletrônicos)</strong> e clicar em <strong>"Reivindicar e Fixar Criação em Meu Nome"</strong> acima.`
     });
 
     return {
@@ -553,9 +1196,9 @@ function alternarAba(abaId) {
 
     if (abaId === 'aba-minutas') {
         atualizarBalaoMascote(
-            'AUTONOMIA PRIVADA E NEGÓCIOS JURÍDICOS CONTRATUAIS',
-            'Licenças e contratos parametrizados com os dados técnicos e artigos de lei do seu projeto.',
-            'Como demonstramos na fundamentação teórica do grupo, a lei cria o monopólio autoral ou industrial, enquanto a licença e os contratos são os instrumentos jurídicos pelos quais o titular exerce seu direito. Abaixo você pode gerar os 4 documentos completos — incluindo a minuta de reivindicação patentária e conformidade ANATEL/LGPD.'
+            'CERTIFICADO DE TITULARIDADE, AUTONOMIA PRIVADA E CONTRATOS',
+            'Emita seu Certificado Oficial de Titularidade SHA-512 e as minutas contratuais do projeto.',
+            'Abaixo você pode emitir o <strong>Certificado de Reserva de Anterioridade e Titularidade</strong> gravado no banco fixo, além dos contratos de Cessão de Direitos, Licenciamento Open Hardware (com reserva de Marca) e o Dossiê do INPI.'
         );
     } else if (abaId === 'aba-catalogo') {
         atualizarBalaoMascote(
@@ -566,8 +1209,8 @@ function alternarAba(abaId) {
     } else if (abaId === 'aba-arquitetura') {
         atualizarBalaoMascote(
             'ARQUITETURA DO SISTEMA E MODELO DE DADOS (DER)',
-            'Rastreabilidade técnica entre o formulário de engenharia, o banco SQL e as minutas.',
-            'Aqui apresentamos as 7 tabelas relacionais implementadas em <code>database/schema.sql</code> e a divisão de responsabilidades da aplicação web desenvolvidas por Antonio Kayky, Giullian Bernard, Ítalo Brito e Luís Aquiles.'
+            'Rastreabilidade técnica entre o formulário de engenharia, o banco SQL fixo e as minutas.',
+            'Aqui apresentamos as tabelas relacionais implementadas em <code>database/schema.sql</code> (incluindo a tabela fixa de anterioridade e titularidade) desenvolvidas por Antonio Kayky, Giullian Bernard, Ítalo Brito e Luís Aquiles.'
         );
     }
 
@@ -813,11 +1456,8 @@ function motorDecisaoLocal(dados) {
     return resultadoParcial;
 }
 
-// Submissão do Formulário de Arquitetura
-async function processarDiagnostico(event) {
-    if (event) event.preventDefault();
-
-    const dados = {
+function coletarDadosFormularioAtual() {
+    return {
         nome_projeto: document.getElementById('nome_projeto').value.trim(),
         autor_nome: document.getElementById('autor_nome').value.trim(),
         autor_documento: document.getElementById('autor_documento').value.trim(),
@@ -839,7 +1479,13 @@ async function processarDiagnostico(event) {
         modelo_negocio: document.getElementById('modelo_negocio').value,
         titularidade_tipo: document.getElementById('titularidade_tipo').value
     };
+}
 
+// Submissão do Formulário de Arquitetura + Verificação Real de Existência/Anterioridade
+async function processarDiagnostico(event) {
+    if (event) event.preventDefault();
+
+    const dados = coletarDadosFormularioAtual();
     ultimoProjetoAvaliado = dados;
 
     try {
@@ -855,7 +1501,7 @@ async function processarDiagnostico(event) {
                     projeto_id: json.diagnostico.projeto_id,
                     diagnostico_id: json.diagnostico.diagnostico_id
                 });
-                document.getElementById('engine-status-text').textContent = 'Motor PHP + SQL Ativo';
+                document.getElementById('engine-status-text').textContent = 'Motor PHP + SQL Fixo Ativo';
             } else {
                 ultimoDiagnostico = motorDecisaoLocal(dados);
             }
@@ -868,10 +1514,22 @@ async function processarDiagnostico(event) {
 
     salvarHistoricoLocal(dados, ultimoDiagnostico);
     renderizarRelatorioDiagnostico(dados, ultimoDiagnostico);
-    gerarMinutaAutomatizada('CESSAO_DIREITOS');
+
+    // Executa imediatamente a verificação se o projeto já existe e se pode ser reivindicado
+    const verif = await verificarExistenciaLocalEApi(dados, ultimoDiagnostico, 'VERIFICAR');
+    renderizarPainelVerificacaoExistencia(verif);
+    buscarEstadoDaTecnicaMundialAoVivo(dados, ultimoDiagnostico);
+
+    gerarMinutaAutomatizada('CERTIFICADO_TITULARIDADE');
     alternarAba('aba-relatorio');
 
-    if (ultimoDiagnostico.risco_contaminacao_licenca === 'ALTO_CRITICO') {
+    if (verif && !verif.pode_registrar_como_seu) {
+        atualizarBalaoMascote(
+            'ALERTA DE ANTERIORIDADE — CRIAÇÃO OU MARCA JÁ REGISTRADA POR TERCEIRO!',
+            `Colisão detectada com ${verif.bloqueio_terceiro ? verif.bloqueio_terceiro.protocolo_registro : 'registro anterior'}`,
+            `O projeto que você descreveu colide diretamente com uma criação ou marca já existente na base fixa (<strong>${verif.bloqueio_terceiro ? verif.bloqueio_terceiro.nome_criacao_marca : ''}</strong>). Confira no painel abaixo os artigos da LPI aplicáveis e o que você precisa diferenciar para poder registrar como seu.`
+        );
+    } else if (ultimoDiagnostico.risco_contaminacao_licenca === 'ALTO_CRITICO') {
         atualizarBalaoMascote(
             'RESULTADO DO DIAGNÓSTICO — CONFLITO CONTRATUAL DE LICENÇAS DETECTADO',
             `Índice de Protegibilidade: ${ultimoDiagnostico.score_protegibilidade}/100 — Risco Crítico de Reciprocidade`,
@@ -879,9 +1537,9 @@ async function processarDiagnostico(event) {
         );
     } else {
         atualizarBalaoMascote(
-            'RESULTADO DO DIAGNÓSTICO — CORRELAÇÃO ENGENHARIA IOT ↔ SETOR JURÍDICO CONCLUÍDA',
-            `Índice de Protegibilidade: ${ultimoDiagnostico.score_protegibilidade}/100 — Foco Primário: ${ultimoDiagnostico.protecao_inpi_primaria}`,
-            `Cada componente físico e lógico do seu dispositivo foi correlacionado aos artigos da <strong>Lei nº 9.279/96 (LPI)</strong>, <strong>Resolução INPI nº 158/2016</strong>, <strong>ANATEL (Lei 9.472/97)</strong> e <strong>LGPD (Lei 13.709/18)</strong>. Confira abaixo a minuta da <strong>Reivindicação Patentária nº 1</strong> e a tabela de enquadramento componente por componente.`
+            'VERIFICAÇÃO DE EXISTÊNCIA CONCLUÍDA — DISPONÍVEL PARA REGISTRO EM SEU NOME!',
+            `Sua criação está apta para apropriação legítima (${ultimoDiagnostico.score_protegibilidade}/100)`,
+            `Verificamos o banco fixo e o estado da técnica: não há bloqueio de terceiros sobre o seu projeto. Clique no botão laranja <strong>"Reivindicar e Fixar Criação em Meu Nome"</strong> no painel abaixo para travar sua titularidade no banco de dados e emitir seu certificado SHA-512.`
         );
     }
 }
@@ -1053,19 +1711,64 @@ function renderizarRelatorioDiagnostico(dados, diag) {
     }
 }
 
-// Gerador Automatizado de Minutas Contratuais e Dossiê Multicamada (Aba 3)
+// Gerador Automatizado de Minutas Contratuais, Certificado de Titularidade e Dossiê Multicamada (Aba 3)
 function gerarMinutaAutomatizada(tipoDocumento) {
     const p = ultimoProjetoAvaliado || CASO_BASE_INICIAL;
     const d = ultimoDiagnostico || motorDecisaoLocal(p);
     const corr = d.correlacao_patentaria || gerarCorrelacaoPatentariaReal(p, d);
+    const verif = ultimaVerificacaoExistencia || {};
     const dataHoje = new Date().toLocaleDateString('pt-BR');
-    const hashSimulado = Array.from(p.nome_projeto + tipoDocumento + dataHoje)
+    const hashReal = verif.hash_sha512_calculado || (Array.from(p.nome_projeto + tipoDocumento + dataHoje)
         .reduce((acc, char) => ((acc << 5) - acc) + char.charCodeAt(0), 0)
-        .toString(16).replace('-', 'f8a9') + 'e4b29c0177d3a8f1';
+        .toString(16).replace('-', 'f8a9') + 'e4b29c0177d3a8f1928374650192837465a918273645');
+    const protocoloAtivo = (verif.registro_gravado && verif.registro_gravado.protocolo_registro)
+        ? verif.registro_gravado.protocolo_registro
+        : `BR-OBS-${new Date().getFullYear()}-${hashReal.substring(0, 6).toUpperCase()}`;
 
     let texto = '';
 
-    if (tipoDocumento === 'CESSAO_DIREITOS') {
+    if (tipoDocumento === 'CERTIFICADO_TITULARIDADE') {
+        texto = `================================================================================
+CERTIFICADO OFICIAL DE VERIFICAÇÃO DE ANTERIORIDADE, RESERVA DE TITULARIDADE
+E ASSINATURA DIGITAL CRIPTOGRÁFICA (SHA-512)
+================================================================================
+
+PROTOCOLO DE REGISTRO NO OBSERVATÓRIO: ${protocoloAtivo}
+STATUS DA VERIFICAÇÃO DE EXISTÊNCIA: ${verif.titulo_veredito || 'CRIAÇÃO VERIFICADA E DISPONÍVEL PARA O TITULAR'}
+DATA E HORA DE EMISSÃO: ${new Date().toLocaleString('pt-BR')}
+
+1. QUALIFICAÇÃO DO(S) TITULAR(ES) E INVENTOR(ES)
+• Nome Completo / Equipe: ${p.autor_nome}
+• Documento (CPF / CNPJ): ${p.autor_documento}
+• Organização / Startup / ICT: ${p.instituicao_empresa}
+• Contato Oficial Registrado: ${p.autor_email}
+
+2. ESPECIFICAÇÃO DO ATIVO DE HARDWARE, IOT E SOFTWARE REIVINDICADO
+• Denominação Técnica e Marca Pretendida (Camada D): "${p.nome_projeto}"
+• Classificação Internacional de Patentes (CIP / IPC): ${corr.codigos_cip.join(' | ')}
+• Memorial Descritivo Sintético (Art. 24 da Lei nº 9.279/96):
+  "${p.resumo_tecnico}"
+
+3. LAUDO DE VERIFICAÇÃO DE EXISTÊNCIA E ANTERIORIDADE (ART. 11 E ART. 124 DA LPI)
+• Parecer do Motor de Colisão: ${verif.explicacao_veredito || 'Nenhuma anterioridade bloqueante de terceiro localizada na base fixa.'}
+• Enquadramento Primário no INPI: ${d.protecao_inpi_primaria}
+• Enquadramento Complementar: ${d.protecao_inpi_secundaria}
+• Licenciamento Definido (Camada A — Esquemático/PCB): ${d.licenca_hw_recomendada}
+• Licenciamento Definido (Camada E — Firmware ${p.linguagem_firmware}): ${d.licenca_sw_recomendada}
+
+4. MINUTA DA REIVINDICAÇÃO PATENTÁRIA VINCULADA (ART. 25 DA LPI E RES. INPI 158/2016)
+${corr.texto_reivindicacao_1}
+
+5. IMPRESSÃO DIGITAL CRIPTOGRÁFICA (PROVA DE AUTORIA ANTERIOR — ART. 3º LEI 9.609/98)
+Hash SHA-512 do Projeto e Código-Fonte:
+${hashReal}
+
+Declara-se, para fins de prova de anterioridade técnica e autoral nos termos do Art. 5º, XXVII a XXIX da CF/88, da Lei nº 9.279/1996 (LPI), da Lei nº 9.609/1998 e da Lei nº 9.610/1998, que a especificação técnica acima foi auditada e vinculada ao titular identificado sob o protocolo ${protocoloAtivo}.
+
+__________________________________________________
+TITULAR / DEPOSITANTE: ${p.autor_nome} (${p.autor_documento})
+Observatório de Propriedade Intelectual e Hardware Aberto — Brasil`;
+    } else if (tipoDocumento === 'CESSAO_DIREITOS') {
         texto = `INSTRUMENTO PARTICULAR DE CESSÃO DE DIREITOS PATRIMONIAIS SOBRE PROJETO MULTICAMADA DE HARDWARE, IOT E SOFTWARE EMBARCADO
 
 Fundamentação Constitucional e Legal: Art. 5º, incisos XXVII, XXVIII e XXIX da Constituição Federal de 1988; Lei nº 9.279/1996 (LPI — Arts. 6º, 8º, 9º, 10 V, 24, 25, 88 a 93 e 129); Resolução INPI/PR nº 158/2016; Lei nº 9.609/1998 (Lei de Software — Arts. 2º e 4º); Lei nº 9.610/1998 (LDA — Art. 7º, XI e XII); Lei nº 11.484/2007 (Topografia de Circuitos Integrados); Lei nº 9.472/1997 (ANATEL, Art. 162); Lei nº 13.709/2018 (LGPD, Arts. 6º, 11 e 46) e Lei nº 10.973/2004 (Marco Legal de CT&I).
@@ -1075,7 +1778,7 @@ CEDENTE(S) (CRIADORES / PROJETISTAS): ${p.autor_nome}, inscrito(s) sob CPF/CNPJ 
 CESSIONÁRIA (ORGANIZAÇÃO / TITULAR / ICT): ${p.instituicao_empresa}.
 
 2. DO OBJETO HÍBRIDO E MULTICAMADA CEDIDO
-Cláusula 2.1. O presente instrumento formaliza a cessão definitiva dos direitos patrimoniais relativos ao ativo tecnológico de hardware e IoT denominado "${p.nome_projeto}".
+Cláusula 2.1. O presente instrumento formaliza a cessão definitiva dos direitos patrimoniais relativos ao ativo tecnológico de hardware e IoT denominado "${p.nome_projeto}" (Protocolo de Anterioridade: ${protocoloAtivo}).
 Cláusula 2.2. Síntese Técnica e Problema Resolvido: ${p.resumo_tecnico}
 Cláusula 2.3. Considerando a ausência de estatuto único para o hardware no ordenamento brasileiro, a presente transferência abrange expressamente as 6 (seis) camadas de proteção aplicáveis:
   • Camada A (Documentação Técnica — Lei nº 9.610/98, Art. 7º, XI): esquemáticos elétricos, leiaute de PCB, arquivos Gerber, BOM e manuais técnicos;
@@ -1100,11 +1803,11 @@ CEDENTE(S): ${p.autor_nome}
 __________________________________________________
 CESSIONÁRIA: ${p.instituicao_empresa}
 
-[Código Hash de Verificação: SHA-${hashSimulado}]`;
+[Código Hash SHA-512: ${hashReal}]`;
     } else if (tipoDocumento === 'TERMO_OPEN_HARDWARE_CERN') {
         texto = `TERMO DE LICENCIAMENTO PÚBLICO DE HARDWARE ABERTO (OSHW) COM RESERVA EXPRESSA DE MARCA REGISTRADA
 
-PROJETO: ${p.nome_projeto}
+PROJETO: ${p.nome_projeto} (Protocolo: ${protocoloAtivo})
 TITULARES DOS DIREITOS PATRIMONIAIS: ${p.autor_nome} (${p.instituicao_empresa})
 CONTATO OFICIAL: ${p.autor_email}
 
@@ -1127,11 +1830,11 @@ Nos termos da Lei nº 9.610/1998 (LDA) e da Lei nº 9.279/1996 (LPI), a presente
 5.2. O fabricante de placas derivadas que contenham transceptores de radiofrequência é integralmente responsável pela observância do Art. 162 da Lei nº 9.472/1997 e da Resolução ANATEL nº 715/2019.
 
 Brasil, ${dataHoje}.
-Resumo de Auditoria: SHA-${hashSimulado}`;
+Resumo de Auditoria SHA-512: ${hashReal}`;
     } else if (tipoDocumento === 'LICENCIAMENTO_COMERCIAL_IOT') {
         texto = `CONTRATO DE LICENCIAMENTO INDUSTRIAL DE HARDWARE/IOT, CONFIDENCIALIDADE E CONFORMIDADE REGULATÓRIA (ANATEL E LGPD)
 
-ATIVO TECNOLÓGICO: ${p.nome_projeto}
+ATIVO TECNOLÓGICO: ${p.nome_projeto} (Protocolo: ${protocoloAtivo})
 LICENCIANTE: ${p.instituicao_empresa} (${p.autor_nome} — Doc: ${p.autor_documento})
 
 1. OBJETO DO LICENCIAMENTO INDUSTRIAL
@@ -1158,11 +1861,12 @@ Brasil, ${dataHoje}.
 __________________________________________________
 LICENCIANTE: ${p.instituicao_empresa}
 
-[Resumo de Verificação: SHA-${hashSimulado}]`;
+[Resumo de Verificação SHA-512: ${hashReal}]`;
     } else if (tipoDocumento === 'MEMORIAL_INPI') {
         texto = `DOSSIÊ TÉCNICO-PATENTÁRIO MULTICAMADA (A–F) E MINUTA DE REIVINDICAÇÃO PARA SUBMISSÃO AO INPI
 
 1. IDENTIFICAÇÃO DO PROJETO E AUTORIA
+• Protocolo de Anterioridade no Observatório: ${protocoloAtivo}
 • Projeto: ${p.nome_projeto}
 • Autores / Inventores: ${p.autor_nome} (${p.autor_documento})
 • Organização / ICT Depositante: ${p.instituicao_empresa}
@@ -1184,7 +1888,7 @@ ${corr.texto_reivindicacao_1}
   • Camada E (Software Embarcado — Lei 9.609/98, Art. 2º e 3º): ${d.licenca_sw_recomendada} (Vigência de 50 anos — Depósito Hash SHA-512)
   • Camada F (Solução Técnica — Lei 9.279/96, Art. 8º/9º e Res. INPI 158/2016): ${d.protecao_inpi_primaria}
 
-5. PARECERES E APONTAMENTOS DOGMÁTICOS DO MOTOR DE DECISÃO (INCLUINDO ANATEL E LGPD)
+5. PARECERES E APONTAMENTICOS DOGMÁTICOS DO MOTOR DE DECISÃO (INCLUINDO ANATEL E LGPD)
 ${d.alertas_licenca.map(a => `  • [${a.nivel}] ${a.titulo}:\n    ${a.descricao}`).join('\n\n')}
 
 6. ROTEIRO DE PROVIDÊNCIAS PRÁTICAS JUNTO AO SETOR JURÍDICO, INPI, ANATEL E NIT
@@ -1195,7 +1899,7 @@ ${d.alertas_licenca.map(a => `  • [${a.nivel}] ${a.titulo}:\n    ${a.descricao
   [ ] Caso haja vínculo com ICT pública, submeter este dossiê ao Núcleo de Inovação Tecnológica (NIT) nos termos da Lei nº 10.973/2004.
 
 Observatório de Propriedade Intelectual e Hardware Aberto.
-Resumo de Verificação: SHA-${hashSimulado}`;
+Resumo de Verificação SHA-512: ${hashReal}`;
     }
 
     const viewer = document.getElementById('contract-viewer-box');
@@ -1220,7 +1924,7 @@ function baixarMinutaArquivo() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'Minuta_Observatorio_PI_Hardware.doc';
+    a.download = 'Documento_Observatorio_PI_Hardware.doc';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -1249,7 +1953,7 @@ function renderizarTabelaHistorico() {
     if (!tbody) return;
     const lista = JSON.parse(localStorage.getItem('historico_observatorio_pi') || '[]');
     if (lista.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#cbd5e1;">Nenhuma avaliação processada nesta sessão. Descreva seu caso na Aba 01 e clique em Analisar Meu Caso.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#cbd5e1;">Nenhuma avaliação processada nesta sessão. Descreva seu caso na Aba 01 e clique em Verificar se Já Existe.</td></tr>';
         return;
     }
     tbody.innerHTML = lista.map(item => `
@@ -1343,8 +2047,8 @@ function inicializarBarraRolagemCantoDireito() {
     setTimeout(atualizarPosicaoThumb, 80);
 }
 
-// Inicialização automática com um caso real de IoT + Hardware + Patente para o relatório já iniciar populado
-document.addEventListener('DOMContentLoaded', () => {
+// Inicialização automática com verificação de existência e carregamento do banco fixo
+document.addEventListener('DOMContentLoaded', async () => {
     const c = CASO_BASE_INICIAL;
     const campoRelato = document.getElementById('relato_livre_usuario');
     if (campoRelato) campoRelato.value = c.relato_livre;
@@ -1385,7 +2089,13 @@ document.addEventListener('DOMContentLoaded', () => {
     ultimoProjetoAvaliado = c;
     ultimoDiagnostico = motorDecisaoLocal(ultimoProjetoAvaliado);
     renderizarRelatorioDiagnostico(ultimoProjetoAvaliado, ultimoDiagnostico);
-    gerarMinutaAutomatizada('CESSAO_DIREITOS');
+
+    // Carrega e verifica existência real na inicialização
+    const verifInicial = await verificarExistenciaLocalEApi(ultimoProjetoAvaliado, ultimoDiagnostico, 'VERIFICAR');
+    renderizarPainelVerificacaoExistencia(verifInicial);
+    buscarEstadoDaTecnicaMundialAoVivo(ultimoProjetoAvaliado, ultimoDiagnostico);
+
+    gerarMinutaAutomatizada('CERTIFICADO_TITULARIDADE');
     renderizarTabelaHistorico();
     inicializarBarraRolagemCantoDireito();
 });

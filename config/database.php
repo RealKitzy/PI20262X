@@ -30,19 +30,16 @@ class Database {
                 ]);
             } else {
                 $dbPath = __DIR__ . '/../database/observatorio_pi.sqlite';
-                $needsInit = !file_exists($dbPath);
 
                 self::$instance = new PDO("sqlite:" . $dbPath, null, null, [
                     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
                 ]);
 
-                if ($needsInit) {
-                    $schemaFile = __DIR__ . '/../database/schema.sql';
-                    if (file_exists($schemaFile)) {
-                        $sql = file_get_contents($schemaFile);
-                        self::$instance->exec($sql);
-                    }
+                $schemaFile = __DIR__ . '/../database/schema.sql';
+                if (file_exists($schemaFile)) {
+                    $sql = file_get_contents($schemaFile);
+                    self::$instance->exec($sql);
                 }
             }
         } catch (PDOException $e) {

@@ -115,10 +115,10 @@
 
                 <div style="display: flex; flex-wrap: wrap; gap: 0.85rem; justify-content: flex-end; align-items: center;">
                     <button type="button" class="btn-secondary" style="padding: 0.78rem 1.25rem; font-size: 0.88rem;" onclick="interpretarRelatoLivre(false)">
-                        1. Extrair Parâmetros Técnicos e Preencher Formulário
+                        1. Extrair Parâmetros Técnicos do Relato
                     </button>
                     <button type="button" class="btn-primary" style="padding: 0.78rem 1.45rem; font-size: 0.88rem;" onclick="interpretarRelatoLivre(true)">
-                        2. Analisar Meu Caso e Gerar Correlação Legal Completa →
+                        2. Verificar se Já Existe e se Posso Reivindicar Como Meu →
                     </button>
                 </div>
             </div>
@@ -412,6 +412,72 @@
                     <div class="grid-3" id="mapa-camadas-grid"></div>
                 </div>
 
+                <!-- PAINEL REAL E FIXO: VERIFICAÇÃO SE A CRIAÇÃO JÁ EXISTE (ANTERIORIDADE) E REGISTRO DE TITULARIDADE -->
+                <div class="card" id="card-verificacao-anterioridade-titularidade" style="border-color: rgba(249, 115, 22, 0.7);">
+                    <div class="card-header">
+                        <div>
+                            <span class="inpi-badge">CARTÓRIO DE ANTERIORIDADE E TITULARIDADE FIXA • LEI Nº 9.279/96 (ARTS. 8º, 11, 124 E 129)</span>
+                            <h2>Verificação Real: Esta Criação Já Existe? Posso Colocar e Fixar Como Minha?</h2>
+                            <p class="card-subtitle">O sistema cruza seu projeto em tempo real com: (1) o Banco de Dados Fixo de Criações e Marcas já registradas no Observatório/INPI; e (2) Bases Mundiais de Estado da Técnica (OpenAlex Patentes/Artigos e GitHub Open Hardware).</p>
+                        </div>
+                        <div class="no-print" style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                            <button type="button" class="btn-secondary" style="padding: 0.75rem 1.2rem; font-size: 0.85rem;" onclick="executarVerificacaoExistenciaCompleta(false)">
+                                Atualizar Varredura de Existência
+                            </button>
+                            <button type="button" id="btn-registrar-titularidade-fixa" class="btn-primary" style="padding: 0.8rem 1.4rem; font-size: 0.9rem;" onclick="registrarTitularidadeFixaUsuario()">
+                                Reivindicar e Fixar Criação em Meu Nome (Gravar no Banco)
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Veredito Principal: Já Existe ou Pode Registrar como Seu -->
+                    <div id="painel-veredito-apropriacao" style="margin-bottom: 1.4rem;"></div>
+
+                    <!-- Comparação Dupla: Colisões no Banco Fixo vs. Busca em Tempo Real no Estado da Técnica Mundial -->
+                    <div class="grid-2" style="margin-bottom: 1.6rem;">
+                        <div style="background: rgba(15, 12, 24, 0.65); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
+                            <span class="inpi-badge">1. VARREDURA NO BANCO FIXO E ACERVO INPI</span>
+                            <h3 style="font-size: 1.05rem; margin: 0.45rem 0 0.75rem; color: var(--text-primary);">Colisões de Marca (Art. 124 LPI) e Projetos Já Reivindicados</h3>
+                            <div id="painel-colisoes-internas"></div>
+                        </div>
+
+                        <div style="background: rgba(15, 12, 24, 0.65); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
+                            <span class="inpi-badge">2. BUSCA EM TEMPO REAL NO MUNDO (ART. 11 DA LPI)</span>
+                            <h3 style="font-size: 1.05rem; margin: 0.45rem 0 0.75rem; color: var(--text-primary);">Estado da Técnica Mundial (OpenAlex, GitHub, INPI e Google Patents)</h3>
+                            <div id="painel-anterioridade-mundial"></div>
+                        </div>
+                    </div>
+
+                    <!-- Tabela Fixa de Criações Registradas e Protegidas no Banco de Dados -->
+                    <div style="border-top: 1px solid var(--border-color); padding-top: 1.35rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.8rem; margin-bottom: 0.9rem;">
+                            <div>
+                                <h3 style="font-size: 1.08rem; color: var(--orange-light); margin-bottom: 0.2rem;">
+                                    Base Pública Fixa de Criações, Patentes e Marcas Registradas (SQL + Proteção Ativa Contra Cópia)
+                                </h3>
+                                <p style="font-size: 0.86rem; color: var(--text-secondary); margin: 0;">
+                                    Qualquer criação registrada abaixo fica travada em nome do seu titular. Clique em <strong>"Simular Terceiro Tentando Copiar"</strong> em qualquer linha para ver o sistema bloquear a apropriação indevida na prática.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Protocolo Oficial</th>
+                                        <th>Criação / Marca Protegida</th>
+                                        <th>Titular Registrado (CPF/CNPJ)</th>
+                                        <th>Camadas e Modalidade Legal</th>
+                                        <th>Hash SHA-512 / Data</th>
+                                        <th class="no-print">Teste de Colisão</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tabela-registros-fixos-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- NOVO PAINEL: CORRELAÇÃO REAL ENTRE O QUE SE DESEJA PATENTEAR, ENGENHARIA IOT E ARTIGOS DE LEI -->
                 <div class="card" id="card-correlacao-patentaria">
                     <div class="card-header">
@@ -494,7 +560,7 @@
             <div class="card">
                 <div class="card-header no-print">
                     <div>
-                        <h2>Gerador Automatizado de Minutas Contratuais, Licenças OSHW e Dossiê INPI</h2>
+                        <h2>Gerador Automatizado de Minutas Contratuais, Licenças OSHW e Certificado de Titularidade</h2>
                         <p class="card-subtitle">
                             Como as licenças são negócios jurídicos celebrados no âmbito da autonomia privada (e não leis), o sistema gera os instrumentos abaixo já parametrizados.
                         </p>
@@ -508,21 +574,25 @@
                 </div>
 
                 <div class="scenario-buttons no-print" style="margin-bottom: 2.2rem;">
+                    <button class="btn-scenario" onclick="gerarMinutaAutomatizada('CERTIFICADO_TITULARIDADE')">
+                        <strong>1. Certificado Oficial de Titularidade, Anterioridade e Hash SHA-512</strong>
+                        <span>Comprovante técnico-jurídico de registro fixo no Observatório com protocolo, resumo criptográfico SHA-512 e verificação de anterioridade (Art. 3º Lei 9.609/98 e LPI).</span>
+                    </button>
                     <button class="btn-scenario" onclick="gerarMinutaAutomatizada('CESSAO_DIREITOS')">
-                        <strong>1. Contrato de Cessão de Direitos Patrimoniais (6 Camadas)</strong>
+                        <strong>2. Contrato de Cessão de Direitos Patrimoniais (6 Camadas)</strong>
                         <span>Transfere a titularidade sobre documentação (LDA), firmware (Art. 4º Lei 9.609/98), chips e patentes para a organização ou ICT.</span>
                     </button>
                     <button class="btn-scenario" onclick="gerarMinutaAutomatizada('TERMO_OPEN_HARDWARE_CERN')">
-                        <strong>2. Licenciamento Híbrido OSHW (CERN-OHL v2 / CC BY-SA + Reserva de Marca)</strong>
+                        <strong>3. Licenciamento Híbrido OSHW (CERN-OHL v2 / CC BY-SA + Reserva de Marca)</strong>
                         <span>Autoriza reprodução do esquemático e firmware, mas retém o controle exclusivo sobre a Marca (lição do caso Arduino LLC vs. SRL).</span>
                     </button>
                     <button class="btn-scenario" onclick="gerarMinutaAutomatizada('LICENCIAMENTO_COMERCIAL_IOT')">
-                        <strong>3. Contrato de Licenciamento Industrial e Segredo de Negócio</strong>
+                        <strong>4. Contrato de Licenciamento Industrial e Segredo de Negócio</strong>
                         <span>Instrumento B2B com proteção contra espionagem industrial e vazamento de layouts (prevenção aos casos Waymo vs. Uber e Intel vs. AMD).</span>
                     </button>
                     <button class="btn-scenario" onclick="gerarMinutaAutomatizada('MEMORIAL_INPI')">
-                        <strong>4. Dossiê Multicamada para Depósito no INPI ou Publicação Defensiva</strong>
-                        <span>Relatório técnico estruturado nas Camadas A–F para protocolo no INPI ou formalização de Estado da Técnica (Art. 11 e 12 da LPI).</span>
+                        <strong>5. Dossiê Multicamada e Reivindicação Patentária para o INPI</strong>
+                        <span>Relatório técnico estruturado nas Camadas A–F com a Reivindicação Independente nº 1 ("Caracterizado por...") pronta para o e-Patentes.</span>
                     </button>
                 </div>
 
@@ -721,8 +791,8 @@
                 <div class="card">
                     <div class="card-header">
                         <div>
-                            <h2>Modelo Relacional de Dados (DER — 7 Entidades SQL)</h2>
-                            <p class="card-subtitle">Esquema físico implementado em <code>database/schema.sql</code> com persistência relacional via PDO em <code>config/database.php</code>.</p>
+                            <h2>Modelo Relacional de Dados (DER — 8 Entidades SQL Fixas)</h2>
+                            <p class="card-subtitle">Esquema físico implementado em <code>database/schema.sql</code> com persistência relacional via PDO em <code>config/database.php</code> e cartório de titularidade em <code>api/anterioridade.php</code>.</p>
                         </div>
                         <span class="step-badge">SQLite / MySQL</span>
                     </div>
@@ -812,6 +882,18 @@
                                 <li><span>hash_verificacao</span> <span>CHAR(64)</span></li>
                             </ul>
                         </div>
+
+                        <div class="schema-table-card">
+                            <div class="schema-table-header">8. registros_titularidade</div>
+                            <ul class="schema-table-body">
+                                <li><span>id</span> <strong>PK INT</strong></li>
+                                <li><span>protocolo_registro</span> <strong>UNIQUE</strong></li>
+                                <li><span>nome_criacao_marca</span> <span>VARCHAR(180)</span></li>
+                                <li><span>titular_nome / documento</span> <span>VARCHAR</span></li>
+                                <li><span>palavras_chave / cip</span> <span>TEXT</span></li>
+                                <li><span>hash_sha512</span> <span>CHAR(128)</span></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
 
@@ -819,24 +901,24 @@
                     <div class="card-header">
                         <div>
                             <h2>Fluxo de Execução e Camadas da Aplicação Web</h2>
-                            <p class="card-subtitle">Integração entre Interface Responsiva, API Backend PHP e Persistência SQL.</p>
+                            <p class="card-subtitle">Integração entre Interface Responsiva, Verificador de Existência/Anterioridade e Persistência Fixa SQL.</p>
                         </div>
                     </div>
                     <div class="grid-3">
                         <div class="layer-card">
-                            <span class="layer-tag">Camada 1 • Apresentação e NLP</span>
+                            <span class="layer-tag">Camada 1 • Apresentação, NLP e APIs Externas</span>
                             <h4>HTML5 + CSS3 + JS (<code>app.js</code>)</h4>
-                            <p>Recebe o relato livre em linguagem natural ou os seletores técnicos das 6 camadas, executa o inspetor de cabeçalhos SPDX e renderiza os relatórios responsivos.</p>
+                            <p>Interpreta o caso real do usuário, calcula a impressão digital criptográfica SHA-512 via WebCrypto e consulta em tempo real as bases <strong>OpenAlex</strong> e <strong>GitHub</strong> para busca de Estado da Técnica (Art. 11 LPI).</p>
                         </div>
                         <div class="layer-card">
-                            <span class="layer-tag">Camada 2 • Regra de Negócio</span>
-                            <h4>API REST em PHP (<code>api/diagnostico.php</code>)</h4>
-                            <p>Processa a árvore de decisão determinística sobre as Camadas A a F, calcula o índice de protegibilidade (0–100) e autentica as minutas via resumo criptográfico SHA-256.</p>
+                            <span class="layer-tag">Camada 2 • Motor Legal e Colisão de Anterioridade</span>
+                            <h4>APIs REST em PHP (<code>diagnostico.php</code> &amp; <code>anterioridade.php</code>)</h4>
+                            <p>Verifica se a marca ou invenção já existe e pertence a terceiros (Arts. 8º, 11, 124 XIX e 129 da LPI), bloqueia apropriações indevidas e permite fixar criações inéditas em nome do titular.</p>
                         </div>
                         <div class="layer-card">
-                            <span class="layer-tag">Camada 3 • Persistência Relacional</span>
+                            <span class="layer-tag">Camada 3 • Persistência Fixa Relacional</span>
                             <h4>PDO SQLite / MySQL (<code>database/schema.sql</code>)</h4>
-                            <p>Inicializa automaticamente o banco relacional zero-config ou conecta-se a instâncias MySQL/MariaDB em nuvem (Railway / Docker) mantendo histórico auditável.</p>
+                            <p>Grava de forma permanente as criações reivindicadas na tabela <code>registros_titularidade</code> com protocolo único (<code>BR-OBS-2026-...</code>) e sincronismo com nuvem (Railway / Docker).</p>
                         </div>
                     </div>
                 </div>

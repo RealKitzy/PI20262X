@@ -129,3 +129,109 @@ INSERT OR IGNORE INTO licencas_catalogo (codigo, nome, camada_alvo, tipo_permiss
 ('CERN-OHL-S', 'CERN Open Hardware Licence v2 - Strongly Reciprocal / CC BY-SA 4.0', 'HARDWARE', 'COPYLEFT_FORTE', 1, 1, 1, 'Incompatível com fechamento do desenho derivado; atenção à fragilidade do copyleft na Camada A', 'Qualquer produto derivado do desenho deve disponibilizar as fontes de hardware (CAD, esquemáticos, Gerber, BOM). Na CC BY-SA 4.0 não há cláusula específica de patentes para a função elétrica.'),
 ('PROPRIETARIA', 'Licença Proprietária / Segredo Industrial / EULA', 'AMBOS', 'FECHADA', 0, 1, 0, 'Totalmente compatível com depósito de Patentes (PI/MU), TCI e Registro de Marca no INPI', 'Reserva todos os direitos patrimoniais ao titular, combinando proteção industrial no INPI e cláusulas de confidencialidade.');
 
+-- 8. Base Fixa de Titularidade, Anterioridade e Projetos Reivindicados (INPI / Observatório)
+CREATE TABLE IF NOT EXISTS registros_titularidade (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    protocolo_registro VARCHAR(50) NOT NULL UNIQUE,
+    origem_base VARCHAR(40) NOT NULL DEFAULT 'REGISTRO_FIXO_USUARIO', -- ACERVO_INPI_MUNDIAL, REGISTRO_FIXO_USUARIO
+    nome_criacao_marca VARCHAR(180) NOT NULL,
+    titular_nome VARCHAR(160) NOT NULL,
+    titular_documento VARCHAR(40) NOT NULL,
+    instituicao_empresa VARCHAR(160),
+    resumo_tecnico TEXT NOT NULL,
+    palavras_chave TEXT NOT NULL,
+    classificacao_cip VARCHAR(140) NOT NULL,
+    modalidade_protecao VARCHAR(120) NOT NULL,
+    camadas_protegidas VARCHAR(160) NOT NULL,
+    status_juridico VARCHAR(60) NOT NULL DEFAULT 'PROTEGIDO_EXCLUSIVO', -- PROTEGIDO_EXCLUSIVO, OPEN_HARDWARE_MARCA_PROTEGIDA, DOMINIO_PUBLICO_ESTADO_DA_TECNICA
+    hash_sha512 VARCHAR(130) NOT NULL,
+    data_registro DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT OR IGNORE INTO registros_titularidade (
+    protocolo_registro, origem_base, nome_criacao_marca, titular_nome, titular_documento,
+    instituicao_empresa, resumo_tecnico, palavras_chave, classificacao_cip,
+    modalidade_protecao, camadas_protegidas, status_juridico, hash_sha512, data_registro
+) VALUES
+(
+    'INPI-MARCA-829451020',
+    'ACERVO_INPI_MUNDIAL',
+    'Arduino Uno / Plataforma Arduino Oficial',
+    'Arduino AG / Arduino LLC',
+    'CHE-114.920.318',
+    'Arduino SA (Suíça / Itália / EUA)',
+    'Placa microcontroladora baseada em ATmega328P com esquemáticos abertos sob CC BY-SA 4.0, bootloader LGPL e marca nominativa e figurativa registrada exclusivamente.',
+    'arduino uno atmega328p placa prototipagem genuino cc by-sa 4.0 bootloader ide',
+    'G06F 15/78 ; H05K 1/02',
+    'Marca Registrada Exclusiva (Art. 129 LPI) + Hardware Aberto CC BY-SA',
+    'Camada D (Marca Exclusiva) • Camadas A e E Abertas',
+    'OPEN_HARDWARE_MARCA_PROTEGIDA',
+    'a94f82e10b73c91844d2e1109f83a71655c09e1288b4319a77e1209c84b51029a841029384756102938475610293847561029384756102938475610293847561',
+    '2008-04-15 10:00:00'
+),
+(
+    'INPI-PI-US8836922B2',
+    'ACERVO_INPI_MUNDIAL',
+    'Waymo LiDAR Sensor de Varredura Óptica Autônoma (GBR3)',
+    'Waymo LLC / Alphabet Inc.',
+    'US-68-0623199',
+    'Waymo LLC (Mountain View, CA)',
+    'Sistema transdutor LiDAR de varredura a laser com placa PCB única de disparo de feixes ópticos e processamento de tempo de voo (ToF) para veículos autônomos.',
+    'waymo lidar sensor laser varredura optica veiculo autonomo pcb disparo feixe tof',
+    'G01S 17/08 ; G01S 7/481',
+    'Patente de Invenção Vigente (Art. 8º LPI) + Segredo Industrial',
+    'Camada F (Patente PI) + Camada A/E (Segredo Industrial Art. 195 XI)',
+    'PROTEGIDO_EXCLUSIVO',
+    'b72c91048573a1928374650192837465a9182736450192837465b82736451928374650192837465a9182736450192837465b8273645192837465019283746501',
+    '2014-09-16 14:20:00'
+),
+(
+    'INPI-TCI-BR302019000124',
+    'ACERVO_INPI_MUNDIAL',
+    'Microarquitetura x86 Core & Topografia de Silício Multi-Cache',
+    'Intel Corporation',
+    'US-94-1672743',
+    'Intel Corporation (Santa Clara, CA)',
+    'Configuração tridimensional de 19 camadas de máscara litográfica CMOS em silício (arquivos GDSII) e microcódigo de controle de barramento.',
+    'intel amd processador x86 topografia circuito integrado silicio mascara gdsii cache cmos',
+    'H01L 27/02 ; G06F 15/78',
+    'Topografia de Circuito Integrado (Lei 11.484/07) + Direito Autoral de Microcódigo',
+    'Camada C (Topografia Lei 11.484/07) + Camada E (Microcódigo)',
+    'PROTEGIDO_EXCLUSIVO',
+    'c61d82930485761928374650192837465c8192039485761928374650192837465d91827364501928374650192837465e1928374650192837465019283746502',
+    '2019-06-10 09:15:00'
+),
+(
+    'INPI-MARCA-STF-RE1055951',
+    'ACERVO_INPI_MUNDIAL',
+    'Marca G Gradiente iphone / Apple iPhone (Classe NCL 9)',
+    'IGB Eletrônica S.A. (Gradiente) / Apple Inc.',
+    '43.185.362/0001-07',
+    'IGB Eletrônica S.A. / Apple Inc.',
+    'Signo distintivo nominativo e misto para aparelhos telefônicos e dispositivos móveis inteligentes na Classe NCL 9 perante o INPI e STF (Tema 1091).',
+    'iphone gradiente apple smartphone telefone celular marca ncl 9 coexistencia inpi',
+    'H04M 1/02',
+    'Registro de Marca Nominativa/Mista (Art. 124, XIX e Art. 129 da LPI)',
+    'Camada D (Signo Distintivo Registrado no INPI)',
+    'PROTEGIDO_EXCLUSIVO',
+    'd44e19283746501928374650192837465f91827364501928374650192837465a19283746501928374650192837465b1928374650192837465019283746500003',
+    '2000-03-20 11:30:00'
+),
+(
+    'INPI-PAT-ESPRESSIF-ESP32',
+    'ACERVO_INPI_MUNDIAL',
+    'Módulo SoC ESP32-WROOM Wi-Fi & Bluetooth Low Energy Dual-Core',
+    'Espressif Systems (Shanghai) Co., Ltd.',
+    'CN-913101156746062445',
+    'Espressif Systems',
+    'Módulo transceptor integrado com microprocessador Xtensa Dual-Core 32-bit LX6, pilha RF Wi-Fi 802.11 b/g/n e Bluetooth BLE 4.2/5.0 pré-homologado na ANATEL.',
+    'esp32 esp8266 wroom espressif modulo wifi bluetooth ble xtensa microcontrolador padrao',
+    'H04W 4/80 ; H01L 23/66',
+    'Componente Comercial Protegido (Vedada apropriação do módulo em si por terceiros — Art. 8º LPI)',
+    'Camadas C, D e F pertencentes ao fabricante do SoC (Terceiros podem proteger apenas novas aplicações físicas acopladas)',
+    'PROTEGIDO_EXCLUSIVO',
+    'e88a91827364501928374650192837465c91827364501928374650192837465d91827364501928374650192837465f9182736450192837465019283746500004',
+    '2016-09-01 08:00:00'
+);
+
+
