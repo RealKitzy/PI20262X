@@ -44,78 +44,61 @@
     </header>
 
     <!-- ======================================================================
-         PÁGINA INICIAL DE ACESSO: ESCOLHA ENTRE USUÁRIO (ETAPAS) E ADMINISTRADOR
+         PÁGINA INICIAL DE ACESSO: ESCOLHA SIMPLES (USUÁRIO OU ADMINISTRADOR)
          ====================================================================== -->
-    <section id="tela-inicial-acesso" class="container" style="padding-top: clamp(1.8rem, 4vw, 3.2rem); padding-bottom: 3rem;">
-        <div class="card" style="border: 3px solid var(--orange-primary); max-width: 1120px; margin: 0 auto;">
-            <div style="display: grid; grid-template-columns: auto 1fr; gap: 1.6rem; align-items: center; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border-color);">
-                <div class="mascot-frame" style="width: 115px; height: 115px;">
-                    <img src="assets/img/umaru-logo.jpg" alt="Guia do Observatório" style="width: 100%; height: 100%; border-radius: 18px; border: 3px solid #f97316; object-fit: cover;">
+    <section id="tela-inicial-acesso" class="container" style="padding-top: clamp(2rem, 5vw, 4rem); padding-bottom: 3rem;">
+        <div class="card" style="border: 3px solid var(--orange-primary); max-width: 820px; margin: 0 auto;">
+            <div style="display: flex; align-items: center; gap: 1.25rem; margin-bottom: 1.75rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border-color);">
+                <div class="mascot-frame" style="width: 76px; height: 76px; flex-shrink: 0;">
+                    <img src="assets/img/umaru-logo.jpg" alt="Logo" style="width: 100%; height: 100%; border-radius: 14px; border: 2px solid #f97316; object-fit: cover;">
                 </div>
                 <div>
-                    <span class="inpi-badge">PORTAL DE ENTRADA • OBSERVATÓRIO DE PROPRIEDADE INTELECTUAL E HARDWARE ABERTO</span>
-                    <h2 style="font-size: clamp(1.35rem, 2.2vw, 1.85rem); color: #fff; margin: 0.35rem 0 0.5rem;">
-                        Bem-vindo! Escolha como deseja acessar o sistema:
+                    <h2 style="font-size: clamp(1.25rem, 2vw, 1.6rem); color: #fff; margin: 0 0 0.25rem;">
+                        Selecione o Modo de Acesso
                     </h2>
-                    <p style="color: var(--text-secondary); font-size: 0.95rem; margin: 0;">
-                        Selecione <strong>Usuário</strong> para registrar e proteger seu projeto passo a passo (um bloco por vez, com auto-marcação automática das leis), ou acesse como <strong>Administrador</strong> mediante login e senha para ter liberdade total sobre todas as abas e ferramentas do sistema.
+                    <p style="color: var(--text-secondary); font-size: 0.9rem; margin: 0;">
+                        Escolha entrar como <strong>Usuário</strong> ou autentique-se como <strong>Administrador</strong>.
                     </p>
                 </div>
             </div>
 
-            <div class="grid-2" style="align-items: stretch; gap: 1.6rem;">
-                <!-- OPÇÃO 1: USUÁRIO / CLIENTE (SEM SENHA, POR ETAPAS BLOQUEADAS) -->
-                <div class="portal-role-card" id="card-escolha-usuario" style="background: rgba(24, 20, 34, 0.9); border: 2px solid rgba(249, 115, 22, 0.55); border-radius: var(--radius-md); padding: 1.75rem; display: flex; flex-direction: column; justify-content: space-between;">
-                    <div>
-                        <span class="inpi-badge" style="background: rgba(16, 185, 129, 0.18); border-color: #10b981; color: #6ee7b7;">
-                            OPÇÃO 1 • ACESSO LIVRE DE SENHA (POR ETAPAS)
-                        </span>
-                        <h3 style="font-size: 1.35rem; color: #fff; margin: 0.6rem 0 0.5rem;">
-                            👤 Entrar como Usuário / Criador
+            <div class="grid-2" style="align-items: stretch; gap: 1.4rem;">
+                <!-- OPÇÃO 1: ENTRAR COMO USUÁRIO -->
+                <div id="card-escolha-usuario" style="background: rgba(24, 20, 34, 0.92); border: 2px solid rgba(249, 115, 22, 0.55); border-radius: 16px; padding: 1.6rem; display: flex; flex-direction: column; justify-content: space-between; text-align: center;">
+                    <div style="margin: auto 0; padding: 1rem 0;">
+                        <div style="font-size: 2.3rem; margin-bottom: 0.6rem;">👤</div>
+                        <h3 style="font-size: 1.25rem; color: #fff; margin: 0 0 0.45rem;">
+                            Entrar como Usuário
                         </h3>
-                        <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1.1rem;">
-                            Fluxo guiado e focado para quem deseja verificar se sua criação já existe e protegê-la sem precisar estudar leis. Você preencherá <strong>um bloco por vez</strong>, liberando cada etapa conforme avança:
+                        <p style="font-size: 0.86rem; color: var(--text-secondary); margin: 0;">
+                            Acesso direto em etapas (sem necessidade de senha).
                         </p>
-                        <ul style="list-style: none; padding: 0; margin: 0 0 1.5rem 0; font-size: 0.86rem; color: var(--text-primary);">
-                            <li style="margin-bottom: 0.5rem;">🔒 <strong>Bloco 1:</strong> Identificação do Criador e Nome da Marca/Projeto</li>
-                            <li style="margin-bottom: 0.5rem;">🔒 <strong>Bloco 2:</strong> Relato Livre do Dispositivo (Liberado após o Bloco 1)</li>
-                            <li style="margin-bottom: 0.5rem;">🔒 <strong>Bloco 3:</strong> Auto-Marcação Jurídica e Busca de Existência (Liberado após o Bloco 2)</li>
-                            <li style="margin-bottom: 0.2rem;">🔒 <strong>Etapas 02 e 03:</strong> Diagnóstico de Anterioridade e Certificado SHA-512 (Liberados após envio)</li>
-                        </ul>
                     </div>
-                    <button type="button" class="btn-primary" style="width: 100%; justify-content: center; padding: 1rem 1.4rem; font-size: 1rem;" onclick="entrarComoUsuario()">
-                        Iniciar Atendimento como Usuário (Passo a Passo) →
+                    <button type="button" class="btn-primary" style="width: 100%; justify-content: center; padding: 0.95rem 1.2rem; font-size: 0.96rem; margin-top: 1.2rem;" onclick="entrarComoUsuario()">
+                        Entrar como Usuário →
                     </button>
                 </div>
 
-                <!-- OPÇÃO 2: ADMINISTRADOR (PEDE USUÁRIO owner E SENHA 2k26enjoyer) -->
-                <div class="portal-role-card" id="card-escolha-admin" style="background: rgba(24, 20, 34, 0.9); border: 2px solid var(--border-color); border-radius: var(--radius-md); padding: 1.75rem; display: flex; flex-direction: column; justify-content: space-between;">
-                    <div>
-                        <span class="inpi-badge">
-                            OPÇÃO 2 • LIBERDADE TOTAL NO SITE (REQUER SENHA)
-                        </span>
-                        <h3 style="font-size: 1.35rem; color: #fff; margin: 0.6rem 0 0.5rem;">
-                            🛡️ Entrar como Administrador
-                        </h3>
-                        <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1rem;">
-                            Desbloqueia <strong>100% do sistema de uma só vez</strong>: navegação livre entre todas as 5 abas, todos os blocos abertos simultaneamente, gaveta dos 14 parâmetros legais, simulador de cópia por terceiros, catálogo legal e modelo DER.
-                        </p>
+                <!-- OPÇÃO 2: ENTRAR COMO ADMINISTRADOR -->
+                <div id="card-escolha-admin" style="background: rgba(24, 20, 34, 0.92); border: 2px solid var(--border-color); border-radius: 16px; padding: 1.6rem; display: flex; flex-direction: column; justify-content: space-between;">
+                    <h3 style="font-size: 1.2rem; color: #fff; margin: 0 0 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <span>🛡️</span> Entrar como Administrador
+                    </h3>
 
-                        <form id="form-login-admin" onsubmit="autenticarAdministrador(event)" style="background: rgba(12, 10, 20, 0.75); border: 1px solid rgba(249, 115, 22, 0.35); border-radius: var(--radius-sm); padding: 1.1rem; margin-bottom: 1rem;">
-                            <div class="form-group" style="margin-bottom: 0.75rem;">
-                                <label for="admin_user_input" style="font-size: 0.82rem;">Usuário do Administrador</label>
-                                <input type="text" id="admin_user_input" placeholder="Digite o usuário administrador" autocomplete="username" required>
-                            </div>
-                            <div class="form-group" style="margin-bottom: 0.75rem;">
-                                <label for="admin_pass_input" style="font-size: 0.82rem;">Senha de Acesso</label>
-                                <input type="password" id="admin_pass_input" placeholder="Digite a senha do administrador" autocomplete="current-password" required>
-                            </div>
-                            <div id="admin-login-erro" style="display: none; margin-bottom: 0.75rem; padding: 0.6rem 0.85rem; border-radius: 8px; background: rgba(239, 68, 68, 0.18); border: 1px solid #ef4444; color: #fca5a5; font-size: 0.82rem; font-weight: 600;"></div>
-                            <button type="submit" class="btn-secondary" style="width: 100%; justify-content: center; padding: 0.9rem 1.2rem; font-size: 0.95rem; border-color: var(--orange-primary); color: #fff;">
-                                🔓 Autenticar Administrador e Liberar Acesso Total →
-                            </button>
-                        </form>
-                    </div>
+                    <form id="form-login-admin" onsubmit="autenticarAdministrador(event)" style="margin: 0;">
+                        <div class="form-group" style="margin-bottom: 0.85rem;">
+                            <label for="admin_user_input" style="font-size: 0.84rem; margin-bottom: 0.35rem; display: block; color: #ffedd5; font-weight: 700;">Usuário</label>
+                            <input type="text" id="admin_user_input" placeholder="Usuário" autocomplete="username" style="width: 100%; background: #0f0c18; border: 2px solid #3a2e4d; border-radius: 12px; padding: 0.82rem 1rem; color: #fff; font-size: 0.94rem; box-sizing: border-box;" required>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 1rem;">
+                            <label for="admin_pass_input" style="font-size: 0.84rem; margin-bottom: 0.35rem; display: block; color: #ffedd5; font-weight: 700;">Senha</label>
+                            <input type="password" id="admin_pass_input" placeholder="Senha" autocomplete="current-password" style="width: 100%; background: #0f0c18; border: 2px solid #3a2e4d; border-radius: 12px; padding: 0.82rem 1rem; color: #fff; font-size: 0.94rem; box-sizing: border-box;" required>
+                        </div>
+                        <div id="admin-login-erro" style="display: none; margin-bottom: 0.85rem; padding: 0.6rem 0.85rem; border-radius: 8px; background: rgba(239, 68, 68, 0.18); border: 1px solid #ef4444; color: #fca5a5; font-size: 0.82rem; font-weight: 600;"></div>
+                        <button type="submit" class="btn-secondary" style="width: 100%; justify-content: center; padding: 0.95rem 1.2rem; font-size: 0.96rem; border-color: var(--orange-primary); color: #fff;">
+                            Entrar como Administrador →
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
