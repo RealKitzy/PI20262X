@@ -65,6 +65,74 @@ function calcularSimilaridadeTecnica(array $tokensA, array $tokensB): float {
     return round((($jaccard * 0.45) + ($coberturaMenor * 0.55)) * 100, 1);
 }
 
+/**
+ * Métrica de Suficiência Descritiva (Art. 24 da Lei nº 9.279/96 — LPI):
+ * Rejeita textos aleatórios ("gibberish"), palavras isoladas ou relatos sem termos de engenharia/software/hardware.
+ */
+function validarSuficienciaDescritivaPHP(string $relato, string $nomeProjeto = ''): array {
+    $relatoLimpo = trim($relato);
+    $textoCompleto = trim($nomeProjeto . ' ' . $relatoLimpo);
+
+    if (mb_strlen($relatoLimpo, 'UTF-8') < 25) {
+        return [
+            'valido' => false,
+            'motivo' => 'Descrição muito curta (Art. 24 da Lei nº 9.279/96 — Insuficiência Descritiva).',
+            'orientacao' => 'Descreva com pelo menos uma frase completa o que é o seu projeto, quais componentes ou tecnologias ele usa e qual problema técnico ele resolve.'
+        ];
+    }
+
+    $norm = normalizarTextoComparacao($relatoLimpo);
+    $palavras = array_values(array_filter(explode(' ', $norm), fn($p) => strlen($p) >= 2));
+
+    if (count($palavras) < 5) {
+        return [
+            'valido' => false,
+            'motivo' => 'Texto sem estrutura de frase descritiva (Art. 24 da LPI — Exigência de Suficiência Descritiva).',
+            'orientacao' => 'Escreva uma descrição real com pelo menos 5 palavras explicando o funcionamento do seu projeto.'
+        ];
+    }
+
+    $apenasLetras = preg_replace('/[^a-z]/', '', $norm);
+    $qtdLetras = strlen($apenasLetras);
+    $qtdVogais = preg_match_all('/[aeiou]/', $apenasLetras);
+    $proporcaoVogais = $qtdLetras > 0 ? ($qtdVogais / $qtdLetras) : 0.0;
+    $temSequenciaCaotica = (bool)preg_match('/[bcdfghjklmnpqrstvwxz]{6,}/', $apenasLetras) || (bool)preg_match('/(.)\1{4,}/', $apenasLetras);
+
+    if ($temSequenciaCaotica || $proporcaoVogais < 0.22 || $proporcaoVogais > 0.78) {
+        return [
+            'valido' => false,
+            'motivo' => 'Sequência de caracteres aleatórios / sem sentido semântico detectada ("Gibberish").',
+            'orientacao' => 'O texto inserido parece conter letras aleatórias sem formar palavras reais. Pelo Art. 24 da Lei nº 9.279/96 (LPI), um pedido de proteção exige descrição clara e suficiente do objeto técnico.'
+        ];
+    }
+
+    $regexMeioTecnico = '/\b(sensor|sensores|placa|pcb|circuito|arduino|esp32|esp8266|stm32|raspberry|rp2040|microcontrolador|microprocessador|processador|chip|semicondutor|asic|fpga|iot|lora|lorawan|wifi|bluetooth|ble|zigbee|rf|rfid|nfc|antena|mqtt|firmware|software|algoritmo|aplicativo|app|modulo|gabinete|carcaca|3d|robo|motor|atuador|valvula|rele|bateria|painel|solar|sonda|camera|laser|lidar|optico|optica|led|display|tela|usb|serial|i2c|spi|uart|canbus|modbus|drone|rastreador|gps|medidor|oximetro|eletrodo|transceptor|transdutor|gateway|servidor)\b/i';
+
+    $regexFinalidade = '/\b(medir|medicao|mede|monitorar|monitoramento|monitora|controlar|controle|controla|automatizar|automacao|automatico|automatica|detectar|deteccao|detecta|transmitir|transmissao|transmite|acionar|acionamento|aciona|irrigacao|irrigar|agricola|agricultura|solo|umidade|temperatura|pressao|vazao|energia|consumo|economizar|economia|medico|medica|saude|hospitalar|batimento|cardiaco|vital|vitais|paciente|seguranca|alarme|trava|fechadura|acesso|industrial|residencial|telemetria|rastreamento|localizacao|autonomo|autonoma|navegacao|processamento|analise|alerta|leitura|captura|coleta)\b/i';
+
+    $textoBusca = $norm . ' ' . normalizarTextoComparacao($nomeProjeto);
+    $temMeio = (bool)preg_match($regexMeioTecnico, $textoBusca);
+    $temFinalidade = (bool)preg_match($regexFinalidade, $textoBusca);
+
+    if (!$temMeio && !$temFinalidade) {
+        return [
+            'valido' => false,
+            'motivo' => 'Frase fora de contexto tecnológico — Ausência de Componentes e de Finalidade Técnica (Art. 10 e Art. 24 da LPI).',
+            'orientacao' => 'O texto digitado é uma frase comum sem relação com um projeto de Engenharia, Hardware, IoT ou Software. Descreva QUAIS componentes você usou e PARA QUE o projeto serve.'
+        ];
+    }
+
+    if (!$temMeio || !$temFinalidade) {
+        return [
+            'valido' => false,
+            'motivo' => 'Descrição Técnica Incompleta — Falta nexo entre Componente e Função (Art. 24 da LPI).',
+            'orientacao' => 'Para validar um projeto real, informe tanto o componente técnico (ex: placa, sensor, ESP32, software) quanto a função prática que ele executa (ex: monitorar, controlar, medir).'
+        ];
+    }
+
+    return ['valido' => true, 'motivo' => '', 'orientacao' => ''];
+}
+
 $db = Database::getConnection();
 $method = $_SERVER['REQUEST_METHOD'];
 
@@ -137,11 +205,17 @@ if ($method === 'POST') {
                 $colisaoMarca = true;
             }
         }
+        $textoTotalNorm = $nomeNormalizado . ' ' . normalizarTextoComparacao($resumoTecnico);
+        if (preg_match('/(arduino uno|waymo|flipper zero|raspberry pi|airtag|smarttag|alexa|amazon echo|starlink|iphone)/i', $textoTotalNorm, $mMarca)) {
+            if (strpos($regNomeNorm, strtolower($mMarca[0])) !== false) {
+                $colisaoMarca = true;
+            }
+        }
 
         $hashIgual = ($reg['hash_sha512'] === $hashCriacao);
         $mesmoTitular = ($docNormalizado !== '' && $docNormalizado !== '00000000000100' && $docNormalizado === $regDocNorm);
 
-        if ($hashIgual || $colisaoMarca || $similaridade >= 28.0) {
+        if ($hashIgual || $colisaoMarca || $similaridade >= 25.0) {
             $itemColisao = [
                 'protocolo_registro' => $reg['protocolo_registro'],
                 'origem_base' => $reg['origem_base'],
@@ -152,15 +226,15 @@ if ($method === 'POST') {
                 'modalidade_protecao' => $reg['modalidade_protecao'],
                 'status_juridico' => $reg['status_juridico'],
                 'data_registro' => $reg['data_registro'],
-                'similaridade_percentual' => $hashIgual ? 100.0 : ($colisaoMarca ? max(78.0, $similaridade) : $similaridade),
+                'similaridade_percentual' => $hashIgual ? 100.0 : ($colisaoMarca ? max(82.0, $similaridade) : $similaridade),
                 'colisao_marca' => $colisaoMarca,
                 'mesmo_titular' => $mesmoTitular
             ];
             $colisoesEncontradas[] = $itemColisao;
 
-            if ($mesmoTitular && ($hashIgual || $colisaoMarca || $similaridade >= 65.0)) {
+            if ($mesmoTitular && ($hashIgual || $colisaoMarca || $similaridade >= 60.0)) {
                 $registroDoProprioUsuario = $itemColisao;
-            } elseif (!$mesmoTitular && ($hashIgual || $colisaoMarca || $similaridade >= 55.0)) {
+            } elseif (!$mesmoTitular && ($hashIgual || $colisaoMarca || $similaridade >= 42.0)) {
                 if ($bloqueioTerceiro === null || $itemColisao['similaridade_percentual'] > $bloqueioTerceiro['similaridade_percentual']) {
                     $bloqueioTerceiro = $itemColisao;
                 }
@@ -172,12 +246,18 @@ if ($method === 'POST') {
     usort($colisoesEncontradas, fn($a, $b) => $b['similaridade_percentual'] <=> $a['similaridade_percentual']);
 
     // Determinar o Veredito de Existência e Apropriabilidade Jurídica
+    $checkSuficiencia = validarSuficienciaDescritivaPHP($resumoTecnico, $nomeProjeto);
     $statusApropriacao = 'DISPONIVEL_EXCLUSIVO';
     $podeRegistrar = true;
     $tituloVeredito = 'CRIAÇÃO INÉDITA E DISPONÍVEL — Você Pode Reivindicar e Registrar como Sua!';
-    $explicacaoVeredito = 'Verificamos a base fixa do Observatório e o acervo de patentes/marcas: não há registro bloqueante em nome de terceiros colidindo com a sua criação. Sua arquitetura apresenta originalidade e atende aos requisitos dos Arts. 6º, 8º/9º e 129 da Lei nº 9.279/96 (LPI) e da Lei nº 9.609/98.';
+    $explicacaoVeredito = 'Verificamos a base fixa do Observatório e o acervo de patentes/marcas: não há registro bloqueante em nome de terceiros colidindo com a sua criação. Sua arquitetura apresenta originalidade e atende aos requisitos dos Arts. 6º, 8º/9º, 24 e 129 da Lei nº 9.279/96 (LPI) e da Lei nº 9.609/98.';
 
-    if ($registroDoProprioUsuario !== null) {
+    if (!$checkSuficiencia['valido']) {
+        $statusApropriacao = 'BLOQUEADO_TERCEIRO';
+        $podeRegistrar = false;
+        $tituloVeredito = 'IMPEDIMENTO POR INSUFICIÊNCIA DESCRITIVA (Art. 24 da Lei nº 9.279/96 — LPI)';
+        $explicacaoVeredito = $checkSuficiencia['motivo'] . ' ' . $checkSuficiencia['orientacao'] . ' Sem uma descrição técnica real e inteligível do dispositivo ou sistema, o pedido é nulo de pleno direito perante o INPI (Art. 24 e Art. 50 da LPI).';
+    } elseif ($registroDoProprioUsuario !== null) {
         $statusApropriacao = 'JA_PERTENCE_AO_USUARIO';
         $podeRegistrar = true;
         $tituloVeredito = 'CRIAÇÃO JÁ REGISTRADA E FIXADA EM SEU NOME (' . $registroDoProprioUsuario['protocolo_registro'] . ')';

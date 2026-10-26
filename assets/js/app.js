@@ -96,6 +96,86 @@ const ACERVO_BASE_INPI_PADRAO = [
         status_juridico: 'PROTEGIDO_EXCLUSIVO',
         hash_sha512: 'e88a91827364501928374650192837465c91827364501928374650192837465d91827364501928374650192837465f9182736450192837465019283746500004',
         data_registro: '2016-09-01 08:00:00'
+    },
+    {
+        protocolo_registro: 'INPI-MARCA-RPI-85109234',
+        origem_base: 'ACERVO_INPI_MUNDIAL',
+        nome_criacao_marca: 'Raspberry Pi / Computador de Placa Única ARM (SBC)',
+        titular_nome: 'Raspberry Pi Ltd / Raspberry Pi Foundation',
+        titular_documento: 'UK-08207441',
+        instituicao_empresa: 'Raspberry Pi Ltd (Cambridge, Reino Unido)',
+        resumo_tecnico: 'Computador de placa única (Single Board Computer) com processador Broadcom ARM, barramento GPIO de 40 pinos, HDMI e conectividade sem fio sob marca registrada exclusiva.',
+        palavras_chave: 'raspberry pi rp2040 pico sbc broadcom arm placa unica minicomputador gpio',
+        classificacao_cip: 'G06F 1/16 ;G06F 15/78',
+        modalidade_protecao: 'Marca Registrada Exclusiva (Art. 129 LPI) + Hardware Proprietário/Misto',
+        camadas_protegidas: 'Camadas A, C, D e E protegidas pela Raspberry Pi Foundation',
+        status_juridico: 'PROTEGIDO_EXCLUSIVO',
+        hash_sha512: 'f12a91827364501928374650192837465c91827364501928374650192837465d91827364501928374650192837465f9182736450192837465019283746500005',
+        data_registro: '2012-02-29 09:00:00'
+    },
+    {
+        protocolo_registro: 'INPI-MARCA-FLIPPER-9182734',
+        origem_base: 'ACERVO_INPI_MUNDIAL',
+        nome_criacao_marca: 'Flipper Zero — Dispositivo Portátil Multitool Sub-GHz, RFID, NFC e Infravermelho',
+        titular_nome: 'Flipper Devices Inc.',
+        titular_documento: 'US-85-1928374',
+        instituicao_empresa: 'Flipper Devices Inc. (Delaware, EUA)',
+        resumo_tecnico: 'Aparelho eletrônico portátil baseado em STM32WB55 para inspeção de protocolos de rádio Sub-1GHz (CC1101), RFID 125kHz, NFC, Infravermelho e GPIO.',
+        palavras_chave: 'flipper zero subghz rfid nfc infravermelho cc1101 stm32wb55 multitool radiofrequencia',
+        classificacao_cip: 'H04B 1/38 ; G06K 7/10',
+        modalidade_protecao: 'Marca Registrada Exclusiva (Art. 129 LPI) + Desenho Industrial (Art. 94 LPI)',
+        camadas_protegidas: 'Camada B (Gabinete) e Camada D (Marca Exclusiva)',
+        status_juridico: 'PROTEGIDO_EXCLUSIVO',
+        hash_sha512: 'f23b91827364501928374650192837465c91827364501928374650192837465d91827364501928374650192837465f9182736450192837465019283746500006',
+        data_registro: '2020-08-10 12:00:00'
+    },
+    {
+        protocolo_registro: 'INPI-PAT-ALEXA-ECHO-881920',
+        origem_base: 'ACERVO_INPI_MUNDIAL',
+        nome_criacao_marca: 'Amazon Echo / Alexa — Assistente de Voz Inteligente com Matriz de Microfones',
+        titular_nome: 'Amazon Technologies, Inc.',
+        titular_documento: 'US-91-1646860',
+        instituicao_empresa: 'Amazon.com, Inc. (Seattle, WA)',
+        resumo_tecnico: 'Caixa de som e hub de automação residencial controlado por voz com matriz circular de microfones (beamforming), detecção de palavra de ativação (wake word) e integração em nuvem.',
+        palavras_chave: 'alexa amazon echo assistente voz caixa som inteligente smart speaker automacao residencial microfone',
+        classificacao_cip: 'G10L 15/22 ; H04R 1/40',
+        modalidade_protecao: 'Patente de Invenção + Marca de Alto Renome (Art. 125 e Art. 129 LPI)',
+        camadas_protegidas: 'Camadas B, D, E e F pertencentes à Amazon Technologies',
+        status_juridico: 'PROTEGIDO_EXCLUSIVO',
+        hash_sha512: 'f34c91827364501928374650192837465c91827364501928374650192837465d91827364501928374650192837465f9182736450192837465019283746500007',
+        data_registro: '2014-11-06 15:00:00'
+    },
+    {
+        protocolo_registro: 'INPI-PAT-AIRTAG-APPLE-99201',
+        origem_base: 'ACERVO_INPI_MUNDIAL',
+        nome_criacao_marca: 'Apple AirTag / Samsung SmartTag — Rastreador Bluetooth e Ultra-Wideband (UWB)',
+        titular_nome: 'Apple Inc. / Samsung Electronics Co., Ltd.',
+        titular_documento: 'US-94-2404110',
+        instituicao_empresa: 'Apple Inc. (Cupertino, CA)',
+        resumo_tecnico: 'Dispositivo localizador e chaveiro rastreador de objetos via rede mesh Bluetooth Low Energy (BLE) e chip Ultra-Wideband (UWB) para localização espacial de precisão.',
+        palavras_chave: 'airtag smarttag apple samsung rastreador bluetooth chaveiro localizador uwb objetos perdidos',
+        classificacao_cip: 'G01S 5/02 ; H04W 4/029',
+        modalidade_protecao: 'Patente de Invenção + Desenho Industrial + Marca Registrada (LPI)',
+        camadas_protegidas: 'Camadas B, C, D, E e F protegidas',
+        status_juridico: 'PROTEGIDO_EXCLUSIVO',
+        hash_sha512: 'f45d91827364501928374650192837465c91827364501928374650192837465d91827364501928374650192837465f9182736450192837465019283746500008',
+        data_registro: '2021-04-20 10:00:00'
+    },
+    {
+        protocolo_registro: 'INPI-PAT-STARLINK-TERMINAL',
+        origem_base: 'ACERVO_INPI_MUNDIAL',
+        nome_criacao_marca: 'Starlink — Antena Phased Array de Satélite LEO (SpaceX)',
+        titular_nome: 'Space Exploration Technologies Corp. (SpaceX)',
+        titular_documento: 'US-02-0593318',
+        instituicao_empresa: 'SpaceX (Hawthorne, CA)',
+        resumo_tecnico: 'Terminal transceptor de internet via satélite de baixa órbita (LEO) com antena plana de arranjo faseado (phased array) eletrônico e orientação motorizada automática.',
+        palavras_chave: 'starlink spacex antena satelite internet phased array orbita baixa',
+        classificacao_cip: 'H01Q 21/06 ; H04B 7/185',
+        modalidade_protecao: 'Patente de Invenção + Topografia de Chip + Marca (LPI / Lei 11.484/07)',
+        camadas_protegidas: 'Camadas A, B, C, D, E e F protegidas',
+        status_juridico: 'PROTEGIDO_EXCLUSIVO',
+        hash_sha512: 'f56e91827364501928374650192837465c91827364501928374650192837465d91827364501928374650192837465f9182736450192837465019283746500009',
+        data_registro: '2020-10-01 11:00:00'
     }
 ];
 
@@ -203,10 +283,20 @@ function inspecionarTrechoCodigo() {
     const aviso = document.getElementById('resultado-inspecao-codigo');
     if (!campo || !aviso) return;
 
-    const texto = campo.value.toUpperCase();
-    if (!texto.trim()) {
+    const textoBruto = campo.value.trim();
+    const texto = textoBruto.toUpperCase();
+    if (!texto) {
         aviso.textContent = 'O motor analisa automaticamente menções a SPDX, GPL, LGPL, MIT, CERN-OHL, CC BY-SA, TAPR e Solderpad no texto colado.';
         aviso.style.color = '';
+        return;
+    }
+
+    // Verifica se o texto colado realmente parece um trecho de código-fonte, cabeçalho SPDX ou lista de bibliotecas (e não apenas "a" ou letras soltas)
+    const temEstruturaCodigoOuLib = /(#include|#define|import\s|from\s|void\s|int\s|float\s|bool\s|char\s|const\s|let\s|var\s|function\s|def\s|class\s|struct\s|setup\s*\(|loop\s*\(|main\s*\(|serial\.|gpio|pinmode|digitalwrite|spdx|license|copyright|gpl|lgpl|mit|apache|bsd|cern|cc\s*by|tapr|solderpad|esp32|arduino|stm32|freertos|wire\.h|spi\.h|wifi\.h|mqtt|lora|[{}();=#\/\*])/i.test(textoBruto);
+
+    if (textoBruto.length < 10 || !temEstruturaCodigoOuLib) {
+        aviso.innerHTML = '⚠️ <strong>Conteúdo insuficiente para inspeção de código/licença:</strong> cole um trecho real de código-fonte (C/C++, Python, Verilog), cabeçalho <code>SPDX-License-Identifier</code> ou nome de biblioteca (ou deixe este campo opcional em branco).';
+        aviso.style.color = '#f59e0b';
         return;
     }
 
@@ -238,7 +328,7 @@ function inspecionarTrechoCodigo() {
         aviso.innerHTML = `<strong>Inspeção Concluída:</strong> Identificamos no código/cabeçalho: ${detectados.join(' + ')}. Os seletores da arquitetura foram ajustados automaticamente.`;
         aviso.style.color = '#fb923c';
     } else {
-        aviso.textContent = 'Trecho analisado: nenhum identificador restritivo (GPL/CERN-OHL-S) detectado até o momento.';
+        aviso.textContent = 'Estrutura de código/biblioteca válida analisada: nenhum identificador restritivo (GPL/CERN-OHL-S) detectado.';
         aviso.style.color = '#10b981';
     }
     atualizarBadgesAutoMarcacao();
@@ -425,6 +515,103 @@ function atualizarBadgesAutoMarcacao() {
     `).join('');
 }
 
+// =========================================================================
+// MÉTRICA REAL DE SUFICIÊNCIA DESCRITIVA E CONSISTÊNCIA TÉCNICA (ART. 24 LPI)
+// Exige Estrutura Bipartida: (1) Meio Técnico / Componente + (2) Ação / Finalidade
+// =========================================================================
+function validarSuficienciaDescritivaProjeto(textoRelato, nomeProjeto = '', trechoCodigo = '') {
+    const relatoLimpo = (textoRelato || '').trim();
+    const textoCompleto = `${nomeProjeto} ${relatoLimpo}`.trim();
+
+    if (relatoLimpo.length < 25) {
+        return {
+            valido: false,
+            score_suficiencia: 10,
+            motivo: 'Descrição muito curta (Art. 24 da Lei nº 9.279/96 — Insuficiência Descritiva).',
+            orientacao: 'Descreva com pelo menos uma frase completa o que é o seu projeto, quais componentes ou tecnologias ele usa e qual problema técnico ele resolve.'
+        };
+    }
+
+    // Divide em palavras alfabéticas/alfanuméricas reais
+    const palavras = relatoLimpo
+        .toLowerCase()
+        .replace(/[^a-záàãâäéèêëíìîïóòõôöúùûüç0-9\s\-]/gi, ' ')
+        .split(/\s+/)
+        .filter(p => p.length >= 2);
+
+    if (palavras.length < 5) {
+        return {
+            valido: false,
+            score_suficiencia: 15,
+            motivo: 'Texto sem estrutura de frase descritiva (Art. 24 da LPI — Exigência de Suficiência Descritiva).',
+            orientacao: `Você digitou apenas ${palavras.length} palavra(s) isolada(s). Para que o motor jurídico possa verificar a existência e enquadrar nas leis, escreva uma frase descritiva real (mínimo de 5 palavras explicando componentes e finalidade).`
+        };
+    }
+
+    // Verifica proporção de vogais e sequências de consoantes (detector de "teclado batido" / gibberish)
+    const apenasLetras = relatoLimpo.toLowerCase().replace(/[^a-záàãâäéèêëíìîïóòõôöúùûüç]/gi, '');
+    const vogais = (apenasLetras.match(/[aeiouáàãâäéèêëíìîïóòõôöúùûü]/gi) || []).length;
+    const proporcaoVogais = apenasLetras.length > 0 ? (vogais / apenasLetras.length) : 0;
+
+    const temSequenciaCaotica = /[bcdfghjklmnpqrstvwxz]{6,}/i.test(apenasLetras) || /(.)\1{4,}/i.test(apenasLetras);
+    const palavrasValidasPt = palavras.filter(p => /[aeiouáàãâéêíóôõú0-9]/i.test(p) && !/[bcdfghjklmnpqrstvwxz]{5,}/i.test(p));
+
+    if (temSequenciaCaotica || proporcaoVogais < 0.22 || proporcaoVogais > 0.78 || (palavrasValidasPt.length / palavras.length) < 0.6) {
+        return {
+            valido: false,
+            score_suficiencia: 5,
+            motivo: 'Sequência de caracteres aleatórios / sem sentido semântico detectada ("Gibberish").',
+            orientacao: 'O texto inserido parece conter letras aleatórias sem formar palavras reais. Pelo Art. 24 da Lei nº 9.279/96 (LPI), um pedido de proteção exige descrição clara e suficiente do objeto técnico.'
+        };
+    }
+
+    // EIXO 1: Meios Técnicos / Componentes Físicos, Eletrônicos ou de Software
+    const regexMeioTecnico = /\b(sensor|sensores|placa|pcb|circuito|arduino|esp32|esp8266|stm32|raspberry|rp2040|microcontrolador|microprocessador|processador|chip|semicondutor|asic|fpga|iot|lora|lorawan|wifi|wi-fi|bluetooth|ble|zigbee|rf|rfid|nfc|antena|mqtt|firmware|software|algoritmo|aplicativo|app|modulo|gabinete|carcaca|3d|robo|motor|atuador|valvula|rele|bateria|painel|solar|sonda|camera|laser|lidar|optico|optica|led|display|tela|usb|serial|i2c|spi|uart|canbus|modbus|drone|rastreador|gps|medidor|oximetro|eletrodo|transceptor|transdutor|gateway|servidor)\b/gi;
+
+    // EIXO 2: Finalidade Funcional / Ação Técnica / Problema Resolvido
+    const regexFinalidadeFuncional = /\b(medir|medicao|mede|monitorar|monitoramento|monitora|controlar|controle|controla|automatizar|automacao|automatico|automatica|detectar|deteccao|detecta|transmitir|transmissao|transmite|acionar|acionamento|aciona|irrigacao|irrigar|agricola|agricultura|solo|umidade|temperatura|pressao|vazao|energia|consumo|economizar|economia|medico|medica|saude|hospitalar|batimento|cardiaco|vital|vitais|paciente|seguranca|alarme|trava|fechadura|acesso|industrial|residencial|telemetria|rastreamento|localizacao|autonomo|autonoma|navegacao|processamento|analise|alerta|leitura|captura|coleta)\b/gi;
+
+    const textoNorm = normalizarTextoComparacaoJS(textoCompleto);
+    const meiosEncontrados = [...new Set((textoNorm.match(regexMeioTecnico) || []).map(x => x.toLowerCase()))];
+    const finalidadesEncontradas = [...new Set((textoNorm.match(regexFinalidadeFuncional) || []).map(x => x.toLowerCase()))];
+    const termosUnicos = [...new Set([...meiosEncontrados, ...finalidadesEncontradas])];
+
+    if (meiosEncontrados.length === 0 && finalidadesEncontradas.length === 0) {
+        return {
+            valido: false,
+            score_suficiencia: 20,
+            motivo: 'Frase fora de contexto tecnológico — Ausência de Componentes e de Finalidade Técnica (Art. 10 e Art. 24 da LPI).',
+            orientacao: 'O texto digitado é uma frase comum sem relação com um projeto de Engenharia, Hardware, IoT ou Software. Para validar um projeto real, descreva: (1) QUAIS componentes/tecnologias você usou (ex: ESP32, sensor, placa PCB, software, gabinete) e (2) PARA QUE ele serve (ex: monitorar temperatura, controlar irrigação, medir batimentos).'
+        };
+    }
+
+    if (meiosEncontrados.length === 0 || finalidadesEncontradas.length === 0) {
+        const faltaOQue = meiosEncontrados.length === 0
+            ? 'faltou informar QUAL componente técnico, hardware, sensor ou software compõe o projeto (ex: placa PCB, ESP32, sensor, microcontrolador, firmware, aplicativo)'
+            : 'faltou explicar QUAL é a função prática ou problema que o projeto resolve (ex: monitorar, controlar, medir temperatura, automatizar irrigação, transmitir dados)';
+        return {
+            valido: false,
+            score_suficiencia: 40,
+            motivo: 'Descrição Técnica Incompleta — Falta nexo entre Componente e Função (Art. 24 da LPI e IN INPI nº 30/2013).',
+            orientacao: `Para não aceitar frases soltas sem contexto, o sistema exige a estrutura real do INPI (Meio Técnico + Função). No seu texto, ${faltaOQue}.`
+        };
+    }
+
+    // Cálculo de Score de Suficiência Descritiva (0 a 100%)
+    const score = Math.min(100, 50 + (meiosEncontrados.length * 12) + (finalidadesEncontradas.length * 12) + Math.min(20, Math.floor(palavras.length * 1.1)));
+
+    return {
+        valido: true,
+        score_suficiencia: score,
+        termos_tecnicos_detectados: termosUnicos,
+        meios_detectados: meiosEncontrados,
+        finalidades_detectadas: finalidadesEncontradas,
+        quantidade_palavras: palavras.length,
+        motivo: `Suficiência Descritiva Aprovada (${score}% — Art. 24 da LPI): ${meiosEncontrados.length} componente(s) técnico(s) + ${finalidadesEncontradas.length} função(ões) prática(s) verificada(s).`,
+        orientacao: ''
+    };
+}
+
 // Auto-marca todos os 14 parâmetros técnicos e jurídicos em tempo real enquanto o usuário digita (sem exigir clique extra)
 function autoMarcarEnquantoDigita() {
     const campo = document.getElementById('relato_livre_usuario');
@@ -451,6 +638,27 @@ function interpretarRelatoLivre(gerarDireto, modoSilencioso = false) {
     if (!textoOriginal) {
         if (!modoSilencioso) {
             alert('Por favor, descreva seu projeto de hardware/IoT e o que você deseja patentear ou proteger no campo de texto.');
+            campo.focus();
+        }
+        return;
+    }
+
+    // Validação de Suficiência Descritiva (Art. 24 da LPI) para evitar auto-marcação falsa em texto sem sentido
+    const validacaoSuficiencia = validarSuficienciaDescritivaProjeto(textoOriginal, nomeManual);
+    if (!validacaoSuficiencia.valido) {
+        if (feedback) {
+            feedback.style.display = 'block';
+            feedback.innerHTML = `
+                <div style="padding: 0.75rem 1rem; border-radius: 10px; background: rgba(239, 68, 68, 0.14); border: 1px solid #ef4444; color: #fca5a5;">
+                    <strong style="color: #f87171; display: block; margin-bottom: 0.3rem;">
+                        🚫 ${validacaoSuficiencia.motivo} (Índice de Suficiência: ${validacaoSuficiencia.score_suficiencia}%)
+                    </strong>
+                    <span style="font-size: 0.85rem; color: #fee2e2;">${validacaoSuficiencia.orientacao}</span>
+                </div>
+            `;
+        }
+        if (!modoSilencioso) {
+            alert(`Descrição Inválida / Insuficiente (Art. 24 da LPI):\n\n${validacaoSuficiencia.motivo}\n\n${validacaoSuficiencia.orientacao}`);
             campo.focus();
         }
         return;
@@ -724,12 +932,23 @@ async function verificarExistenciaLocalEApi(dados, diag, acao = 'VERIFICAR') {
                 colisaoMarca = true;
             }
         }
+        // Também detecta se o usuário está tentando reivindicar diretamente uma marca/produto famoso no meio da descrição
+        const textoTotalNorm = `${nomeNorm} ${normalizarTextoComparacaoJS(dados.resumo_tecnico)}`;
+        if (regMarcaNucleo.length >= 5 && textoTotalNorm.includes(regMarcaNucleo)) {
+            if (/(arduino uno|waymo|flipper zero|raspberry pi|airtag|smarttag|alexa|amazon echo|starlink|gradiente|iphone)/i.test(textoTotalNorm) &&
+                /(arduino uno|waymo|flipper zero|raspberry pi|airtag|smarttag|alexa|amazon echo|starlink|gradiente|iphone)/i.test(regNomeNorm)) {
+                const matchMarcaFamosa = textoTotalNorm.match(/(arduino uno|waymo|flipper zero|raspberry pi|airtag|smarttag|alexa|amazon echo|starlink|iphone)/i);
+                if (matchMarcaFamosa && regNomeNorm.includes(matchMarcaFamosa[0].toLowerCase())) {
+                    colisaoMarca = true;
+                }
+            }
+        }
 
         const hashIgual = (reg.hash_sha512 === hashCriacao);
         const mesmoTitular = (docNorm !== '' && docNorm !== '00000000000100' && docNorm === regDocNorm);
 
-        if (hashIgual || colisaoMarca || similaridade >= 28.0) {
-            const simFinal = hashIgual ? 100.0 : (colisaoMarca ? Math.max(78.0, similaridade) : similaridade);
+        if (hashIgual || colisaoMarca || similaridade >= 25.0) {
+            const simFinal = hashIgual ? 100.0 : (colisaoMarca ? Math.max(82.0, similaridade) : similaridade);
             const itemColisao = {
                 protocolo_registro: reg.protocolo_registro,
                 origem_base: reg.origem_base,
@@ -747,9 +966,9 @@ async function verificarExistenciaLocalEApi(dados, diag, acao = 'VERIFICAR') {
             };
             colisoesEncontradas.push(itemColisao);
 
-            if (mesmoTitular && (hashIgual || colisaoMarca || similaridade >= 65.0)) {
+            if (mesmoTitular && (hashIgual || colisaoMarca || similaridade >= 60.0)) {
                 registroDoProprioUsuario = itemColisao;
-            } else if (!mesmoTitular && (hashIgual || colisaoMarca || similaridade >= 55.0)) {
+            } else if (!mesmoTitular && (hashIgual || colisaoMarca || similaridade >= 42.0)) {
                 if (!bloqueioTerceiro || itemColisao.similaridade_percentual > bloqueioTerceiro.similaridade_percentual) {
                     bloqueioTerceiro = itemColisao;
                 }
@@ -759,12 +978,19 @@ async function verificarExistenciaLocalEApi(dados, diag, acao = 'VERIFICAR') {
 
     colisoesEncontradas.sort((a, b) => b.similaridade_percentual - a.similaridade_percentual);
 
+    const checkSuficiencia = validarSuficienciaDescritivaProjeto(dados.resumo_tecnico, dados.nome_projeto, trechoCodigo);
+
     let statusApropriacao = 'DISPONIVEL_EXCLUSIVO';
     let podeRegistrar = true;
     let tituloVeredito = 'CRIAÇÃO INÉDITA E DISPONÍVEL — Você Pode Reivindicar e Fixar como Sua!';
-    let explicacaoVeredito = 'Verificamos a base fixa do Observatório e o acervo de patentes/marcas: não há registro bloqueante em nome de terceiros colidindo com a sua criação. Sua arquitetura apresenta originalidade e atende aos requisitos dos Arts. 6º, 8º/9º e 129 da Lei nº 9.279/96 (LPI) e da Lei nº 9.609/98.';
+    let explicacaoVeredito = 'Verificamos a base fixa do Observatório e o acervo de patentes/marcas: não há registro bloqueante em nome de terceiros colidindo com a sua criação. Sua arquitetura apresenta originalidade e atende aos requisitos dos Arts. 6º, 8º/9º, 24 e 129 da Lei nº 9.279/96 (LPI) e da Lei nº 9.609/98.';
 
-    if (registroDoProprioUsuario) {
+    if (!checkSuficiencia.valido) {
+        statusApropriacao = 'BLOQUEADO_TERCEIRO';
+        podeRegistrar = false;
+        tituloVeredito = 'IMPEDIMENTO POR INSUFICIÊNCIA DESCRITIVA (Art. 24 da Lei nº 9.279/96 — LPI)';
+        explicacaoVeredito = `${checkSuficiencia.motivo} ${checkSuficiencia.orientacao} Sem uma descrição técnica real e inteligível do dispositivo ou sistema, o pedido é nulo de pleno direito perante o INPI (Art. 24 e Art. 50 da LPI).`;
+    } else if (registroDoProprioUsuario) {
         statusApropriacao = 'JA_PERTENCE_AO_USUARIO';
         podeRegistrar = true;
         tituloVeredito = `CRIAÇÃO JÁ REGISTRADA E FIXADA EM SEU NOME (${registroDoProprioUsuario.protocolo_registro})`;
@@ -904,6 +1130,19 @@ async function buscarEstadoDaTecnicaMundialAoVivo(dados, diag) {
         </div>
     `;
 
+    if (obrasOpenAlex.length > 0 || reposGithub.length > 0) {
+        const totalAchadosMundo = obrasOpenAlex.length + reposGithub.length;
+        html += `
+            <div class="alert-card alert-ATENCAO" style="margin-bottom: 0.9rem; padding: 0.85rem 1rem;">
+                <span class="inpi-badge">⚠️ ESTADO DA TÉCNICA MUNDIAL EXISTENTE (${totalAchadosMundo} SIMILARES ENCONTRADOS)</span>
+                <h4 style="font-size: 0.95rem; margin-top: 0.25rem;">Atenção (Art. 11 da Lei nº 9.279/96): Já existem projetos ou artigos similares no mundo!</h4>
+                <p style="font-size: 0.82rem; margin: 0.25rem 0 0;">
+                    Você <strong>NÃO pode patentear o conceito geral</strong> já publicado abaixo (pois já integra o Estado da Técnica mundial). Para que o seu pedido seja deferido no site oficial do <strong>INPI (e-Patentes / pePI)</strong>, você deverá restringir sua reivindicação apenas ao seu <strong>diferencial construtivo inédito</strong> (parte <em>"Caracterizado por..."</em>) e validar formalmente na base oficial do INPI.
+                </p>
+            </div>
+        `;
+    }
+
     if (obrasOpenAlex.length > 0) {
         html += `<div style="margin-bottom: 0.85rem;"><strong style="font-size:0.84rem;color:var(--orange-light);display:block;margin-bottom:0.4rem;">Publicações e Anterioridades Científico-Tecnológicas Encontradas (Art. 11 LPI):</strong>`;
         obrasOpenAlex.forEach(obra => {
@@ -977,8 +1216,11 @@ function renderizarPainelVerificacaoExistencia(verif) {
                 <span class="inpi-badge">${badgeTexto}</span>
                 <h3 style="font-size: 1.18rem; margin: 0.35rem 0 0.5rem;">${verif.titulo_veredito}</h3>
                 <p style="margin-bottom: 0.75rem; line-height: 1.65;">${verif.explicacao_veredito}</p>
-                <div style="background: rgba(10, 8, 18, 0.75); border: 1px solid rgba(249, 115, 22, 0.35); border-radius: 8px; padding: 0.65rem 0.95rem; font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: #fed7aa; word-break: break-all;">
+                <div style="background: rgba(10, 8, 18, 0.75); border: 1px solid rgba(249, 115, 22, 0.35); border-radius: 8px; padding: 0.65rem 0.95rem; font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: #fed7aa; word-break: break-all; margin-bottom: 0.85rem;">
                     <strong>Impressão Digital Criptográfica (Hash SHA-512 — Art. 3º Lei 9.609/98):</strong> ${verif.hash_sha512_calculado}
+                </div>
+                <div style="background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.45); border-radius: 8px; padding: 0.75rem 1rem; font-size: 0.82rem; color: #fef3c7; line-height: 1.55;">
+                    ⚖️ <strong>AVISO LEGAL OBRIGATÓRIO — VALIDAÇÃO OFICIAL NO INPI (AUTARQUIA FEDERAL):</strong> Este diagnóstico constitui <strong>triagem técnico-jurídica preliminar e prova de anterioridade/autoria (SHA-512)</strong> no Observatório Acadêmico. Conforme os <strong>Arts. 6º, 19, 30 e 129 da Lei nº 9.279/96 (LPI)</strong>, a concessão estatal definitiva de Carta-Patente ou Certificado de Marca exige <strong>validação e protocolo oficial diretamente no portal do INPI (<a href="https://busca.inpi.gov.br/pePI/" target="_blank" rel="noopener" style="color: #fbbf24; text-decoration: underline; font-weight: 700;">busca.inpi.gov.br/pePI ↗</a> / <a href="https://www.gov.br/inpi/pt-br" target="_blank" rel="noopener" style="color: #fbbf24; text-decoration: underline; font-weight: 700;">gov.br/inpi ↗</a>)</strong> mediante recolhimento de GRU e exame técnico pelos examinadores federais.
                 </div>
             </div>
         `;
@@ -1451,9 +1693,12 @@ function avancarBlocoUsuario(numeroBlocoDestino) {
     // Validação rigorosa antes de liberar o Bloco 3
     if (numeroBlocoDestino === 3) {
         const relato = document.getElementById('relato_livre_usuario').value.trim();
-        if (!relato || relato.length < 15) {
-            alert('Para avançar para o Bloco 3, descreva o seu projeto de hardware/IoT ou software embarcado no campo 5 (pelo menos uma frase explicando o que você criou).');
+        const nomeProj = document.getElementById('nome_projeto').value.trim();
+        const validacao = validarSuficienciaDescritivaProjeto(relato, nomeProj);
+        if (!validacao.valido) {
+            alert(`🚫 Não foi possível avançar para o Bloco 3:\n\n${validacao.motivo}\n\n${validacao.orientacao}`);
             document.getElementById('relato_livre_usuario').focus();
+            interpretarRelatoLivre(false, true);
             return;
         }
         autoMarcarEnquantoDigita();
@@ -1951,6 +2196,16 @@ async function processarDiagnostico(event) {
         return;
     }
 
+    // Valida se o texto realmente descreve um projeto técnico real (Art. 24 da LPI — Suficiência Descritiva)
+    const textoParaValidar = textoRelato || (resumoEl ? resumoEl.value.trim() : '') || textoNome;
+    const validacaoReal = validarSuficienciaDescritivaProjeto(textoParaValidar, textoNome);
+    if (!validacaoReal.valido) {
+        alert(`🚫 Projeto Recusado por Insuficiência Descritiva (Art. 24 da Lei nº 9.279/96):\n\n${validacaoReal.motivo}\n\n${validacaoReal.orientacao}`);
+        if (relatoEl) relatoEl.focus();
+        interpretarRelatoLivre(false, true);
+        return;
+    }
+
     // Garante que o relato livre sempre sincronize e auto-marque os parâmetros caso a gaveta avançada esteja fechada
     if (!gaveta || !gaveta.open) {
         autoMarcarEnquantoDigita();
@@ -2256,6 +2511,10 @@ ${corr.texto_reivindicacao_1}
 5. IMPRESSÃO DIGITAL CRIPTOGRÁFICA (PROVA DE AUTORIA ANTERIOR — ART. 3º LEI 9.609/98)
 Hash SHA-512 do Projeto e Código-Fonte:
 ${hashReal}
+
+6. RESSALVA LEGAL E NECESSIDADE DE VALIDAÇÃO OFICIAL NO PORTAL DO INPI (AUTARQUIA FEDERAL)
+• Natureza deste Certificado: Este documento constitui Laudo Acadêmico-Jurídico de Triagem de Anterioridade e Prova Técnica de Autoria/Integridade Criptográfica (SHA-512).
+• Validação Estatal Obrigatória: Nos termos dos Arts. 6º, 19, 30 e 129 da Lei nº 9.279/1996 (LPI), a exclusividade comercial de Patente (PI/MU), Desenho Industrial (DI) ou Marca em todo o território nacional depende obrigatoriamente de busca complementar e protocolo formal do pedido diretamente no portal oficial do Instituto Nacional da Propriedade Industrial — INPI (https://www.gov.br/inpi/pt-br e https://busca.inpi.gov.br/pePI/), mediante recolhimento da Guia de Recolhimento da União (GRU) e exame técnico pelos examinadores federais.
 
 Declara-se, para fins de prova de anterioridade técnica e autoral nos termos do Art. 5º, XXVII a XXIX da CF/88, da Lei nº 9.279/1996 (LPI), da Lei nº 9.609/1998 e da Lei nº 9.610/1998, que a especificação técnica acima foi auditada e vinculada ao titular identificado sob o protocolo ${protocoloAtivo}.
 
