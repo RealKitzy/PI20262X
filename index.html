@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Observatório de Propriedade Intelectual e Hardware Aberto | Projeto Integrador</title>
+    <link rel="stylesheet" href="assets/css/styles.css?v=20261030">
+</head>
+<body>
+
+    <!-- Barra de Rolagem Inteligente (Oculta por padrão; aparece ao levar o mouse ao canto direito) -->
+    <div class="edge-scroll-zone" id="edge-scroll-zone" title="Role a página ou arraste">
+        <div class="edge-scroll-track" id="edge-scroll-track">
+            <div class="edge-scroll-thumb" id="edge-scroll-thumb"></div>
+        </div>
+    </div>
+
+    <!-- Cabeçalho Superior -->
+    <header class="topbar">
+        <div class="topbar-inner">
+            <div class="brand">
+                <div class="brand-icon">
+                    <img src="assets/img/logo-anime.svg" alt="Emblema Observatório de PI">
+                </div>
+                <div class="brand-text">
+                    <h1>Observatório de Propriedade Intelectual &amp; Hardware Aberto</h1>
+                    <span>Projeto Integrador: Informática e Legislação • Matriz de Proteção Multicamada (A–F), INPI e Licenças OSHW</span>
+                </div>
+            </div>
+            <div class="topbar-actions">
+                <div class="engine-badge">
+                    <span class="engine-dot"></span>
+                    <span id="engine-status-text">Motor de Decisão Ativo</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ======================================================================
+         CONTEÚDO PRINCIPAL DO SISTEMA (FLUXO DIRETO DO USUÁRIO)
+         ====================================================================== -->
+    <div id="conteudo-sistema-principal">
+
+        <!-- Painel de Orientação Técnica (Autor / Projeto Final) -->
+        <section class="hero-banner">
+            <div class="anime-dialog-stage">
+                <div class="mascot-frame">
+                    <img src="assets/img/umaru-logo.jpg" alt="Guia do Projeto" style="border-radius: 18px; border: 3px solid #f97316; object-fit: cover;">
+                    <span class="mascot-status">PROJETO INTEGRADOR</span>
+                </div>
+
+                <div class="manga-speech-bubble">
+                    <span class="bubble-speaker-tag" id="mascote-tag">ETAPA 1 DE 3 — IDENTIFICAÇÃO DO TITULAR</span>
+                    <h2 id="mascote-titulo">Preencha seus dados no Bloco 1 para iniciar a verificação do seu projeto.</h2>
+                    <p id="mascote-fala">
+                        O hardware e dispositivos IoT são protegidos no Brasil por <strong>6 camadas jurídicas (A até F)</strong>: Documentação Técnica (Lei 9.610/98), Design Externo (LPI), Semicondutores/Chips (Lei 11.484/07), Marca (Art. 129 da LPI), Software Embarcado (Lei 9.609/98) e Solução Técnica (Patentes PI/MU). Preencha um bloco por vez para validar sua criação, consultar a anterioridade e emitir seu Certificado SHA-512.
+                    </p>
+                </div>
+
+                <div class="hero-stats">
+                    <div class="hero-stat-item">
+                        <strong>6 Camadas</strong>
+                        <span>Matriz A–F Completa</span>
+                    </div>
+                    <div class="hero-stat-item">
+                        <strong>4 Quesitos</strong>
+                        <span>Validação Técnica Art. 24 LPI</span>
+                    </div>
+                    <div class="hero-stat-item">
+                        <strong>5 Documentos</strong>
+                        <span>Certificado SHA-512, Contratos e INPI</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Navegação Principal por Abas -->
+        <nav class="nav-tabs" id="nav-tabs-principal">
+            <button class="tab-btn active" id="tab-btn-diagnostico" data-target="aba-diagnostico" onclick="alternarAba('aba-diagnostico')">
+                <span class="tab-step">01</span> Etapa 1: Cadastro em Blocos
+            </button>
+            <button class="tab-btn" id="tab-btn-relatorio" data-target="aba-relatorio" onclick="alternarAba('aba-relatorio')" style="opacity: 0.45;">
+                <span class="tab-step">🔒</span> Etapa 2: Verificação (Conclua a Etapa 1)
+            </button>
+            <button class="tab-btn" id="tab-btn-minutas" data-target="aba-minutas" onclick="alternarAba('aba-minutas')" style="opacity: 0.45;">
+                <span class="tab-step">🔒</span> Etapa 3: Certificado (Conclua a Etapa 2)
+            </button>
+        </nav>
+
+        <main class="container">
+
+            <!-- ==================================================================
+                 ABA 1: FORMULÁRIO DE ENTRADA DE ARQUITETURA HARDWARE / FIRMWARE / IOT
+                 ================================================================== -->
+            <section id="aba-diagnostico" class="tab-panel active">
+
+                <form id="form-arquitetura" onsubmit="processarDiagnostico(event)" novalidate class="section-stack">
+
+                    <div class="card" style="border-color: rgba(249, 115, 22, 0.65);">
+                        <div class="card-header" style="margin-bottom: 1.25rem; padding-bottom: 1rem;">
+                            <div>
+                                <span class="inpi-badge" id="badge-modo-formulario">DIAGNÓSTICO AUTOMÁTICO INTELIGENTE • VOCÊ NÃO PRECISA ENTENDER DE LEIS</span>
+                                <h2 id="titulo-card-formulario">Conte o que Você Criou — O Sistema Identifica e Marca Tudo Automaticamente</h2>
+                                <p class="card-subtitle" id="subtitulo-card-formulario">Não perca tempo escolhendo filtros jurídicos: preencha cada bloco em sequência. Enquanto você descreve seu projeto, nosso motor identifica sensores, placas, conectividade IoT, software e marca todas as opções legais sozinho.</p>
+                            </div>
+                            <button type="button" class="btn-secondary" style="padding: 0.55rem 1rem; font-size: 0.82rem;" onclick="limparFormularioCompleto()">Limpar Tudo</button>
+                        </div>
+
+                        <!-- Barra de Progresso de Blocos -->
+                        <div id="barra-etapas-usuario" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 1.4rem;">
+                            <div id="indicador-bloco-1" style="padding: 0.7rem 1rem; border-radius: 10px; border: 2px solid var(--orange-primary); background: rgba(249, 115, 22, 0.16); font-size: 0.83rem; font-weight: 700; color: #fff;">
+                                1️⃣ Bloco 1: Seus Dados e Marca (Ativo)
+                            </div>
+                            <div id="indicador-bloco-2" style="padding: 0.7rem 1rem; border-radius: 10px; border: 1px solid var(--border-color); background: rgba(15, 12, 24, 0.6); font-size: 0.83rem; color: var(--text-muted);">
+                                🔒 Bloco 2: Descrever o Projeto
+                            </div>
+                            <div id="indicador-bloco-3" style="padding: 0.7rem 1rem; border-radius: 10px; border: 1px solid var(--border-color); background: rgba(15, 12, 24, 0.6); font-size: 0.83rem; color: var(--text-muted);">
+                                🔒 Bloco 3: Auto-Marcação e Verificação
+                            </div>
+                        </div>
+
+                        <!-- ==============================================================
+                             BLOCO 1: IDENTIFICAÇÃO DO CRIADOR E NOME DO PROJETO / MARCA
+                             ============================================================== -->
+                        <div id="bloco-form-1" style="padding: 1.25rem; border-radius: var(--radius-md); background: rgba(15, 12, 24, 0.55); border: 1px solid rgba(249, 115, 22, 0.4); margin-bottom: 1.15rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.9rem;">
+                                <h3 style="font-size: 1.05rem; color: var(--orange-light); margin: 0;">
+                                    Bloco 1 — Identificação do Titular e Nome da Criação / Marca
+                                </h3>
+                                <span id="status-tag-bloco-1" class="inpi-badge" style="margin: 0;">ETAPA 1 DE 3</span>
+                            </div>
+
+                            <div class="grid-2" style="margin-bottom: 0.75rem;">
+                                <div class="form-group">
+                                    <label for="nome_projeto">1. Qual o Nome do seu Projeto ou Marca? (Obrigatório — mín. 5 caracteres)</label>
+                                    <input type="text" id="nome_projeto" minlength="5" required placeholder="Ex: AgroNode — Sensor Inteligente de Irrigação">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="autor_nome">2. Seu Nome Completo ou Equipe (Obrigatório — mín. 5 caracteres)</label>
+                                    <input type="text" id="autor_nome" minlength="5" required placeholder="Ex: João Silva e Maria Souza">
+                                </div>
+                            </div>
+
+                            <div class="grid-2" style="margin-bottom: 0.5rem;">
+                                <div class="form-group">
+                                    <label for="autor_documento">3. Seu CPF (11 dígitos) ou CNPJ (14 dígitos) — Obrigatório</label>
+                                    <input type="text" id="autor_documento" required placeholder="000.000.000-00 ou 00.000.000/0001-00">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="autor_email">4. Seu E-mail de Contato (Obrigatório — com @ e domínio)</label>
+                                    <input type="email" id="autor_email" required placeholder="voce@email.com.br">
+                                </div>
+                            </div>
+
+                            <!-- Botão de Avanço do Bloco 1 -->
+                            <div id="rodape-bloco-1-usuario" style="display: flex; justify-content: flex-end; padding-top: 0.9rem; margin-top: 0.6rem; border-top: 1px solid var(--border-color);">
+                                <button type="button" class="btn-primary" style="padding: 0.8rem 1.5rem; font-size: 0.92rem;" onclick="avancarBlocoUsuario(2)">
+                                    Concluir Bloco 1 e Liberar Bloco 2 (Descrição do Projeto) →
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- ==============================================================
+                             BLOCO 2: RELATO LIVRE DO PROJETO E INSPEÇÃO DE CÓDIGO
+                             ============================================================== -->
+                        <div id="bloco-form-2" style="display: none; padding: 1.25rem; border-radius: var(--radius-md); background: rgba(15, 12, 24, 0.55); border: 1px solid rgba(249, 115, 22, 0.4); margin-bottom: 1.15rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.9rem;">
+                                <h3 style="font-size: 1.05rem; color: var(--orange-light); margin: 0;">
+                                    Bloco 2 — Descrição do Projeto com Suas Palavras e Código (Opcional)
+                                </h3>
+                                <span id="status-tag-bloco-2" class="inpi-badge" style="margin: 0;">ETAPA 2 DE 3</span>
+                            </div>
+
+                            <div class="form-group" style="margin-bottom: 1rem;">
+                                <label for="relato_livre_usuario">5. Descreva seu Projeto com Suas Palavras (O que ele faz, quais peças/placas/sensores usa, se tem Wi-Fi/Bluetooth/LoRa, se tem carcaça 3D e se já postou em algum lugar):</label>
+                                <textarea id="relato_livre_usuario" rows="4" oninput="autoMarcarEnquantoDigita()" placeholder="Escreva normalmente sem se preocupar com termos jurídicos. Exemplo: Fiz na faculdade uma coleira inteligente para pets com placa PCB própria, ESP32 com GPS e Bluetooth, carcaça impressa em 3D e código em C++ que avisa no celular se o batimento do animal subir. Postei um vídeo no YouTube há 2 meses e quero vender fechado no mercado..."></textarea>
+
+                                <!-- Medidor de Qualificação Técnica em Tempo Real (Art. 24 da LPI) -->
+                                <div id="medidor-qualificacao-bloco2" style="margin-top: 0.7rem; padding: 0.85rem 1rem; border-radius: 10px; background: rgba(12, 10, 20, 0.85); border: 1px solid var(--border-color);">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.55rem;">
+                                        <strong style="font-size: 0.83rem; color: var(--orange-light);">
+                                            📋 Quesitos Obrigatórios de Veracidade do Projeto (Art. 24 da Lei 9.279/96 — LPI):
+                                        </strong>
+                                        <span id="badge-status-qualificacao" style="font-size: 0.76rem; padding: 0.2rem 0.65rem; border-radius: 999px; background: rgba(239, 68, 68, 0.18); border: 1px solid #ef4444; color: #fca5a5; font-weight: 700;">
+                                            ⏳ Aguardando Descrição Real (0/4 Quesitos)
+                                        </span>
+                                    </div>
+                                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 0.45rem; font-size: 0.79rem;">
+                                        <div id="chk-quesito-1" style="padding: 0.38rem 0.65rem; border-radius: 6px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: var(--text-secondary);">
+                                            ❌ <strong>1. Texto Autêntico:</strong> Mín. 8 palavras reais (sem gírias/palavrões ou letras soltas)
+                                        </div>
+                                        <div id="chk-quesito-2" style="padding: 0.38rem 0.65rem; border-radius: 6px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: var(--text-secondary);">
+                                            ❌ <strong>2. Arquitetura / Peças:</strong> Placa, sensor, chip, circuito ou software
+                                        </div>
+                                        <div id="chk-quesito-3" style="padding: 0.38rem 0.65rem; border-radius: 6px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: var(--text-secondary);">
+                                            ❌ <strong>3. Ação Técnica:</strong> O que ele faz (monitorar, controlar, medir, acionar...)
+                                        </div>
+                                        <div id="chk-quesito-4" style="padding: 0.38rem 0.65rem; border-radius: 6px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: var(--text-secondary);">
+                                            ❌ <strong>4. Contexto / Aplicação:</strong> Onde atua ou como opera (solo, saúde, Wi-Fi, 3D...)
+                                        </div>
+                                    </div>
+                                    <div id="msg-detalhe-qualificacao" style="margin-top: 0.55rem; font-size: 0.8rem; color: var(--text-muted);">
+                                        Preencha os 4 quesitos técnicos acima no seu texto para liberar o avanço para o Bloco 3.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="margin-bottom: 0.5rem;">
+                                <label for="trecho_codigo_inspecao">6. Tem algum trecho do código-fonte ou lista de bibliotecas usadas? Cole aqui (Opcional):</label>
+                                <textarea id="trecho_codigo_inspecao" rows="2" oninput="inspecionarTrechoCodigo(); autoMarcarEnquantoDigita();" placeholder="Opcional: cole aqui um pedaço do seu código (.ino, .c, .py) ou nomes de bibliotecas para o sistema detectar licenças automaticamente..."></textarea>
+                                <span class="form-help" id="resultado-inspecao-codigo">O sistema detecta sozinho licenças (MIT, GPL, LGPL, CERN-OHL, CC BY-SA) e linguagens.</span>
+                            </div>
+
+                            <!-- Botão de Avanço do Bloco 2 -->
+                            <div id="rodape-bloco-2-usuario" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.8rem; padding-top: 0.9rem; margin-top: 0.6rem; border-top: 1px solid var(--border-color);">
+                                <button type="button" class="btn-secondary" style="padding: 0.7rem 1.2rem; font-size: 0.85rem;" onclick="avancarBlocoUsuario(1)">
+                                    ← Voltar ao Bloco 1
+                                </button>
+                                <button type="button" class="btn-primary" style="padding: 0.8rem 1.5rem; font-size: 0.92rem;" onclick="avancarBlocoUsuario(3)">
+                                    Concluir Bloco 2 e Liberar Bloco 3 (Ver Auto-Marcação e Enviar) →
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- ==============================================================
+                             BLOCO 3: PAINEL AUTO-MARCADO E BOTÃO FINAL DE VERIFICAÇÃO
+                             ============================================================== -->
+                        <div id="bloco-form-3" style="display: none; padding: 1.25rem; border-radius: var(--radius-md); background: rgba(15, 12, 24, 0.55); border: 1px solid rgba(249, 115, 22, 0.4);">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.9rem;">
+                                <h3 style="font-size: 1.05rem; color: var(--orange-light); margin: 0;">
+                                    Bloco 3 — Resumo Jurídico Auto-Marcado pelo Sistema e Verificação de Existência
+                                </h3>
+                                <span id="status-tag-bloco-3" class="inpi-badge" style="margin: 0;">ETAPA 3 DE 3</span>
+                            </div>
+
+                            <!-- PAINEL VISUAL DE AUTO-MARCAÇÃO EM TEMPO REAL (MOSTRA O QUE O SISTEMA JÁ MARCOU SOZINHO) -->
+                            <div id="painel-resumo-automarcado" style="margin-bottom: 1.25rem; padding: 1.1rem 1.3rem; border-radius: var(--radius-md); background: rgba(249, 115, 22, 0.09); border: 1px solid rgba(249, 115, 22, 0.45);">
+                                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.7rem;">
+                                    <strong style="color: var(--orange-light); font-size: 0.94rem;">
+                                        ✨ Detecção e Auto-Marcação em Tempo Real (O sistema já preencheu tudo abaixo para você):
+                                    </strong>
+                                    <span style="font-size: 0.78rem; color: var(--text-secondary);">Atualizado automaticamente conforme sua descrição</span>
+                                </div>
+                                <div id="badges-automarcacao" style="display: flex; flex-wrap: wrap; gap: 0.55rem;"></div>
+                                <div id="feedback-relato-livre" style="display: none; margin-top: 0.85rem; padding-top: 0.75rem; border-top: 1px dashed rgba(249, 115, 22, 0.35); font-size: 0.87rem; color: var(--text-secondary); line-height: 1.55;"></div>
+                            </div>
+
+                            <!-- PARÂMETROS TÉCNICOS E JURÍDICOS AUTO-MARCADOS PELO SISTEMA -->
+                            <details id="gaveta-parametros-avancados" style="display: none; margin-bottom: 1.4rem; background: rgba(12, 10, 20, 0.65); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 0.9rem 1.2rem;">
+                                <summary style="cursor: pointer; font-weight: 600; color: var(--text-primary); font-size: 0.92rem; user-select: none;">
+                                    ⚙️ Ver ou Ajustar Manualmente as 14 Classificações Técnicas e Jurídicas (Já Auto-Marcadas pelo Sistema)
+                                </summary>
+
+                                <div style="margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid var(--border-color);" class="section-stack">
+                                    <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0;">
+                                        Todos os campos abaixo foram selecionados automaticamente com base no seu texto. Você não precisa alterá-los, mas pode conferir ou ajustar qualquer item se desejar:
+                                    </p>
+
+                                    <div class="grid-2">
+                                        <div class="form-group">
+                                            <label for="titularidade_tipo">Vínculo de Desenvolvimento (Auto-detectado)</label>
+                                            <select id="titularidade_tipo">
+                                                <option value="AUTONOMO_EMPRESA">Desenvolvimento Independente / Startup / Empresa Privada (Art. 6º LPI)</option>
+                                                <option value="PARCERIA_COAUTORIA">Sociedade de Cofundadores / Equipe em Coautoria (Art. 6º, § 3º LPI)</option>
+                                                <option value="VINCULO_EMPREGATICIO_ICT">Faculdade / TCC / Laboratório Universitário (ICT/NIT — Lei 10.973/04 e Art. 88 LPI)</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="instituicao_empresa">Organização / Startup / Faculdade Vinculada (Auto-preenchido)</label>
+                                            <input type="text" id="instituicao_empresa" placeholder="Instituição ou Startup">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="resumo_tecnico">Resumo Técnico Estruturado para o INPI (Gerado automaticamente do seu relato)</label>
+                                        <textarea id="resumo_tecnico" rows="2"></textarea>
+                                    </div>
+
+                                    <div class="grid-3">
+                                        <div class="form-group">
+                                            <label for="grau_novidade_hardware">Camada F — Enquadramento Patentário Auto-Detectado</label>
+                                            <select id="grau_novidade_hardware">
+                                                <option value="INEDITO_INVENTIVO">Patente de Invenção — Sistema Físico/IoT com Efeito Técnico (Art. 8º LPI e Res. INPI 158/16)</option>
+                                                <option value="MELHORIA_FUNCIONAL">Modelo de Utilidade — Nova Disposição Construtiva Funcional (Art. 9º LPI)</option>
+                                                <option value="MODULOS_PRONTOS_COTS">Módulos Comerciais Prontos sem Novo Efeito Físico (Proteger via Marca e Software)</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="usa_hardware_aberto_terceiros">Camada A — Origem dos Esquemáticos e PCB</label>
+                                            <select id="usa_hardware_aberto_terceiros">
+                                                <option value="NENHUM">Traçado de PCB e Esquemático 100% Autorais</option>
+                                                <option value="CERN_OHL_P">Derivado de Hardware Permissivo (CERN-OHL-P / TAPR / Solderpad)</option>
+                                                <option value="CERN_OHL_W">Derivado de Hardware sob Reciprocidade Fraca (CERN-OHL-W v2)</option>
+                                                <option value="CERN_OHL_S">Derivado de Hardware sob Reciprocidade Forte (CERN-OHL-S / CC BY-SA 4.0)</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="divulgacao_previa">Status de Divulgação Pública (Art. 11 e 12 LPI)</label>
+                                            <select id="divulgacao_previa">
+                                                <option value="SIGILO_MANTIDO">Mantido em Sigilo (Novidade Intacta — Art. 11 LPI)</option>
+                                                <option value="DIVULGADO_MENOS_12M">Divulgado há Menos de 12 Meses (Período de Graça — Art. 12 LPI)</option>
+                                                <option value="DIVULGADO_MAIS_12M">Divulgado há Mais de 12 Meses (Estado da Técnica — Art. 11 LPI)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="grid-2">
+                                        <div class="form-group">
+                                            <label for="conectividade_iot_rf">Conectividade Sem Fio / Rádio IoT (ANATEL — Lei 9.472/97)</label>
+                                            <select id="conectividade_iot_rf">
+                                                <option value="MODULO_RF_HOMOLOGADO">Usa Módulo Sem Fio Pré-Homologado (ESP32, LoRa, Wi-Fi, BLE — Res. 715/2019)</option>
+                                                <option value="TRANSCEPTOR_RF_CUSTOM">Circuito de Rádio / Antena Própria na PCB (Exige Ensaio Completo ANATEL)</option>
+                                                <option value="SEM_RF_CABEADO">Sem Radiofrequência (Cabeado / Isolado)</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="telemetria_dados_iot">Tipo de Dados Coletados pelos Sensores (LGPD e ANVISA)</label>
+                                            <select id="telemetria_dados_iot">
+                                                <option value="DADOS_AMBIENTAIS_MAQUINA">Dados Ambientais, Agrícolas ou de Máquina (Segredo Art. 195, XI LPI)</option>
+                                                <option value="DADOS_PESSOAIS_IOT">Dados Pessoais, GPS, Voz, Imagem ou Residencial (LGPD Art. 6º e 46)</option>
+                                                <option value="DADOS_BIOMETRICOS_SAUDE">Sinais Vitais, Saúde ou Biometria (LGPD Art. 11 + ANVISA RDC 751/22)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="checkbox-group">
+                                        <label class="checkbox-item">
+                                            <input type="checkbox" id="possui_pcb_customizada" checked>
+                                            <div>
+                                                <strong>Camada A e D — Placa de Circuito Impresso (PCB/Esquemático) e Marca Própria</strong>
+                                                <span>Auto-marcado quando há placa eletrônica, circuito ou marca própria (Lei 9.610/98 e Art. 129 LPI).</span>
+                                            </div>
+                                        </label>
+                                        <label class="checkbox-item">
+                                            <input type="checkbox" id="possui_topografia_chip">
+                                            <div>
+                                                <strong>Camada C — Projeto de Microchip em Silício / ASIC (Lei 11.484/07)</strong>
+                                                <span>Auto-marcado apenas quando há criação de máscara de semicondutor/silício próprio.</span>
+                                            </div>
+                                        </label>
+                                        <label class="checkbox-item">
+                                            <input type="checkbox" id="possui_design_externo_novo">
+                                            <div>
+                                                <strong>Camada B — Design Externo / Carcaça 3D / Gabinete Exclusivo (Art. 94 LPI)</strong>
+                                                <span>Auto-marcado quando há gabinete, carenagem, pulseira ou formato externo próprio.</span>
+                                            </div>
+                                        </label>
+                                        <label class="checkbox-item">
+                                            <input type="checkbox" id="possui_firmware_proprio" checked>
+                                            <div>
+                                                <strong>Camada E — Possui Código-Fonte / Firmware Embarcado (Lei 9.609/98)</strong>
+                                                <span>Auto-marcado quando há programação embarcada no microcontrolador.</span>
+                                            </div>
+                                        </label>
+                                    </div>
+
+                                    <div class="grid-2">
+                                        <div class="form-group">
+                                            <label for="linguagem_firmware">Linguagem / Plataforma Embarcada Detectada</label>
+                                            <input type="text" id="linguagem_firmware" value="C/C++ (ESP-IDF / FreeRTOS / MQTT)">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="vinculacao_firmware">Gravação do Firmware na Memória</label>
+                                            <select id="vinculacao_firmware">
+                                                <option value="ESTATICA_MONOLITICA">Binário Direto na Memória Flash (Microcontrolador Padrão)</option>
+                                                <option value="DINAMICA_SO">Sistema Operacional Embarcado (Linux Embarcado / Raspberry)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="grid-2">
+                                        <div class="form-group">
+                                            <label for="licenca_bibliotecas_terceiros">Licença das Bibliotecas de Código Usadas</label>
+                                            <select id="licenca_bibliotecas_terceiros">
+                                                <option value="MIT_BSD_APACHE">Permissivas (MIT, Apache, BSD) ou Código 100% Próprio</option>
+                                                <option value="LGPL_ESTATICA">GNU LGPL (Copyleft Fraco)</option>
+                                                <option value="GPL_V2_V3">GNU GPL v2/v3 (Copyleft Forte)</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="modelo_negocio">Objetivo do Projeto (Auto-detectado)</label>
+                                            <select id="modelo_negocio">
+                                                <option value="COMERCIAL_FECHADO">Comercializar Produto Protegido / Patentear (Fechado)</option>
+                                                <option value="PUBLICACAO_DEFENSIVA">Publicação Defensiva (Impedir que concorrentes patenteiem — Art. 11 LPI)</option>
+                                                <option value="HIBRIDO_HW_ABERTO_SW_FECHADO">Híbrido (Placa Aberta + Marca e Código Protegidos)</option>
+                                                <option value="OPEN_SOURCE_TOTAL">100% Hardware e Software Abertos (Comunidade)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </details>
+
+                            <!-- Botão Final do Bloco 3 -->
+                            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; padding-top: 0.5rem;">
+                                <button type="button" id="btn-voltar-bloco-2" class="btn-secondary" style="display: none; padding: 0.75rem 1.2rem; font-size: 0.85rem;" onclick="avancarBlocoUsuario(2)">
+                                    ← Voltar ao Bloco 2
+                                </button>
+                                <span style="font-size: 0.9rem; color: var(--text-secondary);">
+                                    ✔ Tudo pronto: clique no botão ao lado para verificar se seu projeto já existe e liberar o Diagnóstico (Etapa 02).
+                                </span>
+                                <button type="submit" class="btn-primary" style="padding: 1rem 1.85rem; font-size: 1rem;">
+                                    Verificar se Já Existe, Enquadrar nas Leis e Proteger Meu Projeto →
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </section>
+
+        <!-- ==================================================================
+             ABA 2: RELATÓRIO DE DIAGNÓSTICO DO MOTOR DE DECISÃO
+             ================================================================== -->
+        <section id="aba-relatorio" class="tab-panel">
+            <div class="section-stack">
+
+                <!-- Card Principal de Resumo Executivo -->
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <span class="inpi-badge">DIAGNÓSTICO TÉCNICO-JURÍDICO E PATENTÁRIO CONSOLIDADO</span>
+                            <h2 id="rel-nome-projeto">Projeto Avaliado</h2>
+                            <p id="rel-autor-projeto" class="card-subtitle">Autor / Titular</p>
+                        </div>
+                        <div style="display: flex; gap: 1rem; flex-wrap: wrap;" class="no-print">
+                            <button class="btn-secondary" onclick="window.print()">Exportar Parecer (PDF)</button>
+                            <button class="btn-primary" style="padding: 0.95rem 1.8rem; font-size: 0.95rem;" onclick="alternarAba('aba-minutas')">
+                                Acessar Minutas Contratuais →
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- KPIs -->
+                    <div class="kpi-row">
+                        <div class="kpi-box">
+                            <div class="kpi-label">Índice de Protegibilidade</div>
+                            <div class="kpi-value" id="kpi-score">--/100</div>
+                        </div>
+                        <div class="kpi-box">
+                            <div class="kpi-label">Risco de Conflito / Copyleft</div>
+                            <div class="kpi-value" id="kpi-risco">--</div>
+                        </div>
+                        <div class="kpi-box">
+                            <div class="kpi-label">Proteção Primária no INPI</div>
+                            <div class="kpi-value" id="kpi-inpi" style="font-size: 1.12rem;">--</div>
+                        </div>
+                        <div class="kpi-box">
+                            <div class="kpi-label">Licença Hardware / Esquemático</div>
+                            <div class="kpi-value" id="kpi-licenca-hw" style="font-size: 1.02rem;">--</div>
+                        </div>
+                        <div class="kpi-box">
+                            <div class="kpi-label">Licença Firmware Embarcado</div>
+                            <div class="kpi-value" id="kpi-licenca-sw" style="font-size: 1.02rem;">--</div>
+                        </div>
+                    </div>
+
+                    <!-- Mapa Visual das 6 Camadas Tecnológicas (A até F) -->
+                    <h3 style="margin-bottom: 1.35rem; font-size: 1.15rem; color: var(--orange-light);">
+                        Matriz de Proteção Multicamada do Hardware (Camadas A a F — CF/88 Art. 5º, XXVII a XXIX)
+                    </h3>
+                    <div class="grid-3" id="mapa-camadas-grid"></div>
+                </div>
+
+                <!-- PAINEL REAL E FIXO: VERIFICAÇÃO SE A CRIAÇÃO JÁ EXISTE (ANTERIORIDADE) E REGISTRO DE TITULARIDADE -->
+                <div class="card" id="card-verificacao-anterioridade-titularidade" style="border-color: rgba(249, 115, 22, 0.7);">
+                    <div class="card-header">
+                        <div>
+                            <span class="inpi-badge">CARTÓRIO DE ANTERIORIDADE E TITULARIDADE FIXA • LEI Nº 9.279/96 (ARTS. 8º, 11, 124 E 129)</span>
+                            <h2>Verificação Real: Esta Criação Já Existe? Posso Colocar e Fixar Como Minha?</h2>
+                            <p class="card-subtitle">O sistema cruza seu projeto em tempo real com: (1) o Banco de Dados Fixo de Criações e Marcas já registradas no Observatório/INPI; e (2) Bases Mundiais de Estado da Técnica (OpenAlex Patentes/Artigos e GitHub Open Hardware).</p>
+                        </div>
+                        <div class="no-print" style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                            <button type="button" class="btn-secondary" style="padding: 0.75rem 1.2rem; font-size: 0.85rem;" onclick="executarVerificacaoExistenciaCompleta(false)">
+                                Atualizar Varredura de Existência
+                            </button>
+                            <button type="button" id="btn-registrar-titularidade-fixa" class="btn-primary" style="padding: 0.8rem 1.4rem; font-size: 0.9rem;" onclick="registrarTitularidadeFixaUsuario()">
+                                Reivindicar e Fixar Criação em Meu Nome (Gravar no Banco)
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Veredito Principal: Já Existe ou Pode Registrar como Seu -->
+                    <div id="painel-veredito-apropriacao" style="margin-bottom: 1.4rem;"></div>
+
+                    <!-- Comparação Dupla: Colisões no Banco Fixo vs. Busca em Tempo Real no Estado da Técnica Mundial -->
+                    <div class="grid-2" style="margin-bottom: 1.6rem;">
+                        <div style="background: rgba(15, 12, 24, 0.65); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
+                            <span class="inpi-badge">1. VARREDURA NO BANCO FIXO E ACERVO INPI</span>
+                            <h3 style="font-size: 1.05rem; margin: 0.45rem 0 0.75rem; color: var(--text-primary);">Colisões de Marca (Art. 124 LPI) e Projetos Já Reivindicados</h3>
+                            <div id="painel-colisoes-internas"></div>
+                        </div>
+
+                        <div style="background: rgba(15, 12, 24, 0.65); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
+                            <span class="inpi-badge">2. BUSCA EM TEMPO REAL NO MUNDO (ART. 11 DA LPI)</span>
+                            <h3 style="font-size: 1.05rem; margin: 0.45rem 0 0.75rem; color: var(--text-primary);">Estado da Técnica Mundial (OpenAlex, GitHub, INPI e Google Patents)</h3>
+                            <div id="painel-anterioridade-mundial"></div>
+                        </div>
+                    </div>
+
+                    <!-- Tabela Fixa de Criações Registradas e Protegidas no Banco de Dados -->
+                    <div style="border-top: 1px solid var(--border-color); padding-top: 1.35rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.8rem; margin-bottom: 0.9rem;">
+                            <div>
+                                <h3 style="font-size: 1.08rem; color: var(--orange-light); margin-bottom: 0.2rem;">
+                                    Base Pública Fixa de Criações, Patentes e Marcas Registradas (SQL + Proteção Ativa Contra Cópia)
+                                </h3>
+                                <p style="font-size: 0.86rem; color: var(--text-secondary); margin: 0;">
+                                    Qualquer criação registrada abaixo fica travada em nome do seu titular. Clique em <strong>"Simular Terceiro Tentando Copiar"</strong> em qualquer linha para ver o sistema bloquear a apropriação indevida na prática.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Protocolo Oficial</th>
+                                        <th>Criação / Marca Protegida</th>
+                                        <th>Titular Registrado (CPF/CNPJ)</th>
+                                        <th>Camadas e Modalidade Legal</th>
+                                        <th>Hash SHA-512 / Data</th>
+                                        <th class="no-print">Teste de Colisão</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tabela-registros-fixos-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- NOVO PAINEL: CORRELAÇÃO REAL ENTRE O QUE SE DESEJA PATENTEAR, ENGENHARIA IOT E ARTIGOS DE LEI -->
+                <div class="card" id="card-correlacao-patentaria">
+                    <div class="card-header">
+                        <div>
+                            <span class="inpi-badge">CONEXÃO ENGENHARIA DE COMPUTAÇÃO / IOT ↔ SETOR JURÍDICO REAL</span>
+                            <h2>Correlação Direta: O que Patentear no INPI, Classificação CIP e Conformidade Legal (LPI, ANATEL e LGPD)</h2>
+                            <p class="card-subtitle">Análise individualizada de cada componente do seu dispositivo frente aos artigos da Lei nº 9.279/96, Resolução INPI nº 158/2016 (Software com Efeito Técnico), Lei nº 9.472/97 (ANATEL) e Lei nº 13.709/18 (LGPD).</p>
+                        </div>
+                    </div>
+                    <div id="painel-reivindicacao-inpi" style="margin-bottom: 1.5rem;"></div>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Elemento Técnico do Seu Projeto (Hardware / IoT / Software)</th>
+                                    <th>O que Pode (ou Não) ser Protegido / Patenteado</th>
+                                    <th>Dispositivo Legal Exato Correlacionado</th>
+                                    <th>Providência Prática no Setor Jurídico / INPI</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabela-correlacao-engenharia-lei"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Recomendações INPI e Auditoria Dogmática Lado a Lado -->
+                <div class="grid-2">
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <h2>Enquadramento Legal perante o INPI</h2>
+                                <p class="card-subtitle">Incidência das Leis nº 9.279/96 (LPI), nº 9.609/98 (Software), nº 9.610/98 (LDA) e nº 11.484/07 (TCI/PADIS).</p>
+                            </div>
+                        </div>
+                        <div id="lista-recomendacoes-inpi"></div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <h2>Análise Dogmática: Licenças, Copyleft, ANATEL e LGPD</h2>
+                                <p class="card-subtitle">Fragilidade do copyleft em PCB, Publicação Defensiva (Art. 11/12 LPI), Homologação RF e Titularidade (NIT/ICT).</p>
+                            </div>
+                        </div>
+                        <div id="lista-alertas-licenca"></div>
+                    </div>
+                </div>
+
+                <!-- Estimativa de Taxas Oficiais do INPI e Prazos -->
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <h2>Planejamento de Submissão ao INPI: Taxas Oficiais (GRU) e Vigências</h2>
+                            <p class="card-subtitle">Valores de referência com desconto de 60% para Pessoas Físicas, MEI, ME, EPP, Startups e ICTs públicas.</p>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Camada / Modalidade</th>
+                                <th>Sistema Eletrônico INPI</th>
+                                <th>Taxa GRU (Redução de 60%)</th>
+                                <th>Taxa GRU (Valor Integral)</th>
+                                <th>Vigência Legal e Observações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabela-custos-inpi"></tbody>
+                    </table>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ==================================================================
+             ABA 3: GERADOR AUTOMATIZADO DE MINUTAS E CONTRATOS CUSTOMIZADOS
+             ================================================================== -->
+        <section id="aba-minutas" class="tab-panel">
+            <div class="card">
+                <div class="card-header no-print">
+                    <div>
+                        <h2>Gerador Automatizado de Minutas Contratuais, Licenças OSHW e Certificado de Titularidade</h2>
+                        <p class="card-subtitle">
+                            Como as licenças são negócios jurídicos celebrados no âmbito da autonomia privada (e não leis), o sistema gera os instrumentos abaixo já parametrizados.
+                        </p>
+                    </div>
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                        <button class="btn-secondary" onclick="baixarMinutaArquivo()">Baixar Documento (.DOC / .TXT)</button>
+                        <button class="btn-primary" style="padding: 0.9rem 1.7rem; font-size: 0.95rem;" onclick="window.print()">
+                            Imprimir ou Salvar em PDF
+                        </button>
+                    </div>
+                </div>
+
+                <div class="scenario-buttons no-print" style="margin-bottom: 2.2rem;">
+                    <button class="btn-scenario" onclick="gerarMinutaAutomatizada('CERTIFICADO_TITULARIDADE')">
+                        <strong>1. Certificado Oficial de Titularidade, Anterioridade e Hash SHA-512</strong>
+                        <span>Comprovante técnico-jurídico de registro fixo no Observatório com protocolo, resumo criptográfico SHA-512 e verificação de anterioridade (Art. 3º Lei 9.609/98 e LPI).</span>
+                    </button>
+                    <button class="btn-scenario" onclick="gerarMinutaAutomatizada('CESSAO_DIREITOS')">
+                        <strong>2. Contrato de Cessão de Direitos Patrimoniais (6 Camadas)</strong>
+                        <span>Transfere a titularidade sobre documentação (LDA), firmware (Art. 4º Lei 9.609/98), chips e patentes para a organização ou ICT.</span>
+                    </button>
+                    <button class="btn-scenario" onclick="gerarMinutaAutomatizada('TERMO_OPEN_HARDWARE_CERN')">
+                        <strong>3. Licenciamento Híbrido OSHW (CERN-OHL v2 / CC BY-SA + Reserva de Marca)</strong>
+                        <span>Autoriza reprodução do esquemático e firmware, mas retém o controle exclusivo sobre a Marca (lição do caso Arduino LLC vs. SRL).</span>
+                    </button>
+                    <button class="btn-scenario" onclick="gerarMinutaAutomatizada('LICENCIAMENTO_COMERCIAL_IOT')">
+                        <strong>4. Contrato de Licenciamento Industrial e Segredo de Negócio</strong>
+                        <span>Instrumento B2B com proteção contra espionagem industrial e vazamento de layouts (prevenção aos casos Waymo vs. Uber e Intel vs. AMD).</span>
+                    </button>
+                    <button class="btn-scenario" onclick="gerarMinutaAutomatizada('MEMORIAL_INPI')">
+                        <strong>5. Dossiê Multicamada e Reivindicação Patentária para o INPI</strong>
+                        <span>Relatório técnico estruturado nas Camadas A–F com a Reivindicação Independente nº 1 ("Caracterizado por...") pronta para o e-Patentes.</span>
+                    </button>
+                </div>
+
+                <div id="contract-viewer-box" class="contract-viewer"></div>
+            </div>
+        </section>
+
+    </main>
+    </div><!-- /#conteudo-sistema-principal -->
+
+    <!-- Rodapé Institucional com os Nomes do Grupo -->
+    <footer class="footer">
+        <div>
+            <strong>Observatório de Propriedade Intelectual e Hardware Aberto</strong> • Projeto Integrador: Informática e Legislação<br>
+            <span>Equipe: Antonio Kayky Gonçalves Vieira • Giullian Bernard Alencar Maia • Ítalo Brito da Costa • Luís Aquiles Lucena Sá</span>
+        </div>
+        <div>
+            Marco Legal: CF/88 (Art. 5º, XXVII–XXIX) • Lei 9.279/96 (LPI) • Lei 9.609/98 (Software) • Lei 9.610/98 (LDA) • Lei 11.484/07 (TCI/PADIS)
+        </div>
+    </footer>
+
+    <script src="assets/js/app.js?v=20261109v2"></script>
+</body>
+</html>
