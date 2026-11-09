@@ -1426,6 +1426,7 @@ async function registrarTitularidadeFixaUsuario() {
         etapaAbaLiberadaUsuario = 3;
         aplicarRegrasDePerfilNaInterface();
     }
+    renderizarRelatorioDiagnostico(dados, ultimoDiagnostico, resultado);
     gerarMinutaAutomatizada('CERTIFICADO_TITULARIDADE');
     atualizarBalaoMascote(
         'CRIAÇÃO FIXADA E REGISTRADA EM SEU NOME COM SUCESSO!',
@@ -1730,6 +1731,11 @@ function avancarBlocoUsuario(numeroBlocoDestino) {
     if (numeroBlocoDestino === 3) {
         const relato = document.getElementById('relato_livre_usuario').value.trim();
         const nomeProj = document.getElementById('nome_projeto').value.trim();
+        if (!relato) {
+            alert('🚫 Campo Obrigatório no Bloco 2:\n\nPreencha a Descrição do Projeto antes de avançar para o Bloco 3.');
+            document.getElementById('relato_livre_usuario').focus();
+            return;
+        }
         const validacao = validarSuficienciaDescritivaProjeto(relato, nomeProj);
         if (!validacao.valido) {
             alert(`🚫 Não foi possível avançar para o Bloco 3:\n\n${validacao.motivo}\n\n${validacao.orientacao}`);
@@ -1841,7 +1847,15 @@ function aplicarRegrasDePerfilNaInterface() {
         tab3.style.opacity = etapaAbaLiberadaUsuario >= 3 ? '1' : '0.45';
         tab3.innerHTML = etapaAbaLiberadaUsuario >= 3
             ? '<span class="tab-step">03</span> Etapa 3: Certificado & Contratos'
-            : '<span class="tab-step">🔒</span> Etapa 3: Certificado (Conclua a Etapa 2)';
+            : '<span class="tab-step">🔒</span> Etapa 3: Certificado (Fixe na Etapa 2)';
+    }
+
+    const btnTopoEtapa3 = document.getElementById('btn-topo-ir-etapa-3');
+    if (btnTopoEtapa3) {
+        btnTopoEtapa3.style.opacity = etapaAbaLiberadaUsuario >= 3 ? '1' : '0.5';
+        btnTopoEtapa3.innerHTML = etapaAbaLiberadaUsuario >= 3
+            ? 'Acessar Certificado e Contratos (Etapa 3) →'
+            : '🔒 Fixe seu Projeto Abaixo para Liberar a Etapa 3';
     }
 
     atualizarVisibilidadeBlocosUsuario();
@@ -1850,16 +1864,12 @@ function aplicarRegrasDePerfilNaInterface() {
 // Navegação entre abas (com liberação progressiva por etapas)
 function alternarAba(abaId) {
     if (abaId === 'aba-relatorio' && etapaAbaLiberadaUsuario < 2) {
-        alert('Etapa Bloqueada: Conclua primeiro os 3 blocos da Etapa 01 e envie seu projeto para visualizar a Verificação de Existência e o Parecer Legal.');
+        alert('🔒 Etapa 2 Bloqueada:\n\nConclua primeiro os 3 blocos da Etapa 1 e envie seu projeto para visualizar a Verificação de Existência e o Parecer Legal.');
         return;
     }
-    if (abaId === 'aba-minutas' && etapaAbaLiberadaUsuario < 2) {
-        alert('Etapa Bloqueada: Conclua primeiro a Etapa 01 e a Etapa 02 antes de emitir seu Certificado e Contratos.');
+    if (abaId === 'aba-minutas' && etapaAbaLiberadaUsuario < 3) {
+        alert('🔒 Etapa 3 Bloqueada:\n\nPara liberar a Etapa 3 (Certificado e Contratos), conclua primeiro a Etapa 2 clicando no botão laranja "Fixar Projeto no Meu CPF/CNPJ Agora" (ou "Reivindicar e Fixar Criação em Meu Nome").');
         return;
-    }
-    if (abaId === 'aba-minutas' && etapaAbaLiberadaUsuario === 2) {
-        etapaAbaLiberadaUsuario = 3;
-        aplicarRegrasDePerfilNaInterface();
     }
 
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
@@ -2175,15 +2185,15 @@ async function processarDiagnostico(event) {
     const textoRelato = relatoEl ? relatoEl.value.trim() : '';
     const textoNome = nomeEl ? nomeEl.value.trim() : '';
 
-    if (!textoRelato && !textoNome) {
-        alert('Por favor, informe o nome do seu projeto ou descreva sua criação na caixa de texto principal para realizarmos a verificação e o diagnóstico.');
+    if (!textoRelato) {
+        alert('🚫 A Descrição do Projeto (Bloco 2) é obrigatória para realizar a verificação e o diagnóstico.');
+        avancarBlocoUsuario(2);
         if (relatoEl) relatoEl.focus();
         return;
     }
 
     // Valida se o texto realmente descreve um projeto técnico real (Art. 24 da LPI — Suficiência Descritiva)
-    const textoParaValidar = textoRelato || (resumoEl ? resumoEl.value.trim() : '') || textoNome;
-    const validacaoReal = validarSuficienciaDescritivaProjeto(textoParaValidar, textoNome);
+    const validacaoReal = validarSuficienciaDescritivaProjeto(textoRelato, textoNome);
     if (!validacaoReal.valido) {
         alert(`🚫 Projeto Recusado por Insuficiência Descritiva (Art. 24 da Lei nº 9.279/96):\n\n${validacaoReal.motivo}\n\n${validacaoReal.orientacao}`);
         if (relatoEl) relatoEl.focus();
@@ -2251,7 +2261,7 @@ async function processarDiagnostico(event) {
     buscarEstadoDaTecnicaMundialAoVivo(dados, ultimoDiagnostico);
 
     if (perfilAcessoAtual === 'USUARIO') {
-        etapaAbaLiberadaUsuario = Math.max(etapaAbaLiberadaUsuario, 2);
+        etapaAbaLiberadaUsuario = verif && verif.status_apropriacao === 'JA_PERTENCE_AO_USUARIO' ? 3 : 2;
         aplicarRegrasDePerfilNaInterface();
     }
 

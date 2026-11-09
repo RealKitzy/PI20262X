@@ -174,8 +174,8 @@
                             </div>
 
                             <div class="form-group" style="margin-bottom: 1rem;">
-                                <label for="relato_livre_usuario">5. Descreva seu Projeto com Suas Palavras (O que ele faz, quais peças/placas/sensores usa, se tem Wi-Fi/Bluetooth/LoRa, se tem carcaça 3D e se já postou em algum lugar):</label>
-                                <textarea id="relato_livre_usuario" rows="4" oninput="autoMarcarEnquantoDigita()" placeholder="Escreva normalmente sem se preocupar com termos jurídicos. Exemplo: Fiz na faculdade uma coleira inteligente para pets com placa PCB própria, ESP32 com GPS e Bluetooth, carcaça impressa em 3D e código em C++ que avisa no celular se o batimento do animal subir. Postei um vídeo no YouTube há 2 meses e quero vender fechado no mercado..."></textarea>
+                                <label for="relato_livre_usuario">5. Descrição do Projeto (Obrigatório — explique o que ele faz, quais peças/placas/sensores usa e onde atua):</label>
+                                <textarea id="relato_livre_usuario" rows="4" required oninput="autoMarcarEnquantoDigita()" placeholder="Escreva normalmente sem se preocupar com termos jurídicos. Exemplo: Fiz na faculdade uma coleira inteligente para pets com placa PCB própria, ESP32 com GPS e Bluetooth, carcaça impressa em 3D e código em C++ que avisa no celular se o batimento do animal subir. Postei um vídeo no YouTube há 2 meses e quero vender fechado no mercado..."></textarea>
 
                                 <!-- Medidor de Qualificação Técnica em Tempo Real (Art. 24 da LPI) -->
                                 <div id="medidor-qualificacao-bloco2" style="margin-top: 0.7rem; padding: 0.85rem 1rem; border-radius: 10px; background: rgba(12, 10, 20, 0.85); border: 1px solid var(--border-color);">
@@ -432,8 +432,8 @@
                         </div>
                         <div style="display: flex; gap: 1rem; flex-wrap: wrap;" class="no-print">
                             <button class="btn-secondary" onclick="window.print()">Exportar Parecer (PDF)</button>
-                            <button class="btn-primary" style="padding: 0.95rem 1.8rem; font-size: 0.95rem;" onclick="alternarAba('aba-minutas')">
-                                Acessar Minutas Contratuais →
+                            <button id="btn-topo-ir-etapa-3" class="btn-primary" style="padding: 0.95rem 1.8rem; font-size: 0.95rem; opacity: 0.5;" onclick="alternarAba('aba-minutas')">
+                                🔒 Conclua a Fixação Abaixo para Liberar Etapa 3 →
                             </button>
                         </div>
                     </div>
@@ -538,77 +538,86 @@
                     </div>
                 </div>
 
-                <!-- NOVO PAINEL: CORRELAÇÃO REAL ENTRE O QUE SE DESEJA PATENTEAR, ENGENHARIA IOT E ARTIGOS DE LEI -->
-                <div class="card" id="card-correlacao-patentaria">
-                    <div class="card-header">
-                        <div>
-                            <span class="inpi-badge">CONEXÃO ENGENHARIA DE COMPUTAÇÃO / IOT ↔ SETOR JURÍDICO REAL</span>
-                            <h2>Correlação Direta: O que Patentear no INPI, Classificação CIP e Conformidade Legal (LPI, ANATEL e LGPD)</h2>
-                            <p class="card-subtitle">Análise individualizada de cada componente do seu dispositivo frente aos artigos da Lei nº 9.279/96, Resolução INPI nº 158/2016 (Software com Efeito Técnico), Lei nº 9.472/97 (ANATEL) e Lei nº 13.709/18 (LGPD).</p>
-                        </div>
-                    </div>
-                    <div id="painel-reivindicacao-inpi" style="margin-bottom: 1.5rem;"></div>
-                    <div class="table-responsive">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>Elemento Técnico do Seu Projeto (Hardware / IoT / Software)</th>
-                                    <th>O que Pode (ou Não) ser Protegido / Patenteado</th>
-                                    <th>Dispositivo Legal Exato Correlacionado</th>
-                                    <th>Providência Prática no Setor Jurídico / INPI</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tabela-correlacao-engenharia-lei"></tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- Recomendações INPI e Auditoria Dogmática Lado a Lado -->
-                <div class="grid-2">
-                    <div class="card">
-                        <div class="card-header">
-                            <div>
-                                <h2>Enquadramento Legal perante o INPI</h2>
-                                <p class="card-subtitle">Incidência das Leis nº 9.279/96 (LPI), nº 9.609/98 (Software), nº 9.610/98 (LDA) e nº 11.484/07 (TCI/PADIS).</p>
+                <!-- GAVETA COMPACTA: DETALHAMENTO JURÍDICO COMPLETO, TABELAS LEGAIS E CUSTOS DO INPI -->
+                <details class="card" style="cursor: pointer; border-color: rgba(249, 115, 22, 0.35);">
+                    <summary style="font-size: 1.05rem; font-weight: 700; color: var(--orange-light); list-style: none; display: flex; justify-content: space-between; align-items: center;">
+                        <span>📚 Ver Detalhamento Jurídico Completo, Reivindicação INPI, ANATEL/LGPD e Tabela de Taxas (Opcional)</span>
+                        <span class="inpi-badge" style="margin: 0;">CLIQUE PARA EXPANDIR ▾</span>
+                    </summary>
+                    <div class="section-stack" style="margin-top: 1.4rem; cursor: default;">
+                        <!-- PAINEL: CORRELAÇÃO REAL ENTRE O QUE SE DESEJA PATENTEAR, ENGENHARIA IOT E ARTIGOS DE LEI -->
+                        <div class="card" id="card-correlacao-patentaria">
+                            <div class="card-header">
+                                <div>
+                                    <span class="inpi-badge">CONEXÃO ENGENHARIA DE COMPUTAÇÃO / IOT ↔ SETOR JURÍDICO REAL</span>
+                                    <h2>Correlação Direta: O que Patentear no INPI, Classificação CIP e Conformidade Legal (LPI, ANATEL e LGPD)</h2>
+                                    <p class="card-subtitle">Análise individualizada de cada componente do seu dispositivo frente aos artigos da Lei nº 9.279/96, Resolução INPI nº 158/2016 (Software com Efeito Técnico), Lei nº 9.472/97 (ANATEL) e Lei nº 13.709/18 (LGPD).</p>
+                                </div>
+                            </div>
+                            <div id="painel-reivindicacao-inpi" style="margin-bottom: 1.5rem;"></div>
+                            <div class="table-responsive">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Elemento Técnico do Seu Projeto (Hardware / IoT / Software)</th>
+                                            <th>O que Pode (ou Não) ser Protegido / Patenteado</th>
+                                            <th>Dispositivo Legal Exato Correlacionado</th>
+                                            <th>Providência Prática no Setor Jurídico / INPI</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tabela-correlacao-engenharia-lei"></tbody>
+                                </table>
                             </div>
                         </div>
-                        <div id="lista-recomendacoes-inpi"></div>
-                    </div>
 
-                    <div class="card">
-                        <div class="card-header">
-                            <div>
-                                <h2>Análise Dogmática: Licenças, Copyleft, ANATEL e LGPD</h2>
-                                <p class="card-subtitle">Fragilidade do copyleft em PCB, Publicação Defensiva (Art. 11/12 LPI), Homologação RF e Titularidade (NIT/ICT).</p>
+                        <!-- Recomendações INPI e Auditoria Dogmática Lado a Lado -->
+                        <div class="grid-2">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div>
+                                        <h2>Enquadramento Legal perante o INPI</h2>
+                                        <p class="card-subtitle">Incidência das Leis nº 9.279/96 (LPI), nº 9.609/98 (Software), nº 9.610/98 (LDA) e nº 11.484/07 (TCI/PADIS).</p>
+                                    </div>
+                                </div>
+                                <div id="lista-recomendacoes-inpi"></div>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-header">
+                                    <div>
+                                        <h2>Análise Dogmática: Licenças, Copyleft, ANATEL e LGPD</h2>
+                                        <p class="card-subtitle">Fragilidade do copyleft em PCB, Publicação Defensiva (Art. 11/12 LPI), Homologação RF e Titularidade (NIT/ICT).</p>
+                                    </div>
+                                </div>
+                                <div id="lista-alertas-licenca"></div>
                             </div>
                         </div>
-                        <div id="lista-alertas-licenca"></div>
-                    </div>
-                </div>
 
-                <!-- Estimativa de Taxas Oficiais do INPI e Prazos -->
-                <div class="card">
-                    <div class="card-header">
-                        <div>
-                            <h2>Planejamento de Submissão ao INPI: Taxas Oficiais (GRU) e Vigências</h2>
-                            <p class="card-subtitle">Valores de referência com desconto de 60% para Pessoas Físicas, MEI, ME, EPP, Startups e ICTs públicas.</p>
+                        <!-- Estimativa de Taxas Oficiais do INPI e Prazos -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div>
+                                    <h2>Planejamento de Submissão ao INPI: Taxas Oficiais (GRU) e Vigências</h2>
+                                    <p class="card-subtitle">Valores de referência com desconto de 60% para Pessoas Físicas, MEI, ME, EPP, Startups e ICTs públicas.</p>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Camada / Modalidade</th>
+                                        <th>Sistema Eletrônico INPI</th>
+                                        <th>Taxa GRU (Redução de 60%)</th>
+                                        <th>Taxa GRU (Valor Integral)</th>
+                                        <th>Vigência Legal e Observações</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tabela-custos-inpi"></tbody>
+                            </table>
+                            </div>
                         </div>
                     </div>
-                    <div class="table-responsive">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Camada / Modalidade</th>
-                                <th>Sistema Eletrônico INPI</th>
-                                <th>Taxa GRU (Redução de 60%)</th>
-                                <th>Taxa GRU (Valor Integral)</th>
-                                <th>Vigência Legal e Observações</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tabela-custos-inpi"></tbody>
-                    </table>
-                    </div>
-                </div>
+                </details>
 
             </div>
         </section>
@@ -674,6 +683,6 @@
         </div>
     </footer>
 
-    <script src="assets/js/app.js?v=20261109v5"></script>
+    <script src="assets/js/app.js?v=20261109v7"></script>
 </body>
 </html>
