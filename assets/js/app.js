@@ -2243,10 +2243,10 @@ async function processarDiagnostico(event) {
     }
 
     salvarHistoricoLocal(dados, ultimoDiagnostico);
-    renderizarRelatorioDiagnostico(dados, ultimoDiagnostico);
 
     // Executa imediatamente a verificação se o projeto já existe e se pode ser reivindicado
     const verif = await verificarExistenciaLocalEApi(dados, ultimoDiagnostico, 'VERIFICAR');
+    renderizarRelatorioDiagnostico(dados, ultimoDiagnostico, verif);
     renderizarPainelVerificacaoExistencia(verif);
     buscarEstadoDaTecnicaMundialAoVivo(dados, ultimoDiagnostico);
 
@@ -2280,7 +2280,7 @@ async function processarDiagnostico(event) {
 }
 
 // Renderiza as 6 Camadas (A a F), a Matriz de Correlação Engenharia-Lei e as tabelas do diagnóstico na Aba 2
-function renderizarRelatorioDiagnostico(dados, diag) {
+function renderizarRelatorioDiagnostico(dados, diag, verif = null) {
     document.getElementById('rel-nome-projeto').textContent = dados.nome_projeto;
     document.getElementById('rel-autor-projeto').textContent = `${dados.autor_nome} • ${dados.instituicao_empresa} (${dados.autor_documento})`;
     document.getElementById('kpi-score').textContent = `${diag.score_protegibilidade}/100`;
@@ -2292,6 +2292,116 @@ function renderizarRelatorioDiagnostico(dados, diag) {
     const kpiRiscoEl = document.getElementById('kpi-risco');
     kpiRiscoEl.style.color = diag.risco_contaminacao_licenca === 'ALTO_CRITICO' ? '#ef4444'
         : (diag.risco_contaminacao_licenca === 'MEDIO' ? '#f59e0b' : '#10b981');
+
+    // Painel Explicativo Simples e Direto (Para Leigos: O que passou, o que não passou e o porquê)
+    const painelLeigo = document.getElementById('painel-resumo-leigo-direto');
+    if (painelLeigo) {
+        const jaExisteTerceiro = verif && verif.bloqueio_terceiro && !verif.pode_registrar_como_seu;
+        const jaEhDoUsuario = verif && verif.status_apropriacao === 'JA_PERTENCE_AO_USUARIO';
+        const corBordaVeredito = jaExisteTerceiro ? '#ef4444' : '#10b981';
+        const bgVeredito = jaExisteTerceiro ? 'rgba(239, 68, 68, 0.12)' : 'rgba(16, 185, 129, 0.12)';
+
+        const respostaExistencia = jaExisteTerceiro
+            ? `🚫 <strong>NÃO PODE REGISTRAR COMO SEU AGORA:</strong> Encontramos um projeto/marca muito parecido já cadastrado em nome de outra pessoa (<strong>${verif.bloqueio_terceiro.nome_criacao_marca}</strong> — Titular: ${verif.bloqueio_terceiro.titular_nome}, ${verif.bloqueio_terceiro.similaridade_percentual}% de semelhança). Pela Lei nº 9.279/96 (Art. 11 e Art. 124), você precisa mudar o nome comercial e diferenciar a construção técnica antes de registrar.`
+            : (jaEhDoUsuario
+                ? `✅ <strong>ESTE PROJETO JÁ É SEU:</strong> Ele já consta gravado no banco de dados vinculado ao seu próprio CPF/CNPJ (${dados.autor_documento}).`
+                : `✅ <strong>PROJETO INÉDITO E APROVADO PARA REGISTRO:</strong> Não encontramos nenhum projeto igual cadastrado por outra pessoa no nosso banco de dados. Você pode travar essa ideia no seu CPF/CNPJ agora mesmo!`);
+
+        const podePatenteFisica = dados.divulgacao_previa !== 'DIVULGADO_MAIS_12M' && dados.grau_novidade_hardware !== 'MODULOS_PRONTOS_COTS' && dados.modelo_negocio !== 'PUBLICACAO_DEFENSIVA';
+
+        const itensChecklist = [
+            {
+                passou: true,
+                titulo: '1. Nome do Projeto / Marca Comercial (Camada D)',
+                explicacaoSimples: 'O nome da sua criação pode ser registrado exclusivamente em seu nome.',
+                lei: 'Art. 129 da Lei 9.279/96 (LPI — Registro de Marca no INPI por 10 anos renováveis).'
+            },
+            {
+                passou: Boolean(dados.possui_firmware_proprio),
+                titulo: '2. Código-Fonte / Software do Projeto (Camada E)',
+                explicacaoSimples: dados.possui_firmware_proprio
+                    ? `Seu código (${dados.linguagem_firmware}) está aprovado e protegido contra cópias.`
+                    : 'Você indicou que o projeto não possui código/software próprio.',
+                lei: 'Art. 2º e Art. 3º da Lei 9.609/98 (Lei de Software — proteção de 50 anos via Hash SHA-512).'
+            },
+            {
+                passou: Boolean(dados.possui_pcb_customizada),
+                titulo: '3. Desenho da Placa / Esquemático Elétrico (Camada A)',
+                explicacaoSimples: dados.possui_pcb_customizada
+                    ? 'O desenho técnico da sua placa e esquemático está protegido contra reprodução visual.'
+                    : 'Usa módulos ligados sem desenho de placa PCB própria.',
+                lei: 'Art. 7º, inciso XI da Lei 9.610/98 (Direito Autoral sobre desenhos técnicos).'
+            },
+            {
+                passou: podePatenteFisica,
+                titulo: '4. Patente do Funcionamento Físico (Camada F)',
+                explicacaoSimples: podePatenteFisica
+                    ? 'Como o seu sistema combina hardware + sensores gerando um resultado físico prático (e não foi divulgado há mais de 1 ano), ele cumpre os requisitos para pedir Patente!'
+                    : (dados.divulgacao_previa === 'DIVULGADO_MAIS_12M'
+                        ? 'Não cabe patente física porque foi divulgado há mais de 12 meses (caiu em domínio público técnico), mas sua Marca e seu Código continuam protegidos.'
+                        : 'Como usa apenas peças comerciais prontas sem circuito novo, você protege a Marca e o Código, mas não o hardware pronto.'),
+                lei: 'Art. 8º, Art. 9º e Art. 10, V da Lei 9.279/96 c/c Resolução INPI nº 158/2016.'
+            },
+            {
+                passou: Boolean(dados.possui_design_externo_novo),
+                titulo: '5. Carcaça Externa / Visual 3D do Aparelho (Camada B)',
+                explicacaoSimples: dados.possui_design_externo_novo
+                    ? 'Você citou gabinete/carcaça própria, então também pode proteger o visual externo do aparelho.'
+                    : 'Não foi citada carcaça ou formato externo novo na descrição (opcional — não impede seu registro!).',
+                lei: 'Art. 94 da Lei 9.279/96 (Registro de Desenho Industrial no INPI).'
+            },
+            {
+                passou: Boolean(dados.possui_topografia_chip),
+                titulo: '6. Fabricação de Microchip de Silício do Zero (Camada C)',
+                explicacaoSimples: dados.possui_topografia_chip
+                    ? 'Proteção especial ativada para desenho de microchip próprio em silício.'
+                    : 'Não se aplica porque seu projeto usa placas/chips já existentes no mercado como Arduino ou ESP32 (normal para 99% dos projetos!).',
+                lei: 'Art. 26 da Lei 11.484/2007 (Topografia de Circuito Integrado).'
+            }
+        ];
+
+        painelLeigo.innerHTML = `
+            <div style="padding: 1.35rem 1.5rem; border-radius: 14px; background: ${bgVeredito}; border: 2px solid ${corBordaVeredito}; margin-bottom: 1.25rem;">
+                <span class="inpi-badge" style="margin-bottom: 0.45rem;">RESUMO EM LINGUAGEM SIMPLES • RESULTADO DIRETO DA ANÁLISE</span>
+                <h3 style="font-size: 1.2rem; color: #fff; margin: 0.2rem 0 0.6rem;">
+                    O que aconteceu com o seu projeto? Ele já existe ou pode ser seu?
+                </h3>
+                <p style="font-size: 0.96rem; color: #f8fafc; line-height: 1.6; margin-bottom: 1rem;">
+                    ${respostaExistencia}
+                </p>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 0.75rem; margin-bottom: 1.1rem;">
+                    ${itensChecklist.map(item => `
+                        <div style="padding: 0.85rem 1rem; border-radius: 10px; background: rgba(15, 12, 24, 0.78); border: 1px solid ${item.passou ? 'rgba(16, 185, 129, 0.45)' : 'rgba(255, 255, 255, 0.14)'};">
+                            <div style="font-weight: 700; font-size: 0.88rem; color: ${item.passou ? '#6ee7b7' : '#cbd5e1'}; margin-bottom: 0.3rem;">
+                                ${item.passou ? '✅ PASSOU / ATIVADO:' : '⚪ NÃO SE APLICA AO SEU CASO:'} ${item.titulo}
+                            </div>
+                            <div style="font-size: 0.83rem; color: #f1f5f9; margin-bottom: 0.3rem; line-height: 1.45;">
+                                <strong>Por quê:</strong> ${item.explicacaoSimples}
+                            </div>
+                            <div style="font-size: 0.76rem; color: var(--orange-light);">
+                                <strong>Base Legal:</strong> ${item.lei}
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+
+                <div style="padding: 0.9rem 1.1rem; border-radius: 10px; background: rgba(249, 115, 22, 0.14); border: 1px solid rgba(249, 115, 22, 0.45); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.8rem;">
+                    <div style="font-size: 0.86rem; color: #ffedd5; max-width: 720px; line-height: 1.5;">
+                        <strong>💡 Próximo Passo Prático:</strong> Clique no botão ao lado para <strong>gravar gratuitamente seu Certificado de Anterioridade SHA-512</strong> no nosso banco de dados (prova técnica de que a ideia é sua) e, se quiser o monopólio comercial no Brasil, leve o Dossiê da Etapa 3 ao site oficial do <strong>INPI (gov.br/inpi)</strong>.
+                    </div>
+                    <div style="display: flex; gap: 0.6rem; flex-wrap: wrap;">
+                        <button type="button" class="btn-primary" style="padding: 0.75rem 1.25rem; font-size: 0.86rem;" onclick="registrarTitularidadeFixaUsuario()">
+                            🔒 Fixar Projeto no Meu CPF/CNPJ Agora
+                        </button>
+                        <button type="button" class="btn-secondary" style="padding: 0.75rem 1.15rem; font-size: 0.84rem;" onclick="alternarAba('aba-minutas')">
+                            📄 Ver Meu Certificado e Contratos (Etapa 3) →
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
 
     // Mapa das 6 Camadas Tecnológicas (A a F)
     const camadasGrid = document.getElementById('mapa-camadas-grid');
