@@ -137,9 +137,18 @@ function validarSuficienciaDescritivaPHP(string $relato, string $nomeProjeto = '
 
     preg_match_all($regexComponentes, $textoBusca, $matchesComp);
     $compUnicos = array_unique(array_map('strtolower', $matchesComp[0] ?? []));
-    $q2Hardware = count($compUnicos) >= 1;
-    $q3Acao = (bool)preg_match($regexVerbosAcao, $textoBusca);
-    $q4Contexto = (bool)preg_match($regexContextoDominio, $textoBusca);
+    $temCompLista = count($compUnicos) >= 1;
+    $temAcaoLista = (bool)preg_match($regexVerbosAcao, $textoBusca);
+    $temContextoLista = (bool)preg_match($regexContextoDominio, $textoBusca);
+
+    // Análise Morfológica e Estrutural da Língua Portuguesa (evita falsos negativos por falta de palavra exata na lista)
+    $temMorfologiaComp = (bool)preg_match('/\b([a-z]{3,}(dor|dora|dores|tor|tora|tores|sor|sora|sores|metro|metros|scopio|scopios|oide|oides))\b/i', $textoBusca);
+    $temEstruturaVerbal = (bool)preg_match('/\b(para\s+[a-z]{4,}|capaz\s+de\s+[a-z]{4,}|que\s+[a-z]{4,}(a|e|em|am)\b|[a-z]{3,}(ar|er|ir|ando|endo|indo|cao|mento|agem))\b/i', $norm);
+    $temEstruturaContexto = (bool)preg_match('/\b((para|em|no|na|nos|nas|via|por|atraves|mediante|contra|sobre)\s+[a-z0-9]{3,}|[a-z]{4,}(ico|ica|icos|icas|al|ais|dade|ura|logia|metria)|\d+\s*(v|mv|kv|a|ma|w|kw|hz|khz|mhz|ghz|cm|mm|m|km|g|kg|s|ms|c|l|ml|bar|psi|db|%))\b/i', $norm);
+
+    $q2Hardware = $temCompLista || ($temMorfologiaComp && ($temAcaoLista || $temContextoLista));
+    $q3Acao = $temAcaoLista || ($temEstruturaVerbal && ($temCompLista || $temContextoLista));
+    $q4Contexto = $temContextoLista || ($temEstruturaContexto && ($temCompLista || $temAcaoLista) && count($palavras) >= 8);
 
     if (!$q2Hardware && !$q3Acao) {
         return [

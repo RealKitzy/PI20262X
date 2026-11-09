@@ -575,11 +575,20 @@ function validarSuficienciaDescritivaProjeto(textoRelato, nomeProjeto = '', trec
     const meiosEncontrados = [...new Set((textoNorm.match(regexMeioTecnico) || []).map(x => x.toLowerCase()))];
     const finalidadesEncontradas = [...new Set((textoNorm.match(regexFinalidadeFuncional) || []).map(x => x.toLowerCase()))];
     const contextosEncontrados = [...new Set((textoNorm.match(regexContextoTecnico) || []).map(x => x.toLowerCase()))];
+
+    // Análise Morfológica e Estrutural da Língua Portuguesa (reconhece qualquer verbo, componente ou finalidade sem depender de palavras fixas):
+    // 1. Verbos de ação/processo em português (infinitivo -ar/-er/-ir ou conectivo de finalidade "para/capaz de/que + verbo" ou substantivos operacionais -ção/-mento/-agem)
+    const temEstruturaVerbalPt = /\b(para\s+[a-z]{4,}|capaz\s+de\s+[a-z]{4,}|com\s+fun[cç][aã]o\s+de\s+[a-z]{4,}|que\s+[a-z]{4,}(a|e|em|am)\b|[a-z]{3,}(ar|er|ir|ando|endo|indo|cao|mento|agem))\b/i.test(relatoNorm);
+    // 2. Complemento de finalidade, meio, local ou grandeza (ex: "para ...", "em ...", "via ...", "por meio de ...", "através de ...", "com ...", unidades ou sufixos técnicos -ico/-ica/-al/-or/-dade/-ura)
+    const temEstruturaContextualPt = /\b((para|em|no|na|nos|nas|via|por|atraves|mediante|durante|contra|sobre|entre)\s+[a-z0-9]{3,}|[a-z]{4,}(ico|ica|icos|icas|al|ais|ar|ares|dade|ura|ismo|ista|logia|metria|scopia|grafia)|\d+\s*(v|mv|kv|a|ma|w|kw|hz|khz|mhz|ghz|cm|mm|m|km|g|kg|s|ms|min|h|c|l|ml|bar|psi|db|%))\b/i.test(relatoNorm);
+    // 3. Sufixos morfológicos de instrumentos/dispositivos/elementos técnicos (-dor, -tor, -sor, -metro, -scopio, -grama, -tron, -oide, -ivo, -or)
+    const temMorfologiaComponentePt = /\b([a-z]{3,}(dor|dora|dores|tor|tora|tores|sor|sora|sores|metro|metros|scopio|scopios|oide|oides|uto|utos|ito|itos))\b/i.test(textoNorm);
+
     const termosUnicos = [...new Set([...meiosEncontrados, ...finalidadesEncontradas, ...contextosEncontrados])];
 
-    const quesito2Meio = meiosEncontrados.length >= 1;
-    const quesito3Acao = finalidadesEncontradas.length >= 1;
-    const quesito4Contexto = contextosEncontrados.length >= 1;
+    const quesito2Meio = meiosEncontrados.length >= 1 || (temMorfologiaComponentePt && (finalidadesEncontradas.length >= 1 || contextosEncontrados.length >= 1));
+    const quesito3Acao = finalidadesEncontradas.length >= 1 || (temEstruturaVerbalPt && (meiosEncontrados.length >= 1 || contextosEncontrados.length >= 1));
+    const quesito4Contexto = contextosEncontrados.length >= 1 || (temEstruturaContextualPt && (meiosEncontrados.length >= 1 || finalidadesEncontradas.length >= 1) && palavras.length >= 8);
 
     const quesitosAprovados = [quesito1TextoAutentico, quesito2Meio, quesito3Acao, quesito4Contexto].filter(Boolean).length;
     const todosQuesitosOk = (quesitosAprovados === 4);
