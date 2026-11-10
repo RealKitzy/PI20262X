@@ -168,13 +168,13 @@
                         <div id="bloco-form-2" style="display: none; padding: 1.25rem; border-radius: var(--radius-md); background: rgba(15, 12, 24, 0.55); border: 1px solid rgba(249, 115, 22, 0.4); margin-bottom: 1.15rem;">
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.9rem;">
                                 <h3 style="font-size: 1.05rem; color: var(--orange-light); margin: 0;">
-                                    Bloco 2 — Descrição do Projeto com Suas Palavras e Código (Opcional)
+                                    Bloco 2 — Descrição Obrigatória do Projeto para Patentear
                                 </h3>
                                 <span id="status-tag-bloco-2" class="inpi-badge" style="margin: 0;">ETAPA 2 DE 3</span>
                             </div>
 
                             <div class="form-group" style="margin-bottom: 1rem;">
-                                <label for="relato_livre_usuario">5. Descrição do Projeto (Obrigatório — explique o que ele faz, quais peças/placas/sensores usa e onde atua):</label>
+                                <label for="relato_livre_usuario">5. Descrição do Projeto (Obrigatório — descreva a sua ideia/projeto para patentear, o que ele faz, componentes e aplicação):</label>
                                 <textarea id="relato_livre_usuario" rows="4" required oninput="autoMarcarEnquantoDigita()" placeholder="Escreva normalmente sem se preocupar com termos jurídicos. Exemplo: Fiz na faculdade uma coleira inteligente para pets com placa PCB própria, ESP32 com GPS e Bluetooth, carcaça impressa em 3D e código em C++ que avisa no celular se o batimento do animal subir. Postei um vídeo no YouTube há 2 meses e quero vender fechado no mercado..."></textarea>
 
                                 <!-- Medidor de Qualificação Técnica em Tempo Real (Art. 24 da LPI) -->
@@ -213,13 +213,13 @@
                                 <span class="form-help" id="resultado-inspecao-codigo">O sistema detecta sozinho licenças (MIT, GPL, LGPL, CERN-OHL, CC BY-SA) e linguagens.</span>
                             </div>
 
-                            <!-- Botão de Avanço do Bloco 2 -->
+                            <!-- Botão de Avanço do Bloco 2 com Disparo da Verificação 0% a 100% -->
                             <div id="rodape-bloco-2-usuario" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.8rem; padding-top: 0.9rem; margin-top: 0.6rem; border-top: 1px solid var(--border-color);">
                                 <button type="button" class="btn-secondary" style="padding: 0.7rem 1.2rem; font-size: 0.85rem;" onclick="avancarBlocoUsuario(1)">
                                     ← Voltar ao Bloco 1
                                 </button>
-                                <button type="button" class="btn-primary" style="padding: 0.8rem 1.5rem; font-size: 0.92rem;" onclick="avancarBlocoUsuario(3)">
-                                    Concluir Bloco 2 e Liberar Bloco 3 (Ver Auto-Marcação e Enviar) →
+                                <button type="button" class="btn-primary" id="btn-verificar-bloco2" style="padding: 0.85rem 1.6rem; font-size: 0.93rem; font-weight: 700; background: linear-gradient(135deg, var(--orange-primary), #ea580c); box-shadow: 0 4px 18px rgba(249, 115, 22, 0.45);" onclick="iniciarVerificacaoPorcentagemBloco2()">
+                                    🔍 Verificar se o Projeto Já Existe (Pesquisa Ativa 0% a 100%) →
                                 </button>
                             </div>
                         </div>
@@ -668,6 +668,86 @@
                 <div id="contract-viewer-box" class="contract-viewer"></div>
             </div>
         </section>
+
+        <!-- ==============================================================
+             MODAL / PAINEL DE VERIFICAÇÃO ATIVA (TELEMETRIA DE 0% A 100%)
+             ============================================================== -->
+        <div id="modal-verificacao-progresso" class="modal-progresso-overlay" aria-hidden="true">
+            <div class="modal-progresso-card">
+                <!-- Header do Modal -->
+                <div class="modal-progresso-header">
+                    <div class="modal-progresso-tag">
+                        <span class="pulsing-radar-dot"></span>
+                        SISTEMA DE VERIFICAÇÃO DE ANTERIORIDADE // APIS EM EXECUÇÃO
+                    </div>
+                    <h2 class="modal-progresso-titulo">Varredura de Patentes & Mercado em Andamento</h2>
+                    <p class="modal-progresso-subtitulo">
+                        Analisando a descrição do projeto: <strong id="progresso-nome-projeto">—</strong>
+                    </p>
+                </div>
+
+                <!-- Mostrador Central de Porcentagem 0% a 100% -->
+                <div class="progresso-display-container">
+                    <div class="progresso-percentual-display">
+                        <span id="progresso-numero">0</span><span class="progresso-simbolo">%</span>
+                    </div>
+
+                    <!-- Barra de Progresso com Preenchimento Dinâmico -->
+                    <div class="progresso-barra-trilha">
+                        <div id="progresso-barra-fill" class="progresso-barra-preenchimento">
+                            <div class="progresso-barra-shimmer"></div>
+                        </div>
+                    </div>
+
+                    <!-- Mensagem de Etapa Atual -->
+                    <div id="progresso-etapa-texto" class="progresso-etapa-texto">
+                        Iniciando análise de suficiência descritiva (Art. 24 da LPI)...
+                    </div>
+                </div>
+
+                <!-- Grid de Status das APIs em Tempo Real -->
+                <div class="progresso-apis-grid">
+                    <div class="progresso-api-item" id="api-status-card-1">
+                        <div class="api-item-header">
+                            <span class="api-icone">⚖️</span>
+                            <span class="api-nome">NLP & Classificação IPC</span>
+                        </div>
+                        <span class="api-badge badge-pendente" id="chip-status-nlp">Aguardando</span>
+                    </div>
+
+                    <div class="progresso-api-item" id="api-status-card-2">
+                        <div class="api-item-header">
+                            <span class="api-icone">🏛️</span>
+                            <span class="api-nome">Acervo INPI / Marcas & Patentes</span>
+                        </div>
+                        <span class="api-badge badge-pendente" id="chip-status-inpi">Aguardando</span>
+                    </div>
+
+                    <div class="progresso-api-item" id="api-status-card-3">
+                        <div class="api-item-header">
+                            <span class="api-icone">🌐</span>
+                            <span class="api-nome">OpenAlex (Ciência & Patentes Globais)</span>
+                        </div>
+                        <span class="api-badge badge-pendente" id="chip-status-openalex">Aguardando</span>
+                    </div>
+
+                    <div class="progresso-api-item" id="api-status-card-4">
+                        <div class="api-item-header">
+                            <span class="api-icone">💻</span>
+                            <span class="api-nome">GitHub Hardware & IoT Repos</span>
+                        </div>
+                        <span class="api-badge badge-pendente" id="chip-status-github">Aguardando</span>
+                    </div>
+                </div>
+
+                <!-- Rodapé Informativo / Segurança Legal -->
+                <div class="modal-progresso-footer">
+                    <div class="modal-seguranca-texto">
+                        <span>🛡️ <strong>Segredo & Confidencialidade:</strong> Seus dados técnicos estão sendo processados em ambiente isolado conforme o Art. 11 da Lei nº 9.279/96.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </main>
     </div><!-- /#conteudo-sistema-principal -->

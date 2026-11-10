@@ -1071,6 +1071,276 @@ textarea:focus {
     }
 }
 
+/* ============================================================================
+   MODAL / PAINEL DE TELEMETRIA E BARRA DE PROGRESSO DE VERIFICAÇÃO (0% A 100%)
+   ============================================================================ */
+.modal-progresso-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background: rgba(8, 6, 14, 0.88);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.25rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.modal-progresso-overlay.ativo {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-progresso-card {
+    background: linear-gradient(155deg, rgba(31, 24, 45, 0.98), rgba(18, 14, 28, 0.98));
+    border: 2px solid var(--orange-primary);
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.85), 0 0 35px rgba(249, 115, 22, 0.35);
+    border-radius: var(--radius-lg);
+    max-width: 650px;
+    width: 100%;
+    padding: 2.2rem 2.4rem;
+    position: relative;
+    overflow: hidden;
+    transform: scale(0.94) translateY(15px);
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.modal-progresso-overlay.ativo .modal-progresso-card {
+    transform: scale(1) translateY(0);
+}
+
+.modal-progresso-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.modal-progresso-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.9rem;
+    background: rgba(249, 115, 22, 0.15);
+    border: 1px solid rgba(249, 115, 22, 0.45);
+    border-radius: 999px;
+    font-size: 0.76rem;
+    font-weight: 700;
+    color: var(--orange-light);
+    letter-spacing: 0.8px;
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+}
+
+.pulsing-radar-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--orange-primary);
+    box-shadow: 0 0 10px var(--orange-primary);
+    animation: pulse-radar 1.4s infinite ease-in-out;
+}
+
+@keyframes pulse-radar {
+    0% { transform: scale(0.9); opacity: 0.6; box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.7); }
+    70% { transform: scale(1.3); opacity: 1; box-shadow: 0 0 0 8px rgba(249, 115, 22, 0); }
+    100% { transform: scale(0.9); opacity: 0.6; box-shadow: 0 0 0 0 rgba(249, 115, 22, 0); }
+}
+
+.modal-progresso-titulo {
+    font-size: 1.35rem;
+    color: #fff;
+    margin: 0 0 0.4rem 0;
+    font-weight: 800;
+}
+
+.modal-progresso-subtitulo {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.modal-progresso-subtitulo strong {
+    color: #fff;
+}
+
+/* Mostrador do Percentual 0% - 100% */
+.progresso-display-container {
+    background: rgba(12, 10, 20, 0.7);
+    border: 1px solid rgba(249, 115, 22, 0.25);
+    border-radius: var(--radius-md);
+    padding: 1.6rem 1.4rem;
+    margin-bottom: 1.4rem;
+    text-align: center;
+}
+
+.progresso-percentual-display {
+    font-size: 4rem;
+    font-weight: 900;
+    line-height: 1;
+    color: #ffffff;
+    text-shadow: 0 0 25px rgba(249, 115, 22, 0.6);
+    letter-spacing: -1.5px;
+    margin-bottom: 1rem;
+    font-family: inherit;
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+}
+
+.progresso-simbolo {
+    font-size: 2.2rem;
+    color: var(--orange-primary);
+    margin-left: 0.2rem;
+    font-weight: 800;
+}
+
+/* Barra de Progresso Visual */
+.progresso-barra-trilha {
+    width: 100%;
+    height: 18px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid rgba(249, 115, 22, 0.35);
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+.progresso-barra-preenchimento {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #f97316 0%, #fb923c 60%, #10b981 100%);
+    border-radius: 999px;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 16px rgba(249, 115, 22, 0.85);
+    position: relative;
+}
+
+.progresso-barra-shimmer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    animation: shimmer-progresso 1.8s infinite linear;
+}
+
+@keyframes shimmer-progresso {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+.progresso-etapa-texto {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    margin-top: 1rem;
+    font-weight: 600;
+    min-height: 1.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+/* Grid de Status das APIs */
+.progresso-apis-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 1.4rem;
+}
+
+@media (max-width: 580px) {
+    .progresso-apis-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.progresso-api-item {
+    background: rgba(15, 12, 24, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-sm);
+    padding: 0.75rem 0.95rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.25s ease;
+}
+
+.progresso-api-item.ativa {
+    border-color: rgba(249, 115, 22, 0.65);
+    background: rgba(249, 115, 22, 0.12);
+}
+
+.progresso-api-item.concluida {
+    border-color: rgba(16, 185, 129, 0.55);
+    background: rgba(16, 185, 129, 0.12);
+}
+
+.api-item-header {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+}
+
+.api-icone {
+    font-size: 1.1rem;
+}
+
+.api-nome {
+    font-size: 0.81rem;
+    color: #fff;
+    font-weight: 600;
+}
+
+.api-badge {
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 0.2rem 0.55rem;
+    border-radius: 999px;
+    letter-spacing: 0.3px;
+}
+
+.badge-pendente {
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text-muted);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.badge-consultando {
+    background: rgba(249, 115, 22, 0.2);
+    color: #fed7aa;
+    border: 1px solid var(--orange-primary);
+    animation: pulse-badge 1s infinite alternate;
+}
+
+@keyframes pulse-badge {
+    0% { opacity: 0.7; }
+    100% { opacity: 1; }
+}
+
+.badge-concluido {
+    background: rgba(16, 185, 129, 0.22);
+    color: #6ee7b7;
+    border: 1px solid #10b981;
+}
+
+.modal-progresso-footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.09);
+    padding-top: 0.95rem;
+    text-align: center;
+}
+
+.modal-seguranca-texto {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+}
+
 @media print {
     .edge-scroll-zone, .topbar, .hero-banner, .nav-tabs, .no-print, .footer {
         display: none !important;
