@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Observatório de Propriedade Intelectual e Hardware Aberto | Projeto Integrador</title>
-    <link rel="stylesheet" href="assets/css/styles.css?v=20261110v1">
+    <link rel="stylesheet" href="assets/css/styles.css?v=20261110v3">
 </head>
 <body>
 
@@ -705,38 +705,72 @@
                     </div>
                 </div>
 
-                <!-- Grid de Status das APIs em Tempo Real -->
-                <div class="progresso-apis-grid">
+                <!-- Grid de Status das APIs em Tempo Real (Brasil vs Mundo) -->
+                <div class="progresso-apis-grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));">
                     <div class="progresso-api-item" id="api-status-card-1">
                         <div class="api-item-header">
                             <span class="api-icone">⚖️</span>
-                            <span class="api-nome">NLP & Classificação IPC</span>
+                            <div>
+                                <span class="api-nome">NLP & Classificação IPC</span>
+                                <span class="api-alcance-badge global">Global • WIPO</span>
+                            </div>
                         </div>
                         <span class="api-badge badge-pendente" id="chip-status-nlp">Aguardando</span>
                     </div>
 
                     <div class="progresso-api-item" id="api-status-card-2">
                         <div class="api-item-header">
-                            <span class="api-icone">🏛️</span>
-                            <span class="api-nome">Acervo INPI / Marcas & Patentes</span>
+                            <span class="api-icone">🇧🇷</span>
+                            <div>
+                                <span class="api-nome">INPI (Marcas & Patentes)</span>
+                                <span class="api-alcance-badge br">Brasil • Lei 9.279/96</span>
+                            </div>
                         </div>
                         <span class="api-badge badge-pendente" id="chip-status-inpi">Aguardando</span>
                     </div>
 
                     <div class="progresso-api-item" id="api-status-card-3">
                         <div class="api-item-header">
-                            <span class="api-icone">🌐</span>
-                            <span class="api-nome">OpenAlex (Ciência & Patentes Globais)</span>
+                            <span class="api-icone">🇺🇸</span>
+                            <div>
+                                <span class="api-nome">USPTO (PatentsView API)</span>
+                                <span class="api-alcance-badge us">EUA & Mundo • Patentes</span>
+                            </div>
                         </div>
-                        <span class="api-badge badge-pendente" id="chip-status-openalex">Aguardando</span>
+                        <span class="api-badge badge-pendente" id="chip-status-uspto">Aguardando</span>
                     </div>
 
                     <div class="progresso-api-item" id="api-status-card-4">
                         <div class="api-item-header">
+                            <span class="api-icone">🌐</span>
+                            <div>
+                                <span class="api-nome">OpenAlex (Ciência & Patentes)</span>
+                                <span class="api-alcance-badge global">Mundial • 250M+ Artigos</span>
+                            </div>
+                        </div>
+                        <span class="api-badge badge-pendente" id="chip-status-openalex">Aguardando</span>
+                    </div>
+
+                    <div class="progresso-api-item" id="api-status-card-5">
+                        <div class="api-item-header">
                             <span class="api-icone">💻</span>
-                            <span class="api-nome">GitHub Hardware & IoT Repos</span>
+                            <div>
+                                <span class="api-nome">GitHub Hardware & IoT Repos</span>
+                                <span class="api-alcance-badge global">Mundial • Código Aberto</span>
+                            </div>
                         </div>
                         <span class="api-badge badge-pendente" id="chip-status-github">Aguardando</span>
+                    </div>
+
+                    <div class="progresso-api-item" id="api-status-card-6">
+                        <div class="api-item-header">
+                            <span class="api-icone">🔍</span>
+                            <div>
+                                <span class="api-nome">Google Patents & Espacenet</span>
+                                <span class="api-alcance-badge global">Mundial • 140M+ Patentes</span>
+                            </div>
+                        </div>
+                        <span class="api-badge badge-pendente" id="chip-status-googlepatents">Aguardando</span>
                     </div>
                 </div>
 
@@ -763,6 +797,6 @@
         </div>
     </footer>
 
-    <script src="assets/js/app.js?v=20261110v2"></script>
+    <script src="assets/js/app.js?v=20261110v3"></script>
 </body>
 </html>

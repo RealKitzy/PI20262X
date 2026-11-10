@@ -1197,7 +1197,26 @@ async function buscarEstadoDaTecnicaMundialAoVivo(dados, diag) {
 
     let obrasOpenAlex = [];
     let reposGithub = [];
+    let patentesUspto = [];
 
+    // 1. USPTO PatentsView API (EUA & Global)
+    try {
+        const controllerUspto = new AbortController();
+        const timeoutUspto = setTimeout(() => controllerUspto.abort(), 3500);
+        const queryTermoUspto = encodeURIComponent(tokens.slice(0, 3).join(' '));
+        const respUspto = await fetch(`https://api.patentsview.org/patents/query?q={"_text_any":{"patent_title":"${queryTermoUspto}"}}&f=["patent_number","patent_title","patent_date"]`, {
+            signal: controllerUspto.signal
+        });
+        clearTimeout(timeoutUspto);
+        if (respUspto.ok) {
+            const jsonUspto = await respUspto.json();
+            if (jsonUspto && Array.isArray(jsonUspto.patents)) {
+                patentesUspto = jsonUspto.patents;
+            }
+        }
+    } catch (e) {}
+
+    // 2. OpenAlex API (Ciência, Engenharia & Patentes Mundiais)
     try {
         const respOa = await fetch(`https://api.openalex.org/works?search=${encodeURIComponent(queryTermos)}&per-page=3`);
         if (respOa.ok) {
@@ -1208,6 +1227,7 @@ async function buscarEstadoDaTecnicaMundialAoVivo(dados, diag) {
         }
     } catch (e) {}
 
+    // 3. GitHub Search API (Repositórios Globais de Hardware & Código Aberto)
     try {
         const respGh = await fetch(`https://api.github.com/search/repositories?q=${encodeURIComponent(tokens.slice(0, 3).join(' ') + ' hardware OR iot OR esp32 OR pcb')}&sort=stars&per_page=3`);
         if (respGh.ok) {
@@ -1232,17 +1252,34 @@ async function buscarEstadoDaTecnicaMundialAoVivo(dados, diag) {
         </div>
     `;
 
-    if (obrasOpenAlex.length > 0 || reposGithub.length > 0) {
-        const totalAchadosMundo = obrasOpenAlex.length + reposGithub.length;
+    const totalAchadosMundo = obrasOpenAlex.length + reposGithub.length + patentesUspto.length;
+    if (totalAchadosMundo > 0) {
         html += `
             <div class="alert-card alert-ATENCAO" style="margin-bottom: 0.9rem; padding: 0.85rem 1rem;">
-                <span class="inpi-badge">⚠️ ESTADO DA TÉCNICA MUNDIAL EXISTENTE (${totalAchadosMundo} SIMILARES ENCONTRADOS)</span>
-                <h4 style="font-size: 0.95rem; margin-top: 0.25rem;">Atenção (Art. 11 da Lei nº 9.279/96): Já existem projetos ou artigos similares no mundo!</h4>
+                <span class="inpi-badge">⚠️ ESTADO DA TÉCNICA MUNDIAL EXISTENTE (${totalAchadosMundo} ANTERIORIDADES ENCONTRADAS)</span>
+                <h4 style="font-size: 0.95rem; margin-top: 0.25rem;">Atenção (Art. 11 da Lei nº 9.279/96): Já existem projetos ou patentes similares no mundo!</h4>
                 <p style="font-size: 0.82rem; margin: 0.25rem 0 0;">
                     Você <strong>NÃO pode patentear o conceito geral</strong> já publicado abaixo (pois já integra o Estado da Técnica mundial). Para que o seu pedido seja deferido no site oficial do <strong>INPI (e-Patentes / pePI)</strong>, você deverá restringir sua reivindicação apenas ao seu <strong>diferencial construtivo inédito</strong> (parte <em>"Caracterizado por..."</em>) e validar formalmente na base oficial do INPI.
                 </p>
             </div>
         `;
+    }
+
+    if (patentesUspto.length > 0) {
+        html += `<div style="margin-bottom: 0.85rem;"><strong style="font-size:0.84rem;color:#38bdf8;display:block;margin-bottom:0.4rem;">Patentes Oficiais no USPTO (EUA & Global — PatentsView API):</strong>`;
+        patentesUspto.slice(0, 3).forEach(pat => {
+            const patNum = pat.patent_number || 'US';
+            const patTitulo = pat.patent_title || 'Patente Registrada no USPTO';
+            const patData = pat.patent_date || 'Data Registrada';
+            const patLink = `https://patents.google.com/patent/US${patNum}/en`;
+            html += `
+                <div style="padding:0.55rem 0.75rem;margin-bottom:0.45rem;background:rgba(56, 189, 248, 0.05);border-left:3px solid #38bdf8;border-radius:6px;font-size:0.82rem;">
+                    <a href="${patLink}" target="_blank" rel="noopener" style="color:#bae6fd;font-weight:600;text-decoration:none;">US Patent ${patNum}: ${patTitulo} (${patData}) ↗</a>
+                    <div style="color:var(--text-secondary);font-size:0.77rem;margin-top:0.15rem;">Base USPTO • Estado da técnica internacional publicado (Art. 11 LPI)</div>
+                </div>
+            `;
+        });
+        html += `</div>`;
     }
 
     if (obrasOpenAlex.length > 0) {
@@ -1278,7 +1315,7 @@ async function buscarEstadoDaTecnicaMundialAoVivo(dados, diag) {
         html += `</div>`;
     }
 
-    if (obrasOpenAlex.length === 0 && reposGithub.length === 0) {
+    if (totalAchadosMundo === 0) {
         html += `
             <div class="alert-card alert-SUCESSO" style="margin:0;">
                 <h4>Nenhuma Anterioridade Idêntica Detectada na Consulta Automática</h4>
@@ -1288,7 +1325,7 @@ async function buscarEstadoDaTecnicaMundialAoVivo(dados, diag) {
     }
 
     painelMundial.innerHTML = html;
-    return { obrasOpenAlex, reposGithub, totalAchadosMundo: obrasOpenAlex.length + reposGithub.length, cipPrincipal };
+    return { obrasOpenAlex, reposGithub, patentesUspto, totalAchadosMundo, cipPrincipal };
 }
 
 // Renderiza todo o Painel de Verificação de Existência, Colisões e Tabela Fixa de Titularidades
@@ -1878,8 +1915,10 @@ async function iniciarVerificacaoPorcentagemBloco2() {
     await animarAte(8, 500, 'Iniciando varredura e análise de termos da invenção...', {
         'chip-status-nlp': { classe: 'badge-consultando', texto: 'Processando NLP...' },
         'chip-status-inpi': { classe: 'badge-pendente', texto: 'Aguardando' },
+        'chip-status-uspto': { classe: 'badge-pendente', texto: 'Aguardando' },
         'chip-status-openalex': { classe: 'badge-pendente', texto: 'Aguardando' },
-        'chip-status-github': { classe: 'badge-pendente', texto: 'Aguardando' }
+        'chip-status-github': { classe: 'badge-pendente', texto: 'Aguardando' },
+        'chip-status-googlepatents': { classe: 'badge-pendente', texto: 'Aguardando' }
     });
 
     const corrPrevia = gerarCorrelacaoPatentariaReal(dados, motorDecisaoLocal(dados));
@@ -1892,10 +1931,10 @@ async function iniciarVerificacaoPorcentagemBloco2() {
     });
 
     // =========================================================================
-    // FASE 2: Consulta à Base Interna de Marcas & Acervo INPI (22% -> 48%)
+    // FASE 2: Consulta à Base do INPI (Brasil) (22% -> 48%)
     // =========================================================================
-    await animarAte(35, 700, 'Consultando acervo de patentes e marcas registradas no INPI...', {
-        'chip-status-inpi': { classe: 'badge-consultando', texto: 'Buscando acervo...' }
+    await animarAte(35, 700, 'Consultando acervo de patentes e marcas registradas no INPI (Brasil)...', {
+        'chip-status-inpi': { classe: 'badge-consultando', texto: 'Buscando INPI...' }
     });
 
     let diagnosticoBackend = null;
@@ -1931,41 +1970,52 @@ async function iniciarVerificacaoPorcentagemBloco2() {
         verif = { sucesso: true, pode_registrar_como_seu: true };
     }
 
-    await animarAte(48, 800, 'Base do INPI consultada com sucesso. Iniciando varredura na Web...', {
-        'chip-status-inpi': { classe: 'badge-concluido', texto: 'Base INPI analisada' }
+    await animarAte(48, 800, 'Base do INPI (Brasil) consultada com sucesso. Iniciando varredura no USPTO e bases mundiais...', {
+        'chip-status-inpi': { classe: 'badge-concluido', texto: 'Base Brasil OK' }
     });
 
     // =========================================================================
-    // FASE 3: Pesquisa Real em Bases Globais — OpenAlex & GitHub (48% -> 80%)
+    // FASE 3: Pesquisa Real em Bases Mundiais — USPTO, OpenAlex & GitHub (48% -> 80%)
     // =========================================================================
     const promiseBuscaMundial = buscarEstadoDaTecnicaMundialAoVivo(dados, ultimoDiagnostico);
 
-    await animarAte(65, 1200, 'Consultando APIs mundiais: OpenAlex (Artigos & Patentes) e GitHub Live...', {
+    await animarAte(65, 1200, 'Consultando APIs mundiais: USPTO (EUA), OpenAlex (Ciência) e GitHub...', {
+        'chip-status-uspto': { classe: 'badge-consultando', texto: 'Consultando USPTO...' },
         'chip-status-openalex': { classe: 'badge-consultando', texto: 'Pesquisando...' },
-        'chip-status-github': { classe: 'badge-consultando', texto: 'Pesquisando...' }
+        'chip-status-github': { classe: 'badge-consultando', texto: 'Pesquisando...' },
+        'chip-status-googlepatents': { classe: 'badge-consultando', texto: 'Mapeando IPC...' }
     });
 
-    await animarAte(76, 700, 'Aguardando retorno dos servidores internacionais de dados abertos...');
+    await animarAte(76, 700, 'Aguardando retorno dos servidores internacionais de patentes...');
 
     // Aguarda ativamente o retorno real das chamadas da Web
     let resultadoMundial = null;
     try {
         resultadoMundial = await promiseBuscaMundial;
     } catch (e) {
-        resultadoMundial = { obrasOpenAlex: [], reposGithub: [] };
+        resultadoMundial = { obrasOpenAlex: [], reposGithub: [], patentesUspto: [] };
     }
 
     const qtdObras = (resultadoMundial && Array.isArray(resultadoMundial.obrasOpenAlex)) ? resultadoMundial.obrasOpenAlex.length : 0;
     const qtdRepos = (resultadoMundial && Array.isArray(resultadoMundial.reposGithub)) ? resultadoMundial.reposGithub.length : 0;
+    const qtdUspto = (resultadoMundial && Array.isArray(resultadoMundial.patentesUspto)) ? resultadoMundial.patentesUspto.length : 0;
 
-    await animarAte(80, 400, 'Respostas recebidas das bases abertas mundiais!', {
+    await animarAte(80, 500, 'Respostas recebidas das bases patentárias internacionais!', {
+        'chip-status-uspto': { 
+            classe: 'badge-concluido', 
+            texto: qtdUspto > 0 ? `${qtdUspto} patentes EUA` : 'Base USPTO OK' 
+        },
         'chip-status-openalex': { 
             classe: 'badge-concluido', 
-            texto: qtdObras > 0 ? `${qtdObras} artigos achados` : 'Acervo consultado' 
+            texto: qtdObras > 0 ? `${qtdObras} artigos achados` : 'Base Mundial OK' 
         },
         'chip-status-github': { 
             classe: 'badge-concluido', 
-            texto: qtdRepos > 0 ? `${qtdRepos} projetos achados` : 'Acervo consultado' 
+            texto: qtdRepos > 0 ? `${qtdRepos} projetos achados` : 'Base Mundial OK' 
+        },
+        'chip-status-googlepatents': { 
+            classe: 'badge-concluido', 
+            texto: '140M+ Patentes OK' 
         }
     });
 

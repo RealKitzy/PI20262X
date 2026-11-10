@@ -1299,6 +1299,27 @@ textarea:focus {
     font-weight: 600;
 }
 
+.api-alcance-badge {
+    display: block;
+    font-size: 0.67rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: 0.4px;
+    margin-top: 1px;
+}
+
+.api-alcance-badge.br {
+    color: #34d399;
+}
+
+.api-alcance-badge.us {
+    color: #38bdf8;
+}
+
+.api-alcance-badge.global {
+    color: #fb923c;
+}
+
 .api-badge {
     font-size: 0.72rem;
     font-weight: 700;
