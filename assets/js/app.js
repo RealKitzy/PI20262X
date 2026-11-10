@@ -1288,6 +1288,7 @@ async function buscarEstadoDaTecnicaMundialAoVivo(dados, diag) {
     }
 
     painelMundial.innerHTML = html;
+    return { obrasOpenAlex, reposGithub, totalAchadosMundo: obrasOpenAlex.length + reposGithub.length, cipPrincipal };
 }
 
 // Renderiza todo o Painel de Verificação de Existência, Colisões e Tabela Fixa de Titularidades
@@ -1817,7 +1818,7 @@ async function iniciarVerificacaoPorcentagemBloco2() {
     const dados = coletarDadosFormularioAtual();
     ultimoProjetoAvaliado = dados;
 
-    // 4. Inicialização do Modal de Telemetria (0% a 100%)
+    // 4. Inicialização do Modal de Telemetria (0% a 100%) com Ritmo Realista de Pesquisa
     const modal = document.getElementById('modal-verificacao-progresso');
     const elNum = document.getElementById('progresso-numero');
     const elFill = document.getElementById('progresso-barra-fill');
@@ -1825,6 +1826,8 @@ async function iniciarVerificacaoPorcentagemBloco2() {
     const elNomeProj = document.getElementById('progresso-nome-projeto');
 
     if (elNomeProj) elNomeProj.textContent = dados.nome_projeto || 'Seu Projeto';
+    if (elNum) elNum.textContent = '0';
+    if (elFill) elFill.style.width = '0%';
     if (modal) {
         modal.classList.add('ativo');
         modal.setAttribute('aria-hidden', 'false');
@@ -1832,10 +1835,9 @@ async function iniciarVerificacaoPorcentagemBloco2() {
 
     const sleep = ms => new Promise(res => setTimeout(res, ms));
 
-    const atualizarProgressoUI = (pct, texto, statusApis) => {
-        if (elNum) elNum.textContent = pct;
-        if (elFill) elFill.style.width = pct + '%';
-        if (elMsg) elMsg.textContent = texto;
+    let progressoAtual = 0;
+    const animarAte = async (alvoPct, duracaoTotalMs, texto, statusApis) => {
+        if (texto && elMsg) elMsg.textContent = texto;
 
         if (statusApis) {
             Object.keys(statusApis).forEach(chipId => {
@@ -1856,25 +1858,44 @@ async function iniciarVerificacaoPorcentagemBloco2() {
                 }
             });
         }
+
+        const delta = alvoPct - progressoAtual;
+        if (delta <= 0) return;
+        const passos = Math.max(1, delta);
+        const intervalo = Math.max(18, Math.floor(duracaoTotalMs / passos));
+
+        for (let i = 0; i < passos; i++) {
+            progressoAtual++;
+            if (elNum) elNum.textContent = progressoAtual;
+            if (elFill) elFill.style.width = progressoAtual + '%';
+            await sleep(intervalo);
+        }
     };
 
-    // ETAPA 1: Processamento NLP & Extração IPC (0% -> 25%)
-    atualizarProgressoUI(10, 'Iniciando análise de suficiência descritiva e tokenização...', {
-        'chip-status-nlp': { classe: 'badge-consultando', texto: 'Processando...' },
+    // =========================================================================
+    // FASE 1: Extração Semântica, Palavras-chave & Classificação IPC (0% -> 22%)
+    // =========================================================================
+    await animarAte(8, 500, 'Iniciando varredura e análise de termos da invenção...', {
+        'chip-status-nlp': { classe: 'badge-consultando', texto: 'Processando NLP...' },
         'chip-status-inpi': { classe: 'badge-pendente', texto: 'Aguardando' },
         'chip-status-openalex': { classe: 'badge-pendente', texto: 'Aguardando' },
         'chip-status-github': { classe: 'badge-pendente', texto: 'Aguardando' }
     });
-    await sleep(400);
 
-    atualizarProgressoUI(25, 'Extraindo termos técnicos, classes IPC e enquadramento legal...', {
-        'chip-status-nlp': { classe: 'badge-concluido', texto: 'Concluído' }
+    const corrPrevia = gerarCorrelacaoPatentariaReal(dados, motorDecisaoLocal(dados));
+    const cipCodigo = (corrPrevia.codigos_cip && corrPrevia.codigos_cip[0]) 
+        ? corrPrevia.codigos_cip[0].split(' (')[0].trim() 
+        : 'G05B / A01K';
+
+    await animarAte(22, 900, `Termos técnicos mapeados. Classificação IPC atribuída: ${cipCodigo}`, {
+        'chip-status-nlp': { classe: 'badge-concluido', texto: `IPC: ${cipCodigo}` }
     });
-    await sleep(350);
 
-    // ETAPA 2: Consulta à Base Interna e Acervo INPI (25% -> 50%)
-    atualizarProgressoUI(35, 'Conectando ao acervo de patentes e marcas do INPI...', {
-        'chip-status-inpi': { classe: 'badge-consultando', texto: 'Consultando...' }
+    // =========================================================================
+    // FASE 2: Consulta à Base Interna de Marcas & Acervo INPI (22% -> 48%)
+    // =========================================================================
+    await animarAte(35, 700, 'Consultando acervo de patentes e marcas registradas no INPI...', {
+        'chip-status-inpi': { classe: 'badge-consultando', texto: 'Buscando acervo...' }
     });
 
     let diagnosticoBackend = null;
@@ -1903,14 +1924,6 @@ async function iniciarVerificacaoPorcentagemBloco2() {
         ultimoDiagnostico = motorDecisaoLocal(dados);
     }
 
-    await sleep(350);
-    atualizarProgressoUI(50, 'Acervo INPI verificado. Conectando às bases mundiais de artigos e código...', {
-        'chip-status-inpi': { classe: 'badge-concluido', texto: 'Concluído' },
-        'chip-status-openalex': { classe: 'badge-consultando', texto: 'Buscando...' },
-        'chip-status-github': { classe: 'badge-consultando', texto: 'Buscando...' }
-    });
-
-    // ETAPA 3: Pesquisa Ativa em Bases Globais (50% -> 75%)
     let verif = null;
     try {
         verif = await verificarExistenciaLocalEApi(dados, ultimoDiagnostico, 'VERIFICAR');
@@ -1918,17 +1931,51 @@ async function iniciarVerificacaoPorcentagemBloco2() {
         verif = { sucesso: true, pode_registrar_como_seu: true };
     }
 
-    await sleep(450);
-    atualizarProgressoUI(75, 'Bases mundiais rastreadas com sucesso. Calculando similaridade semântica...', {
-        'chip-status-openalex': { classe: 'badge-concluido', texto: 'Concluído' },
-        'chip-status-github': { classe: 'badge-concluido', texto: 'Concluído' }
+    await animarAte(48, 800, 'Base do INPI consultada com sucesso. Iniciando varredura na Web...', {
+        'chip-status-inpi': { classe: 'badge-concluido', texto: 'Base INPI analisada' }
     });
 
-    // ETAPA 4: Consolidação dos Relatórios e Renderização (75% -> 95%)
-    await sleep(400);
+    // =========================================================================
+    // FASE 3: Pesquisa Real em Bases Globais — OpenAlex & GitHub (48% -> 80%)
+    // =========================================================================
+    const promiseBuscaMundial = buscarEstadoDaTecnicaMundialAoVivo(dados, ultimoDiagnostico);
+
+    await animarAte(65, 1200, 'Consultando APIs mundiais: OpenAlex (Artigos & Patentes) e GitHub Live...', {
+        'chip-status-openalex': { classe: 'badge-consultando', texto: 'Pesquisando...' },
+        'chip-status-github': { classe: 'badge-consultando', texto: 'Pesquisando...' }
+    });
+
+    await animarAte(76, 700, 'Aguardando retorno dos servidores internacionais de dados abertos...');
+
+    // Aguarda ativamente o retorno real das chamadas da Web
+    let resultadoMundial = null;
+    try {
+        resultadoMundial = await promiseBuscaMundial;
+    } catch (e) {
+        resultadoMundial = { obrasOpenAlex: [], reposGithub: [] };
+    }
+
+    const qtdObras = (resultadoMundial && Array.isArray(resultadoMundial.obrasOpenAlex)) ? resultadoMundial.obrasOpenAlex.length : 0;
+    const qtdRepos = (resultadoMundial && Array.isArray(resultadoMundial.reposGithub)) ? resultadoMundial.reposGithub.length : 0;
+
+    await animarAte(80, 400, 'Respostas recebidas das bases abertas mundiais!', {
+        'chip-status-openalex': { 
+            classe: 'badge-concluido', 
+            texto: qtdObras > 0 ? `${qtdObras} artigos achados` : 'Acervo consultado' 
+        },
+        'chip-status-github': { 
+            classe: 'badge-concluido', 
+            texto: qtdRepos > 0 ? `${qtdRepos} projetos achados` : 'Acervo consultado' 
+        }
+    });
+
+    // =========================================================================
+    // FASE 4: Análise Semântica, Cruzamento & Relatório (80% -> 95%)
+    // =========================================================================
+    await animarAte(90, 800, 'Calculando similaridade semântica, matriz de risco e sobreposição...');
+
     renderizarRelatorioDiagnostico(dados, ultimoDiagnostico, verif);
     renderizarPainelVerificacaoExistencia(verif);
-    buscarEstadoDaTecnicaMundialAoVivo(dados, ultimoDiagnostico);
     salvarHistoricoLocal(dados, ultimoDiagnostico);
     gerarMinutaAutomatizada('CERTIFICADO_TITULARIDADE');
 
@@ -1940,12 +1987,21 @@ async function iniciarVerificacaoPorcentagemBloco2() {
         aplicarRegrasDePerfilNaInterface();
     }
 
-    atualizarProgressoUI(95, 'Compilando relatório técnico de anterioridade e parecer legal...');
-    await sleep(350);
+    await animarAte(95, 500, 'Compilando dossiê de anterioridade e laudo técnico consolidado...');
 
-    // ETAPA 5: Conclusão 100% e Transição Suave para os Resultados
-    atualizarProgressoUI(100, '✔ Verificação concluída com 100% de sucesso! Abrindo diagnóstico...');
-    await sleep(650);
+    // =========================================================================
+    // FASE 5: Conclusão 100% e Transição Suave (95% -> 100%)
+    // =========================================================================
+    await animarAte(100, 700, '✔ Pesquisa 100% concluída! Exibindo relatório de anterioridade...');
+    await sleep(800);
+
+    if (modal) {
+        modal.classList.remove('ativo');
+        modal.setAttribute('aria-hidden', 'true');
+    }
+
+    alternarAba('aba-relatorio');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 
     if (modal) {
         modal.classList.remove('ativo');
