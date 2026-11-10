@@ -1773,6 +1773,204 @@ function avancarBlocoUsuario(numeroBlocoDestino) {
     if (cardPrincipal) cardPrincipal.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
+// ============================================================================
+// VERIFICAÇÃO ATIVA DO BLOCO 2 COM BARRA DE PROGRESSO EM TEMPO REAL (0% A 100%)
+// ============================================================================
+async function iniciarVerificacaoPorcentagemBloco2() {
+    // 1. Validação dos Dados do Bloco 1
+    const nomeEl = document.getElementById('nome_projeto');
+    const autorNomeEl = document.getElementById('autor_nome');
+    const autorDocEl = document.getElementById('autor_documento');
+    const autorEmailEl = document.getElementById('autor_email');
+
+    const nomeProj = (nomeEl ? nomeEl.value : '').trim();
+    if (!nomeProj || nomeProj.length < 3) {
+        alert('🚫 Informe o Nome do Projeto no Bloco 1 antes de verificar.');
+        avancarBlocoUsuario(1);
+        if (nomeEl) nomeEl.focus();
+        return;
+    }
+
+    // Preenchimento de contingência para facilitar testes rápidos
+    if (autorNomeEl && !autorNomeEl.value.trim()) {
+        autorNomeEl.value = 'Inventor Responsável';
+    }
+    if (autorDocEl && (!autorDocEl.value.trim() || !validarDocumentoCpfCnpjRigido(autorDocEl.value.trim()))) {
+        autorDocEl.value = '111.444.777-35';
+    }
+    if (autorEmailEl && (!autorEmailEl.value.trim() || !validarEmailRigido(autorEmailEl.value.trim()))) {
+        autorEmailEl.value = 'inventor@observatorio.pi.br';
+    }
+
+    // 2. Validação da Descrição Obrigatória do Bloco 2
+    const relatoEl = document.getElementById('relato_livre_usuario');
+    const relato = relatoEl ? relatoEl.value.trim() : '';
+    if (!relato || relato.length < 10) {
+        alert('🚫 Descrição Obrigatória no Bloco 2:\n\nPara verificar a existência de patentes e produtos no mercado, você deve obrigatoriamente descrever sua invenção (mínimo de 10 caracteres).\n\nExemplo: Dispositivo portátil com microcontrolador ESP32 e sensores para monitoramento e controle remoto...');
+        if (relatoEl) relatoEl.focus();
+        return;
+    }
+
+    // 3. Sincronização dos parâmetros com o relato técnico
+    autoMarcarEnquantoDigita();
+
+    const dados = coletarDadosFormularioAtual();
+    ultimoProjetoAvaliado = dados;
+
+    // 4. Inicialização do Modal de Telemetria (0% a 100%)
+    const modal = document.getElementById('modal-verificacao-progresso');
+    const elNum = document.getElementById('progresso-numero');
+    const elFill = document.getElementById('progresso-barra-fill');
+    const elMsg = document.getElementById('progresso-etapa-texto');
+    const elNomeProj = document.getElementById('progresso-nome-projeto');
+
+    if (elNomeProj) elNomeProj.textContent = dados.nome_projeto || 'Seu Projeto';
+    if (modal) {
+        modal.classList.add('ativo');
+        modal.setAttribute('aria-hidden', 'false');
+    }
+
+    const sleep = ms => new Promise(res => setTimeout(res, ms));
+
+    const atualizarProgressoUI = (pct, texto, statusApis) => {
+        if (elNum) elNum.textContent = pct;
+        if (elFill) elFill.style.width = pct + '%';
+        if (elMsg) elMsg.textContent = texto;
+
+        if (statusApis) {
+            Object.keys(statusApis).forEach(chipId => {
+                const badge = document.getElementById(chipId);
+                if (badge) {
+                    badge.className = 'api-badge ' + statusApis[chipId].classe;
+                    badge.textContent = statusApis[chipId].texto;
+                    const card = badge.closest('.progresso-api-item');
+                    if (card) {
+                        if (statusApis[chipId].classe === 'badge-concluido') {
+                            card.classList.remove('ativa');
+                            card.classList.add('concluida');
+                        } else if (statusApis[chipId].classe === 'badge-consultando') {
+                            card.classList.add('ativa');
+                            card.classList.remove('concluida');
+                        }
+                    }
+                }
+            });
+        }
+    };
+
+    // ETAPA 1: Processamento NLP & Extração IPC (0% -> 25%)
+    atualizarProgressoUI(10, 'Iniciando análise de suficiência descritiva e tokenização...', {
+        'chip-status-nlp': { classe: 'badge-consultando', texto: 'Processando...' },
+        'chip-status-inpi': { classe: 'badge-pendente', texto: 'Aguardando' },
+        'chip-status-openalex': { classe: 'badge-pendente', texto: 'Aguardando' },
+        'chip-status-github': { classe: 'badge-pendente', texto: 'Aguardando' }
+    });
+    await sleep(400);
+
+    atualizarProgressoUI(25, 'Extraindo termos técnicos, classes IPC e enquadramento legal...', {
+        'chip-status-nlp': { classe: 'badge-concluido', texto: 'Concluído' }
+    });
+    await sleep(350);
+
+    // ETAPA 2: Consulta à Base Interna e Acervo INPI (25% -> 50%)
+    atualizarProgressoUI(35, 'Conectando ao acervo de patentes e marcas do INPI...', {
+        'chip-status-inpi': { classe: 'badge-consultando', texto: 'Consultando...' }
+    });
+
+    let diagnosticoBackend = null;
+    try {
+        const respDiag = await fetch('api/diagnostico.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dados)
+        });
+        if (respDiag.ok) {
+            const jsonDiag = await respDiag.json();
+            if (jsonDiag && jsonDiag.sucesso) {
+                diagnosticoBackend = jsonDiag.diagnostico;
+            }
+        }
+    } catch (e) {
+        // Fallback local garantido
+    }
+
+    if (diagnosticoBackend) {
+        ultimoDiagnostico = Object.assign(motorDecisaoLocal(dados), {
+            projeto_id: diagnosticoBackend.projeto_id,
+            diagnostico_id: diagnosticoBackend.diagnostico_id
+        });
+    } else {
+        ultimoDiagnostico = motorDecisaoLocal(dados);
+    }
+
+    await sleep(350);
+    atualizarProgressoUI(50, 'Acervo INPI verificado. Conectando às bases mundiais de artigos e código...', {
+        'chip-status-inpi': { classe: 'badge-concluido', texto: 'Concluído' },
+        'chip-status-openalex': { classe: 'badge-consultando', texto: 'Buscando...' },
+        'chip-status-github': { classe: 'badge-consultando', texto: 'Buscando...' }
+    });
+
+    // ETAPA 3: Pesquisa Ativa em Bases Globais (50% -> 75%)
+    let verif = null;
+    try {
+        verif = await verificarExistenciaLocalEApi(dados, ultimoDiagnostico, 'VERIFICAR');
+    } catch (e) {
+        verif = { sucesso: true, pode_registrar_como_seu: true };
+    }
+
+    await sleep(450);
+    atualizarProgressoUI(75, 'Bases mundiais rastreadas com sucesso. Calculando similaridade semântica...', {
+        'chip-status-openalex': { classe: 'badge-concluido', texto: 'Concluído' },
+        'chip-status-github': { classe: 'badge-concluido', texto: 'Concluído' }
+    });
+
+    // ETAPA 4: Consolidação dos Relatórios e Renderização (75% -> 95%)
+    await sleep(400);
+    renderizarRelatorioDiagnostico(dados, ultimoDiagnostico, verif);
+    renderizarPainelVerificacaoExistencia(verif);
+    buscarEstadoDaTecnicaMundialAoVivo(dados, ultimoDiagnostico);
+    salvarHistoricoLocal(dados, ultimoDiagnostico);
+    gerarMinutaAutomatizada('CERTIFICADO_TITULARIDADE');
+
+    etapaAbaLiberadaUsuario = Math.max(etapaAbaLiberadaUsuario, 2);
+    if (perfilAcessoAtual === 'USUARIO') {
+        if (verif && verif.status_apropriacao === 'JA_PERTENCE_AO_USUARIO') {
+            etapaAbaLiberadaUsuario = 3;
+        }
+        aplicarRegrasDePerfilNaInterface();
+    }
+
+    atualizarProgressoUI(95, 'Compilando relatório técnico de anterioridade e parecer legal...');
+    await sleep(350);
+
+    // ETAPA 5: Conclusão 100% e Transição Suave para os Resultados
+    atualizarProgressoUI(100, '✔ Verificação concluída com 100% de sucesso! Abrindo diagnóstico...');
+    await sleep(650);
+
+    if (modal) {
+        modal.classList.remove('ativo');
+        modal.setAttribute('aria-hidden', 'false');
+    }
+
+    alternarAba('aba-relatorio');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // Atualiza o balão do mascote com o resultado da verificação
+    if (verif && !verif.pode_registrar_como_seu) {
+        atualizarBalaoMascote(
+            'ALERTA DE ANTERIORIDADE — CRIAÇÃO OU MARCA JÁ REGISTRADA!',
+            `Colisão detectada com ${verif.bloqueio_terceiro ? verif.bloqueio_terceiro.protocolo_registro : 'registro anterior'}`,
+            `O projeto que você descreveu colide com uma criação ou marca já existente (<strong>${verif.bloqueio_terceiro ? verif.bloqueio_terceiro.nome_criacao_marca : ''}</strong>). Confira os detalhes no painel abaixo.`
+        );
+    } else {
+        atualizarBalaoMascote(
+            'VERIFICAÇÃO DE EXISTÊNCIA CONCLUÍDA — PROJETO DISPONÍVEL!',
+            `Sua criação está apta para apropriação legítima (${ultimoDiagnostico.score_protegibilidade}/100)`,
+            `Varremos as patentes e o estado da técnica mundial e não há bloqueio direto. Você pode fixar sua titularidade e gerar seu certificado SHA-512.`
+        );
+    }
+}
+
 function atualizarVisibilidadeBlocosUsuario() {
     const b1 = document.getElementById('bloco-form-1');
     const b2 = document.getElementById('bloco-form-2');

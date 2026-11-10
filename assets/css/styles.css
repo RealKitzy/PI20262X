@@ -1078,7 +1078,7 @@ textarea:focus {
     position: fixed;
     inset: 0;
     z-index: 99999;
-    background: rgba(8, 6, 14, 0.88);
+    background: rgba(8, 6, 14, 0.90);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     display: flex;
@@ -1086,13 +1086,15 @@ textarea:focus {
     justify-content: center;
     padding: 1.25rem;
     opacity: 0;
+    visibility: hidden;
     pointer-events: none;
-    transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.35s ease;
 }
 
 .modal-progresso-overlay.ativo {
-    opacity: 1;
-    pointer-events: auto;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
 }
 
 .modal-progresso-card {
