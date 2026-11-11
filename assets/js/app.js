@@ -2024,7 +2024,7 @@ async function iniciarVerificacaoPorcentagemBloco2() {
     // =========================================================================
     await animarAte(90, 800, 'Calculando similaridade semântica, matriz de risco e sobreposição...');
 
-    renderizarRelatorioDiagnostico(dados, ultimoDiagnostico, verif);
+    renderizarRelatorioDiagnostico(dados, ultimoDiagnostico, verif, resultadoMundial);
     renderizarPainelVerificacaoExistencia(verif);
     salvarHistoricoLocal(dados, ultimoDiagnostico);
     gerarMinutaAutomatizada('CERTIFICADO_TITULARIDADE');
@@ -2560,7 +2560,7 @@ async function processarDiagnostico(event) {
 
     // Executa imediatamente a verificação se o projeto já existe e se pode ser reivindicado
     const verif = await verificarExistenciaLocalEApi(dados, ultimoDiagnostico, 'VERIFICAR');
-    renderizarRelatorioDiagnostico(dados, ultimoDiagnostico, verif);
+    renderizarRelatorioDiagnostico(dados, ultimoDiagnostico, verif, resultadoMundial);
     renderizarPainelVerificacaoExistencia(verif);
     buscarEstadoDaTecnicaMundialAoVivo(dados, ultimoDiagnostico);
 
@@ -2594,7 +2594,7 @@ async function processarDiagnostico(event) {
 }
 
 // Renderiza as 6 Camadas (A a F), a Matriz de Correlação Engenharia-Lei e as tabelas do diagnóstico na Aba 2
-function renderizarRelatorioDiagnostico(dados, diag, verif = null) {
+function renderizarRelatorioDiagnostico(dados, diag, verif = null, anterioridadeMundial = null) {
     document.getElementById('rel-nome-projeto').textContent = dados.nome_projeto;
     document.getElementById('rel-autor-projeto').textContent = `${dados.autor_nome} • ${dados.instituicao_empresa} (${dados.autor_documento})`;
     document.getElementById('kpi-score').textContent = `${diag.score_protegibilidade}/100`;
@@ -2610,16 +2610,29 @@ function renderizarRelatorioDiagnostico(dados, diag, verif = null) {
     // Painel Explicativo Simples e Direto (Para Leigos: O que passou, o que não passou e o porquê)
     const painelLeigo = document.getElementById('painel-resumo-leigo-direto');
     if (painelLeigo) {
+        const temAnterioridadeMundial = anterioridadeMundial && anterioridadeMundial.totalAchadosMundo > 0;
         const jaExisteTerceiro = verif && verif.bloqueio_terceiro && !verif.pode_registrar_como_seu;
         const jaEhDoUsuario = verif && verif.status_apropriacao === 'JA_PERTENCE_AO_USUARIO';
-        const corBordaVeredito = jaExisteTerceiro ? '#ef4444' : '#10b981';
-        const bgVeredito = jaExisteTerceiro ? 'rgba(239, 68, 68, 0.12)' : 'rgba(16, 185, 129, 0.12)';
 
-        const respostaExistencia = jaExisteTerceiro
-            ? `🚫 <strong>NÃO PODE REGISTRAR COMO SEU AGORA:</strong> Encontramos um projeto/marca muito parecido já cadastrado em nome de outra pessoa (<strong>${verif.bloqueio_terceiro.nome_criacao_marca}</strong> — Titular: ${verif.bloqueio_terceiro.titular_nome}, ${verif.bloqueio_terceiro.similaridade_percentual}% de semelhança). Pela Lei nº 9.279/96 (Art. 11 e Art. 124), você precisa mudar o nome comercial e diferenciar a construção técnica antes de registrar.`
-            : (jaEhDoUsuario
-                ? `✅ <strong>ESTE PROJETO JÁ É SEU:</strong> Ele já consta gravado no banco de dados vinculado ao seu próprio CPF/CNPJ (${dados.autor_documento}).`
-                : `✅ <strong>PROJETO INÉDITO E APROVADO PARA REGISTRO:</strong> Não encontramos nenhum projeto igual cadastrado por outra pessoa no nosso banco de dados. Você pode travar essa ideia no seu CPF/CNPJ agora mesmo!`);
+        let corBordaVeredito = '#10b981';
+        let bgVeredito = 'rgba(16, 185, 129, 0.12)';
+        let respostaExistencia = '';
+
+        if (jaExisteTerceiro) {
+            corBordaVeredito = '#ef4444';
+            bgVeredito = 'rgba(239, 68, 68, 0.12)';
+            respostaExistencia = `🚫 <strong>NÃO PODE REGISTRAR COMO SEU AGORA:</strong> Encontramos um projeto/marca muito parecido já cadastrado em nome de outra pessoa (<strong>${verif.bloqueio_terceiro.nome_criacao_marca}</strong> — Titular: ${verif.bloqueio_terceiro.titular_nome}, ${verif.bloqueio_terceiro.similaridade_percentual}% de semelhança). Pela Lei nº 9.279/96 (Art. 11 e Art. 124), você precisa mudar o nome comercial e diferenciar a construção técnica antes de registrar.`;
+        } else if (temAnterioridadeMundial) {
+            corBordaVeredito = '#f59e0b';
+            bgVeredito = 'rgba(245, 158, 11, 0.12)';
+            respostaExistencia = `⚠️ <strong>ESTADO DA TÉCNICA IDENTIFICADO NO MERCADO MUNDIAL (${anterioridadeMundial.totalAchadosMundo} ANTERIORIDADES DETECTADAS):</strong><br>
+            Atenção: A ideia geral e conceitos semelhantes deste projeto já existem e foram encontrados em patentes ou publicações internacionais (veja a lista abaixo). Pelo <strong>Art. 11 da Lei nº 9.279/96 (LPI — Falta de Novidade Absoluta)</strong>, o INPI indeferirá a patente do conceito amplo genérico.<br>
+            👉 <strong>O que você PODE fazer:</strong> Você tem direito de registrar a sua <strong>Marca comercial (Camada D)</strong> no Brasil e proteger o seu <strong>Código-fonte/Software (Camada E)</strong>. Mas para conseguir a <strong>Patente (Camada F)</strong>, você deverá restringir seu pedido apenas ao seu <em>diferencial construtivo ou algoritmo específico</em> que ninguém no mundo fez!`;
+        } else if (jaEhDoUsuario) {
+            respostaExistencia = `✅ <strong>ESTE PROJETO JÁ É SEU:</strong> Ele já consta gravado no banco de dados vinculado ao seu próprio CPF/CNPJ (${dados.autor_documento}).`;
+        } else {
+            respostaExistencia = `✅ <strong>PROJETO INÉDITO E APROVADO PARA REGISTRO:</strong> Não encontramos nenhum projeto ou patente igual cadastrada. Você pode travar essa ideia no seu CPF/CNPJ agora mesmo!`;
+        }
 
         const podePatenteFisica = dados.divulgacao_previa !== 'DIVULGADO_MAIS_12M' && dados.grau_novidade_hardware !== 'MODULOS_PRONTOS_COTS' && dados.modelo_negocio !== 'PUBLICACAO_DEFENSIVA';
 
@@ -2627,14 +2640,14 @@ function renderizarRelatorioDiagnostico(dados, diag, verif = null) {
             {
                 passou: true,
                 titulo: '1. Nome do Projeto / Marca Comercial (Camada D)',
-                explicacaoSimples: 'O nome da sua criação pode ser registrado exclusivamente em seu nome.',
+                explicacaoSimples: 'O nome da sua criação pode ser registrado exclusivamente em seu nome no Brasil (INPI).',
                 lei: 'Art. 129 da Lei 9.279/96 (LPI — Registro de Marca no INPI por 10 anos renováveis).'
             },
             {
                 passou: Boolean(dados.possui_firmware_proprio),
                 titulo: '2. Código-Fonte / Software do Projeto (Camada E)',
                 explicacaoSimples: dados.possui_firmware_proprio
-                    ? `Seu código (${dados.linguagem_firmware}) está aprovado e protegido contra cópias.`
+                    ? `Seu código (${dados.linguagem_firmware}) está aprovado e protegido contra cópias não autorizadas.`
                     : 'Você indicou que o projeto não possui código/software próprio.',
                 lei: 'Art. 2º e Art. 3º da Lei 9.609/98 (Lei de Software — proteção de 50 anos via Hash SHA-512).'
             },
@@ -2647,14 +2660,16 @@ function renderizarRelatorioDiagnostico(dados, diag, verif = null) {
                 lei: 'Art. 7º, inciso XI da Lei 9.610/98 (Direito Autoral sobre desenhos técnicos).'
             },
             {
-                passou: podePatenteFisica,
+                passou: podePatenteFisica && !temAnterioridadeMundial,
                 titulo: '4. Patente do Funcionamento Físico (Camada F)',
-                explicacaoSimples: podePatenteFisica
-                    ? 'Como o seu sistema combina hardware + sensores gerando um resultado físico prático (e não foi divulgado há mais de 1 ano), ele cumpre os requisitos para pedir Patente!'
-                    : (dados.divulgacao_previa === 'DIVULGADO_MAIS_12M'
-                        ? 'Não cabe patente física porque foi divulgado há mais de 12 meses (caiu em domínio público técnico), mas sua Marca e seu Código continuam protegidos.'
-                        : 'Como usa apenas peças comerciais prontas sem circuito novo, você protege a Marca e o Código, mas não o hardware pronto.'),
-                lei: 'Art. 8º, Art. 9º e Art. 10, V da Lei 9.279/96 c/c Resolução INPI nº 158/2016.'
+                explicacaoSimples: temAnterioridadeMundial
+                    ? `⚠️ Risco Alto de Indeferimento por Anterioridade: Já existem ${anterioridadeMundial.totalAchadosMundo} publicações ou patentes no mundo com essa tecnologia. O INPI não aceita patentear o conceito geral, somente um aprimoramento construtivo inédito (Art. 11 e 13 da LPI).`
+                    : (podePatenteFisica
+                        ? 'Como o seu sistema combina hardware + sensores gerando um resultado físico prático inovador, ele cumpre os requisitos para pedir Patente!'
+                        : (dados.divulgacao_previa === 'DIVULGADO_MAIS_12M'
+                            ? 'Não cabe patente física porque foi divulgado há mais de 12 meses (caiu em domínio público técnico).'
+                            : 'Como usa apenas peças comerciais prontas sem circuito novo, você protege a Marca e o Código, mas não o hardware pronto.')),
+                lei: 'Art. 8º, Art. 9º, Art. 11 e Art. 13 da Lei 9.279/96 (LPI).'
             },
             {
                 passou: Boolean(dados.possui_design_externo_novo),
