@@ -319,33 +319,33 @@ if ($method === 'POST') {
     $checkSuficiencia = validarSuficienciaDescritivaPHP($resumoTecnico, $nomeProjeto);
     $statusApropriacao = 'DISPONIVEL_EXCLUSIVO';
     $podeRegistrar = true;
-    $tituloVeredito = 'NENHUMA COLISÃO NA BASE DO OBSERVATÓRIO — Você Pode Gravar sua Prova de Autoria';
+    $tituloVeredito = 'Nenhuma colisão na base do Observatório';
     $explicacaoVeredito = 'Comparamos o projeto com a base do Observatório (registros feitos por usuários + acervo de referência ilustrativo com 15 produtos conhecidos) e não houve colisão. Atenção: isso NÃO é uma busca oficial no INPI — a novidade (Art. 11 da LPI) só é confirmada pelo exame do INPI. Confira também a busca mundial ao lado e consulte o pePI antes de depositar.';
 
     if (!$checkSuficiencia['valido']) {
         $statusApropriacao = 'BLOQUEADO_TERCEIRO';
         $podeRegistrar = false;
-        $tituloVeredito = 'IMPEDIMENTO POR INSUFICIÊNCIA DESCRITIVA (Art. 24 da Lei nº 9.279/96 — LPI)';
+        $tituloVeredito = 'Descrição insuficiente (Art. 24 da Lei nº 9.279/96)';
         $explicacaoVeredito = $checkSuficiencia['motivo'] . ' ' . $checkSuficiencia['orientacao'] . ' Sem uma descrição técnica real e inteligível do dispositivo ou sistema, o pedido é nulo de pleno direito perante o INPI (Art. 24 e Art. 50 da LPI).';
     } elseif ($registroDoProprioUsuario !== null) {
         $statusApropriacao = 'JA_PERTENCE_AO_USUARIO';
         $podeRegistrar = true;
-        $tituloVeredito = 'VOCÊ JÁ GRAVOU ESTE PROJETO NO OBSERVATÓRIO (' . $registroDoProprioUsuario['protocolo_registro'] . ')';
-        $explicacaoVeredito = 'Este projeto já está gravado no banco do Observatório com o seu próprio CPF/CNPJ (' . $registroDoProprioUsuario['titular_nome'] . '). A sua prova de autoria (hash SHA-512 com data) continua registrada aqui — lembre-se de que é um registro acadêmico interno, não um registro no INPI.';
+        $tituloVeredito = 'Você já gravou este projeto no Observatório (' . htmlspecialchars((string) $registroDoProprioUsuario['protocolo_registro'], ENT_QUOTES, 'UTF-8') . ')';
+        $explicacaoVeredito = 'Este projeto já está gravado no banco do Observatório com o seu próprio CPF/CNPJ (' . htmlspecialchars((string) $registroDoProprioUsuario['titular_nome'], ENT_QUOTES, 'UTF-8') . '). A sua prova de autoria (hash SHA-512 com data) continua registrada aqui — lembre-se de que é um registro acadêmico interno, não um registro no INPI.';
     } elseif ($bloqueioTerceiro !== null) {
         $statusApropriacao = 'BLOQUEADO_TERCEIRO';
         $podeRegistrar = false;
-        $tituloVeredito = 'COLISÃO DETECTADA: Criação ou Marca Semelhante a Item de Terceiro (' . $bloqueioTerceiro['protocolo_registro'] . ')';
-        $explicacaoVeredito = 'Não é possível apropriar-se diretamente desta criação como sua: detectamos colisão direta (' . $bloqueioTerceiro['similaridade_percentual'] . '% de superposição / colisão nominativa) com o ativo "' . $bloqueioTerceiro['nome_criacao_marca'] . '", já registrado sob titularidade de ' . $bloqueioTerceiro['titular_nome'] . ' (' . $bloqueioTerceiro['instituicao_empresa'] . '). Pelo Art. 11 (Estado da Técnica), Art. 124, XIX (proibição de reprodução de marca alheia) e Art. 195 da Lei nº 9.279/96, para registrar uma versão própria você deve: (1) adotar um nome comercial/marca distinto; e (2) especificar uma melhoria construtiva/funcional própria (Modelo de Utilidade — Art. 9º da LPI) ou reimplementação limpa.';
+        $tituloVeredito = 'Colisão com item de outro titular (' . htmlspecialchars((string) $bloqueioTerceiro['protocolo_registro'], ENT_QUOTES, 'UTF-8') . ')';
+        $explicacaoVeredito = 'Não é possível apropriar-se diretamente desta criação como sua: detectamos colisão direta (' . $bloqueioTerceiro['similaridade_percentual'] . '% de superposição / colisão nominativa) com o ativo "' . htmlspecialchars((string) $bloqueioTerceiro['nome_criacao_marca'], ENT_QUOTES, 'UTF-8') . '", já registrado sob titularidade de ' . htmlspecialchars((string) $bloqueioTerceiro['titular_nome'], ENT_QUOTES, 'UTF-8') . ' (' . htmlspecialchars((string) $bloqueioTerceiro['instituicao_empresa'], ENT_QUOTES, 'UTF-8') . '). Pelo Art. 11 (Estado da Técnica), Art. 124, XIX (proibição de reprodução de marca alheia) e Art. 195 da Lei nº 9.279/96, para registrar uma versão própria você deve: (1) adotar um nome comercial/marca distinto; e (2) especificar uma melhoria construtiva/funcional própria (Modelo de Utilidade — Art. 9º da LPI) ou reimplementação limpa.';
     } elseif ($divulgacao === 'DIVULGADO_MAIS_12M') {
         $statusApropriacao = 'PARCIAL_ESTADO_DA_TECNICA';
         $podeRegistrar = true;
-        $tituloVeredito = 'APROPRIAÇÃO PARCIAL: Patente Impedida pelo Estado da Técnica (Art. 11 LPI), mas Marca e Código Podem Ser Seus';
+        $tituloVeredito = 'Patente impedida pela divulgação anterior (Art. 11 LPI); marca e código ainda podem ser protegidos';
         $explicacaoVeredito = 'Como a criação foi divulgada há mais de 12 meses, a solução técnica física já caiu no Estado da Técnica (Art. 11 e Art. 12 da LPI) e não pode mais ser patenteada com exclusividade. Porém, você PODE registrar e colocar em seu nome a Marca Comercial (Art. 129 da LPI) e o Código-Fonte do Firmware (Lei nº 9.609/98).';
     } elseif ($novidadeHw === 'MODULOS_PRONTOS_COTS') {
         $statusApropriacao = 'PARCIAL_MODULOS_COMERCIAIS';
         $podeRegistrar = true;
-        $tituloVeredito = 'APROPRIAÇÃO PARCIAL: Hardware Base já Existe no Mercado, mas Você Pode Registrar Sua Marca, Firmware e PCB';
+        $tituloVeredito = 'Hardware base já existe no mercado; marca, firmware e desenho da placa podem ser protegidos';
         $explicacaoVeredito = 'Os módulos eletrônicos comerciais utilizados (COTS) já pertencem aos seus respectivos fabricantes e ao estado da técnica (Art. 8º e Art. 10, V da LPI). Você não pode patentear o hardware base como invenção sua, mas PODE colocar como sua propriedade exclusiva: (1) a Marca do seu produto (Art. 129 LPI); (2) o seu Código-Fonte/Firmware autoral (Lei 9.609/98); e (3) o desenho específico da sua PCB/Gabinete (Lei 9.610/98 e Art. 94 LPI).';
     }
 
@@ -398,7 +398,7 @@ if ($method === 'POST') {
             $novoRegistroGravado = $stmtBusca->fetch();
 
             $statusApropriacao = 'REGISTRADO_COM_SUCESSO';
-            $tituloVeredito = 'PROVA DE AUTORIA GRAVADA NO OBSERVATÓRIO — Protocolo interno: ' . $protocoloGerado;
+            $tituloVeredito = 'Prova de autoria gravada — protocolo interno ' . $protocoloGerado;
             $explicacaoVeredito = 'Sua criação foi gravada no banco de dados do Observatório com resumo criptográfico SHA-512 (Art. 3º da Lei nº 9.609/98 e Art. 6º/129 da Lei nº 9.279/96). A partir deste momento, cadastros idênticos feitos por outro CPF/CNPJ neste Observatório serão sinalizados. Este protocolo é interno e acadêmico: ele não substitui o depósito no INPI.';
         }
     }

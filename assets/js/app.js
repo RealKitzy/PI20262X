@@ -550,9 +550,9 @@ function limparFormularioCompleto() {
     atualizarPainelQuesitosBloco2(null);
 
     atualizarBalaoMascote(
-        'AUTO-MARCAÇÃO INTELIGENTE PRONTA • APENAS DESCREVA SEU PROJETO',
-        'Digite o nome e a descrição da sua criação. O sistema marca todos os parâmetros jurídicos sozinho!',
-        'Você não precisa escolher leis nem preencher dezenas de seletores. Basta escrever o que o seu projeto faz no campo principal e o motor auto-identificará as 6 camadas, as normas do INPI/ANATEL/LGPD e verificará se a criação já existe.'
+        'Etapa 1 de 2 — Identificação',
+        'Preencha seus dados para começar.',
+        'Depois você descreve o projeto e o sistema faz a busca.'
     );
 }
 
@@ -788,48 +788,34 @@ function atualizarPainelQuesitosBloco2(validacao) {
         total_aprovados: 0
     };
 
-    const pintarItem = (id, ok, rotuloOk, rotuloPendente) => {
+    const pintarItem = (id, ok, rotulo) => {
         const el = document.getElementById(id);
         if (!el) return;
-        if (ok) {
-            el.style.background = 'rgba(16, 185, 129, 0.14)';
-            el.style.borderColor = 'rgba(16, 185, 129, 0.5)';
-            el.style.color = '#d1fae5';
-            el.innerHTML = `✅ ${rotuloOk}`;
-        } else {
-            el.style.background = 'rgba(255, 255, 255, 0.03)';
-            el.style.borderColor = 'rgba(255, 255, 255, 0.1)';
-            el.style.color = 'var(--text-secondary)';
-            el.innerHTML = `❌ ${rotuloPendente}`;
-        }
+        el.classList.toggle('ok', Boolean(ok));
+        el.innerHTML = rotulo;
     };
 
-    pintarItem('chk-quesito-1', q.q1_texto_autentico, '<strong>1. Texto Autêntico:</strong> Mín. 8 palavras válidas atingido', '<strong>1. Texto Autêntico:</strong> Mín. 8 palavras reais (sem gírias/teste)');
-    pintarItem('chk-quesito-2', q.q2_meio_tecnico, '<strong>2. Arquitetura / Peças:</strong> Componente identificado', '<strong>2. Arquitetura / Peças:</strong> Placa, sensor, chip, circuito ou software');
-    pintarItem('chk-quesito-3', q.q3_acao_funcional, '<strong>3. Ação Técnica:</strong> Finalidade funcional identificada', '<strong>3. Ação Técnica:</strong> O que faz (monitorar, controlar, medir...)');
-    pintarItem('chk-quesito-4', q.q4_contexto_aplicacao, '<strong>4. Contexto / Aplicação:</strong> Domínio técnico identificado', '<strong>4. Contexto / Aplicação:</strong> Onde atua (solo, saúde, Wi-Fi, 3D...)');
+    pintarItem('chk-quesito-1', q.q1_texto_autentico, '<strong>Texto real</strong> — pelo menos 8 palavras');
+    pintarItem('chk-quesito-2', q.q2_meio_tecnico, '<strong>Peças</strong> — placa, sensor, chip ou software');
+    pintarItem('chk-quesito-3', q.q3_acao_funcional, '<strong>Ação</strong> — o que faz (mede, controla, aciona…)');
+    pintarItem('chk-quesito-4', q.q4_contexto_aplicacao, '<strong>Aplicação</strong> — onde atua (solo, saúde, Wi-Fi…)');
 
     if (badge) {
-        if (validacao && validacao.valido) {
-            badge.style.background = 'rgba(16, 185, 129, 0.2)';
-            badge.style.borderColor = '#10b981';
-            badge.style.color = '#6ee7b7';
-            badge.textContent = `✅ Projeto Verificado (${q.total_aprovados}/4 Quesitos • ${validacao.score_suficiencia}%)`;
-        } else {
-            badge.style.background = 'rgba(239, 68, 68, 0.18)';
-            badge.style.borderColor = '#ef4444';
-            badge.style.color = '#fca5a5';
-            badge.textContent = `🚫 Pendente (${q.total_aprovados}/4 Quesitos Cumpridos)`;
-        }
+        const ok = Boolean(validacao && validacao.valido);
+        badge.className = 'status-pill ' + (ok ? 'ok' : 'pendente');
+        badge.textContent = ok ? '4 de 4 — pronto' : `${q.total_aprovados} de 4`;
     }
 
-    if (msg && validacao) {
-        if (validacao.valido) {
-            msg.style.color = '#6ee7b7';
-            msg.innerHTML = `<strong> Tudo certo!</strong> ${validacao.motivo} Você já pode avançar para o Bloco 3.`;
+    if (msg) {
+        msg.className = 'quesitos-msg';
+        if (!validacao) {
+            msg.textContent = 'Os itens são marcados enquanto você escreve.';
+        } else if (validacao.valido) {
+            msg.classList.add('ok');
+            msg.textContent = 'Descrição completa. Você já pode verificar se o projeto existe.';
         } else {
-            msg.style.color = '#fca5a5';
-            msg.innerHTML = `<strong>Motivo do bloqueio:</strong> ${validacao.motivo} ${validacao.orientacao}`;
+            msg.classList.add('erro');
+            msg.innerHTML = `${validacao.motivo} ${validacao.orientacao}`;
         }
     }
 }
@@ -1182,33 +1168,33 @@ async function verificarExistenciaLocalEApi(dados, diag, acao = 'VERIFICAR') {
 
     let statusApropriacao = 'DISPONIVEL_EXCLUSIVO';
     let podeRegistrar = true;
-    let tituloVeredito = 'NENHUMA COLISÃO NA BASE DO OBSERVATÓRIO — Você Pode Gravar sua Prova de Autoria';
+    let tituloVeredito = 'Nenhuma colisão na base do Observatório';
     let explicacaoVeredito = 'Comparamos o projeto com a base do Observatório (registros feitos por usuários + acervo de referência ilustrativo com 15 produtos conhecidos) e não houve colisão. Atenção: isso NÃO é uma busca oficial no INPI — a novidade (Art. 11 da LPI) só é confirmada pelo exame do INPI. Confira também a busca mundial ao lado e consulte o pePI antes de depositar.';
 
     if (!checkSuficiencia.valido) {
         statusApropriacao = 'BLOQUEADO_TERCEIRO';
         podeRegistrar = false;
-        tituloVeredito = 'IMPEDIMENTO POR INSUFICIÊNCIA DESCRITIVA (Art. 24 da Lei nº 9.279/96 — LPI)';
+        tituloVeredito = 'Descrição insuficiente (Art. 24 da Lei nº 9.279/96)';
         explicacaoVeredito = `${checkSuficiencia.motivo} ${checkSuficiencia.orientacao} Sem uma descrição técnica real e inteligível do dispositivo ou sistema, o pedido é nulo de pleno direito perante o INPI (Art. 24 e Art. 50 da LPI).`;
     } else if (registroDoProprioUsuario) {
         statusApropriacao = 'JA_PERTENCE_AO_USUARIO';
         podeRegistrar = true;
-        tituloVeredito = `VOCÊ JÁ GRAVOU ESTE PROJETO NO OBSERVATÓRIO (${registroDoProprioUsuario.protocolo_registro})`;
-        explicacaoVeredito = `Este projeto já está gravado no banco do Observatório com o seu próprio CPF/CNPJ (${registroDoProprioUsuario.titular_nome}). A sua prova de autoria (hash SHA-512 com data) continua registrada aqui — lembre-se de que é um registro acadêmico interno, não um registro no INPI.`;
+        tituloVeredito = `Você já gravou este projeto no Observatório (${escaparHtml(registroDoProprioUsuario.protocolo_registro)})`;
+        explicacaoVeredito = `Este projeto já está gravado no banco do Observatório com o seu próprio CPF/CNPJ (${escaparHtml(registroDoProprioUsuario.titular_nome)}). A sua prova de autoria (hash SHA-512 com data) continua registrada aqui — lembre-se de que é um registro acadêmico interno, não um registro no INPI.`;
     } else if (bloqueioTerceiro) {
         statusApropriacao = 'BLOQUEADO_TERCEIRO';
         podeRegistrar = false;
-        tituloVeredito = `COLISÃO DETECTADA: Criação ou Marca Semelhante a Item de Terceiro (${bloqueioTerceiro.protocolo_registro})`;
-        explicacaoVeredito = `Não é possível apropriar-se diretamente desta criação como sua: detectamos colisão direta (${bloqueioTerceiro.similaridade_percentual}% de superposição / colisão nominativa) com o ativo "${bloqueioTerceiro.nome_criacao_marca}", já registrado sob titularidade de ${bloqueioTerceiro.titular_nome} (${bloqueioTerceiro.instituicao_empresa}). Pelo Art. 11 (Estado da Técnica), Art. 124, XIX (proibição de reprodução de marca alheia) e Art. 195 da Lei nº 9.279/96, para registrar uma versão própria você deve: (1) adotar um nome comercial/marca distinto; e (2) especificar uma melhoria construtiva/funcional própria (Modelo de Utilidade — Art. 9º da LPI) ou reimplementação limpa.`;
+        tituloVeredito = `Colisão com item de outro titular (${escaparHtml(bloqueioTerceiro.protocolo_registro)})`;
+        explicacaoVeredito = `Não é possível apropriar-se diretamente desta criação como sua: detectamos colisão direta (${bloqueioTerceiro.similaridade_percentual}% de superposição / colisão nominativa) com o ativo "${escaparHtml(bloqueioTerceiro.nome_criacao_marca)}", já registrado sob titularidade de ${escaparHtml(bloqueioTerceiro.titular_nome)} (${escaparHtml(bloqueioTerceiro.instituicao_empresa)}). Pelo Art. 11 (Estado da Técnica), Art. 124, XIX (proibição de reprodução de marca alheia) e Art. 195 da Lei nº 9.279/96, para registrar uma versão própria você deve: (1) adotar um nome comercial/marca distinto; e (2) especificar uma melhoria construtiva/funcional própria (Modelo de Utilidade — Art. 9º da LPI) ou reimplementação limpa.`;
     } else if (dados.divulgacao_previa === 'DIVULGADO_MAIS_12M') {
         statusApropriacao = 'PARCIAL_ESTADO_DA_TECNICA';
         podeRegistrar = true;
-        tituloVeredito = 'APROPRIAÇÃO PARCIAL: Patente Impedida pelo Estado da Técnica (Art. 11 LPI), mas Marca e Código Podem Ser Seus';
+        tituloVeredito = 'Patente impedida pela divulgação anterior (Art. 11 LPI); marca e código ainda podem ser protegidos';
         explicacaoVeredito = 'Como a criação foi divulgada há mais de 12 meses, a solução técnica física já caiu no Estado da Técnica (Art. 11 e Art. 12 da LPI) e não pode mais ser patenteada com exclusividade. Porém, você PODE registrar e colocar em seu nome a Marca Comercial (Art. 129 da LPI) e o Código-Fonte do Firmware (Lei nº 9.609/98).';
     } else if (dados.grau_novidade_hardware === 'MODULOS_PRONTOS_COTS') {
         statusApropriacao = 'PARCIAL_MODULOS_COMERCIAIS';
         podeRegistrar = true;
-        tituloVeredito = 'APROPRIAÇÃO PARCIAL: Hardware Base já Existe no Mercado, mas Você Pode Registrar Sua Marca, Firmware e PCB';
+        tituloVeredito = 'Hardware base já existe no mercado; marca, firmware e desenho da placa podem ser protegidos';
         explicacaoVeredito = 'Os módulos eletrônicos comerciais utilizados (COTS) já pertencem aos seus respectivos fabricantes e ao estado da técnica (Art. 8º e Art. 10, V da LPI). Você não pode patentear o hardware base como invenção sua, mas PODE colocar como sua propriedade exclusiva: (1) a Marca do seu produto (Art. 129 LPI); (2) o seu Código-Fonte/Firmware autoral (Lei 9.609/98); e (3) o desenho específico da sua PCB/Gabinete (Lei 9.610/98 e Art. 94 LPI).';
     }
 
@@ -1252,7 +1238,7 @@ async function verificarExistenciaLocalEApi(dados, diag, acao = 'VERIFICAR') {
             };
             salvarRegistroFixoNoLocalStorage(novoRegistroGravado);
             statusApropriacao = 'REGISTRADO_COM_SUCESSO';
-            tituloVeredito = `PROVA DE AUTORIA GRAVADA NO OBSERVATÓRIO — Protocolo interno: ${protocoloGerado}`;
+            tituloVeredito = `Prova de autoria gravada — protocolo interno ${protocoloGerado}`;
             explicacaoVeredito = 'Sua criação foi gravada no banco de dados do Observatório com resumo criptográfico SHA-512 (Art. 3º da Lei nº 9.609/98 e Art. 6º/129 da Lei nº 9.279/96). A partir deste momento, cadastros idênticos feitos por outro CPF/CNPJ neste Observatório serão sinalizados. Este protocolo é interno e acadêmico: ele não substitui o depósito no INPI.';
         }
     }
@@ -1523,7 +1509,7 @@ async function buscarEstadoDaTecnicaMundialAoVivo(dados, diag, opcoes = {}) {
     };
 
     if (painelMundial) {
-        painelMundial.innerHTML = `<p style="font-size:0.85rem;color:var(--text-secondary);">Consultando OpenAlex e GitHub (rigor ${escaparHtml(rigor.rotulo)}: até ${rigor.porBase} resultados por base em ${variantes.length || 1} consulta(s))...</p>`;
+        painelMundial.innerHTML = `<p class="small muted">Consultando as bases (rigor ${escaparHtml(rigor.rotulo)}: até ${rigor.porBase} resultados por base em ${variantes.length || 1} consulta(s))…</p>`;
     }
 
     const status = {
@@ -1674,155 +1660,130 @@ async function buscarEstadoDaTecnicaMundialAoVivo(dados, diag, opcoes = {}) {
 }
 
 function descreverStatusBase(nome, st) {
+    const linha = (classe, texto) => `<li><span class="base-dot ${classe}"></span><span><strong>${nome}:</strong> ${texto}</span></li>`;
     switch (st.estado) {
-        case 'ok': return `✅ <strong>${nome}:</strong> consultado (${st.consultas} consulta(s), ${st.recebidos} resultados recebidos)`;
-        case 'parcial': return `⚠️ <strong>${nome}:</strong> consulta parcial (${st.consultas} consulta(s) concluída(s)) — ${escaparHtml(st.erro)}`;
-        case 'limite': return `⚠️ <strong>${nome}:</strong> ${escaparHtml(st.erro)}`;
-        case 'erro': return `❌ <strong>${nome}:</strong> indisponível no momento (${escaparHtml(st.erro)}) — nenhum resultado foi considerado desta base`;
-        case 'sem_termos': return `⚪ <strong>${nome}:</strong> não consultado — ${escaparHtml(st.erro)}`;
-        case 'apenas_link': return `🔗 <strong>${nome}:</strong> apenas link — sem consulta automática (${escaparHtml(st.erro || 'não configurada')})`;
-        default: return `⚪ <strong>${nome}:</strong> não consultado`;
+        case 'ok': return linha('ok', `consultado — ${st.recebidos} resultado(s) em ${st.consultas} consulta(s)`);
+        case 'parcial': return linha('aviso', `consulta parcial (${st.consultas} concluída(s)) — ${escaparHtml(st.erro)}`);
+        case 'limite': return linha('aviso', escaparHtml(st.erro));
+        case 'erro': return linha('erro', `indisponível no momento (${escaparHtml(st.erro)}); nenhum resultado desta base foi considerado`);
+        case 'sem_termos': return linha('', `não consultado — ${escaparHtml(st.erro)}`);
+        case 'apenas_link': return linha('link', `sem consulta automática (${escaparHtml(st.erro || 'não configurada')}) — use os links abaixo`);
+        default: return linha('', 'não consultado');
     }
 }
 
 function renderizarItemResultadoMundial(item) {
-    const destaque = item.relevancia >= LIMIAR_RELEVANCIA_ANTERIORIDADE && item.termosEncontrados.length >= 2;
-    const cor = destaque ? 'var(--accent-primary)' : 'rgba(148,163,184,0.5)';
-    let extra = '';
+    const relevante = item.relevancia >= LIMIAR_RELEVANCIA_ANTERIORIDADE && item.termosEncontrados.length >= 2;
+    const meta = [];
     if (item.base === 'GitHub') {
-        extra = `★ ${item.estrelas} • Licença: <code>${escaparHtml(item.licenca)}</code> • `;
+        meta.push(`★ ${item.estrelas}`, `Licença: ${escaparHtml(item.licenca)}`);
     } else if (item.base === 'Patente') {
-        extra = `${item.titular ? `Titular: ${escaparHtml(item.titular)} • ` : ''}${item.dataPublicacao ? `Publicação: ${escaparHtml(item.dataPublicacao)} • ` : ''}`;
+        if (item.titular) meta.push(`Titular: ${escaparHtml(item.titular)}`);
+        if (item.dataPublicacao) meta.push(`Publicada em ${escaparHtml(item.dataPublicacao)}`);
+    } else if (item.detalhe) {
+        meta.push(escaparHtml(String(item.detalhe).substring(0, 120)));
     }
+    meta.push(`Termos encontrados: ${escaparHtml(item.termosEncontrados.join(', ') || 'nenhum')}`);
+    const descricao = item.base !== 'OpenAlex' && item.detalhe ? `<div class="result-desc">${escaparHtml(String(item.detalhe).substring(0, 180))}</div>` : '';
     return `
-        <div style="padding:0.55rem 0.75rem;margin-bottom:0.45rem;background:rgba(255,255,255,0.03);border-left:3px solid ${cor};border-radius:6px;font-size:0.82rem;">
-            <a href="${urlSegura(item.link)}" target="_blank" rel="noopener" style="color:#fed7aa;font-weight:600;text-decoration:none;">[${item.base}] ${escaparHtml(item.titulo)} (${escaparHtml(item.ano)}) ↗</a>
-            <div style="color:var(--text-secondary);font-size:0.77rem;margin-top:0.15rem;">
-                ${extra}<strong>Relevância: ${item.relevancia}%</strong> (termos encontrados: ${escaparHtml(item.termosEncontrados.join(', ') || 'nenhum')})
-                ${item.detalhe ? `<br>${escaparHtml(String(item.detalhe).substring(0, 140))}` : ''}
-            </div>
+        <div class="result-item${relevante ? ' relevante' : ''}">
+            <div><span class="result-base">${item.base}</span><a class="result-titulo" href="${urlSegura(item.link)}" target="_blank" rel="noopener">${escaparHtml(item.titulo)}</a> <span class="muted small">(${escaparHtml(item.ano)})</span></div>
+            <span class="result-score" title="Porcentagem dos termos principais do seu projeto que aparecem neste resultado">${item.relevancia}%</span>
+            ${descricao}
+            <div class="result-meta">${meta.join(' • ')}</div>
         </div>`;
 }
 
 function renderizarResultadoBuscaMundial(r) {
     let html = `
-        <div style="font-size:0.8rem;color:var(--text-secondary);line-height:1.6;margin-bottom:0.8rem;">
-            ${descreverStatusBase('OpenAlex (artigos científicos, mundial)', r.status.openalex)}<br>
-            ${descreverStatusBase('GitHub (repositórios, mundial)', r.status.github)}<br>
-            ${descreverStatusBase('Patentes (EPO/Espacenet — mundial, inclui BR)', r.status.patentes)}<br>
-            <span>Rigor <strong>${escaparHtml(r.rigor.rotulo)}</strong> • consultas feitas: ${r.consultas.map(c => `<code>${escaparHtml(c)}</code>`).join(', ') || '—'}${r.interrompida ? ' • <strong>busca encerrada antes do fim pelo usuário</strong>' : ''}</span>
-        </div>
-        <div style="display:flex;flex-wrap:wrap;gap:0.55rem;margin-bottom:1rem;">
-            <a href="${r.links.inpi}" target="_blank" rel="noopener" class="btn-secondary" style="text-decoration:none;padding:0.45rem 0.85rem;font-size:0.78rem;">🔗 Buscar no pePI (INPI) ↗</a>
-            <a href="${urlSegura(r.links.googlePatents)}" target="_blank" rel="noopener" class="btn-secondary" style="text-decoration:none;padding:0.45rem 0.85rem;font-size:0.78rem;">🔗 Google Patents ↗</a>
-            <a href="${urlSegura(r.links.googlePatentsCip)}" target="_blank" rel="noopener" class="btn-secondary" style="text-decoration:none;padding:0.45rem 0.85rem;font-size:0.78rem;">🔗 Google Patents (classe ${escaparHtml(r.cipPrincipal)}) ↗</a>
-            <a href="${urlSegura(r.links.espacenet)}" target="_blank" rel="noopener" class="btn-secondary" style="text-decoration:none;padding:0.45rem 0.85rem;font-size:0.78rem;">🔗 Espacenet ↗</a>
+        <ul class="bases-status">
+            ${descreverStatusBase('Patentes (EPO)', r.status.patentes)}
+            ${descreverStatusBase('Artigos (OpenAlex)', r.status.openalex)}
+            ${descreverStatusBase('Repositórios (GitHub)', r.status.github)}
+            <li><span class="base-dot link"></span><span><strong>INPI (pePI):</strong> sem API pública — use o link abaixo</span></li>
+        </ul>
+        <p class="consultas-feitas">Rigor ${escaparHtml(r.rigor.rotulo)} • termos pesquisados: ${r.consultas.map(c => `<code>${escaparHtml(c)}</code>`).join(' ') || '—'}${r.interrompida ? ' • busca encerrada antes do fim' : ''}</p>
+        <div class="link-row">
+            <a href="${r.links.inpi}" target="_blank" rel="noopener" class="btn-secondary btn-sm">Buscar no pePI (INPI) ↗</a>
+            <a href="${urlSegura(r.links.googlePatentsCip)}" target="_blank" rel="noopener" class="btn-secondary btn-sm">Google Patents — classe ${escaparHtml(r.cipPrincipal)} ↗</a>
+            <a href="${urlSegura(r.links.googlePatents)}" target="_blank" rel="noopener" class="btn-secondary btn-sm">Google Patents ↗</a>
+            <a href="${urlSegura(r.links.espacenet)}" target="_blank" rel="noopener" class="btn-secondary btn-sm">Espacenet ↗</a>
         </div>`;
 
     if (r.relevantes.length > 0) {
-        html += `
-            <div class="alert-card alert-ATENCAO" style="margin-bottom:0.9rem;padding:0.85rem 1rem;">
-                <span class="inpi-badge">⚠️ ${r.relevantes.length} RESULTADO(S) RELEVANTE(S) — RELEVÂNCIA ≥ ${LIMIAR_RELEVANCIA_ANTERIORIDADE}%</span>
-                <h4 style="font-size:0.95rem;margin-top:0.25rem;">Possível estado da técnica (Art. 11 da Lei nº 9.279/96)</h4>
-                <p style="font-size:0.82rem;margin:0.25rem 0 0;">
-                    Estes resultados contêm a maior parte dos termos técnicos do seu projeto. Leia cada um: se descreverem a mesma solução, o conceito geral não é novo e um pedido de patente deve se limitar ao seu diferencial (parte <em>"caracterizado por..."</em>). A decisão final é sempre do exame do INPI.
-                </p>
-            </div>`;
-        html += r.relevantes.slice(0, 15).map(renderizarItemResultadoMundial).join('');
+        html += `<h4 style="margin-bottom:0.6rem;">${r.relevantes.length} resultado(s) parecido(s) com o seu projeto</h4>
+            <div class="result-list">${r.relevantes.slice(0, 15).map(renderizarItemResultadoMundial).join('')}</div>`;
     } else if (r.totalAnalisados > 0) {
-        html += `
-            <div class="alert-card alert-SUCESSO" style="margin:0 0 0.9rem;">
-                <h4>Nenhum resultado com relevância ≥ ${LIMIAR_RELEVANCIA_ANTERIORIDADE}% nas bases consultadas</h4>
-                <p style="font-size:0.84rem;">Foram analisados ${r.totalAnalisados} resultados${r.patentesConsultadas ? ' (artigos, repositórios e patentes)' : ' da OpenAlex e do GitHub — patentes não foram consultadas automaticamente'}. Isso não prova novidade: confirme também no pePI/INPI (o INPI não tem API pública) e no Google Patents com a classe <strong>${escaparHtml(r.cipPrincipal)}</strong>.</p>
-            </div>`;
+        html += `<div class="alert-card alert-SUCESSO"><h4>Nenhum resultado com relevância de ${LIMIAR_RELEVANCIA_ANTERIORIDADE}% ou mais</h4><p>Foram analisados ${r.totalAnalisados} resultados. Isso não prova que o projeto é novo — confira também nos links acima.</p></div>`;
     }
 
     if (r.basesComFalha.length > 0 && r.relevantes.length === 0) {
-        html += `<div class="alert-card alert-ATENCAO" style="margin:0 0 0.9rem;"><h4>Busca incompleta</h4><p style="font-size:0.84rem;">Uma ou mais bases não responderam por completo. A ausência de resultados <strong>não</strong> significa ausência de anterioridade. Refaça a verificação em alguns instantes.</p></div>`;
+        html += `<div class="alert-card alert-ATENCAO"><h4>Busca incompleta</h4><p>Uma ou mais bases não responderam por completo. A falta de resultados <strong>não</strong> significa que não exista algo parecido. Refaça a busca em alguns instantes.</p></div>`;
     }
 
     const outros = r.todos.filter(x => !r.relevantes.includes(x));
     if (outros.length > 0) {
         html += `
-            <details style="margin-top:0.6rem;">
-                <summary style="cursor:pointer;font-size:0.82rem;color:var(--text-secondary);">Ver outros ${outros.length} resultados com baixa relevância (não contam como anterioridade)</summary>
-                <div style="margin-top:0.6rem;">${outros.slice(0, 40).map(renderizarItemResultadoMundial).join('')}</div>
+            <details class="mais">
+                <summary>Ver outros ${outros.length} resultados com baixa relevância</summary>
+                <div class="result-list">${outros.slice(0, 40).map(renderizarItemResultadoMundial).join('')}</div>
             </details>`;
     }
     return html;
 }
 
-// Renderiza todo o Painel de Verificação de Existência, Colisões e Tabela Fixa de Titularidades
+// Renderiza o painel da base do Observatório (veredito local, colisões e tabela)
 function renderizarPainelVerificacaoExistencia(verif) {
     ultimaVerificacaoExistencia = verif;
     const painelVeredito = document.getElementById('painel-veredito-apropriacao');
     const painelColisoes = document.getElementById('painel-colisoes-internas');
     const btnRegistrar = document.getElementById('btn-registrar-titularidade-fixa');
     const tbodyFixos = document.getElementById('tabela-registros-fixos-body');
+    const e = escaparHtml;
 
     if (painelVeredito && verif) {
         let classeAlerta = 'alert-SUCESSO';
-        let badgeTexto = 'DISPONÍVEL PARA REGISTRO E APROPRIAÇÃO LEGÍTIMA';
+        if (verif.status_apropriacao === 'BLOQUEADO_TERCEIRO') classeAlerta = 'alert-CRITICO';
+        else if (verif.status_apropriacao === 'PARCIAL_ESTADO_DA_TECNICA' || verif.status_apropriacao === 'PARCIAL_MODULOS_COMERCIAIS') classeAlerta = 'alert-ATENCAO';
 
-        if (verif.status_apropriacao === 'BLOQUEADO_TERCEIRO') {
-            classeAlerta = 'alert-CRITICO';
-            badgeTexto = 'BLOQUEADO • CRIAÇÃO OU MARCA JÁ EXISTE EM NOME DE TERCEIRO';
-        } else if (verif.status_apropriacao === 'PARCIAL_ESTADO_DA_TECNICA' || verif.status_apropriacao === 'PARCIAL_MODULOS_COMERCIAIS') {
-            classeAlerta = 'alert-ATENCAO';
-            badgeTexto = 'APROPRIAÇÃO PARCIAL • PROTEÇÃO DE MARCA, FIRMWARE E LAYOUT';
-        } else if (verif.status_apropriacao === 'JA_PERTENCE_AO_USUARIO' || verif.status_apropriacao === 'REGISTRADO_COM_SUCESSO') {
-            classeAlerta = 'alert-SUCESSO';
-            badgeTexto = 'PROVA DE AUTORIA GRAVADA NO OBSERVATÓRIO (PROTOCOLO INTERNO)';
-        }
-
+        // Os textos do veredito vêm do motor (local ou PHP) e contêm marcação controlada pelo sistema;
+        // nomes digitados por usuários dentro deles são escapados na origem abaixo (colisões/tabela).
         painelVeredito.innerHTML = `
-            <div class="alert-card ${classeAlerta}" style="margin-bottom: 0;">
-                <span class="inpi-badge">${badgeTexto}</span>
-                <h3 style="font-size: 1.18rem; margin: 0.35rem 0 0.5rem;">${verif.titulo_veredito}</h3>
-                <p style="margin-bottom: 0.75rem; line-height: 1.65;">${verif.explicacao_veredito}</p>
-                <div style="background: rgba(10, 8, 18, 0.75); border: 1px solid rgba(249, 115, 22, 0.35); border-radius: 8px; padding: 0.65rem 0.95rem; font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: #fed7aa; word-break: break-all; margin-bottom: 0.85rem;">
-                    <strong>Impressão Digital Criptográfica (Hash SHA-512 — Art. 3º Lei 9.609/98):</strong> ${verif.hash_sha512_calculado}
-                </div>
-                <div style="background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.45); border-radius: 8px; padding: 0.75rem 1rem; font-size: 0.82rem; color: #fef3c7; line-height: 1.55;">
-                    ⚖️ <strong>AVISO LEGAL OBRIGATÓRIO — VALIDAÇÃO OFICIAL NO INPI (AUTARQUIA FEDERAL):</strong> Este diagnóstico é uma <strong>triagem acadêmica preliminar</strong>, e o hash SHA-512 serve apenas como <strong>prova de autoria com data</strong> dentro do Observatório. Conforme os <strong>Arts. 6º, 19, 30 e 129 da Lei nº 9.279/96 (LPI)</strong>, a concessão estatal definitiva de Carta-Patente ou Certificado de Marca exige <strong>validação e protocolo oficial diretamente no portal do INPI (<a href="https://busca.inpi.gov.br/pePI/" target="_blank" rel="noopener" style="color: #fbbf24; text-decoration: underline; font-weight: 700;">busca.inpi.gov.br/pePI ↗</a> / <a href="https://www.gov.br/inpi/pt-br" target="_blank" rel="noopener" style="color: #fbbf24; text-decoration: underline; font-weight: 700;">gov.br/inpi ↗</a>)</strong> mediante recolhimento de GRU e exame técnico pelos examinadores federais.
-                </div>
+            <div class="alert-card ${classeAlerta}">
+                <h3>${verif.titulo_veredito || ''}</h3>
+                <p>${verif.explicacao_veredito || ''}</p>
+                ${verif.hash_sha512_calculado ? `<div class="hash-box"><strong>Hash SHA-512 do projeto (prova de autoria com data)</strong>${e(verif.hash_sha512_calculado)}</div>` : ''}
             </div>
         `;
     }
 
     if (btnRegistrar && verif) {
+        btnRegistrar.disabled = false;
         if (!verif.pode_registrar_como_seu) {
-            btnRegistrar.textContent = '🚫 Registro Bloqueado (Já Pertence a Terceiro)';
-            btnRegistrar.style.opacity = '0.65';
+            btnRegistrar.textContent = 'Gravação bloqueada (colisão)';
+            btnRegistrar.disabled = true;
         } else if (verif.status_apropriacao === 'JA_PERTENCE_AO_USUARIO' || verif.status_apropriacao === 'REGISTRADO_COM_SUCESSO') {
-            btnRegistrar.textContent = '✅ Prova de Autoria Já Gravada (Ver Certificado)';
-            btnRegistrar.style.opacity = '1';
+            btnRegistrar.textContent = 'Prova de autoria já gravada';
         } else {
-            btnRegistrar.textContent = '🔒 Gravar Prova de Autoria no Observatório';
-            btnRegistrar.style.opacity = '1';
+            btnRegistrar.textContent = 'Gravar prova de autoria';
         }
     }
 
     if (painelColisoes && verif) {
         if (!verif.colisoes || verif.colisoes.length === 0) {
-            painelColisoes.innerHTML = `
-                <div class="alert-card alert-SUCESSO" style="margin: 0;">
-                    <h4>Nenhuma Colisão Encontrada no Banco Fixo</h4>
-                    <p style="font-size: 0.85rem;">Sua marca e sua descrição técnica não colidem com nenhum dos ${verif.registros_fixos ? verif.registros_fixos.length : 0} itens da base do Observatório (registros de usuários + acervo de referência ilustrativo). Isso não substitui a busca no pePI/INPI.</p>
-                </div>
-            `;
+            painelColisoes.innerHTML = `<p class="small muted">Nenhum dos ${verif.registros_fixos ? verif.registros_fixos.length : 0} itens da base do Observatório é parecido com o seu projeto.</p>`;
         } else {
-            painelColisoes.innerHTML = verif.colisoes.slice(0, 4).map(col => {
-                const cor = col.mesmo_titular ? 'alert-SUCESSO' : (col.similaridade_percentual >= 55 || col.colisao_marca ? 'alert-CRITICO' : 'alert-ATENCAO');
-                const tagTitular = col.mesmo_titular
-                    ? 'SEU PRÓPRIO REGISTRO'
-                    : (col.similaridade_percentual >= 55 || col.colisao_marca ? 'COLISÃO IMPEDITIVA DE TERCEIRO' : 'SIMILARIDADE PARCIAL');
+            painelColisoes.innerHTML = `<h4 style="margin-bottom:0.6rem;">Itens parecidos na base</h4>` + verif.colisoes.slice(0, 4).map(col => {
+                const forte = col.similaridade_percentual >= 55 || col.colisao_marca;
+                const cor = col.mesmo_titular ? 'alert-SUCESSO' : (forte ? 'alert-CRITICO' : 'alert-ATENCAO');
+                const tag = col.mesmo_titular ? 'Seu próprio registro' : (forte ? 'Colisão com terceiro' : 'Semelhança parcial');
+                const ilustrativo = col.origem_base === 'ACERVO_REFERENCIA_ILUSTRATIVO' ? ' • acervo ilustrativo' : '';
                 return `
-                    <div class="alert-card ${cor}" style="margin-bottom: 0.65rem; padding: 0.85rem 1rem;">
-                        <span class="inpi-badge">${col.protocolo_registro} • ${col.similaridade_percentual}% Similaridade • ${tagTitular}${col.origem_base === 'ACERVO_REFERENCIA_ILUSTRATIVO' ? ' • ACERVO ILUSTRATIVO' : ''}</span>
-                        <h4 style="font-size: 0.95rem; margin-top: 0.25rem;">${col.nome_criacao_marca}</h4>
-                        <p style="font-size: 0.82rem; margin: 0.2rem 0;"><strong>Titular Registrado:</strong> ${col.titular_nome} (${col.titular_documento}) — ${col.instituicao_empresa}</p>
-                        <p style="font-size: 0.8rem; margin: 0;"><strong>Proteção Ativa:</strong> ${col.modalidade_protecao}</p>
+                    <div class="alert-card ${cor}">
+                        <span class="inpi-badge">${e(col.protocolo_registro)} • ${col.similaridade_percentual}% • ${tag}${ilustrativo}</span>
+                        <h4>${e(col.nome_criacao_marca)}</h4>
+                        <p class="small">Titular: ${e(col.titular_nome)} — ${e(col.instituicao_empresa || '')}</p>
+                        <p class="small muted">${e(col.modalidade_protecao || '')}</p>
                     </div>
                 `;
             }).join('');
@@ -1831,17 +1792,19 @@ function renderizarPainelVerificacaoExistencia(verif) {
 
     if (tbodyFixos && verif && Array.isArray(verif.registros_fixos)) {
         tbodyFixos.innerHTML = verif.registros_fixos.map((reg) => {
-            const hashCurto = (reg.hash_sha512 || '').substring(0, 18) + '...';
+            const hashCurto = (reg.hash_sha512 || '').substring(0, 16) + '…';
+            const ilustrativo = reg.origem_base === 'ACERVO_REFERENCIA_ILUSTRATIVO';
             const badgeOrigem = reg.origem_base === 'REGISTRO_FIXO_USUARIO'
-                ? '<span class="inpi-badge" style="background:rgba(16,185,129,0.2);color:#6ee7b7;border-color:#10b981;">FIXADO NO OBSERVATÓRIO</span>'
-                : '<span class="inpi-badge" title="Exemplo didático de produto conhecido — não é registro oficial do INPI">ACERVO DE REFERÊNCIA (ILUSTRATIVO)</span>';
+                ? '<span class="inpi-badge" style="color:var(--ok);border-color:var(--ok-border);background:var(--ok-soft);">Gravado no Observatório</span>'
+                : '<span class="inpi-badge" title="Exemplo didático de produto conhecido — não é registro oficial do INPI">Acervo ilustrativo</span>';
+            const resumo = (reg.resumo_tecnico || '').length > 95 ? reg.resumo_tecnico.substring(0, 95) + '…' : (reg.resumo_tecnico || '');
             return `
                 <tr>
-                    <td>${badgeOrigem}<br><strong>${reg.protocolo_registro}</strong></td>
-                    <td><strong>${reg.nome_criacao_marca}</strong><br><span style="font-size:0.78rem;color:var(--text-secondary);">${(reg.resumo_tecnico || '').substring(0, 95)}...</span></td>
-                    <td><strong>${reg.titular_nome}</strong><br><span style="font-size:0.8rem;color:var(--text-secondary);">Doc: ${reg.titular_documento}<br>${reg.instituicao_empresa || ''}</span></td>
-                    <td><strong>${reg.modalidade_protecao}</strong><br><span style="font-size:0.78rem;color:var(--text-secondary);">${reg.camadas_protegidas || ''}</span></td>
-                    <td><code style="font-size:0.76rem;">SHA-512: ${hashCurto}</code><br><span style="font-size:0.76rem;color:var(--text-secondary);">${reg.data_registro || (reg.origem_base === 'ACERVO_REFERENCIA_ILUSTRATIVO' ? 'Exemplo ilustrativo (sem data oficial)' : '')}</span></td>
+                    <td>${badgeOrigem}<br><strong>${e(reg.protocolo_registro)}</strong></td>
+                    <td><strong>${e(reg.nome_criacao_marca)}</strong><span class="muted">${e(resumo)}</span></td>
+                    <td>${e(reg.titular_nome)}<span class="muted">${ilustrativo ? '' : 'Doc.: ' + e(reg.titular_documento)}</span></td>
+                    <td>${e(reg.modalidade_protecao)}</td>
+                    <td><span class="mono small">${e(hashCurto)}</span><span class="muted">${e(reg.data_registro || (ilustrativo ? 'Sem data oficial' : ''))}</span></td>
                 </tr>
             `;
         }).join('');
@@ -1871,9 +1834,9 @@ async function registrarTitularidadeFixaUsuario() {
 
     if (resultado.bloqueado || !resultado.pode_registrar_como_seu) {
         atualizarBalaoMascote(
-            'TENTATIVA DE APROPRIAÇÃO BLOQUEADA PELO SISTEMA (ARTS. 11, 124 E 129 DA LPI)',
-            'Esta criação ou marca já está registrada em nome de outro titular na base fixa!',
-            `O sistema detectou colisão direta com o registro <strong>${resultado.bloqueio_terceiro ? resultado.bloqueio_terceiro.protocolo_registro : ''}</strong> pertencente a <strong>${resultado.bloqueio_terceiro ? resultado.bloqueio_terceiro.titular_nome : 'terceiro'}</strong>. Para que você possa registrar uma criação própria, altere o nome comercial (Art. 124, XIX LPI) e introduza uma melhoria funcional construtiva própria (Art. 9º LPI).`
+            'Gravação bloqueada',
+            'Este projeto ou nome já está gravado por outro titular',
+            `Colisão com <strong>${resultado.bloqueio_terceiro ? escaparHtml(resultado.bloqueio_terceiro.nome_criacao_marca) : 'um item da base'}</strong>. Para gravar, use um nome próprio e descreva o que o seu projeto tem de diferente.`
         );
         const cardVerif = document.getElementById('card-verificacao-anterioridade-titularidade');
         if (cardVerif) cardVerif.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1887,9 +1850,9 @@ async function registrarTitularidadeFixaUsuario() {
     renderizarRelatorioDiagnostico(dados, ultimoDiagnostico, resultado);
     gerarMinutaAutomatizada('CERTIFICADO_TITULARIDADE');
     atualizarBalaoMascote(
-        'PROVA DE AUTORIA GRAVADA NO OBSERVATÓRIO',
-        `Protocolo interno do Observatório: ${resultado.registro_gravado ? resultado.registro_gravado.protocolo_registro : 'Ativo'}`,
-        `O seu projeto <strong>"${dados.nome_projeto}"</strong> agora está gravado de forma fixa no banco de dados sob o CPF/CNPJ <strong>${dados.autor_documento}</strong> com hash SHA-512. Cadastros semelhantes feitos depois, com outro CPF/CNPJ, serão sinalizados neste Observatório. Baixe o seu <strong>Certificado de Autoria</strong> no botão do relatório. Lembre-se: o registro oficial só acontece no INPI.`
+        'Prova de autoria gravada',
+        `Protocolo interno: ${resultado.registro_gravado ? escaparHtml(resultado.registro_gravado.protocolo_registro) : '—'}`,
+        'O projeto foi gravado no Observatório com o seu CPF/CNPJ e o hash SHA-512. Baixe o certificado pelo botão do relatório. Lembre-se: o registro oficial só acontece no INPI.'
     );
 }
 
@@ -2076,9 +2039,9 @@ function entrarComoUsuario() {
     alternarAba('aba-diagnostico');
 
     atualizarBalaoMascote(
-        'ETAPA 1 DE 3 — IDENTIFICAÇÃO DO TITULAR',
-        'Preencha seus dados no Bloco 1 para destravar o Bloco 2.',
-        'Você avança uma etapa por vez: primeiro identifique quem é o titular do projeto no <strong>Bloco 1</strong> e clique em <strong>"Concluir Bloco 1 e Liberar Bloco 2 →"</strong>.'
+        'Etapa 1 de 2 — Identificação',
+        'Preencha seus dados para começar.',
+        'Depois você descreve o projeto e o sistema faz a busca.'
     );
 }
 
@@ -2173,15 +2136,15 @@ function avancarBlocoUsuario(numeroBlocoDestino) {
 
     if (numeroBlocoDestino === 1) {
         atualizarBalaoMascote(
-            'ETAPA 1 DE 2 — IDENTIFICAÇÃO DO TITULAR',
-            'Revise seus dados de titularidade no Bloco 1.',
-            'Confira seu nome, CPF/CNPJ e o título do projeto e clique em avançar para ir ao Bloco 2.'
+            'Etapa 1 de 2 — Identificação',
+            'Confira seus dados.',
+            'Nome do projeto, titular, CPF/CNPJ e e-mail aparecem no certificado de autoria.'
         );
     } else if (numeroBlocoDestino === 2) {
         atualizarBalaoMascote(
-            'ETAPA 1 DE 2 — DESCRIÇÃO E AUDITORIA',
-            'Bloco 1 concluído! Agora descreva sua criação técnica no Bloco 2.',
-            'Conte como funciona o seu projeto (placa, sensores, microcontrolador, conectividade, gabinete). Escolha o rigor da varredura e clique em <strong>"Verificar se o Projeto já existe"</strong> para iniciar a auditoria de patentes.'
+            'Etapa 1 de 2 — Descrição',
+            'Agora descreva o seu projeto.',
+            'Conte o que ele faz e com quais peças. Quando os 4 itens estiverem marcados, escolha o rigor e clique em <strong>Verificar se já existe</strong>.'
         );
     }
 
@@ -2195,7 +2158,7 @@ function acelerarAuditoriaParaFim() {
     varreduraInterrompida = true;
     const btn = document.getElementById('btn-acelerar-auditoria');
     if (btn) {
-        btn.textContent = '⏹ Encerrando com os resultados já obtidos...';
+        btn.textContent = 'Encerrando…';
         btn.style.opacity = '0.5';
         btn.disabled = true;
     }
@@ -2209,7 +2172,7 @@ async function iniciarVerificacaoPorcentagemBloco2() {
     varreduraInterrompida = false;
     const btnEncerrar = document.getElementById('btn-acelerar-auditoria');
     if (btnEncerrar) {
-        btnEncerrar.textContent = '⏹ Encerrar e usar os resultados já obtidos';
+        btnEncerrar.textContent = 'Encerrar e ver resultados';
         btnEncerrar.style.opacity = '1';
         btnEncerrar.disabled = false;
     }
@@ -2358,7 +2321,7 @@ async function iniciarVerificacaoPorcentagemBloco2() {
         const totalBaseLocal = verif && Array.isArray(verif.registros_fixos) ? verif.registros_fixos.length : 0;
         if (verif && verif.bloqueio_terceiro) {
             chip('chip-status-inpi', 'badge-erro', 'Colisão');
-            log(`[OBSERVATÓRIO] Colisão com "${verif.bloqueio_terceiro.nome_criacao_marca}" (${verif.bloqueio_terceiro.similaridade_percentual}%).`, 'warn');
+            log(`[OBSERVATÓRIO] Colisão com "${escaparHtml(verif.bloqueio_terceiro.nome_criacao_marca)}" (${verif.bloqueio_terceiro.similaridade_percentual}%).`, 'warn');
         } else {
             chip('chip-status-inpi', 'badge-concluido', `${totalBaseLocal} itens • sem colisão`);
             log(`[OBSERVATÓRIO] ${totalBaseLocal} itens comparados (registros de usuários + acervo ilustrativo): sem colisão.`, 'success');
@@ -2435,21 +2398,21 @@ async function iniciarVerificacaoPorcentagemBloco2() {
 
         if (verif && !verif.pode_registrar_como_seu) {
             atualizarBalaoMascote(
-                'COLISÃO NA BASE DO OBSERVATÓRIO',
-                `Colisão detectada com ${verif.bloqueio_terceiro ? verif.bloqueio_terceiro.protocolo_registro : 'item anterior'}`,
-                `O projeto descrito é muito semelhante a <strong>${verif.bloqueio_terceiro ? escaparHtml(verif.bloqueio_terceiro.nome_criacao_marca) : 'um item da base'}</strong>. Confira os detalhes no painel abaixo.`
+                'Etapa 2 de 2 — Resultado',
+                'Há um projeto muito parecido na base do Observatório',
+                `O seu projeto é muito semelhante a <strong>${verif.bloqueio_terceiro ? escaparHtml(verif.bloqueio_terceiro.nome_criacao_marca) : 'um item da base'}</strong>. Veja os detalhes no relatório.`
             );
         } else if (resultadoMundial.totalAchadosMundo > 0) {
             atualizarBalaoMascote(
-                'POSSÍVEL ESTADO DA TÉCNICA ENCONTRADO',
-                `${resultadoMundial.totalAchadosMundo} resultado(s) relevante(s) nas bases mundiais consultadas`,
-                'Leia os resultados listados no painel "Estado da Técnica Mundial" e compare com o seu diferencial antes de pensar em patente. Marca e código-fonte continuam protegíveis.'
+                'Etapa 2 de 2 — Resultado',
+                `Encontramos ${resultadoMundial.totalAchadosMundo} resultado(s) parecido(s) com o seu projeto`,
+                'Leia a lista em "O que encontramos no mundo" e compare com o seu diferencial. Marca e código-fonte continuam protegíveis.'
             );
         } else {
             atualizarBalaoMascote(
-                'VERIFICAÇÃO CONCLUÍDA',
-                'Nenhuma anterioridade relevante encontrada nas bases consultadas',
-                `Nenhuma colisão na base do Observatório e nenhum resultado com relevância ≥ ${LIMIAR_RELEVANCIA_ANTERIORIDADE}% nas bases consultadas${resultadoMundial.basesComFalha.length ? ' (atenção: alguma base não respondeu por completo)' : ''}. ${resultadoMundial.patentesConsultadas ? '' : ' Patentes não foram consultadas automaticamente nesta instalação.'} Confira também no pePI/INPI (sem API pública) pelos links do relatório.`
+                'Etapa 2 de 2 — Resultado',
+                'Nenhum projeto parecido nas bases consultadas',
+                `Isso é um bom sinal, mas não garante novidade${resultadoMundial.basesComFalha.length ? ' (alguma base não respondeu por completo)' : ''}. Confira também no pePI/INPI pelos links do relatório.`
             );
         }
     } catch (erro) {
@@ -2480,29 +2443,13 @@ function atualizarVisibilidadeBlocosUsuario() {
 
     const estilizarIndicador = (el, numero, titulo) => {
         if (!el) return;
-        if (blocoAtualUsuario === numero) {
-            el.style.background = 'rgba(249, 115, 22, 0.18)';
-            el.style.border = '1px solid rgba(249, 115, 22, 0.55)';
-            el.style.color = '#fed7aa';
-            el.style.opacity = '1';
-            el.textContent = `● Bloco ${numero}: ${titulo} (Em Preenchimento)`;
-        } else if (blocoAtualUsuario > numero) {
-            el.style.background = 'rgba(16, 185, 129, 0.16)';
-            el.style.border = '1px solid rgba(16, 185, 129, 0.45)';
-            el.style.color = '#6ee7b7';
-            el.style.opacity = '1';
-            el.textContent = `✅ Bloco ${numero}: ${titulo} (Concluído)`;
-        } else {
-            el.style.background = 'rgba(255, 255, 255, 0.04)';
-            el.style.border = '1px solid rgba(255, 255, 255, 0.12)';
-            el.style.color = 'var(--text-secondary)';
-            el.style.opacity = '0.55';
-            el.textContent = `🔒 Bloco ${numero}: ${titulo}`;
-        }
+        const estado = blocoAtualUsuario === numero ? 'ativo' : (blocoAtualUsuario > numero ? 'concluido' : '');
+        el.className = 'step' + (estado ? ' ' + estado : '');
+        el.innerHTML = `<span class="step-num">${estado === 'concluido' ? '✓' : numero}</span> ${titulo}`;
     };
 
-    estilizarIndicador(ind1, 1, 'Identificação do Titular');
-    estilizarIndicador(ind2, 2, 'Descrição Técnica & Auditoria');
+    estilizarIndicador(ind1, 1, 'Titular e nome');
+    estilizarIndicador(ind2, 2, 'Descrição do projeto');
 }
 
 function aplicarRegrasDePerfilNaInterface() {
@@ -2515,23 +2462,12 @@ function aplicarRegrasDePerfilNaInterface() {
     const tab1 = document.querySelector('.tab-btn[data-target="aba-diagnostico"]');
     const tab2 = document.querySelector('.tab-btn[data-target="aba-relatorio"]');
 
-    if (barraEtapas) barraEtapas.style.display = 'grid';
-    if (rodapeB1) rodapeB1.style.display = 'flex';
-    if (rodapeB2) rodapeB2.style.display = 'flex';
     if (btnVoltarB2) btnVoltarB2.style.display = 'inline-flex';
     if (gavetaAvancada) gavetaAvancada.style.display = 'none';
 
-    if (tab1) {
-        tab1.style.display = '';
-        tab1.style.opacity = '1';
-        tab1.innerHTML = '<span class="tab-step">01</span> Etapa 1: Cadastro &amp; Auditoria';
-    }
     if (tab2) {
-        tab2.style.display = '';
-        tab2.style.opacity = etapaAbaLiberadaUsuario >= 2 ? '1' : '0.45';
-        tab2.innerHTML = etapaAbaLiberadaUsuario >= 2
-            ? '<span class="tab-step">02</span> Etapa 2: Diagnóstico &amp; Anterioridade'
-            : '<span class="tab-step">🔒</span> Etapa 2: Diagnóstico (Conclua a Etapa 1)';
+        tab2.classList.toggle('bloqueada', etapaAbaLiberadaUsuario < 2);
+        tab2.title = etapaAbaLiberadaUsuario < 2 ? 'Conclua a verificação na etapa 1' : '';
     }
 
     atualizarVisibilidadeBlocosUsuario();
@@ -2549,6 +2485,7 @@ function alternarAba(abaId) {
 
     const painel = document.getElementById(abaId);
     if (painel) painel.classList.add('active');
+    document.body.classList.toggle('no-relatorio', abaId === 'aba-relatorio');
 
     const btn = document.querySelector(`.tab-btn[data-target="${abaId}"]`);
     if (btn) btn.classList.add('active');
@@ -2928,8 +2865,8 @@ async function processarDiagnostico(event) {
     if (verif && !verif.pode_registrar_como_seu) {
         atualizarBalaoMascote(
             'ALERTA DE ANTERIORIDADE — CRIAÇÃO OU MARCA JÁ REGISTRADA POR TERCEIRO!',
-            `Colisão detectada com ${verif.bloqueio_terceiro ? verif.bloqueio_terceiro.protocolo_registro : 'registro anterior'}`,
-            `O projeto que você descreveu colide diretamente com uma criação ou marca já existente na base fixa (<strong>${verif.bloqueio_terceiro ? verif.bloqueio_terceiro.nome_criacao_marca : ''}</strong>). Confira no painel abaixo os artigos da LPI aplicáveis e o que você precisa diferenciar para poder registrar como seu.`
+            `Colisão detectada com ${verif.bloqueio_terceiro ? escaparHtml(verif.bloqueio_terceiro.protocolo_registro) : 'registro anterior'}`,
+            `O projeto que você descreveu colide diretamente com uma criação ou marca já existente na base fixa (<strong>${verif.bloqueio_terceiro ? escaparHtml(verif.bloqueio_terceiro.nome_criacao_marca) : ''}</strong>). Confira no painel abaixo os artigos da LPI aplicáveis e o que você precisa diferenciar para poder registrar como seu.`
         );
     } else if (ultimoDiagnostico.risco_contaminacao_licenca === 'ALTO_CRITICO') {
         atualizarBalaoMascote(
@@ -2939,9 +2876,9 @@ async function processarDiagnostico(event) {
         );
     } else {
         atualizarBalaoMascote(
-            'VERIFICAÇÃO DE EXISTÊNCIA CONCLUÍDA — DISPONÍVEL PARA REGISTRO EM SEU NOME!',
-            `Sua criação está apta para apropriação legítima (${ultimoDiagnostico.score_protegibilidade}/100)`,
-            `Não houve colisão na base do Observatório nem anterioridade relevante nas bases consultadas. Clique no botão laranja <strong>"Gravar Prova de Autoria no Observatório"</strong> no painel abaixo para travar sua titularidade no banco de dados e emitir seu certificado SHA-512.`
+            'Etapa 2 de 2 — Resultado',
+            'Nenhum projeto parecido nas bases consultadas',
+            'Você já pode gravar a prova de autoria no Observatório. Para ter exclusividade no Brasil, o pedido precisa ser feito no INPI.'
         );
     }
 }
@@ -2957,8 +2894,14 @@ function renderizarRelatorioDiagnostico(dados, diag, verif = null, anterioridade
     document.getElementById('kpi-licenca-sw').textContent = diag.licenca_sw_recomendada;
 
     const kpiRiscoEl = document.getElementById('kpi-risco');
-    kpiRiscoEl.style.color = diag.risco_contaminacao_licenca === 'ALTO_CRITICO' ? '#ef4444'
-        : (diag.risco_contaminacao_licenca === 'MEDIO' ? '#f59e0b' : '#10b981');
+    const rotulosRisco = { ALTO_CRITICO: 'Alto', MEDIO: 'Médio', BAIXO: 'Baixo', NULO: 'Nenhum' };
+    kpiRiscoEl.textContent = rotulosRisco[diag.risco_contaminacao_licenca] || diag.risco_contaminacao_licenca;
+    kpiRiscoEl.style.color = diag.risco_contaminacao_licenca === 'ALTO_CRITICO' ? 'var(--danger)'
+        : (diag.risco_contaminacao_licenca === 'MEDIO' ? 'var(--warn)' : 'var(--ok)');
+    // Coerência com a busca: se há anterioridade relevante, a patente deixa de ser a proteção principal "garantida"
+    if (anterioridadeMundial && anterioridadeMundial.totalAchadosMundo > 0 && /patente|modelo de utilidade/i.test(document.getElementById('kpi-inpi').textContent)) {
+        document.getElementById('kpi-inpi').textContent = 'Marca + software (patente só do diferencial)';
+    }
 
     // Painel Explicativo Simples e Direto (Para Leigos: O que passou, o que não passou e o porquê)
     const painelLeigo = document.getElementById('painel-resumo-leigo-direto');
@@ -2968,42 +2911,39 @@ function renderizarRelatorioDiagnostico(dados, diag, verif = null, anterioridade
         const jaEhDoUsuario = Boolean(verif && verif.status_apropriacao === 'JA_PERTENCE_AO_USUARIO');
         const colisaoMarca = Boolean(jaExisteTerceiro && verif.bloqueio_terceiro.colisao_marca);
 
-        let corBordaVeredito = '#10b981';
-        let bgVeredito = 'rgba(16, 185, 129, 0.12)';
-        let respostaExistencia = '';
+        // Veredito principal: 3 estados visuais (ok / atencao / critico), título curto e explicação em linguagem simples
+        let estadoVeredito = 'ok';
+        let iconeVeredito = '✓';
+        let tituloVeredito = '';
+        let textoVeredito = '';
+        const mundo = anterioridadeMundial;
+        const qtdPatentesRelevantes = mundo && mundo.patentesRelevantes ? mundo.patentesRelevantes.length : 0;
 
         if (jaExisteTerceiro) {
-            corBordaVeredito = '#ef4444';
-            bgVeredito = 'rgba(239, 68, 68, 0.14)';
-            respostaExistencia = `🚫 <strong>PROJETO / PATENTE JÁ EXISTE NO MERCADO (REGISTRADO POR TERCEIROS):</strong><br>
-            Detectamos que o seu projeto colide com uma patente ou criação já existente: <strong>${verif.bloqueio_terceiro.nome_criacao_marca}</strong> (Titular: <strong>${verif.bloqueio_terceiro.titular_nome}</strong>, Protocolo: <code>${verif.bloqueio_terceiro.protocolo_registro}</code> com <strong>${verif.bloqueio_terceiro.similaridade_percentual}% de similaridade técnica</strong>).<br><br>
-            ⚖️ <strong>Fundamentação Legal (Lei nº 9.279/96 — LPI):</strong><br>
-            • <strong>Art. 11 da LPI (Falta de Novidade Absoluta):</strong> A invenção é dotada de novidade quando não compreendida no estado da técnica. Como o princípio ou dispositivo físico já existe no Brasil ou no mundo, o INPI <strong>indeferirá a concessão de patente ampla do conceito (Camada F)</strong>.<br>
-            • <strong>Art. 124, inciso XIX da LPI:</strong> É proibido registrar como marca signo que imite ou reproduza marca alheia registrada na mesma classe comercial.<br><br>
-            👉 <strong>O que você PODE fazer com sua criação:</strong><br>
-            1. Você tem direito de proteger o seu <strong>Código-fonte / Firmware (Camada E)</strong> contra pirataria pela Lei de Software (Lei nº 9.609/98).<br>
-            2. Você pode registrar uma <strong>Marca Comercial própria (Camada D)</strong> desde que utilize um nome inovador e distinto.<br>
-            3. Para obter uma patente válida, você deve <strong>restringir a sua reivindicação</strong> exclusivamente ao aprimoramento físico inédito que você desenvolveu e que não existe na patente anterior!`;
+            estadoVeredito = 'critico';
+            iconeVeredito = '!';
+            tituloVeredito = 'Já existe um projeto muito parecido na base do Observatório';
+            textoVeredito = `<p>O seu projeto colide com <strong>${escaparHtml(verif.bloqueio_terceiro.nome_criacao_marca)}</strong> (titular: ${escaparHtml(verif.bloqueio_terceiro.titular_nome)}, ${verif.bloqueio_terceiro.similaridade_percentual}% de semelhança).</p>
+                <p>Pelo Art. 11 da LPI, o conceito geral não pode ser patenteado, e pelo Art. 124, XIX, não dá para registrar uma marca igual ou parecida. Você ainda pode proteger o seu código-fonte (Lei 9.609/98), usar um nome próprio e pedir patente só do que for realmente novo no seu projeto.</p>`;
         } else if (temAnterioridadeMundial) {
-            corBordaVeredito = '#f59e0b';
-            bgVeredito = 'rgba(245, 158, 11, 0.12)';
-            respostaExistencia = `⚠️ <strong>POSSÍVEL ESTADO DA TÉCNICA (${anterioridadeMundial.totalAchadosMundo} RESULTADO(S) RELEVANTE(S)${anterioridadeMundial.patentesRelevantes && anterioridadeMundial.patentesRelevantes.length ? `, ${anterioridadeMundial.patentesRelevantes.length} DELES PATENTE(S)` : ''}):</strong><br>
-            Encontramos patentes, artigos ou repositórios que contêm a maior parte dos termos técnicos do seu projeto (relevância ≥ ${LIMIAR_RELEVANCIA_ANTERIORIDADE}% — veja a lista no painel "Estado da Técnica Mundial"). Se descreverem a mesma solução, pelo <strong>Art. 11 da Lei nº 9.279/96 (novidade)</strong> o conceito geral não poderá ser patenteado.<br><br>
-            👉 <strong>O que você PODE fazer:</strong> Você tem direito de registrar a sua <strong>Marca comercial (Camada D)</strong> no Brasil e proteger o seu <strong>Código-fonte/Software (Camada E)</strong>. Mas para conseguir a <strong>Patente (Camada F)</strong>, você deverá restringir seu pedido apenas ao seu <em>diferencial construtivo ou algoritmo específico</em> que ninguém no mundo fez!`;
-        } else if (anterioridadeMundial && anterioridadeMundial.totalAnalisados === 0 && anterioridadeMundial.basesComFalha.length > 0) {
-            corBordaVeredito = '#f59e0b';
-            bgVeredito = 'rgba(245, 158, 11, 0.12)';
-            respostaExistencia = `⚠️ <strong>BUSCA MUNDIAL INDISPONÍVEL NO MOMENTO:</strong> As bases mundiais não responderam, então nenhum resultado foi analisado. Não houve colisão na base do Observatório, mas <strong>não é possível concluir nada sobre a novidade</strong>. Refaça a verificação em alguns minutos e confira no pePI/INPI e no Google Patents pelos links do relatório.`;
+            estadoVeredito = 'atencao';
+            iconeVeredito = '!';
+            tituloVeredito = 'Encontramos projetos parecidos com o seu';
+            textoVeredito = `<p>${mundo.totalAchadosMundo} resultado(s)${qtdPatentesRelevantes ? ` — ${qtdPatentesRelevantes} deles patente(s) —` : ''} contêm a maior parte dos termos técnicos do seu projeto. Leia a lista em <strong>"O que encontramos no mundo"</strong>: se algum descrever a mesma solução, o conceito geral não é novo (Art. 11 da LPI).</p>
+                <p>Isso não impede o seu projeto. Você pode proteger a marca e o código-fonte, e uma patente ainda é possível se ficar restrita ao seu diferencial.</p>`;
+        } else if (mundo && mundo.totalAnalisados === 0 && mundo.basesComFalha.length > 0) {
+            estadoVeredito = 'atencao';
+            iconeVeredito = '?';
+            tituloVeredito = 'Não foi possível concluir a busca';
+            textoVeredito = `<p>As bases mundiais não responderam, então nenhum resultado foi analisado. Não houve colisão na base do Observatório, mas não dá para concluir nada sobre a novidade. Refaça a busca em alguns minutos.</p>`;
         } else if (jaEhDoUsuario) {
-            respostaExistencia = `✅ <strong>ESTE PROJETO JÁ É SEU:</strong> Ele já consta gravado no banco de dados vinculado ao seu próprio CPF/CNPJ (${dados.autor_documento}).`;
+            tituloVeredito = 'Este projeto já está gravado em seu nome';
+            textoVeredito = `<p>A prova de autoria deste projeto já está no Observatório, vinculada ao seu CPF/CNPJ.</p>`;
         } else {
-            const avisoBuscaIncompleta = anterioridadeMundial && anterioridadeMundial.basesComFalha && anterioridadeMundial.basesComFalha.length
-                ? ' <strong>Atenção:</strong> alguma base não respondeu por completo, então a busca ficou incompleta.'
-                : '';
-            const resumoBusca = anterioridadeMundial
-                ? `a base do Observatório e ${anterioridadeMundial.totalAnalisados} resultados ${anterioridadeMundial.patentesConsultadas ? 'de patentes (EPO), da OpenAlex e do GitHub' : 'da OpenAlex e do GitHub'}`
-                : 'a base do Observatório (a busca mundial não foi executada)';
-            respostaExistencia = `✅ <strong>NENHUMA ANTERIORIDADE RELEVANTE ENCONTRADA NAS BASES CONSULTADAS:</strong> Comparamos ${resumoBusca}.${avisoBuscaIncompleta} Isso não garante novidade${anterioridadeMundial && anterioridadeMundial.patentesConsultadas ? '' : ' — patentes não foram consultadas automaticamente'}. Antes de depositar, confira também no pePI/INPI e no Google Patents. Você já pode gravar a sua prova de autoria (SHA-512) no Observatório.`;
+            tituloVeredito = 'Nenhum projeto parecido nas bases consultadas';
+            const incompleta = mundo && mundo.basesComFalha && mundo.basesComFalha.length ? ' Uma das bases não respondeu por completo, então a busca ficou incompleta.' : '';
+            const semPatentes = mundo && mundo.patentesConsultadas ? '' : ' As patentes não foram consultadas automaticamente nesta instalação.';
+            textoVeredito = `<p>Não encontramos nada com relevância de ${LIMIAR_RELEVANCIA_ANTERIORIDADE}% ou mais.${incompleta}${semPatentes} Isso é um bom sinal, mas não garante que o projeto seja novo: confira também no pePI/INPI antes de depositar.</p>`;
         }
 
         const podePatenteFisica = dados.divulgacao_previa !== 'DIVULGADO_MAIS_12M' && dados.grau_novidade_hardware !== 'MODULOS_PRONTOS_COTS' && dados.modelo_negocio !== 'PUBLICACAO_DEFENSIVA';
@@ -3013,7 +2953,7 @@ function renderizarRelatorioDiagnostico(dados, diag, verif = null, anterioridade
                 passou: !colisaoMarca,
                 titulo: '1. Nome do Projeto / Marca Comercial (Camada D)',
                 explicacaoSimples: colisaoMarca
-                    ? `🚫 Conflito de Marca: O nome colide com '${verif.bloqueio_terceiro.nome_criacao_marca}'. Pelo Art. 124, XIX da LPI, você deve alterar o nome comercial.`
+                    ? `Conflito de marca: o nome colide com '${escaparHtml(verif.bloqueio_terceiro.nome_criacao_marca)}'. Pelo Art. 124, XIX da LPI, você deve alterar o nome comercial.`
                     : 'O nome não colidiu com a base do Observatório. Antes de depositar, confira na busca de marcas do pePI/INPI (classe NCL 9) se não existe marca igual ou parecida.',
                 lei: colisaoMarca
                     ? 'Art. 124, inciso XIX da Lei 9.279/96 (Vedação de registro de marca colidente).'
@@ -3040,11 +2980,11 @@ function renderizarRelatorioDiagnostico(dados, diag, verif = null, anterioridade
                 atencao: jaExisteTerceiro || temAnterioridadeMundial,
                 titulo: '4. Patente do Funcionamento Físico (Camada F)',
                 explicacaoSimples: jaExisteTerceiro
-                    ? `🚫 NÃO PASSOU / ESTADO DA TÉCNICA EXISTENTE: Encontramos patente/produto equivalente (${verif.bloqueio_terceiro.nome_criacao_marca} — ${verif.bloqueio_terceiro.titular_nome}). Pelo Art. 11 da LPI (Falta de Novidade Absoluta), o INPI não aceita patentear o que já existe no mundo!`
+                    ? `Encontramos um projeto equivalente na base (${escaparHtml(verif.bloqueio_terceiro.nome_criacao_marca)} — ${escaparHtml(verif.bloqueio_terceiro.titular_nome)}). O conceito geral não é patenteável (Art. 11 da LPI); só um diferencial seu poderia ser.`
                     : (temAnterioridadeMundial
                         ? `Foram encontrados ${anterioridadeMundial.totalAchadosMundo} resultado(s) relevante(s) (patentes, artigos ou repositórios) parecidos com o seu projeto. Leia-os: se descreverem a mesma solução, o conceito geral não é patenteável e o pedido deve se limitar ao seu diferencial (Arts. 11 e 13 da LPI).`
                         : (podePatenteFisica
-                            ? 'Pela descrição (hardware + sensores com efeito técnico físico), o projeto pode, em tese, ser objeto de pedido de patente — desde que a busca no pePI/Google Patents não revele solução igual.'
+                            ? 'Pela descrição (hardware com efeito técnico físico), o projeto pode, em tese, ser patenteado — desde que a busca no pePI/Google Patents não revele solução igual.'
                             : (dados.divulgacao_previa === 'DIVULGADO_MAIS_12M'
                                 ? 'Não cabe patente física porque foi divulgado há mais de 12 meses (caiu em domínio público técnico).'
                                 : 'Como usa apenas peças comerciais prontas sem circuito novo, você protege a Marca e o Código, mas não o hardware pronto.'))),
@@ -3055,7 +2995,7 @@ function renderizarRelatorioDiagnostico(dados, diag, verif = null, anterioridade
                 titulo: '5. Carcaça Externa / Visual 3D do Aparelho (Camada B)',
                 explicacaoSimples: dados.possui_design_externo_novo
                     ? 'Você citou gabinete/carcaça própria, então também pode proteger o visual externo do aparelho.'
-                    : 'Não foi citada carcaça ou formato externo novo na descrição (opcional — não impede seu registro!).',
+                    : 'A descrição não cita carcaça ou formato externo próprio (é opcional e não impede o registro).',
                 lei: 'Art. 94 da Lei 9.279/96 (Registro de Desenho Industrial no INPI).'
             },
             {
@@ -3063,48 +3003,47 @@ function renderizarRelatorioDiagnostico(dados, diag, verif = null, anterioridade
                 titulo: '6. Fabricação de Microchip de Silício do Zero (Camada C)',
                 explicacaoSimples: dados.possui_topografia_chip
                     ? 'Proteção especial ativada para desenho de microchip próprio em silício.'
-                    : 'Não se aplica porque seu projeto usa placas/chips já existentes no mercado como Arduino ou ESP32 (normal para 99% dos projetos!).',
+                    : 'Não se aplica: o projeto usa chips comerciais, como ESP32 ou Arduino (o normal na maioria dos projetos).',
                 lei: 'Art. 26 da Lei 11.484/2007 (Topografia de Circuito Integrado).'
             }
         ];
 
+        const colisoesLocais = verif && Array.isArray(verif.colisoes) ? verif.colisoes.filter(c => !c.mesmo_titular).length : 0;
+        const marcaItem = item => item.passou ? 'Pode proteger' : (item.atencao ? 'Atenção' : 'Não se aplica');
+        const classeItem = item => item.passou ? 'ok' : (item.atencao ? 'atencao' : 'na');
+
         painelLeigo.innerHTML = `
-            <div style="padding: 1.35rem 1.5rem; border-radius: 14px; background: ${bgVeredito}; border: 2px solid ${corBordaVeredito}; margin-bottom: 1.25rem;">
-                <span class="inpi-badge" style="margin-bottom: 0.45rem;">RESUMO EM LINGUAGEM SIMPLES • RESULTADO DIRETO DA ANÁLISE</span>
-                <h3 style="font-size: 1.2rem; color: #fff; margin: 0.2rem 0 0.6rem;">
-                    O que aconteceu com o seu projeto? Ele já existe ou pode ser seu?
-                </h3>
-                <p style="font-size: 0.96rem; color: #f8fafc; line-height: 1.6; margin-bottom: 1rem;">
-                    ${respostaExistencia}
-                </p>
-
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 0.75rem; margin-bottom: 1.1rem;">
-                    ${itensChecklist.map(item => `
-                        <div style="padding: 0.85rem 1rem; border-radius: 10px; background: rgba(15, 12, 24, 0.78); border: 1px solid ${item.passou ? 'rgba(16, 185, 129, 0.45)' : 'rgba(255, 255, 255, 0.14)'};">
-                            <div style="font-weight: 700; font-size: 0.88rem; color: ${item.passou ? '#6ee7b7' : '#cbd5e1'}; margin-bottom: 0.3rem;">
-                                ${item.passou ? '✅ PASSOU / ATIVADO:' : (item.atencao ? '⚠️ ATENÇÃO:' : '⚪ NÃO SE APLICA AO SEU CASO:')} ${item.titulo}
-                            </div>
-                            <div style="font-size: 0.83rem; color: #f1f5f9; margin-bottom: 0.3rem; line-height: 1.45;">
-                                <strong>Por quê:</strong> ${item.explicacaoSimples}
-                            </div>
-                            <div style="font-size: 0.76rem; color: var(--orange-light);">
-                                <strong>Base Legal:</strong> ${item.lei}
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
-
-                <div style="padding: 0.9rem 1.1rem; border-radius: 10px; background: rgba(249, 115, 22, 0.14); border: 1px solid rgba(249, 115, 22, 0.45); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.8rem;">
-                    <div style="font-size: 0.86rem; color: #ffedd5; max-width: 720px; line-height: 1.5;">
-                        <strong>💡 Próximo Passo Prático:</strong> Clique no botão ao lado para <strong>gravar sua prova de autoria (hash SHA-512)</strong> no banco do Observatório — um registro acadêmico interno, que não substitui o INPI — e, se quiser o monopólio comercial no Brasil, faça o pedido no site oficial do <strong>INPI (gov.br/inpi)</strong>.
+            <div class="verdict ${estadoVeredito}">
+                <div class="verdict-topo">
+                    <span class="verdict-icone">${iconeVeredito}</span>
+                    <div>
+                        <span class="eyebrow">Resultado</span>
+                        <h3>${tituloVeredito}</h3>
+                        <div class="verdict-texto">${textoVeredito}</div>
                     </div>
-                    <div style="display: flex; gap: 0.6rem; flex-wrap: wrap;">
-                        <button type="button" class="btn-primary" style="padding: 0.75rem 1.25rem; font-size: 0.86rem;" onclick="registrarTitularidadeFixaUsuario()">
-                            🔒 Gravar Prova de Autoria Agora
-                        </button>
-                        <button type="button" class="btn-secondary" style="padding: 0.75rem 1.15rem; font-size: 0.84rem;" onclick="baixarCertificadoDireto()">
-                            📄 Baixar Meu Certificado de Autoria →
-                        </button>
+                </div>
+                <div class="verdict-numeros">
+                    <div><strong>${mundo ? mundo.totalAchadosMundo : '—'}</strong><span>resultados parecidos no mundo</span></div>
+                    <div><strong>${mundo ? mundo.totalAnalisados : '—'}</strong><span>resultados analisados</span></div>
+                    <div><strong>${colisoesLocais}</strong><span>itens parecidos na base do Observatório</span></div>
+                </div>
+                <div class="verdict-corpo">
+                    <h4>O que você pode proteger</h4>
+                    <div class="checklist">
+                        ${itensChecklist.map(item => `
+                            <div class="check-item ${classeItem(item)}">
+                                <div class="check-titulo"><span class="check-marca">${marcaItem(item)}</span> ${item.titulo.replace(/^\d+\.\s*/, '')}</div>
+                                <p>${item.explicacaoSimples}</p>
+                                <div class="check-lei">${item.lei}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="cta-bar no-print">
+                        <p><strong>Próximo passo:</strong> grave a prova de autoria (hash SHA-512 com data) no Observatório. É um registro acadêmico interno; para ter exclusividade no Brasil, o pedido precisa ser feito no INPI.</p>
+                        <div class="card-acoes">
+                            <button type="button" class="btn-primary" onclick="registrarTitularidadeFixaUsuario()">Gravar prova de autoria</button>
+                            <button type="button" class="btn-secondary" onclick="baixarCertificadoDireto()">Baixar certificado</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -3307,6 +3246,39 @@ function renderizarTabelaHistorico() {
     `).join('');
 }
 
+// ============================================================================
+// TEMA CLARO / ESCURO
+// Sem escolha salva, segue o tema do sistema operacional. A escolha fica salva neste navegador.
+// ============================================================================
+function obterTemaAtual() {
+    const definido = document.documentElement.getAttribute('data-theme');
+    if (definido === 'dark' || definido === 'light') return definido;
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
+function atualizarBotaoTema() {
+    const botao = document.getElementById('botao-tema');
+    if (!botao) return;
+    const escuro = obterTemaAtual() === 'dark';
+    // O botão mostra o tema para o qual ele leva
+    botao.querySelector('.theme-toggle-icone').textContent = escuro ? '☀' : '☾';
+    botao.querySelector('.theme-toggle-texto').textContent = escuro ? 'Claro' : 'Escuro';
+    botao.title = escuro ? 'Mudar para o tema claro' : 'Mudar para o tema escuro';
+}
+
+function alternarTema() {
+    const novo = obterTemaAtual() === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', novo);
+    try { localStorage.setItem('observatorio_tema', novo === 'dark' ? 'escuro' : 'claro'); } catch (e) {}
+    atualizarBotaoTema();
+}
+
+if (window.matchMedia) {
+    try {
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', atualizarBotaoTema);
+    } catch (e) {}
+}
+
 // Inicialização automática no fluxo guiado em etapas (Bloco 1 -> Bloco 2 -> Bloco 3)
 document.addEventListener('DOMContentLoaded', async () => {
     const campoNome = document.getElementById('nome_projeto');
@@ -3319,4 +3291,5 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     entrarComoUsuario();
+    atualizarBotaoTema();
 });

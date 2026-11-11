@@ -4,213 +4,173 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Observatório de Propriedade Intelectual e Hardware Aberto | Projeto Integrador</title>
-    <link rel="stylesheet" href="assets/css/styles.css?v=20261111v6">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/styles.css?v=20261111v8">
+    <script>
+        // Aplica o tema salvo antes de desenhar a página (evita "piscar" claro → escuro)
+        try {
+            var temaSalvo = localStorage.getItem('observatorio_tema');
+            if (temaSalvo === 'claro' || temaSalvo === 'escuro') {
+                document.documentElement.setAttribute('data-theme', temaSalvo === 'escuro' ? 'dark' : 'light');
+            }
+        } catch (e) {}
+    </script>
 </head>
 <body>
 
-    <!-- Cabeçalho Superior -->
+    <!-- Cabeçalho -->
     <header class="topbar">
         <div class="topbar-inner">
             <div class="brand">
                 <div class="brand-icon">
-                    <img src="assets/img/logo-institucional.svg" alt="Observatório de Propriedade Intelectual & Hardware Aberto">
+                    <img src="assets/img/logo-institucional.svg" alt="">
                 </div>
                 <div class="brand-text">
                     <h1>Observatório de Propriedade Intelectual &amp; Hardware Aberto</h1>
-                    <span>Projeto Integrador: Informática e Legislação • Matriz de Proteção Multicamada (A–F), INPI e Licenças OSHW</span>
+                    <span>Projeto Integrador — Informática e Legislação</span>
                 </div>
             </div>
             <div class="topbar-actions">
-                <div class="engine-badge">
+                <div class="engine-badge" title="Estado do motor de análise">
                     <span class="engine-dot"></span>
-                    <span id="engine-status-text">Motor de Decisão Ativo</span>
+                    <span id="engine-status-text">Sistema online</span>
                 </div>
+                <button type="button" class="theme-toggle" id="botao-tema" onclick="alternarTema()" aria-label="Alternar entre tema claro e escuro">
+                    <span class="theme-toggle-icone" aria-hidden="true">☾</span>
+                    <span class="theme-toggle-texto">Escuro</span>
+                </button>
             </div>
         </div>
     </header>
 
-    <!-- ======================================================================
-         CONTEÚDO PRINCIPAL DO SISTEMA (FLUXO DIRETO DO USUÁRIO)
-         ====================================================================== -->
     <div id="conteudo-sistema-principal">
 
-        <!-- Painel de Orientação Técnica e Jurídica -->
-        <section class="hero-banner">
-            <div class="hero-guidance-panel">
-                <div class="guidance-emblem-frame">
-                    <img src="assets/img/emblema-ia-juridica.svg" alt="Núcleo de Inteligência Patentária & Legislação" class="emblem-img">
-                    <span class="mascot-status">NÚCLEO TÉCNICO-JURÍDICO</span>
-                </div>
-
-                <div class="guidance-content-card">
-                    <span class="bubble-speaker-tag" id="mascote-tag">ETAPA 1 DE 2 — IDENTIFICAÇÃO DO TITULAR</span>
-                    <h2 id="mascote-titulo">Preencha seus dados no Bloco 1 para iniciar a verificação do seu projeto.</h2>
-                    <p id="mascote-fala">
-                        O hardware e dispositivos IoT são protegidos no Brasil por <strong>6 camadas jurídicas (A até F)</strong>: Documentação Técnica (Lei 9.610/98), Design Externo (LPI), Semicondutores/Chips (Lei 11.484/07), Marca (Art. 129 da LPI), Software Embarcado (Lei 9.609/98) e Solução Técnica (Patentes PI/MU). Preencha seus dados, descreva a criação e inicie a auditoria profunda de patentes.
-                    </p>
-                </div>
-
-                <div class="hero-stats">
-                    <div class="hero-stat-item">
-                        <strong>2 Etapas</strong>
-                        <span>Fluxo Direto e Objetivo</span>
-                    </div>
-                    <div class="hero-stat-item">
-                        <strong>4 Quesitos</strong>
-                        <span>Validação Técnica Art. 24 LPI</span>
-                    </div>
-                    <div class="hero-stat-item">
-                        <strong>Busca Real</strong>
-                        <span>Patentes, OpenAlex &amp; GitHub</span>
-                    </div>
-                </div>
-            </div>
+        <!-- Abertura -->
+        <section class="intro">
+            <h2>Seu projeto de hardware já existe? Descubra antes de registrar.</h2>
+            <p>Descreva o que você criou. O sistema procura projetos parecidos em patentes, artigos científicos e repositórios abertos e mostra quais partes do seu projeto podem ser protegidas no Brasil.</p>
+            <ul class="intro-pontos">
+                <li>Busca real em patentes, OpenAlex e GitHub</li>
+                <li>Análise das 6 camadas jurídicas (A–F)</li>
+                <li>Prova de autoria com hash SHA-512</li>
+            </ul>
         </section>
 
-        <!-- Navegação Principal por Abas (Apenas 2 Etapas Reais) -->
+        <!-- Etapas -->
         <nav class="nav-tabs" id="nav-tabs-principal">
             <button class="tab-btn active" id="tab-btn-diagnostico" data-target="aba-diagnostico" onclick="alternarAba('aba-diagnostico')">
-                <span class="tab-step">01</span> Etapa 1: Cadastro &amp; Auditoria de Anterioridade
+                <span class="tab-step">1</span> Cadastro e descrição
             </button>
-            <button class="tab-btn" id="tab-btn-relatorio" data-target="aba-relatorio" onclick="alternarAba('aba-relatorio')" style="opacity: 0.45;">
-                <span class="tab-step">🔒</span> Etapa 2: Diagnóstico &amp; Anterioridade Mundial
+            <button class="tab-btn bloqueada" id="tab-btn-relatorio" data-target="aba-relatorio" onclick="alternarAba('aba-relatorio')">
+                <span class="tab-step">2</span> Resultado
             </button>
         </nav>
 
         <main class="container">
 
+            <!-- Guia contextual (mensagens atualizadas pelo sistema) -->
+            <div class="guide" role="status" aria-live="polite">
+                <span class="guide-icon">i</span>
+                <div>
+                    <span class="eyebrow" id="mascote-tag">Etapa 1 de 2 — Identificação</span>
+                    <h2 id="mascote-titulo">Preencha seus dados para começar.</h2>
+                    <p id="mascote-fala">Depois você descreve o projeto e o sistema faz a busca.</p>
+                </div>
+            </div>
+
             <!-- ==================================================================
-                 ABA 1: FORMULÁRIO DE ENTRADA DE ARQUITETURA HARDWARE / FIRMWARE / IOT
+                 ETAPA 1 — CADASTRO E DESCRIÇÃO
                  ================================================================== -->
             <section id="aba-diagnostico" class="tab-panel active">
-
-                <form id="form-arquitetura" onsubmit="processarDiagnostico(event)" novalidate class="section-stack">
-
-                    <div class="card" style="border-color: rgba(249, 115, 22, 0.65);">
-                        <div class="card-header" style="margin-bottom: 1.25rem; padding-bottom: 1rem;">
+                <form id="form-arquitetura" onsubmit="processarDiagnostico(event)" novalidate>
+                    <div class="card">
+                        <div class="card-header">
                             <div>
-                                <span class="inpi-badge" id="badge-modo-formulario">DIAGNÓSTICO AUTOMÁTICO INTELIGENTE • VOCÊ NÃO PRECISA ENTENDER DE LEIS</span>
-                                <h2 id="titulo-card-formulario">Conte o que Você Criou — O Sistema Identifica e Marca Tudo Automaticamente</h2>
-                                <p class="card-subtitle" id="subtitulo-card-formulario">Não perca tempo escolhendo filtros jurídicos: preencha cada bloco em sequência. Enquanto você descreve seu projeto, nosso motor identifica sensores, placas, conectividade IoT, software e marca todas as opções legais sozinho.</p>
+                                <h2 id="titulo-card-formulario">Conte o que você criou</h2>
+                                <p class="card-subtitle" id="subtitulo-card-formulario">Você não precisa entender de leis: o sistema identifica sozinho placas, sensores, conectividade e software a partir da sua descrição.</p>
                             </div>
-                            <button type="button" class="btn-secondary" style="padding: 0.55rem 1rem; font-size: 0.82rem;" onclick="limparFormularioCompleto()">Limpar Tudo</button>
+                            <button type="button" class="btn-secondary btn-sm" onclick="limparFormularioCompleto()">Limpar tudo</button>
                         </div>
 
-                        <!-- Barra de Progresso de Blocos (2 Blocos Objetivos) -->
-                        <div id="barra-etapas-usuario" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; margin-bottom: 1.4rem;">
-                            <div id="indicador-bloco-1" style="padding: 0.75rem 1rem; border-radius: 10px; border: 2px solid var(--orange-primary); background: rgba(249, 115, 22, 0.16); font-size: 0.85rem; font-weight: 700; color: #fff;">
-                                1️⃣ Bloco 1: Identificação do Titular e Criação (Ativo)
-                            </div>
-                            <div id="indicador-bloco-2" style="padding: 0.75rem 1rem; border-radius: 10px; border: 1px solid var(--border-color); background: rgba(15, 12, 24, 0.6); font-size: 0.85rem; color: var(--text-muted);">
-                                🔒 Bloco 2: Descrição Técnica &amp; Auditoria de Anterioridade
-                            </div>
+                        <div class="stepper" id="barra-etapas-usuario">
+                            <div class="step ativo" id="indicador-bloco-1"></div>
+                            <div class="step" id="indicador-bloco-2"></div>
                         </div>
 
-                        <!-- ==============================================================
-                             BLOCO 1: IDENTIFICAÇÃO DO CRIADOR E NOME DO PROJETO / MARCA
-                             ============================================================== -->
-                        <div id="bloco-form-1" style="padding: 1.25rem; border-radius: var(--radius-md); background: rgba(15, 12, 24, 0.55); border: 1px solid rgba(249, 115, 22, 0.4); margin-bottom: 1.15rem;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.9rem;">
-                                <h3 style="font-size: 1.05rem; color: var(--orange-light); margin: 0;">
-                                    Bloco 1 — Identificação do Titular e Nome da Criação / Marca
-                                </h3>
-                                <span id="status-tag-bloco-1" class="inpi-badge" style="margin: 0;">BLOCO 1 DE 2</span>
+                        <!-- BLOCO 1 -->
+                        <div id="bloco-form-1">
+                            <div class="bloco-titulo">
+                                <h3>Quem é o titular e qual o nome do projeto</h3>
+                                <span id="status-tag-bloco-1" class="inpi-badge">Bloco 1 de 2</span>
                             </div>
 
-                            <div class="grid-2" style="margin-bottom: 0.75rem;">
+                            <div class="grid-2">
                                 <div class="form-group">
-                                    <label for="nome_projeto">1. Qual o Nome do seu Projeto ou Marca? (Obrigatório — mín. 5 caracteres)</label>
-                                    <input type="text" id="nome_projeto" minlength="5" required placeholder="Ex: AgroNode — Sensor Inteligente de Irrigação">
+                                    <label for="nome_projeto">Nome do projeto ou marca</label>
+                                    <input type="text" id="nome_projeto" minlength="5" required placeholder="Ex.: AgroNode — Sensor de Irrigação">
+                                    <span class="dica">Mínimo de 5 caracteres.</span>
                                 </div>
-
                                 <div class="form-group">
-                                    <label for="autor_nome">2. Seu Nome Completo ou Equipe (Obrigatório — mín. 5 caracteres)</label>
-                                    <input type="text" id="autor_nome" minlength="5" required placeholder="Ex: João Silva e Maria Souza">
+                                    <label for="autor_nome">Seu nome completo ou da equipe</label>
+                                    <input type="text" id="autor_nome" minlength="5" required placeholder="Ex.: João Silva e Maria Souza">
                                 </div>
-                            </div>
-
-                            <div class="grid-2" style="margin-bottom: 0.5rem;">
                                 <div class="form-group">
-                                    <label for="autor_documento">3. Seu CPF (11 dígitos) ou CNPJ (14 dígitos) — Obrigatório</label>
-                                    <input type="text" id="autor_documento" required placeholder="000.000.000-00 ou 00.000.000/0001-00">
+                                    <label for="autor_documento">CPF ou CNPJ</label>
+                                    <input type="text" id="autor_documento" required placeholder="000.000.000-00">
+                                    <span class="dica">Aparece no certificado de autoria.</span>
                                 </div>
-
                                 <div class="form-group">
-                                    <label for="autor_email">4. Seu E-mail de Contato (Obrigatório — com @ e domínio)</label>
+                                    <label for="autor_email">E-mail</label>
                                     <input type="email" id="autor_email" required placeholder="voce@email.com.br">
                                 </div>
                             </div>
 
-                            <!-- Botão de Avanço do Bloco 1 -->
-                            <div id="rodape-bloco-1-usuario" style="display: flex; justify-content: flex-end; padding-top: 0.9rem; margin-top: 0.6rem; border-top: 1px solid var(--border-color);">
-                                <button type="button" class="btn-primary" style="padding: 0.8rem 1.5rem; font-size: 0.92rem;" onclick="avancarBlocoUsuario(2)">
-                                    Concluir Bloco 1 e Liberar Bloco 2 (Descrição do Projeto) →
-                                </button>
+                            <div class="form-footer fim" id="rodape-bloco-1-usuario">
+                                <button type="button" class="btn-primary" onclick="avancarBlocoUsuario(2)">Continuar →</button>
                             </div>
                         </div>
 
-                        <!-- ==============================================================
-                             BLOCO 2: DESCRIÇÃO DO PROJETO E AUDITORIA DE ANTERIORIDADE
-                             ============================================================== -->
-                        <div id="bloco-form-2" style="display: none; padding: 1.25rem; border-radius: var(--radius-md); background: rgba(15, 12, 24, 0.55); border: 1px solid rgba(249, 115, 22, 0.4); margin-bottom: 1.15rem;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.9rem;">
-                                <h3 style="font-size: 1.05rem; color: var(--orange-light); margin: 0;">
-                                    Bloco 2 — Descrição Técnica da Invenção &amp; Auditoria de Patentes
-                                </h3>
-                                <span id="status-tag-bloco-2" class="inpi-badge" style="margin: 0;">BLOCO 2 DE 2</span>
+                        <!-- BLOCO 2 -->
+                        <div id="bloco-form-2" style="display: none;">
+                            <div class="bloco-titulo">
+                                <h3>Descreva a sua invenção</h3>
+                                <span id="status-tag-bloco-2" class="inpi-badge">Bloco 2 de 2</span>
                             </div>
 
-                            <div class="form-group" style="margin-bottom: 1rem;">
-                                <label for="relato_livre_usuario">5. Descrição da Invenção (O que ela faz, placas, sensores, microcontrolador e aplicação):</label>
-                                <textarea id="relato_livre_usuario" rows="4" required oninput="autoMarcarEnquantoDigita()" placeholder="Escreva com suas próprias palavras. Exemplo: Desenvolvi uma coleira inteligente para pets com placa PCB própria, microcontrolador ESP32 com GPS e Bluetooth, carcaça impressa em 3D e firmware em C++ que monitora a localização e temperatura corporal do animal, emitindo alerta para o tutor via aplicativo celular..."></textarea>
+                            <div class="form-group">
+                                <label for="relato_livre_usuario">O que ela faz, com quais peças e para quê</label>
+                                <textarea id="relato_livre_usuario" rows="5" required oninput="autoMarcarEnquantoDigita()" placeholder="Ex.: Coleira inteligente para cães com placa própria, microcontrolador ESP32 com GPS e Bluetooth, carcaça impressa em 3D e firmware em C++ que monitora a localização e a temperatura do animal e envia alertas para o celular do tutor."></textarea>
+                            </div>
 
-                                <!-- Medidor de Qualificação Técnica em Tempo Real (Art. 24 da LPI) -->
-                                <div id="medidor-qualificacao-bloco2" style="margin-top: 0.7rem; padding: 0.85rem 1rem; border-radius: 10px; background: rgba(12, 10, 20, 0.85); border: 1px solid var(--border-color);">
-                                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.55rem;">
-                                        <strong style="font-size: 0.83rem; color: var(--orange-light);">
-                                            📋 Quesitos Obrigatórios de Suficiência Descritiva (Art. 24 da Lei 9.279/96 — LPI):
-                                        </strong>
-                                        <span id="badge-status-qualificacao" style="font-size: 0.76rem; padding: 0.2rem 0.65rem; border-radius: 999px; background: rgba(239, 68, 68, 0.18); border: 1px solid #ef4444; color: #fca5a5; font-weight: 700;">
-                                            ⏳ Aguardando Descrição Real (0/4 Quesitos)
-                                        </span>
-                                    </div>
-                                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 0.45rem; font-size: 0.79rem;">
-                                        <div id="chk-quesito-1" style="padding: 0.38rem 0.65rem; border-radius: 6px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: var(--text-secondary);">
-                                            ❌ <strong>1. Texto Autêntico:</strong> Mín. 8 palavras reais (sem letras soltas ou repetições)
-                                        </div>
-                                        <div id="chk-quesito-2" style="padding: 0.38rem 0.65rem; border-radius: 6px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: var(--text-secondary);">
-                                            ❌ <strong>2. Arquitetura / Peças:</strong> Placa, sensor, chip, circuito ou software
-                                        </div>
-                                        <div id="chk-quesito-3" style="padding: 0.38rem 0.65rem; border-radius: 6px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: var(--text-secondary);">
-                                            ❌ <strong>3. Ação Técnica:</strong> O que ele faz (monitorar, controlar, medir, acionar...)
-                                        </div>
-                                        <div id="chk-quesito-4" style="padding: 0.38rem 0.65rem; border-radius: 6px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: var(--text-secondary);">
-                                            ❌ <strong>4. Contexto / Aplicação:</strong> Área, grandeza física ou protocolo (distância, vibração, rede, Wi-Fi...)
-                                        </div>
-                                    </div>
-                                    <div id="msg-detalhe-qualificacao" style="margin-top: 0.55rem; font-size: 0.8rem; color: var(--text-muted);">
-                                        Preencha os 4 quesitos técnicos acima no seu texto para liberar a verificação do projeto.
-                                    </div>
+                            <!-- Quesitos do Art. 24 da LPI -->
+                            <div class="quesitos" id="medidor-qualificacao-bloco2">
+                                <div class="quesitos-topo">
+                                    <strong>A descrição precisa ter 4 elementos (Art. 24 da LPI)</strong>
+                                    <span id="badge-status-qualificacao" class="status-pill pendente">0 de 4</span>
                                 </div>
+                                <div class="quesitos-lista">
+                                    <div class="quesito" id="chk-quesito-1"><strong>Texto real</strong> — pelo menos 8 palavras</div>
+                                    <div class="quesito" id="chk-quesito-2"><strong>Peças</strong> — placa, sensor, chip ou software</div>
+                                    <div class="quesito" id="chk-quesito-3"><strong>Ação</strong> — o que faz (mede, controla, aciona…)</div>
+                                    <div class="quesito" id="chk-quesito-4"><strong>Aplicação</strong> — onde atua (solo, saúde, Wi-Fi…)</div>
+                                </div>
+                                <div class="quesitos-msg" id="msg-detalhe-qualificacao">Os itens são marcados enquanto você escreve.</div>
                             </div>
 
-                            <!-- Botão de Avanço do Bloco 2 com Seletor de Duração e Verificação 0% a 100% -->
-                            <div id="rodape-bloco-2-usuario" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.8rem; padding-top: 0.9rem; margin-top: 0.6rem; border-top: 1px solid var(--border-color);">
-                                <button type="button" class="btn-secondary" style="padding: 0.7rem 1.2rem; font-size: 0.85rem;" onclick="avancarBlocoUsuario(1)">
-                                    ← Voltar ao Bloco 1
-                                </button>
-                                <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
-                                    <div style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.82rem; color: var(--text-secondary);">
-                                        <label for="seletor-tempo-auditoria" style="margin: 0; font-size: 0.82rem; color: #cbd5e1;" title="Quanto maior o rigor, mais resultados por base e mais combinações de termos são consultadas — por isso demora mais.">🔬 Rigor da Varredura:</label>
-                                        <select id="seletor-tempo-auditoria" style="padding: 0.5rem 0.75rem; border-radius: 6px; font-size: 0.82rem; background: #0f172a; border: 1px solid var(--orange-primary); color: #fff; font-weight: 600;">
-                                            <option value="rapida">Rápida — 10 resultados/base, 1 consulta (~10 s)</option>
-                                            <option value="padrao" selected>Padrão — 25 resultados/base, 3 consultas (~30 s)</option>
-                                            <option value="profunda">Profunda — 50 resultados/base, 6 consultas (~1 min)</option>
+                            <div class="form-footer" id="rodape-bloco-2-usuario">
+                                <button type="button" class="btn-secondary" onclick="avancarBlocoUsuario(1)">← Voltar</button>
+                                <div class="acoes-direita">
+                                    <div class="rigor">
+                                        <label for="seletor-tempo-auditoria" title="Quanto maior o rigor, mais resultados e mais combinações de termos são consultados.">Rigor da busca</label>
+                                        <select id="seletor-tempo-auditoria">
+                                            <option value="rapida">Rápida — ~10 s</option>
+                                            <option value="padrao" selected>Padrão — ~30 s</option>
+                                            <option value="profunda">Profunda — ~1 min</option>
                                         </select>
                                     </div>
-                                    <button type="button" class="btn-primary" id="btn-verificar-bloco2" style="padding: 0.85rem 1.6rem; font-size: 0.93rem; font-weight: 700; background: linear-gradient(135deg, var(--orange-primary), #ea580c); box-shadow: 0 4px 18px rgba(249, 115, 22, 0.45);" onclick="iniciarVerificacaoPorcentagemBloco2()">
-                                        🔍 Verificar se o Projeto já existe →
-                                    </button>
+                                    <button type="button" class="btn-primary btn-lg" id="btn-verificar-bloco2" onclick="iniciarVerificacaoPorcentagemBloco2()">Verificar se já existe</button>
                                 </div>
                             </div>
                         </div>
@@ -401,285 +361,197 @@
                             </div>
                         </div>
                     </div>
-
                 </form>
             </section>
 
-        <!-- ==================================================================
-             ABA 2: RELATÓRIO DE DIAGNÓSTICO DO MOTOR DE DECISÃO
-             ================================================================== -->
-        <section id="aba-relatorio" class="tab-panel">
-            <div class="section-stack">
+            <!-- ==================================================================
+                 ETAPA 2 — RESULTADO
+                 ================================================================== -->
+            <section id="aba-relatorio" class="tab-panel">
+                <div class="section-stack">
 
-                <!-- Card Principal de Resumo Executivo -->
-                <div class="card">
-                    <div class="card-header">
+                    <!-- Cabeçalho do relatório -->
+                    <div class="card report-head">
                         <div>
-                            <span class="inpi-badge">DIAGNÓSTICO TÉCNICO-JURÍDICO E PATENTÁRIO CONSOLIDADO</span>
-                            <h2 id="rel-nome-projeto">Projeto Avaliado</h2>
-                            <p id="rel-autor-projeto" class="card-subtitle">Autor / Titular</p>
+                            <span class="eyebrow">Relatório de anterioridade e proteção</span>
+                            <h2 id="rel-nome-projeto">Projeto avaliado</h2>
+                            <p id="rel-autor-projeto" class="card-subtitle">Titular</p>
                         </div>
-                        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;" class="no-print">
-                            <button class="btn-secondary" onclick="window.print()">📄 Imprimir / Salvar em PDF</button>
-                            <button id="btn-baixar-certificado-oficial" class="btn-primary" style="padding: 0.85rem 1.6rem; font-size: 0.92rem;" onclick="baixarCertificadoDireto()">
-                                🛡️ Baixar Certificado de Autoria SHA-512 (.TXT)
-                            </button>
+                        <div class="card-acoes no-print">
+                            <button class="btn-secondary" onclick="window.print()">Imprimir / PDF</button>
+                            <button id="btn-baixar-certificado-oficial" class="btn-secondary" onclick="baixarCertificadoDireto()">Baixar certificado (.txt)</button>
                         </div>
                     </div>
 
-                    <!-- RESUMO DIRETO EM LINGUAGEM SIMPLES PARA O CRIADOR (SEM JURIDIQUÊS) -->
-                    <div id="painel-resumo-leigo-direto" style="margin-bottom: 1.6rem;"></div>
+                    <!-- 1. Veredito + o que dá para proteger -->
+                    <div id="painel-resumo-leigo-direto"></div>
 
-                    <!-- KPIs -->
-                    <div class="kpi-row">
-                        <div class="kpi-box">
-                            <div class="kpi-label">Índice de Protegibilidade</div>
-                            <div class="kpi-value" id="kpi-score">--/100</div>
-                        </div>
-                        <div class="kpi-box">
-                            <div class="kpi-label">Risco de Conflito / Copyleft</div>
-                            <div class="kpi-value" id="kpi-risco">--</div>
-                        </div>
-                        <div class="kpi-box">
-                            <div class="kpi-label">Proteção Primária no INPI</div>
-                            <div class="kpi-value" id="kpi-inpi" style="font-size: 1.12rem;">--</div>
-                        </div>
-                        <div class="kpi-box">
-                            <div class="kpi-label">Licença Hardware / Esquemático</div>
-                            <div class="kpi-value" id="kpi-licenca-hw" style="font-size: 1.02rem;">--</div>
-                        </div>
-                        <div class="kpi-box">
-                            <div class="kpi-label">Licença Firmware Embarcado</div>
-                            <div class="kpi-value" id="kpi-licenca-sw" style="font-size: 1.02rem;">--</div>
-                        </div>
-                    </div>
-
-                    <!-- Mapa Visual das 6 Camadas Tecnológicas (A até F) -->
-                    <h3 style="margin-bottom: 1.35rem; font-size: 1.15rem; color: var(--orange-light);">
-                        Matriz de Proteção Multicamada do Hardware (Camadas A a F — CF/88 Art. 5º, XXVII a XXIX)
-                    </h3>
-                    <div class="grid-3" id="mapa-camadas-grid"></div>
-                </div>
-
-                <!-- PAINEL REAL E FIXO: VERIFICAÇÃO SE A CRIAÇÃO JÁ EXISTE (ANTERIORIDADE) E REGISTRO DE TITULARIDADE -->
-                <div class="card" id="card-verificacao-anterioridade-titularidade" style="border-color: rgba(249, 115, 22, 0.7);">
-                    <div class="card-header">
-                        <div>
-                            <span class="inpi-badge">VERIFICAÇÃO DE ANTERIORIDADE E PROVA DE AUTORIA • LEI Nº 9.279/96 (ARTS. 8º, 11, 124 E 129)</span>
-                            <h2>Esta Criação Já Existe? Busca de Anterioridade e Prova de Autoria</h2>
-                            <p class="card-subtitle">O sistema cruza seu projeto em tempo real com: (1) a base do Observatório (registros de usuários + acervo de referência ilustrativo); e (2) consultas reais a patentes do mundo todo, inclusive do Brasil (EPO/Espacenet), a artigos científicos (OpenAlex) e a repositórios (GitHub). O pePI/INPI é oferecido como link direto, porque o INPI não tem API pública.</p>
-                        </div>
-                        <div class="no-print" style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
-                            <button type="button" class="btn-secondary" style="padding: 0.75rem 1.2rem; font-size: 0.85rem;" onclick="executarVerificacaoExistenciaCompleta(false)">
-                                Atualizar Varredura de Existência
-                            </button>
-                            <button type="button" id="btn-registrar-titularidade-fixa" class="btn-primary" style="padding: 0.8rem 1.4rem; font-size: 0.9rem;" onclick="registrarTitularidadeFixaUsuario()">
-                                Gravar Prova de Autoria no Observatório
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Veredito Principal: Já Existe ou Pode Registrar como Seu -->
-                    <div id="painel-veredito-apropriacao" style="margin-bottom: 1.4rem;"></div>
-
-                    <!-- Comparação Dupla: Colisões no Banco Fixo vs. Busca em Tempo Real no Estado da Técnica Mundial -->
-                    <div class="grid-2" style="margin-bottom: 1.6rem;">
-                        <div style="background: rgba(15, 12, 24, 0.65); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
-                            <span class="inpi-badge">1. BASE DO OBSERVATÓRIO (LOCAL)</span>
-                            <h3 style="font-size: 1.05rem; margin: 0.45rem 0 0.75rem; color: var(--text-primary);">Colisões de Marca (Art. 124 LPI) e Projetos Já Reivindicados</h3>
-                            <div id="painel-colisoes-internas"></div>
-                        </div>
-
-                        <div style="background: rgba(15, 12, 24, 0.65); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
-                            <span class="inpi-badge">2. BUSCA EM TEMPO REAL NO MUNDO (ART. 11 DA LPI)</span>
-                            <h3 style="font-size: 1.05rem; margin: 0.45rem 0 0.75rem; color: var(--text-primary);">Estado da Técnica Mundial (Patentes EPO, OpenAlex e GitHub)</h3>
-                            <div id="painel-anterioridade-mundial"></div>
-                        </div>
-                    </div>
-
-                    <!-- Tabela Fixa de Criações Registradas e Protegidas no Banco de Dados -->
-                    <div style="border-top: 1px solid var(--border-color); padding-top: 1.35rem;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.8rem; margin-bottom: 0.9rem;">
+                    <!-- 2. Resultados da busca mundial -->
+                    <div class="card">
+                        <div class="card-header">
                             <div>
-                                <h3 style="font-size: 1.08rem; color: var(--orange-light); margin-bottom: 0.2rem;">
-                                    Base do Observatório: Registros de Usuários + Acervo de Referência (Ilustrativo)
-                                </h3>
-                                <p style="font-size: 0.86rem; color: var(--text-secondary); margin: 0;">
-                                    Os itens marcados como <strong>ACERVO DE REFERÊNCIA (ILUSTRATIVO)</strong> são 15 exemplos didáticos de produtos conhecidos, usados para demonstrar a detecção de colisão — <strong>não são registros oficiais do INPI</strong>. Os itens <strong>FIXADO NO OBSERVATÓRIO</strong> foram gravados por usuários deste sistema (protocolo interno, com hash SHA-512 real).
-                                </p>
+                                <span class="eyebrow">Busca de anterioridade (Art. 11 da LPI)</span>
+                                <h2>O que encontramos no mundo</h2>
+                                <p class="card-subtitle">Patentes (EPO/Espacenet, inclui o Brasil), artigos científicos (OpenAlex) e repositórios (GitHub). Cada resultado recebe uma nota de relevância; a partir de 60% ele conta como possível anterioridade.</p>
                             </div>
                         </div>
-                        <div class="table-responsive">
-                            <table class="data-table">
-                                <thead>
-                                    <tr>
-                                        <th>Identificador</th>
-                                        <th>Criação / Marca Protegida</th>
-                                        <th>Titular Registrado (CPF/CNPJ)</th>
-                                        <th>Camadas e Modalidade Legal</th>
-                                        <th>Hash SHA-512 / Data</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tabela-registros-fixos-body"></tbody>
-                            </table>
-                        </div>
+                        <div id="painel-anterioridade-mundial"></div>
                     </div>
-                </div>
 
-                <!-- Contêiner Oculto para suporte à compilação criptográfica do Certificado -->
-                <div id="contract-viewer-box" style="display: none;" aria-hidden="true"></div>
-            </div>
-        </section>
+                    <!-- 3. Base do Observatório e prova de autoria -->
+                    <div class="card" id="card-verificacao-anterioridade-titularidade">
+                        <div class="card-header">
+                            <div>
+                                <span class="eyebrow">Base do Observatório</span>
+                                <h2>Projetos já gravados e prova de autoria</h2>
+                                <p class="card-subtitle">Compara com projetos gravados por outros usuários deste sistema e com 15 exemplos ilustrativos de produtos conhecidos.</p>
+                            </div>
+                            <div class="card-acoes no-print">
+                                <button type="button" class="btn-secondary btn-sm" onclick="executarVerificacaoExistenciaCompleta(false)">Refazer busca</button>
+                                <button type="button" id="btn-registrar-titularidade-fixa" class="btn-primary" onclick="registrarTitularidadeFixaUsuario()">Gravar prova de autoria</button>
+                            </div>
+                        </div>
+
+                        <div id="painel-veredito-apropriacao"></div>
+                        <div id="painel-colisoes-internas" style="margin-top: 1rem;"></div>
+
+                        <details class="mais">
+                            <summary>Ver todos os itens da base do Observatório</summary>
+                            <div>
+                                <p class="small muted" style="margin-bottom: 0.75rem;">Itens marcados como <strong>Acervo de referência (ilustrativo)</strong> são exemplos didáticos — não são registros oficiais do INPI. Itens <strong>Gravado no Observatório</strong> foram registrados por usuários deste sistema.</p>
+                                <div class="table-responsive">
+                                    <table class="data-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Identificador</th>
+                                                <th>Criação / marca</th>
+                                                <th>Titular</th>
+                                                <th>Modalidade</th>
+                                                <th>Hash / data</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tabela-registros-fixos-body"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </details>
+                    </div>
+
+                    <!-- 4. Indicadores e matriz A–F -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <span class="eyebrow">Diagnóstico jurídico</span>
+                                <h2>Indicadores do projeto</h2>
+                            </div>
+                        </div>
+                        <div class="kpi-row">
+                            <div class="kpi-box">
+                                <div class="kpi-label">Protegibilidade</div>
+                                <div class="kpi-value grande" id="kpi-score">--</div>
+                            </div>
+                            <div class="kpi-box">
+                                <div class="kpi-label">Risco de copyleft</div>
+                                <div class="kpi-value grande" id="kpi-risco">--</div>
+                            </div>
+                            <div class="kpi-box">
+                                <div class="kpi-label">Proteção principal</div>
+                                <div class="kpi-value" id="kpi-inpi">--</div>
+                            </div>
+                            <div class="kpi-box">
+                                <div class="kpi-label">Licença do hardware</div>
+                                <div class="kpi-value" id="kpi-licenca-hw">--</div>
+                            </div>
+                            <div class="kpi-box">
+                                <div class="kpi-label">Licença do firmware</div>
+                                <div class="kpi-value" id="kpi-licenca-sw">--</div>
+                            </div>
+                        </div>
+
+                        <details class="mais">
+                            <summary>Ver a matriz de proteção completa (camadas A a F)</summary>
+                            <div class="grid-3" id="mapa-camadas-grid"></div>
+                        </details>
+                    </div>
+
+                    <p class="disclaimer">Este relatório é uma triagem acadêmica. Ele não substitui a busca oficial nem o pedido no INPI (Arts. 6º, 19, 30 e 129 da Lei nº 9.279/96). Para registrar de fato, use o <a href="https://busca.inpi.gov.br/pePI/" target="_blank" rel="noopener">pePI</a> e o portal <a href="https://www.gov.br/inpi/pt-br" target="_blank" rel="noopener">gov.br/inpi</a>.</p>
+
+                    <div id="contract-viewer-box" style="display: none;" aria-hidden="true"></div>
+                </div>
+            </section>
+        </main>
 
         <!-- ==============================================================
-             MODAL / PAINEL DE VERIFICAÇÃO ATIVA (TELEMETRIA DE 0% A 100%)
+             MODAL DE VERIFICAÇÃO (progresso real das consultas)
              ============================================================== -->
         <div id="modal-verificacao-progresso" class="modal-progresso-overlay" aria-hidden="true">
-            <div class="modal-progresso-card">
-                <!-- Header do Modal -->
+            <div class="modal-progresso-card" role="dialog" aria-modal="true" aria-labelledby="titulo-modal-verificacao">
                 <div class="modal-progresso-header">
-                    <div class="modal-progresso-tag">
-                        <span class="pulsing-radar-dot"></span>
-                        VERIFICAÇÃO DE ANTERIORIDADE // CONSULTAS REAIS EM ANDAMENTO
-                    </div>
-                    <h2 class="modal-progresso-titulo">Verificação em Andamento</h2>
-                    <p class="modal-progresso-subtitulo">
-                        Analisando a descrição do projeto: <strong id="progresso-nome-projeto">—</strong>
-                    </p>
+                    <div class="modal-progresso-tag"><span class="pulsing-radar-dot"></span> Consultas em andamento</div>
+                    <h2 class="modal-progresso-titulo" id="titulo-modal-verificacao">Verificando <span id="progresso-nome-projeto">seu projeto</span></h2>
                 </div>
 
-                <!-- Mostrador Central de Porcentagem 0% a 100% -->
                 <div class="progresso-display-container">
-                    <div class="progresso-percentual-display">
-                        <span id="progresso-numero">0</span><span class="progresso-simbolo">%</span>
-                    </div>
-
-                    <!-- Barra de Progresso com Preenchimento Dinâmico -->
+                    <div class="progresso-percentual-display"><span id="progresso-numero">0</span><span class="progresso-simbolo">%</span></div>
                     <div class="progresso-barra-trilha">
-                        <div id="progresso-barra-fill" class="progresso-barra-preenchimento">
-                            <div class="progresso-barra-shimmer"></div>
-                        </div>
+                        <div id="progresso-barra-fill" class="progresso-barra-preenchimento"><div class="progresso-barra-shimmer"></div></div>
                     </div>
-
-                    <!-- Mensagem de Etapa Atual -->
-                    <div id="progresso-etapa-texto" class="progresso-etapa-texto">
-                        Iniciando...
-                    </div>
-
-                    <!-- Cronômetro de Auditoria Profunda -->
+                    <div id="progresso-etapa-texto" class="progresso-etapa-texto">Iniciando…</div>
                     <div class="progresso-cronometro-box">
-                        <div class="cronometro-item">
-                            <span class="cronometro-label">⏱️ TEMPO DECORRIDO:</span>
-                            <strong id="cronometro-decorrido" class="cronometro-val">00:00</strong>
-                        </div>
+                        <div class="cronometro-item"><span class="cronometro-label">Tempo:</span> <strong id="cronometro-decorrido" class="cronometro-val">00:00</strong></div>
                         <div class="cronometro-separador">•</div>
-                        <div class="cronometro-item">
-                            <span class="cronometro-label">ESTIMATIVA (depende das APIs):</span>
-                            <strong id="cronometro-estimado" class="cronometro-val">—</strong>
-                        </div>
+                        <div class="cronometro-item"><span class="cronometro-label">Estimativa:</span> <strong id="cronometro-estimado" class="cronometro-val">—</strong></div>
                     </div>
                 </div>
 
-                <!-- Terminal de Auditoria Profunda em Tempo Real -->
-                <div class="progresso-terminal-box">
-                    <div class="terminal-header">
-                        <div class="terminal-dots">
-                            <span class="dot red"></span>
-                            <span class="dot yellow"></span>
-                            <span class="dot green"></span>
-                        </div>
-                        <span class="terminal-title">LOG DA VERIFICAÇÃO // OBSERVATÓRIO • PATENTES • OPENALEX • GITHUB</span>
-                        <span class="terminal-badge">CONSULTAS REAIS</span>
-                    </div>
-                    <div class="terminal-corpo" id="terminal-linhas-log">
-                        <div class="terminal-linha highlight">[00:00] Aguardando início...</div>
-                    </div>
-                </div>
-
-                <!-- Grid de Status das APIs em Tempo Real (Brasil vs Mundo) -->
-                <div class="progresso-apis-grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));">
-                    <div class="progresso-api-item" id="api-status-card-1">
-                        <div class="api-item-header">
-                            <span class="api-icone">⚖️</span>
-                            <div>
-                                <span class="api-nome">Termos técnicos + CIP sugerida</span>
-                                <span class="api-alcance-badge global">Local • regras do sistema</span>
-                            </div>
-                        </div>
+                <div class="progresso-apis-grid">
+                    <div class="progresso-api-item">
+                        <div class="api-item-header"><div><span class="api-nome">Termos e classe CIP</span><span class="api-alcance-badge">Análise local</span></div></div>
                         <span class="api-badge badge-pendente" id="chip-status-nlp">Aguardando</span>
                     </div>
-
-                    <div class="progresso-api-item" id="api-status-card-2">
-                        <div class="api-item-header">
-                            <span class="api-icone">🇧🇷</span>
-                            <div>
-                                <span class="api-nome">Base do Observatório</span>
-                                <span class="api-alcance-badge br">Local • registros + acervo ilustrativo</span>
-                            </div>
-                        </div>
+                    <div class="progresso-api-item">
+                        <div class="api-item-header"><div><span class="api-nome">Base do Observatório</span><span class="api-alcance-badge">Registros + acervo ilustrativo</span></div></div>
                         <span class="api-badge badge-pendente" id="chip-status-inpi">Aguardando</span>
                     </div>
-
-                    <div class="progresso-api-item" id="api-status-card-4">
-                        <div class="api-item-header">
-                            <span class="api-icone">🌐</span>
-                            <div>
-                                <span class="api-nome">OpenAlex (artigos científicos)</span>
-                                <span class="api-alcance-badge global">Mundial • API pública</span>
-                            </div>
-                        </div>
+                    <div class="progresso-api-item">
+                        <div class="api-item-header"><div><span class="api-nome">Patentes (EPO)</span><span class="api-alcance-badge">Mundo, inclui o Brasil</span></div></div>
+                        <span class="api-badge badge-pendente" id="chip-status-googlepatents">Aguardando</span>
+                    </div>
+                    <div class="progresso-api-item">
+                        <div class="api-item-header"><div><span class="api-nome">OpenAlex</span><span class="api-alcance-badge">Artigos científicos</span></div></div>
                         <span class="api-badge badge-pendente" id="chip-status-openalex">Aguardando</span>
                     </div>
-
-                    <div class="progresso-api-item" id="api-status-card-5">
-                        <div class="api-item-header">
-                            <span class="api-icone">💻</span>
-                            <div>
-                                <span class="api-nome">GitHub (repositórios)</span>
-                                <span class="api-alcance-badge global">Mundial • API pública</span>
-                            </div>
-                        </div>
+                    <div class="progresso-api-item">
+                        <div class="api-item-header"><div><span class="api-nome">GitHub</span><span class="api-alcance-badge">Repositórios abertos</span></div></div>
                         <span class="api-badge badge-pendente" id="chip-status-github">Aguardando</span>
-                    </div>
-
-                    <div class="progresso-api-item" id="api-status-card-6">
-                        <div class="api-item-header">
-                            <span class="api-icone">🔍</span>
-                            <div>
-                                <span class="api-nome">Patentes (EPO / Espacenet)</span>
-                                <span class="api-alcance-badge global">Mundial • inclui BR • INPI só por link</span>
-                            </div>
-                        </div>
-                        <span class="api-badge badge-pendente" id="chip-status-googlepatents">Aguardando</span>
                     </div>
                 </div>
 
-                <!-- Rodapé Informativo / Segurança Legal & Botão de Aceleração -->
-                <div class="modal-progresso-footer" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.8rem;">
-                    <div class="modal-seguranca-texto" style="text-align: left; flex: 1; min-width: 240px;">
-                        <span>ℹ️ A barra avança conforme as consultas reais terminam. O GitHub aceita só 10 buscas por minuto, por isso há pausas entre as consultas.</span>
+                <div class="progresso-terminal-box">
+                    <div class="terminal-header">
+                        <span class="terminal-title">Registro das consultas</span>
+                        <span class="terminal-badge">ao vivo</span>
                     </div>
-                    <button type="button" id="btn-acelerar-auditoria" class="btn-secondary" style="padding: 0.4rem 0.85rem; font-size: 0.76rem; border-color: rgba(249, 115, 22, 0.45); color: #fed7aa; cursor: pointer;" onclick="acelerarAuditoriaParaFim()">
-                        ⏹ Encerrar e usar os resultados já obtidos
-                    </button>
+                    <div class="terminal-corpo" id="terminal-linhas-log"></div>
+                </div>
+
+                <div class="modal-progresso-footer">
+                    <div class="modal-seguranca-texto">A barra avança conforme cada consulta real termina. O GitHub aceita 10 buscas por minuto, por isso há pausas.</div>
+                    <button type="button" id="btn-acelerar-auditoria" class="btn-secondary btn-sm" onclick="acelerarAuditoriaParaFim()">Encerrar e ver resultados</button>
                 </div>
             </div>
         </div>
 
-    </main>
     </div><!-- /#conteudo-sistema-principal -->
 
-    <!-- Rodapé Institucional com os Nomes do Grupo -->
     <footer class="footer">
         <div>
-            <strong>Observatório de Propriedade Intelectual e Hardware Aberto</strong> • Projeto Integrador: Informática e Legislação<br>
-            <span>Equipe: Antonio Kayky Gonçalves Vieira • Giullian Bernard Alencar Maia • Ítalo Brito da Costa • Luís Aquiles Lucena Sá</span>
+            <strong>Observatório de Propriedade Intelectual e Hardware Aberto</strong> — Projeto Integrador: Informática e Legislação<br>
+            Equipe: Antonio Kayky Gonçalves Vieira, Giullian Bernard Alencar Maia, Ítalo Brito da Costa e Luís Aquiles Lucena Sá
         </div>
-        <div>
-            Marco Legal: CF/88 (Art. 5º, XXVII–XXIX) • Lei 9.279/96 (LPI) • Lei 9.609/98 (Software) • Lei 9.610/98 (LDA) • Lei 11.484/07 (TCI/PADIS)
-        </div>
+        <div>CF/88 (Art. 5º, XXVII–XXIX) • Lei 9.279/96 • Lei 9.609/98 • Lei 9.610/98 • Lei 11.484/07</div>
     </footer>
 
-    <script src="assets/js/app.js?v=20261111v12"></script>
+    <script src="assets/js/app.js?v=20261111v14"></script>
 </body>
 </html>

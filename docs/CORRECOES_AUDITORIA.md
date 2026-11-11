@@ -29,3 +29,11 @@
 - Respostas tratadas: 404 = nenhum resultado; 403/429 = limite atingido ("Limite atingido" na tela); sem chave = "Apenas link".
 - As patentes recebem a mesma nota de relevância das outras bases, calculada com os títulos e resumos em todos os idiomas disponíveis.
 - Testado com um servidor que imita as respostas do EPO. Os testes cobriram autenticação, resultados, busca vazia, limite, tentativa de alterar a consulta e funcionamento sem chave.
+
+## Acréscimo: novo visual
+
+- O tema escuro com laranja neon foi trocado por um tema claro, com uma única cor de destaque, menos bordas e sem emojis.
+- A Etapa 2 foi reorganizada nesta ordem: resultado principal, o que encontramos no mundo, base do Observatório e indicadores. A tabela da base e a matriz A–F agora ficam recolhidas em "Ver mais".
+- Os textos digitados por usuários (nomes, titulares) agora são escapados antes de aparecer na tela, para impedir que um nome cadastrado com código seja executado no navegador de outro usuário (XSS armazenado).
+- A página está ajustada para celular e para impressão em PDF.
+- Tema claro e escuro: um botão no topo alterna entre os dois e a escolha fica salva no navegador. Sem escolha salva, o site segue o tema do sistema operacional. A impressão sempre sai no tema claro.
