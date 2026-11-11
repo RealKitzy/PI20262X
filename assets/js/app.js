@@ -1274,11 +1274,12 @@ async function verificarExistenciaLocalEApi(dados, diag, acao = 'VERIFICAR') {
 }
 
 // ============================================================================
-// BUSCA REAL NO ESTADO DA TÉCNICA MUNDIAL (OpenAlex + GitHub) — SEM DADOS DE RESERVA
+// BUSCA REAL NO ESTADO DA TÉCNICA MUNDIAL (OpenAlex + GitHub + Patentes EPO) — SEM DADOS DE RESERVA
 // ----------------------------------------------------------------------------
-// • OpenAlex (api.openalex.org) e GitHub (api.github.com) são consultados de verdade.
-// • Patentes (INPI/pePI, Google Patents, Espacenet) NÃO têm API pública gratuita
-//   utilizável no navegador: o sistema oferece apenas links diretos para busca manual.
+// • OpenAlex (api.openalex.org) e GitHub (api.github.com) são consultados de verdade pelo navegador.
+// • Patentes: consultadas no EPO Open Patent Services (base do Espacenet, inclui documentos BR)
+//   através de api/patentes.php — a chave fica no servidor (variáveis EPO_OPS_KEY / EPO_OPS_SECRET).
+//   Sem chave configurada, as patentes ficam como "apenas link" (pePI, Google Patents, Espacenet).
 // • Se uma API falhar, o painel mostra "indisponível" — nunca resultados inventados.
 // • O "rigor" escolhido aumenta de verdade a quantidade de resultados e de consultas.
 // ============================================================================
@@ -1442,6 +1443,36 @@ async function consultarOpenAlex(termosConsulta, porPagina) {
     });
 }
 
+// Patentes reais no EPO (via backend PHP). Retorna { estado, resultados, mensagem }
+async function consultarPatentesEpo(termosConsulta, porPagina) {
+    const url = `api/patentes.php?q=${encodeURIComponent(termosConsulta.join(' '))}&n=${porPagina}`;
+    let json;
+    try {
+        const resp = await fetchComTempoLimite(url, 20000);
+        json = await resp.json();
+    } catch (e) {
+        // Sem backend PHP (ex.: index.html aberto direto pelo arquivo) não há como consultar patentes
+        return { estado: 'sem_backend', resultados: [], mensagem: 'Backend PHP indisponível — busca de patentes só funciona com o site publicado ou rodando em php -S.' };
+    }
+    if (!json || !json.sucesso) {
+        return { estado: (json && json.estado) || 'erro', resultados: [], mensagem: (json && json.mensagem) || 'Erro desconhecido' };
+    }
+    return {
+        estado: 'ok',
+        resultados: (json.resultados || []).map(p => ({
+            base: 'Patente',
+            id: p.id,
+            titulo: `${p.numero} — ${p.titulo}`,
+            ano: p.ano,
+            link: p.link,
+            titular: p.titular || '',
+            dataPublicacao: p.data_publicacao || '',
+            detalhe: p.resumo || '',
+            textoComparacao: p.texto_comparacao || `${p.titulo || ''} ${p.resumo || ''}`
+        }))
+    };
+}
+
 async function consultarGitHub(termosConsulta, porPagina) {
     const url = `https://api.github.com/search/repositories?q=${encodeURIComponent(termosConsulta.join(' '))}&per_page=${porPagina}`;
     const resp = await fetchComTempoLimite(url, 12000, { headers: { 'Accept': 'application/vnd.github+json' } });
@@ -1498,7 +1529,7 @@ async function buscarEstadoDaTecnicaMundialAoVivo(dados, diag, opcoes = {}) {
     const status = {
         openalex: { estado: 'pendente', consultas: 0, recebidos: 0, erro: '' },
         github: { estado: 'pendente', consultas: 0, recebidos: 0, erro: '' },
-        patentes: { estado: 'apenas_link' }
+        patentes: { estado: 'pendente', consultas: 0, recebidos: 0, erro: '' }
     };
     const mapaResultados = new Map();
     const consultasExecutadas = [];
@@ -1522,6 +1553,7 @@ async function buscarEstadoDaTecnicaMundialAoVivo(dados, diag, opcoes = {}) {
     if (variantes.length === 0) {
         status.openalex = { estado: 'sem_termos', consultas: 0, recebidos: 0, erro: 'Descrição sem termos técnicos suficientes para a busca.' };
         status.github = { estado: 'sem_termos', consultas: 0, recebidos: 0, erro: 'Descrição sem termos técnicos suficientes para a busca.' };
+        status.patentes = { estado: 'sem_termos', consultas: 0, recebidos: 0, erro: 'Descrição sem termos técnicos suficientes para a busca.' };
     }
 
     for (let i = 0; i < variantes.length; i++) {
@@ -1549,6 +1581,27 @@ async function buscarEstadoDaTecnicaMundialAoVivo(dados, diag, opcoes = {}) {
                     status.openalex.erro = e.message;
                 }
                 aoProgredir({ base: 'openalex', fase: 'erro', consulta: rotuloConsulta, erro: status.openalex.erro, indice: i, total: variantes.length });
+            }
+        }
+
+        // Patentes (EPO OPS via backend). Para de tentar se não houver chave/backend ou se o limite for atingido.
+        if (['pendente', 'ok', 'parcial'].includes(status.patentes.estado)) {
+            aoProgredir({ base: 'patentes', fase: 'consultando', consulta: rotuloConsulta, indice: i, total: variantes.length });
+            const res = await consultarPatentesEpo(termosConsulta, rigor.porBase);
+            if (res.estado === 'ok') {
+                status.patentes.consultas++;
+                status.patentes.recebidos += res.resultados.length;
+                status.patentes.estado = 'ok';
+                registrar(res.resultados, termosConsulta);
+                aoProgredir({ base: 'patentes', fase: 'ok', consulta: rotuloConsulta, recebidos: res.resultados.length, indice: i, total: variantes.length });
+            } else if (res.estado === 'sem_chave' || res.estado === 'sem_backend') {
+                status.patentes = { estado: 'apenas_link', consultas: 0, recebidos: 0, erro: res.mensagem };
+                aoProgredir({ base: 'patentes', fase: 'apenas_link', erro: res.mensagem, indice: i, total: variantes.length });
+            } else {
+                const jaConsultou = status.patentes.consultas > 0;
+                status.patentes.estado = res.estado === 'limite' ? 'limite' : (jaConsultou ? 'parcial' : 'erro');
+                status.patentes.erro = res.mensagem;
+                aoProgredir({ base: 'patentes', fase: status.patentes.estado, consulta: rotuloConsulta, erro: res.mensagem, indice: i, total: variantes.length });
             }
         }
 
@@ -1589,7 +1642,7 @@ async function buscarEstadoDaTecnicaMundialAoVivo(dados, diag, opcoes = {}) {
     const interrompida = deveInterromper();
     const todos = Array.from(mapaResultados.values()).sort((a, b) => b.relevancia - a.relevancia || (b.estrelas || 0) - (a.estrelas || 0));
     const relevantes = todos.filter(r => r.relevancia >= LIMIAR_RELEVANCIA_ANTERIORIDADE && r.termosEncontrados.length >= 2);
-    const basesComFalha = ['openalex', 'github'].filter(b => ['erro', 'limite', 'parcial'].includes(status[b].estado));
+    const basesComFalha = ['openalex', 'github', 'patentes'].filter(b => ['erro', 'limite', 'parcial'].includes(status[b].estado));
 
     const resultado = {
         rigor,
@@ -1603,6 +1656,8 @@ async function buscarEstadoDaTecnicaMundialAoVivo(dados, diag, opcoes = {}) {
         todos,
         relevantes,
         obrasRelevantes: relevantes.filter(r => r.base === 'OpenAlex'),
+        patentesRelevantes: relevantes.filter(r => r.base === 'Patente'),
+        patentesConsultadas: status.patentes.consultas > 0,
         reposRelevantes: relevantes.filter(r => r.base === 'GitHub'),
         totalAnalisados: todos.length,
         totalAchadosMundo: relevantes.length
@@ -1619,6 +1674,7 @@ function descreverStatusBase(nome, st) {
         case 'limite': return `⚠️ <strong>${nome}:</strong> ${escaparHtml(st.erro)}`;
         case 'erro': return `❌ <strong>${nome}:</strong> indisponível no momento (${escaparHtml(st.erro)}) — nenhum resultado foi considerado desta base`;
         case 'sem_termos': return `⚪ <strong>${nome}:</strong> não consultado — ${escaparHtml(st.erro)}`;
+        case 'apenas_link': return `🔗 <strong>${nome}:</strong> apenas link — sem consulta automática (${escaparHtml(st.erro || 'não configurada')})`;
         default: return `⚪ <strong>${nome}:</strong> não consultado`;
     }
 }
@@ -1626,9 +1682,12 @@ function descreverStatusBase(nome, st) {
 function renderizarItemResultadoMundial(item) {
     const destaque = item.relevancia >= LIMIAR_RELEVANCIA_ANTERIORIDADE && item.termosEncontrados.length >= 2;
     const cor = destaque ? 'var(--accent-primary)' : 'rgba(148,163,184,0.5)';
-    const extra = item.base === 'GitHub'
-        ? `★ ${item.estrelas} • Licença: <code>${escaparHtml(item.licenca)}</code> • `
-        : '';
+    let extra = '';
+    if (item.base === 'GitHub') {
+        extra = `★ ${item.estrelas} • Licença: <code>${escaparHtml(item.licenca)}</code> • `;
+    } else if (item.base === 'Patente') {
+        extra = `${item.titular ? `Titular: ${escaparHtml(item.titular)} • ` : ''}${item.dataPublicacao ? `Publicação: ${escaparHtml(item.dataPublicacao)} • ` : ''}`;
+    }
     return `
         <div style="padding:0.55rem 0.75rem;margin-bottom:0.45rem;background:rgba(255,255,255,0.03);border-left:3px solid ${cor};border-radius:6px;font-size:0.82rem;">
             <a href="${urlSegura(item.link)}" target="_blank" rel="noopener" style="color:#fed7aa;font-weight:600;text-decoration:none;">[${item.base}] ${escaparHtml(item.titulo)} (${escaparHtml(item.ano)}) ↗</a>
@@ -1644,7 +1703,7 @@ function renderizarResultadoBuscaMundial(r) {
         <div style="font-size:0.8rem;color:var(--text-secondary);line-height:1.6;margin-bottom:0.8rem;">
             ${descreverStatusBase('OpenAlex (artigos científicos, mundial)', r.status.openalex)}<br>
             ${descreverStatusBase('GitHub (repositórios, mundial)', r.status.github)}<br>
-            🔗 <strong>Patentes (INPI, Google Patents, Espacenet):</strong> apenas link — sem consulta automática (o INPI não oferece API pública)<br>
+            ${descreverStatusBase('Patentes (EPO/Espacenet — mundial, inclui BR)', r.status.patentes)}<br>
             <span>Rigor <strong>${escaparHtml(r.rigor.rotulo)}</strong> • consultas feitas: ${r.consultas.map(c => `<code>${escaparHtml(c)}</code>`).join(', ') || '—'}${r.interrompida ? ' • <strong>busca encerrada antes do fim pelo usuário</strong>' : ''}</span>
         </div>
         <div style="display:flex;flex-wrap:wrap;gap:0.55rem;margin-bottom:1rem;">
@@ -1668,7 +1727,7 @@ function renderizarResultadoBuscaMundial(r) {
         html += `
             <div class="alert-card alert-SUCESSO" style="margin:0 0 0.9rem;">
                 <h4>Nenhum resultado com relevância ≥ ${LIMIAR_RELEVANCIA_ANTERIORIDADE}% nas bases consultadas</h4>
-                <p style="font-size:0.84rem;">Foram analisados ${r.totalAnalisados} resultados da OpenAlex e do GitHub. Isso não prova novidade: patentes não foram consultadas automaticamente — use os links acima (pePI, Google Patents com a classe <strong>${escaparHtml(r.cipPrincipal)}</strong> e Espacenet).</p>
+                <p style="font-size:0.84rem;">Foram analisados ${r.totalAnalisados} resultados${r.patentesConsultadas ? ' (artigos, repositórios e patentes)' : ' da OpenAlex e do GitHub — patentes não foram consultadas automaticamente'}. Isso não prova novidade: confirme também no pePI/INPI (o INPI não tem API pública) e no Google Patents com a classe <strong>${escaparHtml(r.cipPrincipal)}</strong>.</p>
             </div>`;
     }
 
@@ -2250,7 +2309,7 @@ async function iniciarVerificacaoPorcentagemBloco2() {
     chip('chip-status-inpi', 'badge-pendente', 'Aguardando');
     chip('chip-status-openalex', 'badge-pendente', 'Aguardando');
     chip('chip-status-github', 'badge-pendente', 'Aguardando');
-    chip('chip-status-googlepatents', 'badge-link', 'Apenas link');
+    chip('chip-status-googlepatents', 'badge-pendente', 'Aguardando');
     log(`Iniciando verificação — rigor ${rigor.rotulo}: até ${rigor.porBase} resultados por base, ${rigor.variantes} consulta(s) por base.`, 'highlight');
 
     try {
@@ -2301,16 +2360,22 @@ async function iniciarVerificacaoPorcentagemBloco2() {
         progresso(25, 'Base local verificada. Consultando bases mundiais...');
 
         // ETAPA 3 (25–95%): consultas reais (OpenAlex + GitHub)
-        const totalPassos = Math.max(1, rigor.variantes * 2);
+        const totalPassos = Math.max(1, rigor.variantes * 3);
         let passosConcluidos = 0;
-        const recebidos = { openalex: 0, github: 0 };
+        const recebidos = { openalex: 0, github: 0, patentes: 0 };
+        const nomesBase = { openalex: 'OPENALEX', github: 'GITHUB', patentes: 'PATENTES-EPO' };
+        const chipsBase = { openalex: 'chip-status-openalex', github: 'chip-status-github', patentes: 'chip-status-googlepatents' };
         const resultadoMundial = await buscarEstadoDaTecnicaMundialAoVivo(dados, ultimoDiagnostico, {
             rigor,
             deveInterromper: () => varreduraInterrompida,
             aoProgredir: ev => {
-                const nome = ev.base === 'openalex' ? 'OPENALEX' : 'GITHUB';
-                const chipId = ev.base === 'openalex' ? 'chip-status-openalex' : 'chip-status-github';
-                if (ev.fase === 'consultando') {
+                const nome = nomesBase[ev.base];
+                const chipId = chipsBase[ev.base];
+                if (ev.fase === 'apenas_link') {
+                    passosConcluidos += rigor.variantes; // não haverá consultas de patentes nesta verificação
+                    chip(chipId, 'badge-link', 'Apenas link');
+                    log(`[${nome}] Não consultado: ${ev.erro}`);
+                } else if (ev.fase === 'consultando') {
                     chip(chipId, 'badge-consultando', `Consulta ${ev.indice + 1}/${ev.total}`);
                     log(`[${nome}] Consultando: "${ev.consulta}"`);
                 } else if (ev.fase === 'aguardando') {
@@ -2334,6 +2399,8 @@ async function iniciarVerificacaoPorcentagemBloco2() {
         const classeChip = s => s.estado === 'ok' ? 'badge-concluido' : 'badge-erro';
         chip('chip-status-openalex', classeChip(st.openalex), textoChip(st.openalex));
         chip('chip-status-github', classeChip(st.github), textoChip(st.github));
+        if (st.patentes.estado === 'apenas_link') chip('chip-status-googlepatents', 'badge-link', 'Apenas link');
+        else chip('chip-status-googlepatents', classeChip(st.patentes), textoChip(st.patentes));
         log(`[RELEVÂNCIA] ${resultadoMundial.totalAnalisados} resultados analisados; ${resultadoMundial.totalAchadosMundo} com relevância ≥ ${LIMIAR_RELEVANCIA_ANTERIORIDADE}%.`,
             resultadoMundial.totalAchadosMundo > 0 ? 'warn' : 'success');
         if (resultadoMundial.interrompida) log('[USUÁRIO] Busca encerrada antes do fim — o relatório usa apenas o que já foi consultado.', 'warn');
@@ -2376,7 +2443,7 @@ async function iniciarVerificacaoPorcentagemBloco2() {
             atualizarBalaoMascote(
                 'VERIFICAÇÃO CONCLUÍDA',
                 'Nenhuma anterioridade relevante encontrada nas bases consultadas',
-                `Nenhuma colisão na base do Observatório e nenhum resultado com relevância ≥ ${LIMIAR_RELEVANCIA_ANTERIORIDADE}% na OpenAlex/GitHub${resultadoMundial.basesComFalha.length ? ' (atenção: alguma base não respondeu por completo)' : ''}. Isso não substitui a busca de patentes: confira no pePI/INPI e no Google Patents pelos links do relatório.`
+                `Nenhuma colisão na base do Observatório e nenhum resultado com relevância ≥ ${LIMIAR_RELEVANCIA_ANTERIORIDADE}% nas bases consultadas${resultadoMundial.basesComFalha.length ? ' (atenção: alguma base não respondeu por completo)' : ''}. ${resultadoMundial.patentesConsultadas ? '' : ' Patentes não foram consultadas automaticamente nesta instalação.'} Confira também no pePI/INPI (sem API pública) pelos links do relatório.`
             );
         }
     } catch (erro) {
@@ -2914,13 +2981,13 @@ function renderizarRelatorioDiagnostico(dados, diag, verif = null, anterioridade
         } else if (temAnterioridadeMundial) {
             corBordaVeredito = '#f59e0b';
             bgVeredito = 'rgba(245, 158, 11, 0.12)';
-            respostaExistencia = `⚠️ <strong>POSSÍVEL ESTADO DA TÉCNICA (${anterioridadeMundial.totalAchadosMundo} RESULTADO(S) RELEVANTE(S) NA OPENALEX/GITHUB):</strong><br>
-            Encontramos artigos ou repositórios que contêm a maior parte dos termos técnicos do seu projeto (relevância ≥ ${LIMIAR_RELEVANCIA_ANTERIORIDADE}% — veja a lista no painel "Estado da Técnica Mundial"). Se descreverem a mesma solução, pelo <strong>Art. 11 da Lei nº 9.279/96 (novidade)</strong> o conceito geral não poderá ser patenteado.<br><br>
+            respostaExistencia = `⚠️ <strong>POSSÍVEL ESTADO DA TÉCNICA (${anterioridadeMundial.totalAchadosMundo} RESULTADO(S) RELEVANTE(S)${anterioridadeMundial.patentesRelevantes && anterioridadeMundial.patentesRelevantes.length ? `, ${anterioridadeMundial.patentesRelevantes.length} DELES PATENTE(S)` : ''}):</strong><br>
+            Encontramos patentes, artigos ou repositórios que contêm a maior parte dos termos técnicos do seu projeto (relevância ≥ ${LIMIAR_RELEVANCIA_ANTERIORIDADE}% — veja a lista no painel "Estado da Técnica Mundial"). Se descreverem a mesma solução, pelo <strong>Art. 11 da Lei nº 9.279/96 (novidade)</strong> o conceito geral não poderá ser patenteado.<br><br>
             👉 <strong>O que você PODE fazer:</strong> Você tem direito de registrar a sua <strong>Marca comercial (Camada D)</strong> no Brasil e proteger o seu <strong>Código-fonte/Software (Camada E)</strong>. Mas para conseguir a <strong>Patente (Camada F)</strong>, você deverá restringir seu pedido apenas ao seu <em>diferencial construtivo ou algoritmo específico</em> que ninguém no mundo fez!`;
         } else if (anterioridadeMundial && anterioridadeMundial.totalAnalisados === 0 && anterioridadeMundial.basesComFalha.length > 0) {
             corBordaVeredito = '#f59e0b';
             bgVeredito = 'rgba(245, 158, 11, 0.12)';
-            respostaExistencia = `⚠️ <strong>BUSCA MUNDIAL INDISPONÍVEL NO MOMENTO:</strong> A OpenAlex e/ou o GitHub não responderam, então nenhum resultado mundial foi analisado. Não houve colisão na base do Observatório, mas <strong>não é possível concluir nada sobre a novidade</strong>. Refaça a verificação em alguns minutos e confira no pePI/INPI e no Google Patents pelos links do relatório.`;
+            respostaExistencia = `⚠️ <strong>BUSCA MUNDIAL INDISPONÍVEL NO MOMENTO:</strong> As bases mundiais não responderam, então nenhum resultado foi analisado. Não houve colisão na base do Observatório, mas <strong>não é possível concluir nada sobre a novidade</strong>. Refaça a verificação em alguns minutos e confira no pePI/INPI e no Google Patents pelos links do relatório.`;
         } else if (jaEhDoUsuario) {
             respostaExistencia = `✅ <strong>ESTE PROJETO JÁ É SEU:</strong> Ele já consta gravado no banco de dados vinculado ao seu próprio CPF/CNPJ (${dados.autor_documento}).`;
         } else {
@@ -2928,9 +2995,9 @@ function renderizarRelatorioDiagnostico(dados, diag, verif = null, anterioridade
                 ? ' <strong>Atenção:</strong> alguma base não respondeu por completo, então a busca ficou incompleta.'
                 : '';
             const resumoBusca = anterioridadeMundial
-                ? `a base do Observatório e ${anterioridadeMundial.totalAnalisados} resultados da OpenAlex e do GitHub`
+                ? `a base do Observatório e ${anterioridadeMundial.totalAnalisados} resultados ${anterioridadeMundial.patentesConsultadas ? 'de patentes (EPO), da OpenAlex e do GitHub' : 'da OpenAlex e do GitHub'}`
                 : 'a base do Observatório (a busca mundial não foi executada)';
-            respostaExistencia = `✅ <strong>NENHUMA ANTERIORIDADE RELEVANTE ENCONTRADA NAS BASES CONSULTADAS:</strong> Comparamos ${resumoBusca}.${avisoBuscaIncompleta} Isso não garante novidade — patentes não são consultadas automaticamente. Antes de depositar, confira no pePI/INPI e no Google Patents. Você já pode gravar a sua prova de autoria (SHA-512) no Observatório.`;
+            respostaExistencia = `✅ <strong>NENHUMA ANTERIORIDADE RELEVANTE ENCONTRADA NAS BASES CONSULTADAS:</strong> Comparamos ${resumoBusca}.${avisoBuscaIncompleta} Isso não garante novidade${anterioridadeMundial && anterioridadeMundial.patentesConsultadas ? '' : ' — patentes não foram consultadas automaticamente'}. Antes de depositar, confira também no pePI/INPI e no Google Patents. Você já pode gravar a sua prova de autoria (SHA-512) no Observatório.`;
         }
 
         const podePatenteFisica = dados.divulgacao_previa !== 'DIVULGADO_MAIS_12M' && dados.grau_novidade_hardware !== 'MODULOS_PRONTOS_COTS' && dados.modelo_negocio !== 'PUBLICACAO_DEFENSIVA';

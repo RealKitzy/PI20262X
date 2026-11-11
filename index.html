@@ -61,7 +61,7 @@
                     </div>
                     <div class="hero-stat-item">
                         <strong>Busca Real</strong>
-                        <span>OpenAlex &amp; GitHub (+ links INPI)</span>
+                        <span>Patentes, OpenAlex &amp; GitHub</span>
                     </div>
                 </div>
             </div>
@@ -467,7 +467,7 @@
                         <div>
                             <span class="inpi-badge">CARTÓRIO DE ANTERIORIDADE E TITULARIDADE FIXA • LEI Nº 9.279/96 (ARTS. 8º, 11, 124 E 129)</span>
                             <h2>Verificação Real: Esta Criação Já Existe? Posso Colocar e Fixar Como Minha?</h2>
-                            <p class="card-subtitle">O sistema cruza seu projeto em tempo real com: (1) a base do Observatório (registros de usuários + acervo de referência ilustrativo); e (2) consultas reais à OpenAlex (artigos científicos) e ao GitHub (repositórios). Patentes (INPI, Google Patents, Espacenet) são oferecidas como links diretos para busca manual — o INPI não tem API pública.</p>
+                            <p class="card-subtitle">O sistema cruza seu projeto em tempo real com: (1) a base do Observatório (registros de usuários + acervo de referência ilustrativo); e (2) consultas reais a patentes do mundo todo, inclusive do Brasil (EPO/Espacenet), a artigos científicos (OpenAlex) e a repositórios (GitHub). O pePI/INPI é oferecido como link direto, porque o INPI não tem API pública.</p>
                         </div>
                         <div class="no-print" style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
                             <button type="button" class="btn-secondary" style="padding: 0.75rem 1.2rem; font-size: 0.85rem;" onclick="executarVerificacaoExistenciaCompleta(false)">
@@ -492,7 +492,7 @@
 
                         <div style="background: rgba(15, 12, 24, 0.65); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
                             <span class="inpi-badge">2. BUSCA EM TEMPO REAL NO MUNDO (ART. 11 DA LPI)</span>
-                            <h3 style="font-size: 1.05rem; margin: 0.45rem 0 0.75rem; color: var(--text-primary);">Estado da Técnica Mundial (OpenAlex e GitHub consultados; patentes via links)</h3>
+                            <h3 style="font-size: 1.05rem; margin: 0.45rem 0 0.75rem; color: var(--text-primary);">Estado da Técnica Mundial (Patentes EPO, OpenAlex e GitHub)</h3>
                             <div id="painel-anterioridade-mundial"></div>
                         </div>
                     </div>
@@ -588,7 +588,7 @@
                             <span class="dot yellow"></span>
                             <span class="dot green"></span>
                         </div>
-                        <span class="terminal-title">LOG DA VERIFICAÇÃO // OBSERVATÓRIO • OPENALEX • GITHUB</span>
+                        <span class="terminal-title">LOG DA VERIFICAÇÃO // OBSERVATÓRIO • PATENTES • OPENALEX • GITHUB</span>
                         <span class="terminal-badge">CONSULTAS REAIS</span>
                     </div>
                     <div class="terminal-corpo" id="terminal-linhas-log">
@@ -646,8 +646,8 @@
                         <div class="api-item-header">
                             <span class="api-icone">🔍</span>
                             <div>
-                                <span class="api-nome">Patentes: pePI/INPI, Google Patents, Espacenet</span>
-                                <span class="api-alcance-badge global">Sem API pública • busca manual</span>
+                                <span class="api-nome">Patentes (EPO / Espacenet)</span>
+                                <span class="api-alcance-badge global">Mundial • inclui BR • INPI só por link</span>
                             </div>
                         </div>
                         <span class="api-badge badge-pendente" id="chip-status-googlepatents">Aguardando</span>
@@ -680,6 +680,6 @@
         </div>
     </footer>
 
-    <script src="assets/js/app.js?v=20261111v9"></script>
+    <script src="assets/js/app.js?v=20261111v10"></script>
 </body>
 </html>

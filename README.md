@@ -34,7 +34,7 @@ O sistema analisa o projeto dividindo o hardware em **6 camadas (A até F)**, co
 - **Busca de Anterioridade e Prova de Autoria (Etapa 02):**
   - Compara o projeto com a **base do Observatório** (registros feitos por usuários + um **acervo de referência ilustrativo** com 15 produtos conhecidos — esses itens são exemplos didáticos e **não** são registros oficiais do INPI).
   - Consulta **de verdade** a **OpenAlex** (artigos científicos) e o **GitHub** (repositórios). Cada resultado recebe uma nota de relevância (% dos termos técnicos encontrados) e só conta como anterioridade a partir de **60%**.
-  - **Patentes:** o INPI não tem API pública e o antigo endpoint do USPTO (PatentsView) foi desativado, então o sistema oferece **links diretos** para o pePI/INPI, Google Patents (com a classe CIP sugerida) e Espacenet.
+  - **Patentes:** consulta real no **EPO – Open Patent Services** (mesma base do Espacenet, cobre o mundo todo, inclusive documentos brasileiros BR), via `api/patentes.php`. Precisa de chave gratuita (veja "Ativar a busca de patentes" abaixo); sem chave, as patentes ficam como links diretos. O pePI/INPI continua só como link, porque o INPI não tem API pública de busca.
   - Se uma base falhar, a tela mostra "indisponível" ou "limite atingido" — o sistema **nunca** preenche resultados inventados.
   - **Rigor da varredura:** Rápida (10 resultados/base, 1 consulta), Padrão (25 resultados/base, 3 consultas) e Profunda (50 resultados/base, 6 consultas). A barra de progresso acompanha as consultas reais; o GitHub sem autenticação aceita 10 buscas por minuto, por isso há pausas entre consultas.
 - **Certificado de Autoria SHA-512:** gera um arquivo `.txt` com o hash SHA-512 real do projeto e um protocolo interno do Observatório (não substitui o depósito no INPI). A página também pode ser impressa/salva em PDF.
@@ -55,6 +55,7 @@ observatorio-pi-hardware/
 │   └── js/app.js               # Lógica do formulário, validações e geração dos relatórios
 ├── api/
 │   ├── anterioridade.php       # Comparação com a base do Observatório e gravação do protocolo interno
+│   ├── patentes.php            # Busca real de patentes no EPO OPS (chave em variável de ambiente)
 │   └── diagnostico.php         # Processamento do enquadramento legal no backend
 ├── config/
 │   └── database.php            # Conexão com o banco SQLite (criado automaticamente) ou MySQL
@@ -75,6 +76,18 @@ Na pasta raiz do projeto, rode no terminal:
 php -S localhost:8000
 ```
 Depois, abra `http://localhost:8000` no navegador. O banco SQLite (`database/observatorio_pi.sqlite`) é criado sozinho na primeira vez que a API é chamada.
+
+### Ativar a busca de patentes (EPO – gratuito)
+1. Crie uma conta em **developers.epo.org** (gratuita, sem cartão).
+2. No portal, vá em **My Apps → Add a new App**, dê um nome (ex.: `observatorio-pi`) e marque o produto **OPS v3.2**.
+3. Copie a **Consumer Key** e o **Consumer Secret** do app criado.
+4. No Railway, abra o serviço → aba **Variables** e crie:
+   - `EPO_OPS_KEY` = Consumer Key
+   - `EPO_OPS_SECRET` = Consumer Secret
+5. O Railway refaz o deploy sozinho. No modal da verificação, o card "Patentes (EPO / Espacenet)" passa de "Apenas link" para "consultado".
+
+Para testar localmente: `EPO_OPS_KEY=... EPO_OPS_SECRET=... php -S localhost:8000`.
+As chaves ficam só no servidor (nunca vão para o navegador), e buscas repetidas são guardadas por 24 h para economizar a cota gratuita.
 
 ### Hospedagem (Railway)
 O projeto já está configurado com `Dockerfile` e `railway.json` para rodar direto no **Railway** conectado ao repositório do GitHub, subindo o container `php:8.2-cli-alpine` na porta dinâmica do servidor (`php -S 0.0.0.0:${PORT:-8080}`).

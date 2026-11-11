@@ -21,3 +21,11 @@
 - **Barra de rolagem:** a barra nativa estava oculta e a barra customizada não existia no HTML, então a página ficava sem barra visível. A barra nativa foi restaurada.
 - **Modal em telas baixas:** o modal agora rola, para o botão "Encerrar" continuar alcançável.
 - **Banco já existente:** o `schema.sql` remove as linhas antigas do acervo (`origem_base = 'ACERVO_INPI_MUNDIAL'`) antes de inserir as novas.
+
+## Acréscimo: busca real de patentes (EPO OPS)
+
+- Novo endpoint `api/patentes.php`. Ele consulta o EPO Open Patent Services pelo servidor, com OAuth e cache do token, usando a consulta `ta all "termos"` (todos os termos no título ou resumo). Buscas repetidas ficam em cache por 24 h.
+- Os termos da consulta são limpos (só letras e números) antes de montar a consulta CQL, para que ninguém consiga alterar a busca enviada ao EPO.
+- Respostas tratadas: 404 = nenhum resultado; 403/429 = limite atingido ("Limite atingido" na tela); sem chave = "Apenas link".
+- As patentes recebem a mesma nota de relevância das outras bases, calculada com os títulos e resumos em todos os idiomas disponíveis.
+- Testado com um servidor que imita as respostas do EPO. Os testes cobriram autenticação, resultados, busca vazia, limite, tentativa de alterar a consulta e funcionamento sem chave.
