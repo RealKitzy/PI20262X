@@ -1193,8 +1193,8 @@ async function verificarExistenciaLocalEApi(dados, diag, acao = 'VERIFICAR') {
     } else if (registroDoProprioUsuario) {
         statusApropriacao = 'JA_PERTENCE_AO_USUARIO';
         podeRegistrar = true;
-        tituloVeredito = `CRIAÇÃO JÁ REGISTRADA E FIXADA EM SEU NOME (${registroDoProprioUsuario.protocolo_registro})`;
-        explicacaoVeredito = `O sistema identificou que este projeto/marca já consta gravado no banco de dados fixo sob a titularidade do seu próprio CPF/CNPJ (${registroDoProprioUsuario.titular_nome}). Sua reserva de anterioridade e prova de autoria SHA-512 estão ativas e protegidas.`;
+        tituloVeredito = `VOCÊ JÁ GRAVOU ESTE PROJETO NO OBSERVATÓRIO (${registroDoProprioUsuario.protocolo_registro})`;
+        explicacaoVeredito = `Este projeto já está gravado no banco do Observatório com o seu próprio CPF/CNPJ (${registroDoProprioUsuario.titular_nome}). A sua prova de autoria (hash SHA-512 com data) continua registrada aqui — lembre-se de que é um registro acadêmico interno, não um registro no INPI.`;
     } else if (bloqueioTerceiro) {
         statusApropriacao = 'BLOQUEADO_TERCEIRO';
         podeRegistrar = false;
@@ -1620,10 +1620,10 @@ async function buscarEstadoDaTecnicaMundialAoVivo(dados, diag, opcoes = {}) {
                 while (Date.now() < fim && !deveInterromper()) await esperar(250);
                 if (deveInterromper()) break;
             }
-            aoProgredir({ base: 'github', fase: 'consultando', consulta: rotuloConsulta, indice: i, total: variantes.length });
+            aoProgredir({ base: 'github', fase: 'consultando', consulta: termosConsulta.slice(0, 3).join(' '), indice: i, total: variantes.length });
             ultimaConsultaGithub = Date.now();
             try {
-                const res = await consultarGitHub(termosConsulta, rigor.porBase);
+                const res = await consultarGitHub(termosConsulta.slice(0, 3), rigor.porBase);
                 status.github.consultas++;
                 status.github.recebidos += res.length;
                 status.github.estado = 'ok';
@@ -1784,7 +1784,7 @@ function renderizarPainelVerificacaoExistencia(verif) {
                     <strong>Impressão Digital Criptográfica (Hash SHA-512 — Art. 3º Lei 9.609/98):</strong> ${verif.hash_sha512_calculado}
                 </div>
                 <div style="background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.45); border-radius: 8px; padding: 0.75rem 1rem; font-size: 0.82rem; color: #fef3c7; line-height: 1.55;">
-                    ⚖️ <strong>AVISO LEGAL OBRIGATÓRIO — VALIDAÇÃO OFICIAL NO INPI (AUTARQUIA FEDERAL):</strong> Este diagnóstico constitui <strong>triagem técnico-jurídica preliminar e prova de anterioridade/autoria (SHA-512)</strong> no Observatório Acadêmico. Conforme os <strong>Arts. 6º, 19, 30 e 129 da Lei nº 9.279/96 (LPI)</strong>, a concessão estatal definitiva de Carta-Patente ou Certificado de Marca exige <strong>validação e protocolo oficial diretamente no portal do INPI (<a href="https://busca.inpi.gov.br/pePI/" target="_blank" rel="noopener" style="color: #fbbf24; text-decoration: underline; font-weight: 700;">busca.inpi.gov.br/pePI ↗</a> / <a href="https://www.gov.br/inpi/pt-br" target="_blank" rel="noopener" style="color: #fbbf24; text-decoration: underline; font-weight: 700;">gov.br/inpi ↗</a>)</strong> mediante recolhimento de GRU e exame técnico pelos examinadores federais.
+                    ⚖️ <strong>AVISO LEGAL OBRIGATÓRIO — VALIDAÇÃO OFICIAL NO INPI (AUTARQUIA FEDERAL):</strong> Este diagnóstico é uma <strong>triagem acadêmica preliminar</strong>, e o hash SHA-512 serve apenas como <strong>prova de autoria com data</strong> dentro do Observatório. Conforme os <strong>Arts. 6º, 19, 30 e 129 da Lei nº 9.279/96 (LPI)</strong>, a concessão estatal definitiva de Carta-Patente ou Certificado de Marca exige <strong>validação e protocolo oficial diretamente no portal do INPI (<a href="https://busca.inpi.gov.br/pePI/" target="_blank" rel="noopener" style="color: #fbbf24; text-decoration: underline; font-weight: 700;">busca.inpi.gov.br/pePI ↗</a> / <a href="https://www.gov.br/inpi/pt-br" target="_blank" rel="noopener" style="color: #fbbf24; text-decoration: underline; font-weight: 700;">gov.br/inpi ↗</a>)</strong> mediante recolhimento de GRU e exame técnico pelos examinadores federais.
                 </div>
             </div>
         `;
@@ -1795,10 +1795,10 @@ function renderizarPainelVerificacaoExistencia(verif) {
             btnRegistrar.textContent = '🚫 Registro Bloqueado (Já Pertence a Terceiro)';
             btnRegistrar.style.opacity = '0.65';
         } else if (verif.status_apropriacao === 'JA_PERTENCE_AO_USUARIO' || verif.status_apropriacao === 'REGISTRADO_COM_SUCESSO') {
-            btnRegistrar.textContent = '✅ Criação Já Fixada em Seu Nome (Ver Certificado)';
+            btnRegistrar.textContent = '✅ Prova de Autoria Já Gravada (Ver Certificado)';
             btnRegistrar.style.opacity = '1';
         } else {
-            btnRegistrar.textContent = '🔒 Reivindicar e Fixar Criação em Meu Nome (Gravar no Banco)';
+            btnRegistrar.textContent = '🔒 Gravar Prova de Autoria no Observatório';
             btnRegistrar.style.opacity = '1';
         }
     }
@@ -2941,7 +2941,7 @@ async function processarDiagnostico(event) {
         atualizarBalaoMascote(
             'VERIFICAÇÃO DE EXISTÊNCIA CONCLUÍDA — DISPONÍVEL PARA REGISTRO EM SEU NOME!',
             `Sua criação está apta para apropriação legítima (${ultimoDiagnostico.score_protegibilidade}/100)`,
-            `Verificamos o banco fixo e o estado da técnica: não há bloqueio de terceiros sobre o seu projeto. Clique no botão laranja <strong>"Reivindicar e Fixar Criação em Meu Nome"</strong> no painel abaixo para travar sua titularidade no banco de dados e emitir seu certificado SHA-512.`
+            `Não houve colisão na base do Observatório nem anterioridade relevante nas bases consultadas. Clique no botão laranja <strong>"Gravar Prova de Autoria no Observatório"</strong> no painel abaixo para travar sua titularidade no banco de dados e emitir seu certificado SHA-512.`
         );
     }
 }
@@ -3014,7 +3014,7 @@ function renderizarRelatorioDiagnostico(dados, diag, verif = null, anterioridade
                 titulo: '1. Nome do Projeto / Marca Comercial (Camada D)',
                 explicacaoSimples: colisaoMarca
                     ? `🚫 Conflito de Marca: O nome colide com '${verif.bloqueio_terceiro.nome_criacao_marca}'. Pelo Art. 124, XIX da LPI, você deve alterar o nome comercial.`
-                    : 'O nome da sua criação é próprio e pode ser registrado exclusivamente em seu nome no Brasil (INPI).',
+                    : 'O nome não colidiu com a base do Observatório. Antes de depositar, confira na busca de marcas do pePI/INPI (classe NCL 9) se não existe marca igual ou parecida.',
                 lei: colisaoMarca
                     ? 'Art. 124, inciso XIX da Lei 9.279/96 (Vedação de registro de marca colidente).'
                     : 'Art. 129 da Lei 9.279/96 (aquisição da marca pelo registro) e Art. 133 (vigência de 10 anos, prorrogável por períodos iguais e sucessivos).'
@@ -3100,7 +3100,7 @@ function renderizarRelatorioDiagnostico(dados, diag, verif = null, anterioridade
                     </div>
                     <div style="display: flex; gap: 0.6rem; flex-wrap: wrap;">
                         <button type="button" class="btn-primary" style="padding: 0.75rem 1.25rem; font-size: 0.86rem;" onclick="registrarTitularidadeFixaUsuario()">
-                            🔒 Fixar Projeto no Meu CPF/CNPJ Agora
+                            🔒 Gravar Prova de Autoria Agora
                         </button>
                         <button type="button" class="btn-secondary" style="padding: 0.75rem 1.15rem; font-size: 0.84rem;" onclick="baixarCertificadoDireto()">
                             📄 Baixar Meu Certificado de Autoria →
@@ -3132,7 +3132,10 @@ function renderizarRelatorioDiagnostico(dados, diag, verif = null, anterioridade
             ? `Direito Autoral de Software (50 anos — Lei 9.609/98, Art. 2º • ${dados.linguagem_firmware})`
             : `Sem firmware próprio declarado`;
 
-        const statusCamadaF = dados.modelo_negocio === 'PUBLICACAO_DEFENSIVA'
+        const temAnterioridadeRelevante = Boolean(anterioridadeMundial && anterioridadeMundial.totalAchadosMundo > 0);
+        const statusCamadaF = temAnterioridadeRelevante && dados.modelo_negocio !== 'PUBLICACAO_DEFENSIVA'
+            ? `⚠️ Patente em dúvida: ${anterioridadeMundial.totalAchadosMundo} resultado(s) parecido(s) encontrado(s) — só o diferencial pode ser patenteável (Arts. 11 e 13 LPI)`
+            : dados.modelo_negocio === 'PUBLICACAO_DEFENSIVA'
             ? `Publicação Defensiva / Estado da Técnica (Art. 11 e 12 da LPI)`
             : (dados.grau_novidade_hardware === 'INEDITO_INVENTIVO'
                 ? `Patente de Invenção (20 anos — Art. 8º LPI e Res. INPI 158/2016)`
@@ -3187,7 +3190,7 @@ function gerarMinutaAutomatizada(tipoDocumento) {
     const hashReal = verif.hash_sha512_calculado || 'NÃO GERADO — execute a verificação do projeto para calcular o hash SHA-512';
     const protocoloAtivo = (verif.registro_gravado && verif.registro_gravado.protocolo_registro)
         ? verif.registro_gravado.protocolo_registro
-        : 'NÃO GRAVADO — clique em "Fixar Projeto no Meu CPF/CNPJ" para gerar o protocolo interno';
+        : 'NÃO GRAVADO — clique em "Gravar Prova de Autoria" para gerar o protocolo interno';
 
     let texto = '';
 

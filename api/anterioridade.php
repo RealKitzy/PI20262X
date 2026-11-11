@@ -330,8 +330,8 @@ if ($method === 'POST') {
     } elseif ($registroDoProprioUsuario !== null) {
         $statusApropriacao = 'JA_PERTENCE_AO_USUARIO';
         $podeRegistrar = true;
-        $tituloVeredito = 'CRIAÇÃO JÁ REGISTRADA E FIXADA EM SEU NOME (' . $registroDoProprioUsuario['protocolo_registro'] . ')';
-        $explicacaoVeredito = 'O sistema identificou que este projeto/marca já consta gravado no banco de dados fixo sob a titularidade do seu próprio CPF/CNPJ (' . $registroDoProprioUsuario['titular_nome'] . '). Sua reserva de anterioridade e prova de autoria SHA-512 estão ativas e protegidas.';
+        $tituloVeredito = 'VOCÊ JÁ GRAVOU ESTE PROJETO NO OBSERVATÓRIO (' . $registroDoProprioUsuario['protocolo_registro'] . ')';
+        $explicacaoVeredito = 'Este projeto já está gravado no banco do Observatório com o seu próprio CPF/CNPJ (' . $registroDoProprioUsuario['titular_nome'] . '). A sua prova de autoria (hash SHA-512 com data) continua registrada aqui — lembre-se de que é um registro acadêmico interno, não um registro no INPI.';
     } elseif ($bloqueioTerceiro !== null) {
         $statusApropriacao = 'BLOQUEADO_TERCEIRO';
         $podeRegistrar = false;
