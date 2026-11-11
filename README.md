@@ -63,7 +63,9 @@ observatorio-pi-hardware/
 │   └── schema.sql              # Tabelas do banco de dados e registros iniciais
 └── docs/
     ├── MODELAGEM_DER_E_REGRAS.md
-    └── ARTIGO_CIENTIFICO_BASE.md
+    ├── ARTIGO_CIENTIFICO_BASE.md
+    ├── CORRECOES_AUDITORIA.md  # O que foi corrigido em relação à auditoria
+    └── telas/                  # Telas do sistema (PDF, SVG editável para Figma e PNG)
 ```
 
 ---
@@ -91,3 +93,7 @@ As chaves ficam só no servidor (nunca vão para o navegador), e buscas repetida
 
 ### Hospedagem (Railway)
 O projeto já está configurado com `Dockerfile` e `railway.json` para rodar direto no **Railway** conectado ao repositório do GitHub, subindo o container `php:8.2-cli-alpine` na porta dinâmica do servidor (`php -S 0.0.0.0:${PORT:-8080}`).
+
+**Para não perder os registros a cada deploy:** por padrão o banco SQLite fica dentro do container e é apagado quando o Railway faz um novo deploy. Para manter as provas de autoria gravadas:
+1. No projeto do Railway, crie um **Volume** ligado ao serviço com o caminho de montagem `/data`.
+2. Na aba **Variables** do serviço, crie `SQLITE_PATH` = `/data/observatorio_pi.sqlite`.

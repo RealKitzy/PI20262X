@@ -36,4 +36,5 @@
 - A Etapa 2 foi reorganizada nesta ordem: resultado principal, o que encontramos no mundo, base do Observatório e indicadores. A tabela da base e a matriz A–F agora ficam recolhidas em "Ver mais".
 - Os textos digitados por usuários (nomes, titulares) agora são escapados antes de aparecer na tela, para impedir que um nome cadastrado com código seja executado no navegador de outro usuário (XSS armazenado).
 - A página está ajustada para celular e para impressão em PDF.
+- Novo ícone (chip com lupa, em `assets/img/logo.svg`), também usado como favicon da aba do navegador. As imagens antigas foram removidas.
 - Tema claro e escuro: um botão no topo alterna entre os dois e a escolha fica salva no navegador. Sem escolha salva, o site segue o tema do sistema operacional. A impressão sempre sai no tema claro.

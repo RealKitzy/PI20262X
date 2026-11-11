@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Observatório de PI e Hardware Aberto">
+  <defs>
+    <linearGradient id="fundo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f97316"/>
+      <stop offset="1" stop-color="#c2410c"/>
+    </linearGradient>
+  </defs>
+  <!-- Fundo -->
+  <rect width="64" height="64" rx="15" fill="url(#fundo)"/>
+  <!-- Pinos do chip -->
+  <g stroke="#fff" stroke-width="3" stroke-linecap="round" opacity="0.9">
+    <path d="M24 10v6M32 10v6M40 10v6"/>
+    <path d="M24 48v6M32 48v6M40 48v6"/>
+    <path d="M10 24h6M10 32h6M10 40h6"/>
+    <path d="M48 24h6M48 32h6M48 40h6"/>
+  </g>
+  <!-- Corpo do chip -->
+  <rect x="16" y="16" width="32" height="32" rx="7" fill="#fff"/>
+  <!-- Lupa (busca de anterioridade) -->
+  <g fill="none" stroke="#c2410c" stroke-width="3.4" stroke-linecap="round">
+    <circle cx="30" cy="30" r="7"/>
+    <path d="M35.2 35.2 41 41"/>
+  </g>
+</svg>

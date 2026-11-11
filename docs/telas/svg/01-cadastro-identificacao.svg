@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1224" viewBox="0 0 1440 1224">
+<title>Etapa 1 — Identificação do titular</title>
+<rect id="fundo" x="0" y="0" width="1440" height="1224" fill="rgb(245,246,248)"/>
+<text id="texto-4" x="184.0" y="128.4" font-family="Inter, sans-serif" font-size="28" font-weight="700" letter-spacing="-0.56" fill="rgb(15,23,42)">Seu projeto de hardware já existe? Descubra antes de</text>
+<text id="texto-5" x="184.0" y="164.8" font-family="Inter, sans-serif" font-size="28" font-weight="700" letter-spacing="-0.56" fill="rgb(15,23,42)">registrar.</text>
+<text id="texto-7" x="184.0" y="199.0" font-family="Inter, sans-serif" font-size="15" font-weight="400" fill="rgb(51,65,85)">Descreva o que você criou. O sistema procura projetos parecidos em patentes, artigos científicos e</text>
+<text id="texto-8" x="184.0" y="223.0" font-family="Inter, sans-serif" font-size="15" font-weight="400" fill="rgb(51,65,85)">repositórios abertos e mostra quais partes do seu projeto podem ser protegidas no Brasil.</text>
+<text id="texto-12" x="184.0" y="261.1" font-family="Inter, sans-serif" font-size="13.6" font-weight="700" fill="rgb(21,128,61)">✓</text>
+<text id="texto-13" x="202.4" y="261.1" font-family="Inter, sans-serif" font-size="13.6" font-weight="400" fill="rgb(100,116,139)">Busca real em patentes, OpenAlex e GitHub</text>
+<text id="texto-16" x="505.4" y="261.1" font-family="Inter, sans-serif" font-size="13.6" font-weight="700" fill="rgb(21,128,61)">✓</text>
+<text id="texto-17" x="523.8" y="261.1" font-family="Inter, sans-serif" font-size="13.6" font-weight="400" fill="rgb(100,116,139)">Análise das 6 camadas jurídicas (A–F)</text>
+<text id="texto-20" x="790.2" y="261.1" font-family="Inter, sans-serif" font-size="13.6" font-weight="700" fill="rgb(21,128,61)">✓</text>
+<text id="texto-21" x="808.6" y="261.1" font-family="Inter, sans-serif" font-size="13.6" font-weight="400" fill="rgb(100,116,139)">Prova de autoria com hash SHA-512</text>
+<rect id="tab-step-24" x="200.5" y="307.7" width="21.0" height="21.0" rx="10.5" fill="rgb(194,65,12)" fill-opacity="1.000" stroke="rgb(194,65,12)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-25" x="208.5" y="321.2" font-family="Inter, sans-serif" font-size="11.52" font-weight="700" fill="rgb(255,255,255)">1</text>
+<text id="texto-26" x="230.8" y="322.2" font-family="Inter, sans-serif" font-size="14.4" font-weight="600" fill="rgb(15,23,42)">Cadastro e descrição</text>
+<rect id="tab-step-28" x="415.3" y="307.7" width="21.0" height="21.0" rx="10.5" fill="rgb(248,250,252)" fill-opacity="0.550" stroke="rgb(227,231,238)" stroke-opacity="0.550" stroke-width="1"/>
+<text id="texto-29" x="422.1" y="321.2" font-family="Inter, sans-serif" font-size="11.52" font-weight="700" fill="rgb(100,116,139)" fill-opacity="0.550">2</text>
+<text id="texto-30" x="445.6" y="322.2" font-family="Inter, sans-serif" font-size="14.4" font-weight="500" fill="rgb(100,116,139)" fill-opacity="0.550">Resultado</text>
+<rect id="guide-32" x="184.0" y="367.7" width="1072.0" height="97.3" rx="8.0" fill="rgb(255,255,255)" fill-opacity="1.000"/>
+<rect id="guide-32-borda-top" x="184.0" y="367.7" width="1072.0" height="1.0" fill="rgb(227,231,238)" fill-opacity="1.000"/>
+<rect id="guide-32-borda-right" x="1255.0" y="367.7" width="1.0" height="97.3" fill="rgb(227,231,238)" fill-opacity="1.000"/>
+<rect id="guide-32-borda-bottom" x="184.0" y="464.0" width="1072.0" height="1.0" fill="rgb(227,231,238)" fill-opacity="1.000"/>
+<rect id="guide-32-borda-left" x="184.0" y="367.7" width="3.0" height="97.3" fill="rgb(194,65,12)" fill-opacity="1.000"/>
+<rect id="guide-icon-33" x="204.6" y="383.1" width="28.0" height="28.0" rx="14.0" fill="rgb(255,244,237)" fill-opacity="1.000"/>
+<text id="texto-34" x="216.6" y="401.1" font-family="Inter, sans-serif" font-size="14.4" font-weight="700" fill="rgb(194,65,12)">i</text>
+<text id="texto-37" x="247.0" y="395.3" font-family="Inter, sans-serif" font-size="11.52" font-weight="600" letter-spacing="0.6912" fill="rgb(100,116,139)">ETAPA 1 DE 2 — IDENTIFICAÇÃO</text>
+<text id="texto-39" x="247.0" y="417.6" font-family="Inter, sans-serif" font-size="16" font-weight="600" letter-spacing="-0.16" fill="rgb(15,23,42)">Preencha seus dados para começar.</text>
+<text id="texto-41" x="247.0" y="441.6" font-family="Inter, sans-serif" font-size="14.08" font-weight="400" fill="rgb(51,65,85)">Depois você descreve o projeto e o sistema faz a busca.</text>
+<rect id="card-44" x="184.5" y="485.5" width="1071.0" height="547.4" rx="11.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-48" x="209.0" y="529.3" font-family="Inter, sans-serif" font-size="20.8" font-weight="650" letter-spacing="-0.208" fill="rgb(15,23,42)">Conte o que você criou</text>
+<text id="texto-50" x="209.0" y="555.8" font-family="Inter, sans-serif" font-size="14.4" font-weight="400" fill="rgb(100,116,139)">Você não precisa entender de leis: o sistema identifica sozinho placas, sensores, conectividade e</text>
+<text id="texto-51" x="209.0" y="578.8" font-family="Inter, sans-serif" font-size="14.4" font-weight="400" fill="rgb(100,116,139)">software a partir da sua descrição.</text>
+<rect id="btn-secondary-52" x="1130.7" y="510.5" width="99.8" height="30.7" rx="7.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(207,214,224)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-53" x="1144.0" y="529.3" font-family="Inter, sans-serif" font-size="12.8" font-weight="500" fill="rgb(15,23,42)">Limpar tudo</text>
+<rect id="indicador-bloco-1-55" x="209.5" y="606.8" width="505.2" height="45.8" rx="7.5" fill="rgb(255,244,237)" fill-opacity="1.000" stroke="rgb(254,215,195)" stroke-opacity="1.000" stroke-width="1"/>
+<rect id="step-num-56" x="224.9" y="618.2" width="23.0" height="23.0" rx="11.5" fill="rgb(194,65,12)" fill-opacity="1.000" stroke="rgb(194,65,12)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-57" x="233.8" y="633.0" font-family="Inter, sans-serif" font-size="12" font-weight="700" fill="rgb(255,255,255)">1</text>
+<text id="texto-58" x="258.0" y="632.7" font-family="Inter, sans-serif" font-size="13.6" font-weight="600" fill="rgb(15,23,42)">Titular e nome</text>
+<rect id="indicador-bloco-2-59" x="725.3" y="606.8" width="505.2" height="45.8" rx="7.5" fill="rgb(248,250,252)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
+<rect id="step-num-60" x="740.7" y="618.2" width="23.0" height="23.0" rx="11.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(207,214,224)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-61" x="748.4" y="633.0" font-family="Inter, sans-serif" font-size="12" font-weight="700" fill="rgb(100,116,139)">2</text>
+<text id="texto-62" x="773.8" y="632.7" font-family="Inter, sans-serif" font-size="13.6" font-weight="400" fill="rgb(100,116,139)">Descrição do projeto</text>
+<text id="texto-66" x="209.0" y="690.6" font-family="Inter, sans-serif" font-size="16.8" font-weight="600" letter-spacing="-0.168" fill="rgb(15,23,42)">Quem é o titular e qual o nome do projeto</text>
+<rect id="status-tag-bloco-1-67" x="1142.7" y="676.0" width="87.8" height="23.2" rx="11.6" fill="rgb(248,250,252)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-68" x="1152.8" y="689.9" font-family="Inter, sans-serif" font-size="10.88" font-weight="600" letter-spacing="0.4352" fill="rgb(100,116,139)">Bloco 1 de 2</text>
+<text id="texto-72" x="209.0" y="729.5" font-family="Inter, sans-serif" font-size="13.6" font-weight="600" fill="rgb(51,65,85)">Nome do projeto ou marca</text>
+<rect id="campo-nome_projeto-73" x="209.5" y="743.5" width="502.0" height="44.4" rx="7.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(207,214,224)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-74" x="222.8" y="769.0" font-family="Inter, sans-serif" font-size="14.72" font-weight="400" fill="rgb(148,163,184)">Ex.: AgroNode — Sensor de Irrigação</text>
+<text id="texto-76" x="209.0" y="807.0" font-family="Inter, sans-serif" font-size="12.48" font-weight="400" fill="rgb(100,116,139)">Mínimo de 5 caracteres.</text>
+<text id="texto-79" x="728.0" y="729.5" font-family="Inter, sans-serif" font-size="13.6" font-weight="600" fill="rgb(51,65,85)">Seu nome completo ou da equipe</text>
+<rect id="campo-autor_nome-80" x="728.5" y="743.5" width="502.0" height="44.4" rx="7.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(207,214,224)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-81" x="741.8" y="769.0" font-family="Inter, sans-serif" font-size="14.72" font-weight="400" fill="rgb(148,163,184)">Ex.: João Silva e Maria Souza</text>
+<text id="texto-84" x="209.0" y="843.7" font-family="Inter, sans-serif" font-size="13.6" font-weight="600" fill="rgb(51,65,85)">CPF ou CNPJ</text>
+<rect id="campo-autor_documento-85" x="209.5" y="857.8" width="502.0" height="44.4" rx="7.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(207,214,224)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-86" x="222.8" y="883.3" font-family="Inter, sans-serif" font-size="14.72" font-weight="400" fill="rgb(148,163,184)">000.000.000-00</text>
+<text id="texto-88" x="209.0" y="921.2" font-family="Inter, sans-serif" font-size="12.48" font-weight="400" fill="rgb(100,116,139)">Aparece no certificado de autoria.</text>
+<text id="texto-91" x="728.0" y="843.7" font-family="Inter, sans-serif" font-size="13.6" font-weight="600" fill="rgb(51,65,85)">E-mail</text>
+<rect id="campo-autor_email-92" x="728.5" y="857.8" width="502.0" height="44.4" rx="7.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(207,214,224)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-93" x="741.8" y="883.3" font-family="Inter, sans-serif" font-size="14.72" font-weight="400" fill="rgb(148,163,184)">voce@email.com.br</text>
+<rect id="rodape-bloco-1-usuario-94-borda-top" x="209.0" y="948.2" width="1022.0" height="1.0" fill="rgb(227,231,238)" fill-opacity="1.000"/>
+<rect id="btn-primary-95" x="1105.2" y="967.3" width="125.3" height="40.7" rx="7.5" fill="rgb(194,65,12)" fill-opacity="1.000" stroke="rgb(194,65,12)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-96" x="1124.8" y="991.5" font-family="Inter, sans-serif" font-size="14.4" font-weight="600" fill="rgb(255,255,255)">Continuar →</text>
+<rect id="footer-97-borda-top" x="160.0" y="1081.5" width="1120.0" height="1.0" fill="rgb(227,231,238)" fill-opacity="1.000"/>
+<text id="texto-100" x="184.0" y="1119.5" font-family="Inter, sans-serif" font-size="12.8" font-weight="600" fill="rgb(51,65,85)">Observatório de Propriedade Intelectual e Hardware Aberto</text>
+<text id="texto-101" x="554.1" y="1119.5" font-family="Inter, sans-serif" font-size="12.8" font-weight="400" fill="rgb(100,116,139)">— Projeto Integrador: Informática e Legislação</text>
+<text id="texto-102" x="184.0" y="1140.0" font-family="Inter, sans-serif" font-size="12.8" font-weight="400" fill="rgb(100,116,139)">Equipe: Antonio Kayky Gonçalves Vieira, Giullian Bernard Alencar Maia, Ítalo Brito da Costa e Luís Aquiles Lucena Sá</text>
+<text id="texto-104" x="184.0" y="1176.5" font-family="Inter, sans-serif" font-size="12.8" font-weight="400" fill="rgb(100,116,139)">CF/88 (Art. 5º, XXVII–XXIX) • Lei 9.279/96 • Lei 9.609/98 • Lei 9.610/98 • Lei 11.484/07</text>
+<rect id="topbar-105" x="0.0" y="0.0" width="1440.0" height="67.4" rx="0.0" fill="rgb(255,255,255)" fill-opacity="1.000"/>
+<svg id="img-109" x="184.0" y="13.2" width="40" height="40" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="logo-gradiente" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f97316"/>
+      <stop offset="1" stop-color="#c2410c"/>
+    </linearGradient>
+  </defs>
+  <!-- Fundo -->
+  <rect width="64" height="64" rx="15" fill="url(#logo-gradiente)"/>
+  <!-- Pinos do chip -->
+  <g stroke="#fff" stroke-width="3" stroke-linecap="round" opacity="0.9">
+    <path d="M24 10v6M32 10v6M40 10v6"/>
+    <path d="M24 48v6M32 48v6M40 48v6"/>
+    <path d="M10 24h6M10 32h6M10 40h6"/>
+    <path d="M48 24h6M48 32h6M48 40h6"/>
+  </g>
+  <!-- Corpo do chip -->
+  <rect x="16" y="16" width="32" height="32" rx="7" fill="#fff"/>
+  <!-- Lupa (busca de anterioridade) -->
+  <g fill="none" stroke="#c2410c" stroke-width="3.4" stroke-linecap="round">
+    <circle cx="30" cy="30" r="7"/>
+    <path d="M35.2 35.2 41 41"/>
+  </g>
+</svg>
+<text id="texto-112" x="236.8" y="27.3" font-family="Inter, sans-serif" font-size="16" font-weight="650" letter-spacing="-0.16" fill="rgb(15,23,42)">Observatório de Propriedade Intelectual &amp; Hardware Aberto</text>
+<text id="texto-114" x="236.8" y="46.6" font-family="Inter, sans-serif" font-size="12.48" font-weight="400" fill="rgb(100,116,139)">Projeto Integrador — Informática e Legislação</text>
+<rect id="engine-badge-116" x="1032.8" y="17.9" width="125.0" height="30.6" rx="15.3" fill="none" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
+<rect id="engine-dot-117" x="1045.3" y="29.7" width="7.0" height="7.0" rx="3.5" fill="rgb(21,128,61)" fill-opacity="1.000"/>
+<text id="texto-119" x="1059.5" y="36.2" font-family="Inter, sans-serif" font-size="12.48" font-weight="400" fill="rgb(100,116,139)">Sistema online</text>
+<rect id="botao-tema-120" x="1168.3" y="17.6" width="87.2" height="31.1" rx="15.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-122" x="1180.8" y="37.3" font-family="Inter, sans-serif" font-size="15.2" font-weight="500" fill="rgb(51,65,85)">☾</text>
+<text id="texto-124" x="1200.9" y="36.0" font-family="Inter, sans-serif" font-size="12.8" font-weight="500" fill="rgb(51,65,85)">Escuro</text>
+</svg>

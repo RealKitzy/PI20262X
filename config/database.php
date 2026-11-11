@@ -63,7 +63,13 @@ class Database {
                 ]);
                 self::inicializarSchemaCompativel(self::$instance, 'mysql');
             } else {
-                $dbPath = __DIR__ . '/../database/observatorio_pi.sqlite';
+                // SQLITE_PATH permite guardar o banco num volume persistente (ex.: /data/observatorio_pi.sqlite no Railway).
+                // Sem a variável, o banco fica dentro do container e é apagado a cada novo deploy.
+                $dbPath = getenv('SQLITE_PATH') ?: (__DIR__ . '/../database/observatorio_pi.sqlite');
+                $dirBanco = dirname($dbPath);
+                if (!is_dir($dirBanco)) {
+                    @mkdir($dirBanco, 0775, true);
+                }
 
                 self::$instance = new PDO("sqlite:" . $dbPath, null, null, [
                     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
