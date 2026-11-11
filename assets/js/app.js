@@ -1535,9 +1535,15 @@ async function buscarEstadoDaTecnicaMundialAoVivo(dados, diag, opcoes = {}) {
     const consultasExecutadas = [];
     let ultimaConsultaGithub = 0;
 
+    // Relevância medida contra os termos PRINCIPAIS do projeto (até 4 em inglês ou 4 em português),
+    // e não contra a variante curta da consulta — assim um resultado que só tem 2 termos genéricos não passa de 60%.
+    const termosPrincipaisEn = termos.ingles.slice(0, 4);
+    const termosPrincipaisPt = termos.portugues.slice(0, 4);
     const registrar = (lista, termosConsulta) => {
         lista.forEach(item => {
-            const rel = calcularRelevanciaResultado(termosConsulta, item.textoComparacao);
+            const relEn = calcularRelevanciaResultado(termosPrincipaisEn.length >= 2 ? termosPrincipaisEn : termosConsulta, item.textoComparacao);
+            const relPt = termosPrincipaisPt.length >= 2 ? calcularRelevanciaResultado(termosPrincipaisPt, item.textoComparacao) : { percentual: 0, encontrados: [] };
+            const rel = relPt.percentual > relEn.percentual ? relPt : relEn;
             const chave = `${item.base}:${item.id}`;
             const anterior = mapaResultados.get(chave);
             if (!anterior || rel.percentual > anterior.relevancia) {
@@ -3017,7 +3023,7 @@ function renderizarRelatorioDiagnostico(dados, diag, verif = null, anterioridade
                 passou: Boolean(dados.possui_firmware_proprio),
                 titulo: '2. Código-Fonte / Software do Projeto (Camada E)',
                 explicacaoSimples: dados.possui_firmware_proprio
-                    ? `Seu código (${dados.linguagem_firmware}) está aprovado e protegido contra cópias não autorizadas.`
+                    ? `Seu código (${dados.linguagem_firmware}) é protegido por direito autoral desde a criação; o registro no INPI (e-Software) serve como prova de autoria.`
                     : 'Você indicou que o projeto não possui código/software próprio.',
                 lei: 'Art. 2º e Art. 3º da Lei 9.609/98 (Lei de Software — proteção de 50 anos via Hash SHA-512).'
             },
@@ -3025,17 +3031,18 @@ function renderizarRelatorioDiagnostico(dados, diag, verif = null, anterioridade
                 passou: Boolean(dados.possui_pcb_customizada),
                 titulo: '3. Desenho da Placa / Esquemático Elétrico (Camada A)',
                 explicacaoSimples: dados.possui_pcb_customizada
-                    ? 'O desenho técnico da sua placa e esquemático está protegido contra reprodução visual.'
+                    ? 'O desenho da sua placa e o esquemático são protegidos por direito autoral contra cópia do desenho (não protege a função elétrica do circuito).'
                     : 'Usa módulos ligados sem desenho de placa PCB própria.',
                 lei: 'Art. 7º, inciso X da Lei 9.610/98 (Direito Autoral sobre projetos e esboços de engenharia).'
             },
             {
                 passou: podePatenteFisica && !jaExisteTerceiro && !temAnterioridadeMundial,
+                atencao: jaExisteTerceiro || temAnterioridadeMundial,
                 titulo: '4. Patente do Funcionamento Físico (Camada F)',
                 explicacaoSimples: jaExisteTerceiro
                     ? `🚫 NÃO PASSOU / ESTADO DA TÉCNICA EXISTENTE: Encontramos patente/produto equivalente (${verif.bloqueio_terceiro.nome_criacao_marca} — ${verif.bloqueio_terceiro.titular_nome}). Pelo Art. 11 da LPI (Falta de Novidade Absoluta), o INPI não aceita patentear o que já existe no mundo!`
                     : (temAnterioridadeMundial
-                        ? `⚠️ Risco Alto de Indeferimento por Anterioridade: Já existem ${anterioridadeMundial.totalAchadosMundo} publicações ou patentes no mundo com essa tecnologia. O INPI não aceita patentear o conceito geral, somente um aprimoramento construtivo inédito (Art. 11 e 13 da LPI).`
+                        ? `Foram encontrados ${anterioridadeMundial.totalAchadosMundo} resultado(s) relevante(s) (patentes, artigos ou repositórios) parecidos com o seu projeto. Leia-os: se descreverem a mesma solução, o conceito geral não é patenteável e o pedido deve se limitar ao seu diferencial (Arts. 11 e 13 da LPI).`
                         : (podePatenteFisica
                             ? 'Pela descrição (hardware + sensores com efeito técnico físico), o projeto pode, em tese, ser objeto de pedido de patente — desde que a busca no pePI/Google Patents não revele solução igual.'
                             : (dados.divulgacao_previa === 'DIVULGADO_MAIS_12M'
@@ -3075,7 +3082,7 @@ function renderizarRelatorioDiagnostico(dados, diag, verif = null, anterioridade
                     ${itensChecklist.map(item => `
                         <div style="padding: 0.85rem 1rem; border-radius: 10px; background: rgba(15, 12, 24, 0.78); border: 1px solid ${item.passou ? 'rgba(16, 185, 129, 0.45)' : 'rgba(255, 255, 255, 0.14)'};">
                             <div style="font-weight: 700; font-size: 0.88rem; color: ${item.passou ? '#6ee7b7' : '#cbd5e1'}; margin-bottom: 0.3rem;">
-                                ${item.passou ? '✅ PASSOU / ATIVADO:' : '⚪ NÃO SE APLICA AO SEU CASO:'} ${item.titulo}
+                                ${item.passou ? '✅ PASSOU / ATIVADO:' : (item.atencao ? '⚠️ ATENÇÃO:' : '⚪ NÃO SE APLICA AO SEU CASO:')} ${item.titulo}
                             </div>
                             <div style="font-size: 0.83rem; color: #f1f5f9; margin-bottom: 0.3rem; line-height: 1.45;">
                                 <strong>Por quê:</strong> ${item.explicacaoSimples}
@@ -3089,7 +3096,7 @@ function renderizarRelatorioDiagnostico(dados, diag, verif = null, anterioridade
 
                 <div style="padding: 0.9rem 1.1rem; border-radius: 10px; background: rgba(249, 115, 22, 0.14); border: 1px solid rgba(249, 115, 22, 0.45); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.8rem;">
                     <div style="font-size: 0.86rem; color: #ffedd5; max-width: 720px; line-height: 1.5;">
-                        <strong>💡 Próximo Passo Prático:</strong> Clique no botão ao lado para <strong>gravar gratuitamente seu Certificado de Anterioridade SHA-512</strong> no nosso banco de dados (prova técnica de que a ideia é sua) e, se quiser o monopólio comercial no Brasil, faça o pedido no site oficial do <strong>INPI (gov.br/inpi)</strong>.
+                        <strong>💡 Próximo Passo Prático:</strong> Clique no botão ao lado para <strong>gravar sua prova de autoria (hash SHA-512)</strong> no banco do Observatório — um registro acadêmico interno, que não substitui o INPI — e, se quiser o monopólio comercial no Brasil, faça o pedido no site oficial do <strong>INPI (gov.br/inpi)</strong>.
                     </div>
                     <div style="display: flex; gap: 0.6rem; flex-wrap: wrap;">
                         <button type="button" class="btn-primary" style="padding: 0.75rem 1.25rem; font-size: 0.86rem;" onclick="registrarTitularidadeFixaUsuario()">
