@@ -31,8 +31,13 @@ O sistema analisa o projeto dividindo o hardware em **6 camadas (A até F)**, co
   - **Bloco 1 (Identificação do Titular e Marca):** validação de nome e CPF/CNPJ (11 a 14 dígitos reais).
   - **Bloco 2 (Descrição Técnica do Projeto):** possui validação em tempo real de **4 quesitos técnicos obrigatórios** (Art. 24 da LPI) para bloquear cadastros vazios, palavrões, letras aleatórias ou frases sem relação com hardware/IoT/software.
   - **Bloco 3 (Conferência Automática das Leis):** mostra as camadas jurídicas, normas da ANATEL e LGPD detectadas automaticamente a partir da descrição.
-- **Busca de Anterioridade e Registro de Titularidade (Etapa 02):** verifica no banco de dados e em bases públicas (OpenAlex e GitHub) se o projeto ou marca já foi cadastrado antes, gera um protocolo com hash SHA-512 e orienta sobre o depósito oficial no INPI.
-- **Gerador de Documentos (Etapa 03):** monta o Certificado de Titularidade SHA-512, contratos de cessão/licenciamento (CERN-OHL, MIT, GPL) e o dossiê técnico para o INPI, com opção de imprimir em PDF ou baixar em `.doc`.
+- **Busca de Anterioridade e Prova de Autoria (Etapa 02):**
+  - Compara o projeto com a **base do Observatório** (registros feitos por usuários + um **acervo de referência ilustrativo** com 15 produtos conhecidos — esses itens são exemplos didáticos e **não** são registros oficiais do INPI).
+  - Consulta **de verdade** a **OpenAlex** (artigos científicos) e o **GitHub** (repositórios). Cada resultado recebe uma nota de relevância (% dos termos técnicos encontrados) e só conta como anterioridade a partir de **60%**.
+  - **Patentes:** o INPI não tem API pública e o antigo endpoint do USPTO (PatentsView) foi desativado, então o sistema oferece **links diretos** para o pePI/INPI, Google Patents (com a classe CIP sugerida) e Espacenet.
+  - Se uma base falhar, a tela mostra "indisponível" ou "limite atingido" — o sistema **nunca** preenche resultados inventados.
+  - **Rigor da varredura:** Rápida (10 resultados/base, 1 consulta), Padrão (25 resultados/base, 3 consultas) e Profunda (50 resultados/base, 6 consultas). A barra de progresso acompanha as consultas reais; o GitHub sem autenticação aceita 10 buscas por minuto, por isso há pausas entre consultas.
+- **Certificado de Autoria SHA-512:** gera um arquivo `.txt` com o hash SHA-512 real do projeto e um protocolo interno do Observatório (não substitui o depósito no INPI). A página também pode ser impressa/salva em PDF.
 
 ---
 
@@ -42,15 +47,15 @@ O sistema analisa o projeto dividindo o hardware em **6 camadas (A até F)**, co
 observatorio-pi-hardware/
 ├── index.html                  # Página principal do sistema
 ├── Dockerfile                  # Configuração para deploy no Railway (PHP 8.2)
+├── nixpacks.toml               # Alternativa de build (Nixpacks)
 ├── railway.json                # Configuração de inicialização no Railway
 ├── assets/
 │   ├── css/styles.css          # Estilização das páginas e tema escuro/laranja
 │   ├── img/                    # Imagens e ícones usados na interface
 │   └── js/app.js               # Lógica do formulário, validações e geração dos relatórios
 ├── api/
-│   ├── anterioridade.php       # Verificação de projetos existentes e gravação de protocolo
-│   ├── diagnostico.php         # Processamento do enquadramento legal no backend
-│   └── minuta.php              # Salvamento das minutas geradas
+│   ├── anterioridade.php       # Comparação com a base do Observatório e gravação do protocolo interno
+│   └── diagnostico.php         # Processamento do enquadramento legal no backend
 ├── config/
 │   └── database.php            # Conexão com o banco SQLite (criado automaticamente) ou MySQL
 ├── database/

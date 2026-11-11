@@ -319,8 +319,8 @@ if ($method === 'POST') {
     $checkSuficiencia = validarSuficienciaDescritivaPHP($resumoTecnico, $nomeProjeto);
     $statusApropriacao = 'DISPONIVEL_EXCLUSIVO';
     $podeRegistrar = true;
-    $tituloVeredito = 'CRIAÇÃO INÉDITA E DISPONÍVEL — Você Pode Reivindicar e Registrar como Sua!';
-    $explicacaoVeredito = 'Verificamos a base fixa do Observatório e o acervo de patentes/marcas: não há registro bloqueante em nome de terceiros colidindo com a sua criação. Sua arquitetura apresenta originalidade e atende aos requisitos dos Arts. 6º, 8º/9º, 24 e 129 da Lei nº 9.279/96 (LPI) e da Lei nº 9.609/98.';
+    $tituloVeredito = 'NENHUMA COLISÃO NA BASE DO OBSERVATÓRIO — Você Pode Gravar sua Prova de Autoria';
+    $explicacaoVeredito = 'Comparamos o projeto com a base do Observatório (registros feitos por usuários + acervo de referência ilustrativo com 15 produtos conhecidos) e não houve colisão. Atenção: isso NÃO é uma busca oficial no INPI — a novidade (Art. 11 da LPI) só é confirmada pelo exame do INPI. Confira também a busca mundial ao lado e consulte o pePI antes de depositar.';
 
     if (!$checkSuficiencia['valido']) {
         $statusApropriacao = 'BLOQUEADO_TERCEIRO';
@@ -335,7 +335,7 @@ if ($method === 'POST') {
     } elseif ($bloqueioTerceiro !== null) {
         $statusApropriacao = 'BLOQUEADO_TERCEIRO';
         $podeRegistrar = false;
-        $tituloVeredito = 'IMPEDIMENTO LEGAL: Criação ou Marca Já Existe e Pertence a Terceiro (' . $bloqueioTerceiro['protocolo_registro'] . ')';
+        $tituloVeredito = 'COLISÃO DETECTADA: Criação ou Marca Semelhante a Item de Terceiro (' . $bloqueioTerceiro['protocolo_registro'] . ')';
         $explicacaoVeredito = 'Não é possível apropriar-se diretamente desta criação como sua: detectamos colisão direta (' . $bloqueioTerceiro['similaridade_percentual'] . '% de superposição / colisão nominativa) com o ativo "' . $bloqueioTerceiro['nome_criacao_marca'] . '", já registrado sob titularidade de ' . $bloqueioTerceiro['titular_nome'] . ' (' . $bloqueioTerceiro['instituicao_empresa'] . '). Pelo Art. 11 (Estado da Técnica), Art. 124, XIX (proibição de reprodução de marca alheia) e Art. 195 da Lei nº 9.279/96, para registrar uma versão própria você deve: (1) adotar um nome comercial/marca distinto; e (2) especificar uma melhoria construtiva/funcional própria (Modelo de Utilidade — Art. 9º da LPI) ou reimplementação limpa.';
     } elseif ($divulgacao === 'DIVULGADO_MAIS_12M') {
         $statusApropriacao = 'PARCIAL_ESTADO_DA_TECNICA';
@@ -398,8 +398,8 @@ if ($method === 'POST') {
             $novoRegistroGravado = $stmtBusca->fetch();
 
             $statusApropriacao = 'REGISTRADO_COM_SUCESSO';
-            $tituloVeredito = 'TITULARIDADE FIXADA COM SUCESSO! Protocolo Oficial: ' . $protocoloGerado;
-            $explicacaoVeredito = 'Sua criação foi gravada de forma permanente no banco de dados fixo do Observatório com resumo criptográfico SHA-512 (Art. 3º da Lei nº 9.609/98 e Art. 6º/129 da Lei nº 9.279/96). A partir deste momento, qualquer tentativa de terceiro de reivindicar projeto ou marca idêntica será automaticamente detectada e bloqueada pelo sistema.';
+            $tituloVeredito = 'PROVA DE AUTORIA GRAVADA NO OBSERVATÓRIO — Protocolo interno: ' . $protocoloGerado;
+            $explicacaoVeredito = 'Sua criação foi gravada no banco de dados do Observatório com resumo criptográfico SHA-512 (Art. 3º da Lei nº 9.609/98 e Art. 6º/129 da Lei nº 9.279/96). A partir deste momento, cadastros idênticos feitos por outro CPF/CNPJ neste Observatório serão sinalizados. Este protocolo é interno e acadêmico: ele não substitui o depósito no INPI.';
         }
     }
 

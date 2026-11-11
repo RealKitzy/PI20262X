@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Observatório de Propriedade Intelectual e Hardware Aberto | Projeto Integrador</title>
-    <link rel="stylesheet" href="assets/css/styles.css?v=20261110v5">
+    <link rel="stylesheet" href="assets/css/styles.css?v=20261111v6">
 </head>
 <body>
 
@@ -60,8 +60,8 @@
                         <span>Validação Técnica Art. 24 LPI</span>
                     </div>
                     <div class="hero-stat-item">
-                        <strong>Varredura Real</strong>
-                        <span>INPI, USPTO &amp; OpenAlex</span>
+                        <strong>Busca Real</strong>
+                        <span>OpenAlex &amp; GitHub (+ links INPI)</span>
                     </div>
                 </div>
             </div>
@@ -201,11 +201,11 @@
                                 </button>
                                 <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
                                     <div style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.82rem; color: var(--text-secondary);">
-                                        <label for="seletor-tempo-auditoria" style="margin: 0; font-size: 0.82rem; color: #cbd5e1;">⏳ Rigor da Varredura:</label>
+                                        <label for="seletor-tempo-auditoria" style="margin: 0; font-size: 0.82rem; color: #cbd5e1;" title="Quanto maior o rigor, mais resultados por base e mais combinações de termos são consultadas — por isso demora mais.">🔬 Rigor da Varredura:</label>
                                         <select id="seletor-tempo-auditoria" style="padding: 0.5rem 0.75rem; border-radius: 6px; font-size: 0.82rem; background: #0f172a; border: 1px solid var(--orange-primary); color: #fff; font-weight: 600;">
-                                            <option value="180" selected>⏱️ 3 Minutos (Padrão Completo)</option>
-                                            <option value="300">⏱️ 5 Minutos (Auditoria Aprofundada)</option>
-                                            <option value="600">🔬 10 Minutos (Auditoria Exaustiva / Acadêmica)</option>
+                                            <option value="rapida">Rápida — 10 resultados/base, 1 consulta (~10 s)</option>
+                                            <option value="padrao" selected>Padrão — 25 resultados/base, 3 consultas (~30 s)</option>
+                                            <option value="profunda">Profunda — 50 resultados/base, 6 consultas (~1 min)</option>
                                         </select>
                                     </div>
                                     <button type="button" class="btn-primary" id="btn-verificar-bloco2" style="padding: 0.85rem 1.6rem; font-size: 0.93rem; font-weight: 700; background: linear-gradient(135deg, var(--orange-primary), #ea580c); box-shadow: 0 4px 18px rgba(249, 115, 22, 0.45);" onclick="iniciarVerificacaoPorcentagemBloco2()">
@@ -422,7 +422,7 @@
                         <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;" class="no-print">
                             <button class="btn-secondary" onclick="window.print()">📄 Imprimir / Salvar em PDF</button>
                             <button id="btn-baixar-certificado-oficial" class="btn-primary" style="padding: 0.85rem 1.6rem; font-size: 0.92rem;" onclick="baixarCertificadoDireto()">
-                                🛡️ Baixar Certificado Oficial SHA-512 (.DOC)
+                                🛡️ Baixar Certificado de Autoria SHA-512 (.TXT)
                             </button>
                         </div>
                     </div>
@@ -467,7 +467,7 @@
                         <div>
                             <span class="inpi-badge">CARTÓRIO DE ANTERIORIDADE E TITULARIDADE FIXA • LEI Nº 9.279/96 (ARTS. 8º, 11, 124 E 129)</span>
                             <h2>Verificação Real: Esta Criação Já Existe? Posso Colocar e Fixar Como Minha?</h2>
-                            <p class="card-subtitle">O sistema cruza seu projeto em tempo real com: (1) o Banco de Dados Fixo de Criações e Marcas já registradas no Observatório/INPI; e (2) Bases Mundiais de Estado da Técnica (OpenAlex Patentes/Artigos e GitHub Open Hardware).</p>
+                            <p class="card-subtitle">O sistema cruza seu projeto em tempo real com: (1) a base do Observatório (registros de usuários + acervo de referência ilustrativo); e (2) consultas reais à OpenAlex (artigos científicos) e ao GitHub (repositórios). Patentes (INPI, Google Patents, Espacenet) são oferecidas como links diretos para busca manual — o INPI não tem API pública.</p>
                         </div>
                         <div class="no-print" style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
                             <button type="button" class="btn-secondary" style="padding: 0.75rem 1.2rem; font-size: 0.85rem;" onclick="executarVerificacaoExistenciaCompleta(false)">
@@ -485,14 +485,14 @@
                     <!-- Comparação Dupla: Colisões no Banco Fixo vs. Busca em Tempo Real no Estado da Técnica Mundial -->
                     <div class="grid-2" style="margin-bottom: 1.6rem;">
                         <div style="background: rgba(15, 12, 24, 0.65); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
-                            <span class="inpi-badge">1. VARREDURA NO BANCO FIXO E ACERVO INPI</span>
+                            <span class="inpi-badge">1. BASE DO OBSERVATÓRIO (LOCAL)</span>
                             <h3 style="font-size: 1.05rem; margin: 0.45rem 0 0.75rem; color: var(--text-primary);">Colisões de Marca (Art. 124 LPI) e Projetos Já Reivindicados</h3>
                             <div id="painel-colisoes-internas"></div>
                         </div>
 
                         <div style="background: rgba(15, 12, 24, 0.65); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
                             <span class="inpi-badge">2. BUSCA EM TEMPO REAL NO MUNDO (ART. 11 DA LPI)</span>
-                            <h3 style="font-size: 1.05rem; margin: 0.45rem 0 0.75rem; color: var(--text-primary);">Estado da Técnica Mundial (OpenAlex, GitHub, INPI e Google Patents)</h3>
+                            <h3 style="font-size: 1.05rem; margin: 0.45rem 0 0.75rem; color: var(--text-primary);">Estado da Técnica Mundial (OpenAlex e GitHub consultados; patentes via links)</h3>
                             <div id="painel-anterioridade-mundial"></div>
                         </div>
                     </div>
@@ -502,10 +502,10 @@
                         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.8rem; margin-bottom: 0.9rem;">
                             <div>
                                 <h3 style="font-size: 1.08rem; color: var(--orange-light); margin-bottom: 0.2rem;">
-                                    Base Pública Fixa de Criações, Patentes e Marcas Registradas (SQL + Proteção Ativa Contra Cópia)
+                                    Base do Observatório: Registros de Usuários + Acervo de Referência (Ilustrativo)
                                 </h3>
                                 <p style="font-size: 0.86rem; color: var(--text-secondary); margin: 0;">
-                                    Acervo de patentes e projetos com anterioridade apurada, indexados por protocolo técnico e protegidos por hash criptográfico SHA-512 e diretrizes do INPI.
+                                    Os itens marcados como <strong>ACERVO DE REFERÊNCIA (ILUSTRATIVO)</strong> são 15 exemplos didáticos de produtos conhecidos, usados para demonstrar a detecção de colisão — <strong>não são registros oficiais do INPI</strong>. Os itens <strong>FIXADO NO OBSERVATÓRIO</strong> foram gravados por usuários deste sistema (protocolo interno, com hash SHA-512 real).
                                 </p>
                             </div>
                         </div>
@@ -513,7 +513,7 @@
                             <table class="data-table">
                                 <thead>
                                     <tr>
-                                        <th>Protocolo Oficial</th>
+                                        <th>Identificador</th>
                                         <th>Criação / Marca Protegida</th>
                                         <th>Titular Registrado (CPF/CNPJ)</th>
                                         <th>Camadas e Modalidade Legal</th>
@@ -540,9 +540,9 @@
                 <div class="modal-progresso-header">
                     <div class="modal-progresso-tag">
                         <span class="pulsing-radar-dot"></span>
-                        SISTEMA DE VERIFICAÇÃO DE ANTERIORIDADE // APIS EM EXECUÇÃO
+                        VERIFICAÇÃO DE ANTERIORIDADE // CONSULTAS REAIS EM ANDAMENTO
                     </div>
-                    <h2 class="modal-progresso-titulo">Varredura de Patentes & Mercado em Andamento</h2>
+                    <h2 class="modal-progresso-titulo">Verificação em Andamento</h2>
                     <p class="modal-progresso-subtitulo">
                         Analisando a descrição do projeto: <strong id="progresso-nome-projeto">—</strong>
                     </p>
@@ -563,7 +563,7 @@
 
                     <!-- Mensagem de Etapa Atual -->
                     <div id="progresso-etapa-texto" class="progresso-etapa-texto">
-                        Iniciando análise de suficiência descritiva (Art. 24 da LPI)...
+                        Iniciando...
                     </div>
 
                     <!-- Cronômetro de Auditoria Profunda -->
@@ -574,8 +574,8 @@
                         </div>
                         <div class="cronometro-separador">•</div>
                         <div class="cronometro-item">
-                            <span class="cronometro-label">ESTIMATIVA AUDITORIA PROFUNDA:</span>
-                            <strong id="cronometro-estimado" class="cronometro-val">03:00 min</strong>
+                            <span class="cronometro-label">ESTIMATIVA (depende das APIs):</span>
+                            <strong id="cronometro-estimado" class="cronometro-val">—</strong>
                         </div>
                     </div>
                 </div>
@@ -588,11 +588,11 @@
                             <span class="dot yellow"></span>
                             <span class="dot green"></span>
                         </div>
-                        <span class="terminal-title">LIVE PATENT AUDIT CONSOLE // INPI • USPTO • WIPO • OPENALEX</span>
-                        <span class="terminal-badge">REAL-TIME 2026</span>
+                        <span class="terminal-title">LOG DA VERIFICAÇÃO // OBSERVATÓRIO • OPENALEX • GITHUB</span>
+                        <span class="terminal-badge">CONSULTAS REAIS</span>
                     </div>
                     <div class="terminal-corpo" id="terminal-linhas-log">
-                        <div class="terminal-linha highlight">[00:00] [SYSTEM] Inicializando pipeline de auditoria exaustiva de anterioridade...</div>
+                        <div class="terminal-linha highlight">[00:00] Aguardando início...</div>
                     </div>
                 </div>
 
@@ -602,8 +602,8 @@
                         <div class="api-item-header">
                             <span class="api-icone">⚖️</span>
                             <div>
-                                <span class="api-nome">NLP & Classificação IPC</span>
-                                <span class="api-alcance-badge global">Global • WIPO</span>
+                                <span class="api-nome">Termos técnicos + CIP sugerida</span>
+                                <span class="api-alcance-badge global">Local • regras do sistema</span>
                             </div>
                         </div>
                         <span class="api-badge badge-pendente" id="chip-status-nlp">Aguardando</span>
@@ -613,30 +613,19 @@
                         <div class="api-item-header">
                             <span class="api-icone">🇧🇷</span>
                             <div>
-                                <span class="api-nome">INPI (Marcas & Patentes)</span>
-                                <span class="api-alcance-badge br">Brasil • Lei 9.279/96</span>
+                                <span class="api-nome">Base do Observatório</span>
+                                <span class="api-alcance-badge br">Local • registros + acervo ilustrativo</span>
                             </div>
                         </div>
                         <span class="api-badge badge-pendente" id="chip-status-inpi">Aguardando</span>
-                    </div>
-
-                    <div class="progresso-api-item" id="api-status-card-3">
-                        <div class="api-item-header">
-                            <span class="api-icone">🇺🇸</span>
-                            <div>
-                                <span class="api-nome">USPTO (PatentsView API)</span>
-                                <span class="api-alcance-badge us">EUA & Mundo • Patentes</span>
-                            </div>
-                        </div>
-                        <span class="api-badge badge-pendente" id="chip-status-uspto">Aguardando</span>
                     </div>
 
                     <div class="progresso-api-item" id="api-status-card-4">
                         <div class="api-item-header">
                             <span class="api-icone">🌐</span>
                             <div>
-                                <span class="api-nome">OpenAlex (Ciência & Patentes)</span>
-                                <span class="api-alcance-badge global">Mundial • 250M+ Artigos</span>
+                                <span class="api-nome">OpenAlex (artigos científicos)</span>
+                                <span class="api-alcance-badge global">Mundial • API pública</span>
                             </div>
                         </div>
                         <span class="api-badge badge-pendente" id="chip-status-openalex">Aguardando</span>
@@ -646,8 +635,8 @@
                         <div class="api-item-header">
                             <span class="api-icone">💻</span>
                             <div>
-                                <span class="api-nome">GitHub Hardware & IoT Repos</span>
-                                <span class="api-alcance-badge global">Mundial • Código Aberto</span>
+                                <span class="api-nome">GitHub (repositórios)</span>
+                                <span class="api-alcance-badge global">Mundial • API pública</span>
                             </div>
                         </div>
                         <span class="api-badge badge-pendente" id="chip-status-github">Aguardando</span>
@@ -657,8 +646,8 @@
                         <div class="api-item-header">
                             <span class="api-icone">🔍</span>
                             <div>
-                                <span class="api-nome">Google Patents & Espacenet</span>
-                                <span class="api-alcance-badge global">Mundial • 140M+ Patentes</span>
+                                <span class="api-nome">Patentes: pePI/INPI, Google Patents, Espacenet</span>
+                                <span class="api-alcance-badge global">Sem API pública • busca manual</span>
                             </div>
                         </div>
                         <span class="api-badge badge-pendente" id="chip-status-googlepatents">Aguardando</span>
@@ -668,10 +657,10 @@
                 <!-- Rodapé Informativo / Segurança Legal & Botão de Aceleração -->
                 <div class="modal-progresso-footer" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.8rem;">
                     <div class="modal-seguranca-texto" style="text-align: left; flex: 1; min-width: 240px;">
-                        <span>🛡️ <strong>Auditoria Profunda Rigorosa:</strong> Varrendo exaustivamente bases mundiais segundo o Art. 11 da LPI.</span>
+                        <span>ℹ️ A barra avança conforme as consultas reais terminam. O GitHub aceita só 10 buscas por minuto, por isso há pausas entre as consultas.</span>
                     </div>
                     <button type="button" id="btn-acelerar-auditoria" class="btn-secondary" style="padding: 0.4rem 0.85rem; font-size: 0.76rem; border-color: rgba(249, 115, 22, 0.45); color: #fed7aa; cursor: pointer;" onclick="acelerarAuditoriaParaFim()">
-                        ⚡ Pular Espera (Modo Demonstração)
+                        ⏹ Encerrar e usar os resultados já obtidos
                     </button>
                 </div>
             </div>
@@ -691,6 +680,6 @@
         </div>
     </footer>
 
-    <script src="assets/js/app.js?v=20261110v8"></script>
+    <script src="assets/js/app.js?v=20261111v9"></script>
 </body>
 </html>

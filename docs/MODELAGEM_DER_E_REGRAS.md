@@ -6,7 +6,7 @@ Este documento consolida o **Artefato de Modelagem (DER)** e a **Árvore Lógica
 - **Camada A (Documentação Técnica):** Direito Autoral sobre esquemáticos, PCB e manuais (*Lei nº 9.610/1998 — LDA*);
 - **Camada B (Design do Produto):** Desenho Industrial (*Lei nº 9.279/1996 — Art. 94 a 121*, 10 a 25 anos);
 - **Camada C (Semicondutores):** Topografia de Circuito Integrado (*Lei nº 11.484/2007 e PADIS*, 10 anos);
-- **Camada D (Signos Distintivos):** Registro de Marca no INPI (*Lei nº 9.279/1996 — Art. 129 e 189*, 10 anos renováveis indefinidamente);
+- **Camada D (Signos Distintivos):** Registro de Marca no INPI (*Lei nº 9.279/1996 — Arts. 129 e 189*; vigência de 10 anos renováveis — Art. 133);
 - **Camada E (Software Embarcado):** Direito Autoral de Software (*Lei nº 9.609/1998 — Art. 4º*, 50 anos);
 - **Camada F (Solução Técnica):** Patente de Invenção (20 anos) ou Modelo de Utilidade (15 anos), observada a ressalva do *Art. 10, V da LPI* para processos técnicos com efeito físico, a *Publicação Defensiva (Art. 11 LPI)* e o *Período de Graça de 12 meses (Art. 12 LPI)*.
 

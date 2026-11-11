@@ -36,7 +36,7 @@ Ao analisar um dispositivo físico no Observatório de PI, o motor de decisão d
 | **A. Documentação Técnica** | Esquemáticos, leiaute de PCB, manuais e gráficos | Direito Autoral (Obra literária e artística) | Lei nº 9.610/1998 (LDA) e Dec. nº 75.699/1975 |
 | **B. Design do Produto** | Forma ornamental e aspectos plásticos externos | Desenho Industrial (10 anos, renováveis até 25 anos) | Lei nº 9.279/1996 (LPI — Art. 94 a 121) |
 | **C. Semicondutores** | Configuração tridimensional das camadas do chip | Topografia de Circuito Integrado (10 anos) | Lei nº 11.484/2007 (Institui também o PADIS) |
-| **D. Signos Distintivos** | Nome comercial, marca e logotipo | Registro de Marca (10 anos, renovável indefinidamente) | Lei nº 9.279/1996 (LPI — Art. 129 e 189) |
+| **D. Signos Distintivos** | Nome comercial, marca e logotipo | Registro de Marca (10 anos, renovável — Art. 133) | Lei nº 9.279/1996 (LPI — Arts. 129, 133 e 189) |
 | **E. Software Embarcado** | Firmware e código-fonte funcional | Direito Autoral (Regime especial — 50 anos) | Lei nº 9.609/1998 (Art. 4º — Titularidade Laboral) |
 | **F. Solução Técnica** | Funcionalidade e invenção mecânica ou elétrica | Patente de Invenção (20 anos) ou Modelo de Utilidade (15 anos) | Lei nº 9.279/1996 (LPI — Art. 8º, 9º e 10, V) |
 
@@ -50,9 +50,10 @@ Ao analisar um dispositivo físico no Observatório de PI, o motor de decisão d
 
 ## 3. Arquitetura da Plataforma Web e Modelo de Dados (DER)
 A plataforma foi implementada em arquitetura web híbrida utilizando **HTML5, CSS3, JavaScript, PHP (PDO) e SQL (SQLite/MySQL)**, estruturada em três módulos ativos:
-* **Módulo de Entrada e Inspeção Textual de Código:** Coleta as variáveis das 6 camadas do projeto e inclui um inspetor léxico capaz de ler cabeçalhos de código-fonte (`SPDX-License-Identifier`, menções a `GPL`, `LGPL`, `MIT`, `CERN-OHL`, `Solderpad`, `TAPR` e `CC BY-SA`), ajustando automaticamente os parâmetros de diagnóstico.
+* **Módulo de Entrada e Validação Descritiva:** Coleta os dados do titular (com validação de CPF/CNPJ e e-mail) e a descrição técnica do projeto, verificando os 4 quesitos de suficiência descritiva (Art. 24 da LPI) e marcando automaticamente as camadas aplicáveis.
 * **Motor de Decisão Multicritério (`api/diagnostico.php` e `assets/js/app.js`):** Avalia o grau de protegibilidade (0 a 100), detecta colisões entre o modelo de negócios pretendido e licenças recíprocas e decompõe o diagnóstico nas Camadas A a F.
-* **Gerador Automatizado de Minutas (`api/minuta.php`):** Emite quatro instrumentos jurídicos customizados com verificação Hash SHA-256: (1) *Contrato de Cessão de Direitos Patrimoniais nas 6 Camadas*; (2) *Termo de Licenciamento OSHW com Reserva Expressa de Marca (Cláusula Arduino)*; (3) *Contrato de Licenciamento Industrial e Prevenção à Espionagem*; e (4) *Dossiê Técnico Multicamada para o INPI*.
+* **Verificação de Anterioridade (`api/anterioridade.php` e `assets/js/app.js`):** (1) compara o projeto com a base local do Observatório (registros de usuários + um acervo de referência **ilustrativo** com 15 produtos conhecidos, que não são registros oficiais do INPI); (2) consulta em tempo real a OpenAlex (artigos científicos) e o GitHub (repositórios), calculando a relevância de cada resultado pela proporção de termos técnicos encontrados (só conta como anterioridade o que atinge 60%); (3) oferece links diretos para o pePI/INPI, Google Patents e Espacenet, pois o INPI não oferece API pública de busca.
+* **Certificado de Autoria:** Gera um certificado em texto com o hash SHA-512 real do projeto e um protocolo interno do Observatório. O documento informa expressamente que não substitui o depósito no INPI.
 
 ---
 

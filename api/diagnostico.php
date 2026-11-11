@@ -52,9 +52,9 @@ function executarMotorDecisao(array $dados): array {
     $recomendacoesInpi[] = [
         'codigo' => 'MARCA',
         'titulo' => 'Camada D — Registro de Marca e Signo Distintivo (INPI)',
-        'base_legal' => 'Lei nº 9.279/1996 (LPI — Art. 129 e Art. 189)',
+        'base_legal' => 'Lei nº 9.279/1996 (LPI — Arts. 129, 133 e 189)',
         'prioridade' => 'Vetor Patrimonial Essencial',
-        'prazo' => '10 anos (renovável indefinidamente)',
+        'prazo' => '10 anos, prorrogável por períodos iguais e sucessivos (Art. 133 LPI)',
         'justificativa' => 'Pelo sistema atributivo brasileiro (Art. 129 da LPI), a propriedade e o uso exclusivo do nome comercial decorrem do registro no INPI. Como demonstrado no caso Arduino LLC vs. Arduino SRL (Genuino), mesmo quando o hardware e o software são abertos, a retenção da marca é o principal instrumento jurídico para garantir sustentabilidade financeira e impedir contrafação (Art. 189 da LPI).'
     ];
 
@@ -184,7 +184,7 @@ function executarMotorDecisao(array $dados): array {
     // CAMADA A: DOCUMENTAÇÃO TÉCNICA E FRAGILIDADE DO COPYLEFT NO HARDWARE (Lei 9.610/98)
     $alertasLicenca[] = [
         'nivel' => 'INFO',
-        'titulo' => 'Camada A — Fragilidade Jurídica do Copyleft no Hardware (Lei nº 9.610/1998, Art. 7º, XI)',
+        'titulo' => 'Camada A — Fragilidade Jurídica do Copyleft no Hardware (Lei nº 9.610/1998, Art. 7º, X)',
         'descricao' => 'Na Camada A (esquemáticos, leiaute de PCB e manuais), a Lei nº 9.610/1998 protege apenas a expressão gráfica do desenho, e não a função elétrica. Sem patente na Camada F, terceiros podem recriar o circuito funcional por engenharia reversa limpa sem violar a licença copyleft.'
     ];
 
