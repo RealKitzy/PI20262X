@@ -1659,7 +1659,6 @@ function renderizarPainelVerificacaoExistencia(verif) {
             const badgeOrigem = reg.origem_base === 'REGISTRO_FIXO_USUARIO'
                 ? '<span class="inpi-badge" style="background:rgba(16,185,129,0.2);color:#6ee7b7;border-color:#10b981;">FIXADO NO OBSERVATÓRIO</span>'
                 : '<span class="inpi-badge">ACERVO INPI / OMPI</span>';
-            const acaoSimular = `<span style="font-size:0.76rem;color:#10b981;font-weight:600;">🔒 Protegido no Banco</span>`;
             return `
                 <tr>
                     <td>${badgeOrigem}<br><strong>${reg.protocolo_registro}</strong></td>
@@ -1667,9 +1666,6 @@ function renderizarPainelVerificacaoExistencia(verif) {
                     <td><strong>${reg.titular_nome}</strong><br><span style="font-size:0.8rem;color:var(--text-secondary);">Doc: ${reg.titular_documento}<br>${reg.instituicao_empresa || ''}</span></td>
                     <td><strong>${reg.modalidade_protecao}</strong><br><span style="font-size:0.78rem;color:var(--text-secondary);">${reg.camadas_protegidas || ''}</span></td>
                     <td><code style="font-size:0.76rem;">SHA-512: ${hashCurto}</code><br><span style="font-size:0.76rem;color:var(--text-secondary);">${reg.data_registro || ''}</span></td>
-                    <td class="no-print">
-                        ${acaoSimular}
-                    </td>
                 </tr>
             `;
         }).join('');
@@ -2037,21 +2033,15 @@ function avancarBlocoUsuario(numeroBlocoDestino) {
 
     if (numeroBlocoDestino === 1) {
         atualizarBalaoMascote(
-            'ETAPA 1 DE 3 — IDENTIFICAÇÃO DO TITULAR',
+            'ETAPA 1 DE 2 — IDENTIFICAÇÃO DO TITULAR',
             'Revise seus dados de titularidade no Bloco 1.',
-            'Confira seu nome, CPF/CNPJ e o título provisório do projeto e clique em avançar para ir ao Bloco 2.'
+            'Confira seu nome, CPF/CNPJ e o título do projeto e clique em avançar para ir ao Bloco 2.'
         );
     } else if (numeroBlocoDestino === 2) {
         atualizarBalaoMascote(
-            'ETAPA 2 DE 3 — DESCRIÇÃO DA SUA CRIAÇÃO',
+            'ETAPA 1 DE 2 — DESCRIÇÃO E AUDITORIA',
             'Bloco 1 concluído! Agora descreva sua criação técnica no Bloco 2.',
-            'Conte com suas próprias palavras como funciona o seu projeto (placa, sensores, microcontrolador, conectividade, gabinete). O sistema vai identificar as leis automaticamente para o Bloco 3.'
-        );
-    } else if (numeroBlocoDestino === 3) {
-        atualizarBalaoMascote(
-            'ETAPA 3 DE 3 — CONFERÊNCIA AUTOMÁTICA E VERIFICAÇÃO',
-            'Bloco 2 concluído! Confira o enquadramento automático e gere seu diagnóstico.',
-            'Abaixo está o resumo técnico-jurídico auto-marcado pelo sistema com base no seu relato. Agora clique em <strong>"Verificar se Já Existe, Enquadrar nas Leis e Proteger Meu Projeto →"</strong> para liberar a Etapa 02!'
+            'Conte como funciona o seu projeto (placa, sensores, microcontrolador, conectividade, gabinete). Escolha o rigor da varredura e clique em <strong>"Verificar se o Projeto já existe"</strong> para iniciar a auditoria de patentes.'
         );
     }
 
@@ -2422,11 +2412,10 @@ function atualizarVisibilidadeBlocosUsuario() {
     const b3 = document.getElementById('bloco-form-3');
     const ind1 = document.getElementById('indicador-bloco-1');
     const ind2 = document.getElementById('indicador-bloco-2');
-    const ind3 = document.getElementById('indicador-bloco-3');
 
     if (b1) b1.style.display = blocoAtualUsuario === 1 ? 'block' : 'none';
     if (b2) b2.style.display = blocoAtualUsuario === 2 ? 'block' : 'none';
-    if (b3) b3.style.display = blocoAtualUsuario === 3 ? 'block' : 'none';
+    if (b3) b3.style.display = 'none';
 
     const estilizarIndicador = (el, numero, titulo) => {
         if (!el) return;
@@ -2451,9 +2440,8 @@ function atualizarVisibilidadeBlocosUsuario() {
         }
     };
 
-    estilizarIndicador(ind1, 1, 'Dados do Titular');
-    estilizarIndicador(ind2, 2, 'Descrição e Código');
-    estilizarIndicador(ind3, 3, 'Enquadramento e Verificação');
+    estilizarIndicador(ind1, 1, 'Identificação do Titular');
+    estilizarIndicador(ind2, 2, 'Descrição Técnica & Auditoria');
 }
 
 function aplicarRegrasDePerfilNaInterface() {
@@ -2476,29 +2464,17 @@ function aplicarRegrasDePerfilNaInterface() {
     if (tab1) {
         tab1.style.display = '';
         tab1.style.opacity = '1';
-        tab1.innerHTML = '<span class="tab-step">01</span> Etapa 1: Cadastro em Blocos';
+        tab1.innerHTML = '<span class="tab-step">01</span> Etapa 1: Cadastro &amp; Auditoria';
     }
     if (tab2) {
         tab2.style.display = '';
         tab2.style.opacity = etapaAbaLiberadaUsuario >= 2 ? '1' : '0.45';
         tab2.innerHTML = etapaAbaLiberadaUsuario >= 2
-            ? '<span class="tab-step">02</span> Etapa 2: Verificação & Parecer'
-            : '<span class="tab-step">🔒</span> Etapa 2: Verificação (Conclua a Etapa 1)';
+            ? '<span class="tab-step">02</span> Etapa 2: Diagnóstico &amp; Anterioridade'
+            : '<span class="tab-step">🔒</span> Etapa 2: Diagnóstico (Conclua a Etapa 1)';
     }
     if (tab3) {
-        tab3.style.display = '';
-        tab3.style.opacity = etapaAbaLiberadaUsuario >= 3 ? '1' : '0.45';
-        tab3.innerHTML = etapaAbaLiberadaUsuario >= 3
-            ? '<span class="tab-step">03</span> Etapa 3: Certificado & Contratos'
-            : '<span class="tab-step">🔒</span> Etapa 3: Certificado (Fixe na Etapa 2)';
-    }
-
-    const btnTopoEtapa3 = document.getElementById('btn-topo-ir-etapa-3');
-    if (btnTopoEtapa3) {
-        btnTopoEtapa3.style.opacity = etapaAbaLiberadaUsuario >= 3 ? '1' : '0.5';
-        btnTopoEtapa3.innerHTML = etapaAbaLiberadaUsuario >= 3
-            ? 'Acessar Certificado e Contratos (Etapa 3) →'
-            : '🔒 Fixe seu Projeto Abaixo para Liberar a Etapa 3';
+        tab3.style.display = 'none';
     }
 
     atualizarVisibilidadeBlocosUsuario();
@@ -2507,11 +2483,11 @@ function aplicarRegrasDePerfilNaInterface() {
 // Navegação entre abas (com liberação progressiva por etapas)
 function alternarAba(abaId) {
     if (abaId === 'aba-relatorio' && etapaAbaLiberadaUsuario < 2) {
-        alert('🔒 Etapa 2 Bloqueada:\n\nConclua primeiro os 3 blocos da Etapa 1 e envie seu projeto para visualizar a Verificação de Existência e o Parecer Legal.');
+        alert('🔒 Etapa 2 Bloqueada:\n\nConclua a descrição do projeto no Bloco 2 e clique em "Verificar se o Projeto já existe" para realizar a auditoria e liberar o Diagnóstico.');
         return;
     }
-    if (abaId === 'aba-minutas' && etapaAbaLiberadaUsuario < 3) {
-        alert('🔒 Etapa 3 Bloqueada:\n\nPara liberar a Etapa 3 (Certificado e Contratos), conclua primeiro a Etapa 2 clicando no botão laranja "Fixar Projeto no Meu CPF/CNPJ Agora" (ou "Reivindicar e Fixar Criação em Meu Nome").');
+    if (abaId === 'aba-minutas') {
+        baixarCertificadoDireto();
         return;
     }
 
@@ -3456,12 +3432,36 @@ Resumo de Verificação SHA-512: ${hashReal}`;
 
 // Exporta a minuta atual como arquivo .doc (Word)
 function baixarMinutaArquivo() {
-    const conteudo = document.getElementById('contract-viewer-box').textContent;
+    const box = document.getElementById('contract-viewer-box');
+    const conteudo = box ? box.textContent : '';
     const blob = new Blob([conteudo], { type: 'application/msword;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
     a.download = 'Documento_Observatorio_PI_Hardware.doc';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
+// Exporta diretamente o Certificado Oficial de Anterioridade e Titularidade SHA-512
+function baixarCertificadoDireto() {
+    gerarMinutaAutomatizada('CERTIFICADO_TITULARIDADE');
+    const viewer = document.getElementById('contract-viewer-box');
+    const conteudo = viewer ? viewer.textContent : '';
+    if (!conteudo) {
+        alert('Realize primeiro a auditoria do seu projeto para gerar o Certificado Oficial.');
+        return;
+    }
+    const blob = new Blob([conteudo], { type: 'application/msword;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    const nomeLimpo = (ultimoProjetoAvaliado && ultimoProjetoAvaliado.nome_projeto)
+        ? ultimoProjetoAvaliado.nome_projeto.replace(/[^a-zA-Z0-9_-]/g, '_')
+        : 'Invenção';
+    a.download = `Certificado_Oficial_Anterioridade_SHA512_${nomeLimpo}.doc`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
