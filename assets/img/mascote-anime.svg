@@ -1,57 +1,55 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160">
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
   <defs>
-    <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#ff7a18"/>
-      <stop offset="100%" stop-color="#c2410c"/>
-    </linearGradient>
-    <linearGradient id="hairGrad" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#fb923c"/>
+    <radialGradient id="cyberGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="rgba(249, 115, 22, 0.35)"/>
+      <stop offset="60%" stop-color="rgba(37, 99, 235, 0.15)"/>
+      <stop offset="100%" stop-color="rgba(2, 6, 23, 0)"/>
+    </radialGradient>
+    <linearGradient id="ringGold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fbbf24"/>
+      <stop offset="50%" stop-color="#f97316"/>
       <stop offset="100%" stop-color="#ea580c"/>
+    </linearGradient>
+    <linearGradient id="ringBlue" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0%" stop-color="#0284c7"/>
+      <stop offset="50%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#818cf8"/>
+    </linearGradient>
+    <linearGradient id="darkPlate" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#090d16"/>
     </linearGradient>
   </defs>
 
-  <!-- Moldura Estilo Avatar Anime 2001 -->
-  <rect x="6" y="6" width="148" height="148" rx="22" fill="#1a1423" stroke="url(#bgGrad)" stroke-width="4"/>
-  <rect x="12" y="12" width="136" height="136" rx="16" fill="none" stroke="#fed7aa" stroke-width="1" stroke-dasharray="4,4" opacity="0.5"/>
+  <circle cx="100" cy="100" r="94" fill="url(#cyberGlow)"/>
+  <circle cx="100" cy="100" r="88" fill="none" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1.5"/>
+  <circle cx="100" cy="100" r="88" fill="none" stroke="url(#ringGold)" stroke-width="2.5" stroke-dasharray="75, 45, 20, 30"/>
+  <circle cx="100" cy="100" r="80" fill="none" stroke="url(#ringBlue)" stroke-width="1.5" stroke-dasharray="40, 60, 80, 20"/>
 
-  <!-- Antenas Mecha / Cyber Headset Anime Anos 2000 (Estilo Chobits / Lain / MegaMan Battle Network) -->
-  <polygon points="18,65 36,42 38,85" fill="#f97316" stroke="#fff7ed" stroke-width="2"/>
-  <polygon points="142,65 124,42 122,85" fill="#f97316" stroke="#fff7ed" stroke-width="2"/>
+  <polygon points="100,28 158,62 158,138 100,172 42,138 42,62" 
+           fill="url(#darkPlate)" stroke="rgba(255, 255, 255, 0.16)" stroke-width="2"/>
 
-  <!-- Cabelo Traseiro Anime -->
-  <path d="M 32 52 Q 80 18 128 52 L 136 122 Q 115 110 112 135 L 48 135 Q 45 110 24 122 Z" fill="url(#hairGrad)"/>
+  <g stroke="url(#ringGold)" stroke-width="1.8" fill="none" stroke-linecap="round">
+    <path d="M 64 74 L 82 74 L 92 84"/>
+    <circle cx="64" cy="74" r="2.5" fill="#f97316"/>
+    <path d="M 136 74 L 118 74 L 108 84"/>
+    <circle cx="136" cy="74" r="2.5" fill="#f97316"/>
+    <path d="M 64 126 L 82 126 L 92 116"/>
+    <circle cx="64" cy="126" r="2.5" fill="#f97316"/>
+    <path d="M 136 126 L 118 126 L 108 116"/>
+    <circle cx="136" cy="126" r="2.5" fill="#f97316"/>
+  </g>
 
-  <!-- Rosto Estilo Anime -->
-  <path d="M 46 62 Q 46 122 80 126 Q 114 122 114 62 Z" fill="#ffedd5" stroke="#9a3412" stroke-width="2"/>
+  <rect x="98.5" y="66" width="3" height="54" rx="1.5" fill="#f8fafc"/>
+  <path d="M 72 76 L 128 76" stroke="url(#ringGold)" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="100" cy="76" r="4.5" fill="#f8fafc" stroke="#f97316" stroke-width="1.5"/>
 
-  <!-- Franja Pontuda Clássica Anime Anos 2000 -->
-  <path d="M 38 56 Q 55 30 80 32 Q 105 30 122 56 L 112 78 L 98 58 L 88 82 L 76 58 L 64 82 L 52 60 L 42 78 Z" fill="url(#hairGrad)" stroke="#7c2d12" stroke-width="1.8"/>
+  <path d="M 75 77 L 67 92 M 75 77 L 83 92" stroke="#94a3b8" stroke-width="1.2"/>
+  <path d="M 65 92 Q 75 99 85 92 Z" fill="#0284c7" stroke="#38bdf8" stroke-width="1.2"/>
 
-  <!-- Olhos Grandes Brilhantes de Anime -->
-  <!-- Olho Esquerdo -->
-  <ellipse cx="63" cy="88" rx="9" ry="11" fill="#431407"/>
-  <ellipse cx="63" cy="90" rx="7" ry="8" fill="#ea580c"/>
-  <circle cx="60" cy="84" r="3.5" fill="#ffffff"/>
-  <circle cx="66" cy="93" r="1.8" fill="#ffffff"/>
+  <path d="M 125 77 L 117 92 M 125 77 L 133 92" stroke="#94a3b8" stroke-width="1.2"/>
+  <path d="M 115 92 Q 125 99 135 92 Z" fill="#ea580c" stroke="#fbbf24" stroke-width="1.2"/>
 
-  <!-- Olho Direito -->
-  <ellipse cx="97" cy="88" rx="9" ry="11" fill="#431407"/>
-  <ellipse cx="97" cy="90" rx="7" ry="8" fill="#ea580c"/>
-  <circle cx="94" cy="84" r="3.5" fill="#ffffff"/>
-  <circle cx="100" cy="93" r="1.8" fill="#ffffff"/>
-
-  <!-- Blush nas Bochechas -->
-  <ellipse cx="52" cy="102" rx="5" ry="2.5" fill="#fb7185" opacity="0.65"/>
-  <ellipse cx="108" cy="102" rx="5" ry="2.5" fill="#fb7185" opacity="0.65"/>
-
-  <!-- Sorriso Anime Confiante -->
-  <path d="M 73 106 Q 80 114 87 106" fill="none" stroke="#9a3412" stroke-width="2.5" stroke-linecap="round"/>
-
-  <!-- Visor / Óculos Cyber Laranja no Topo da Cabeça -->
-  <rect x="48" y="42" width="64" height="14" rx="7" fill="#ffedd5" fill-opacity="0.85" stroke="#ea580c" stroke-width="2"/>
-  <line x1="60" y1="46" x2="72" y2="52" stroke="#f97316" stroke-width="2"/>
-
-  <!-- Badge NAVI 2001 -->
-  <rect x="38" y="132" width="84" height="18" rx="6" fill="#f97316"/>
-  <text x="80" y="145" font-family="monospace" font-size="11" font-weight="bold" fill="#ffffff" text-anchor="middle">NAVI-PI 2001</text>
+  <rect x="90" y="112" width="20" height="16" rx="3" fill="#0f172a" stroke="#38bdf8" stroke-width="1.5"/>
+  <circle cx="100" cy="120" r="3" fill="#38bdf8"/>
 </svg>
