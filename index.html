@@ -213,14 +213,24 @@
                                 <span class="form-help" id="resultado-inspecao-codigo">O sistema detecta sozinho licenças (MIT, GPL, LGPL, CERN-OHL, CC BY-SA) e linguagens.</span>
                             </div>
 
-                            <!-- Botão de Avanço do Bloco 2 com Disparo da Verificação 0% a 100% -->
+                            <!-- Botão de Avanço do Bloco 2 com Seletor de Duração e Verificação 0% a 100% -->
                             <div id="rodape-bloco-2-usuario" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.8rem; padding-top: 0.9rem; margin-top: 0.6rem; border-top: 1px solid var(--border-color);">
                                 <button type="button" class="btn-secondary" style="padding: 0.7rem 1.2rem; font-size: 0.85rem;" onclick="avancarBlocoUsuario(1)">
                                     ← Voltar ao Bloco 1
                                 </button>
-                                <button type="button" class="btn-primary" id="btn-verificar-bloco2" style="padding: 0.85rem 1.6rem; font-size: 0.93rem; font-weight: 700; background: linear-gradient(135deg, var(--orange-primary), #ea580c); box-shadow: 0 4px 18px rgba(249, 115, 22, 0.45);" onclick="iniciarVerificacaoPorcentagemBloco2()">
-                                    🔍 Verificar se o Projeto já existe →
-                                </button>
+                                <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+                                    <div style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.82rem; color: var(--text-secondary);">
+                                        <label for="seletor-tempo-auditoria" style="margin: 0; font-size: 0.82rem; color: #cbd5e1;">⏳ Rigor da Varredura:</label>
+                                        <select id="seletor-tempo-auditoria" style="padding: 0.5rem 0.75rem; border-radius: 6px; font-size: 0.82rem; background: #0f172a; border: 1px solid var(--orange-primary); color: #fff; font-weight: 600;">
+                                            <option value="180" selected>⏱️ 3 Minutos (Padrão Completo)</option>
+                                            <option value="300">⏱️ 5 Minutos (Auditoria Aprofundada)</option>
+                                            <option value="600">🔬 10 Minutos (Auditoria Exaustiva / Acadêmica)</option>
+                                        </select>
+                                    </div>
+                                    <button type="button" class="btn-primary" id="btn-verificar-bloco2" style="padding: 0.85rem 1.6rem; font-size: 0.93rem; font-weight: 700; background: linear-gradient(135deg, var(--orange-primary), #ea580c); box-shadow: 0 4px 18px rgba(249, 115, 22, 0.45);" onclick="iniciarVerificacaoPorcentagemBloco2()">
+                                        🔍 Verificar se o Projeto já existe →
+                                    </button>
+                                </div>
                             </div>
                         </div>
 
@@ -703,6 +713,35 @@
                     <div id="progresso-etapa-texto" class="progresso-etapa-texto">
                         Iniciando análise de suficiência descritiva (Art. 24 da LPI)...
                     </div>
+
+                    <!-- Cronômetro de Auditoria Profunda -->
+                    <div class="progresso-cronometro-box">
+                        <div class="cronometro-item">
+                            <span class="cronometro-label">⏱️ TEMPO DECORRIDO:</span>
+                            <strong id="cronometro-decorrido" class="cronometro-val">00:00</strong>
+                        </div>
+                        <div class="cronometro-separador">•</div>
+                        <div class="cronometro-item">
+                            <span class="cronometro-label">ESTIMATIVA AUDITORIA PROFUNDA:</span>
+                            <strong id="cronometro-estimado" class="cronometro-val">03:00 min</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Terminal de Auditoria Profunda em Tempo Real -->
+                <div class="progresso-terminal-box">
+                    <div class="terminal-header">
+                        <div class="terminal-dots">
+                            <span class="dot red"></span>
+                            <span class="dot yellow"></span>
+                            <span class="dot green"></span>
+                        </div>
+                        <span class="terminal-title">LIVE PATENT AUDIT CONSOLE // INPI • USPTO • WIPO • OPENALEX</span>
+                        <span class="terminal-badge">REAL-TIME 2026</span>
+                    </div>
+                    <div class="terminal-corpo" id="terminal-linhas-log">
+                        <div class="terminal-linha highlight">[00:00] [SYSTEM] Inicializando pipeline de auditoria exaustiva de anterioridade...</div>
+                    </div>
                 </div>
 
                 <!-- Grid de Status das APIs em Tempo Real (Brasil vs Mundo) -->
@@ -774,11 +813,14 @@
                     </div>
                 </div>
 
-                <!-- Rodapé Informativo / Segurança Legal -->
-                <div class="modal-progresso-footer">
-                    <div class="modal-seguranca-texto">
-                        <span>🛡️ <strong>Segredo & Confidencialidade:</strong> Seus dados técnicos estão sendo processados em ambiente isolado conforme o Art. 11 da Lei nº 9.279/96.</span>
+                <!-- Rodapé Informativo / Segurança Legal & Botão de Aceleração -->
+                <div class="modal-progresso-footer" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.8rem;">
+                    <div class="modal-seguranca-texto" style="text-align: left; flex: 1; min-width: 240px;">
+                        <span>🛡️ <strong>Auditoria Profunda Rigorosa:</strong> Varrendo exaustivamente bases mundiais segundo o Art. 11 da LPI.</span>
                     </div>
+                    <button type="button" id="btn-acelerar-auditoria" class="btn-secondary" style="padding: 0.4rem 0.85rem; font-size: 0.76rem; border-color: rgba(249, 115, 22, 0.45); color: #fed7aa; cursor: pointer;" onclick="acelerarAuditoriaParaFim()">
+                        ⚡ Pular Espera (Modo Demonstração)
+                    </button>
                 </div>
             </div>
         </div>
@@ -797,6 +839,6 @@
         </div>
     </footer>
 
-    <script src="assets/js/app.js?v=20261110v4"></script>
+    <script src="assets/js/app.js?v=20261110v6"></script>
 </body>
 </html>

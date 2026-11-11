@@ -1248,6 +1248,104 @@ textarea:focus {
     gap: 0.5rem;
 }
 
+/* Cronômetro e Terminal Live de Auditoria Profunda (3 a 10 minutos) */
+.progresso-cronometro-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.9rem;
+    margin-top: 0.85rem;
+    padding: 0.5rem 0.9rem;
+    background: rgba(249, 115, 22, 0.08);
+    border: 1px solid rgba(249, 115, 22, 0.3);
+    border-radius: var(--radius-sm);
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+}
+
+.cronometro-val {
+    color: #fff;
+    font-family: monospace;
+    font-size: 0.92rem;
+    letter-spacing: 0.5px;
+}
+
+.progresso-terminal-box {
+    background: #0d0a14;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: var(--radius-sm);
+    margin-bottom: 1.25rem;
+    overflow: hidden;
+    font-family: 'JetBrains Mono', monospace, Consolas, sans-serif;
+}
+
+.terminal-header {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.4rem 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 0.72rem;
+}
+
+.terminal-dots {
+    display: flex;
+    gap: 0.3rem;
+}
+
+.terminal-dots .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.dot.red { background: #ef4444; }
+.dot.yellow { background: #f59e0b; }
+.dot.green { background: #10b981; }
+
+.terminal-title {
+    color: var(--text-secondary);
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.terminal-badge {
+    background: rgba(249, 115, 22, 0.2);
+    color: #fed7aa;
+    padding: 0.1rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.65rem;
+    font-weight: 700;
+}
+
+.terminal-corpo {
+    padding: 0.65rem 0.85rem;
+    height: 105px;
+    overflow-y: auto;
+    font-size: 0.75rem;
+    line-height: 1.5;
+    color: #94a3b8;
+    scrollbar-width: thin;
+}
+
+.terminal-linha {
+    margin-bottom: 0.25rem;
+    word-break: break-all;
+}
+
+.terminal-linha.highlight {
+    color: #fed7aa;
+}
+
+.terminal-linha.success {
+    color: #6ee7b7;
+}
+
+.terminal-linha.warn {
+    color: #fde047;
+}
+
 /* Grid de Status das APIs */
 .progresso-apis-grid {
     display: grid;
