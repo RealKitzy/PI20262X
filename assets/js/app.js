@@ -1275,7 +1275,9 @@ async function verificarExistenciaLocalEApi(dados, diag, acao = 'VERIFICAR') {
 const NIVEIS_RIGOR_VARREDURA = {
     rapida:   { rotulo: 'Rápida',   porBase: 10, variantes: 1 },
     padrao:   { rotulo: 'Padrão',   porBase: 25, variantes: 3 },
-    profunda: { rotulo: 'Profunda', porBase: 50, variantes: 6 }
+    profunda: { rotulo: 'Profunda', porBase: 50, variantes: 6 },
+    // Completa: mais combinações de termos, 100 resultados por base, as 2 áreas CIP mais fortes e patentes brasileiras
+    completa: { rotulo: 'Completa', porBase: 100, variantes: 12, extrasEpo: true }
 };
 
 // Só conta como anterioridade o resultado que contém pelo menos esta fração dos termos buscados
@@ -1285,7 +1287,7 @@ const INTERVALO_ENTRE_CONSULTAS_GITHUB_MS = 6500;
 
 function obterNivelRigorSelecionado() {
     const el = document.getElementById('seletor-tempo-auditoria');
-    const chave = el ? el.value : 'padrao';
+    const chave = el ? el.value : 'profunda';
     return Object.assign({ chave }, NIVEIS_RIGOR_VARREDURA[chave] || NIVEIS_RIGOR_VARREDURA.padrao);
 }
 
@@ -1351,29 +1353,37 @@ function montarTermosDeBusca(dados) {
     const candidatosEn = []; // { termo, nivel, ordem }
     const portugues = [];
     let ordem = 0;
-    const addEn = (termo, nivelExtra = 0) => {
+    const origemPt = {}; // termo em inglês -> palavra que o usuário escreveu (para mostrar em português)
+    const addEn = (termo, nivelExtra = 0, origem = '') => {
         if (!termo) return;
         candidatosEn.push({ termo, nivel: nivelTermoEn(termo) + nivelExtra, ordem: ordem++ });
+        if (origem && origem !== termo && !origemPt[termo]) origemPt[termo] = origem;
     };
 
     // 1. Palavras-chave informadas pelo usuário (prioridade máxima). Aceita inglês ou português.
     const extras = normalizarTextoComparacaoJS(dados.palavras_chave_extra || '').split(' ').filter(p => p.length >= 2 && !STOPWORDS_BUSCA.has(p)).slice(0, 6);
-    extras.forEach(p => addEn(traduzirPalavraPt(p) || p, 10));
+    extras.forEach(p => addEn(traduzirPalavraPt(p) || p, 10, p));
 
     // 2. Descrição: primeiro as expressões de várias palavras, depois as palavras soltas.
     //    O nome do projeto só contribui com termos conhecidos (nomes inventados como "Senpu" atrapalham a busca).
     const processar = (textoBruto, ehNome) => {
         let texto = ` ${normalizarTextoComparacaoJS(textoBruto)} `;
+        // Guarda a grafia original (com acento) de cada palavra, para exibir "acelerômetro" e não "acelerometro"
+        const grafia = {};
+        (String(textoBruto).toLowerCase().match(/[\p{L}\p{N}]+/gu) || []).forEach(w => {
+            const n = normalizarTextoComparacaoJS(w);
+            if (n && !grafia[n]) grafia[n] = w;
+        });
         Object.keys(EXPRESSOES_PT_EN).sort((a, b) => b.length - a.length).forEach(expr => {
             if (texto.includes(` ${expr} `)) {
-                EXPRESSOES_PT_EN[expr].forEach(t => addEn(t));
+                EXPRESSOES_PT_EN[expr].forEach(t => addEn(t, 0, expr));
                 texto = texto.split(` ${expr} `).join(' ');
             }
         });
         texto.trim().split(' ').forEach(p => {
             if (!p || STOPWORDS_BUSCA.has(p) || /^\d+$/.test(p)) return;
             const traducao = traduzirPalavraPt(p);
-            if (traducao) { addEn(traducao); return; }
+            if (traducao) { addEn(traducao, 0, grafia[p] || p); return; }
             if (SIGLAS_TECNICAS.includes(p)) { addEn(p); if (!ehNome) portugues.push(p); return; }
             if (Object.prototype.hasOwnProperty.call(NIVEL_TERMO_EN, p)) { addEn(p); return; } // já escrito em inglês
             if (ehNome || PALAVRAS_GENERICAS_BUSCA.has(p) || p.length < 5) return;
@@ -1402,7 +1412,7 @@ function montarTermosDeBusca(dados) {
     ingles = semSinonimos(ingles);
     const vistosPt = new Set();
     const pt = semSinonimos(portugues.filter(t => !vistosPt.has(t) && vistosPt.add(t)));
-    return { ingles: ingles.slice(0, 8), portugues: pt.slice(0, 8) };
+    return { ingles: ingles.slice(0, 8), portugues: pt.slice(0, 8), origemPt };
 }
 
 // Gera as variantes de consulta (quanto maior o rigor, mais combinações de termos são consultadas)
@@ -1486,8 +1496,8 @@ async function consultarOpenAlex(termosConsulta, porPagina) {
 }
 
 // Patentes reais no EPO (via backend PHP). Retorna { estado, resultados, mensagem }
-async function consultarPatentesEpo(termosConsulta, porPagina, subclasseCip = '') {
-    const filtroCip = subclasseCip ? `&cip=${encodeURIComponent(subclasseCip)}` : '';
+async function consultarPatentesEpo(termosConsulta, porPagina, subclasseCip = '', pais = '') {
+    const filtroCip = (subclasseCip ? `&cip=${encodeURIComponent(subclasseCip)}` : '') + (pais ? `&pais=${encodeURIComponent(pais)}` : '');
     const url = `api/patentes.php?q=${encodeURIComponent(termosConsulta.join(' '))}&n=${porPagina}${filtroCip}`;
     let json;
     try {
@@ -1587,13 +1597,16 @@ async function buscarEstadoDaTecnicaMundialAoVivo(dados, diag, opcoes = {}) {
         lista.forEach(item => {
             const relEn = calcularRelevanciaResultado(termosPrincipaisEn.length >= 2 ? termosPrincipaisEn : termosConsulta, item.textoComparacao);
             const relPt = termosPrincipaisPt.length >= 2 ? calcularRelevanciaResultado(termosPrincipaisPt, item.textoComparacao) : { percentual: 0, encontrados: [] };
-            const rel = relPt.percentual > relEn.percentual ? relPt : relEn;
+            const usouPt = relPt.percentual > relEn.percentual;
+            const rel = usouPt ? relPt : relEn;
+            const termosBase = usouPt ? termosPrincipaisPt : (termosPrincipaisEn.length >= 2 ? termosPrincipaisEn : termosConsulta);
             const chave = `${item.base}:${item.id}`;
             const anterior = mapaResultados.get(chave);
             if (!anterior || rel.percentual > anterior.relevancia) {
                 mapaResultados.set(chave, Object.assign({}, item, {
                     relevancia: rel.percentual,
                     termosEncontrados: rel.encontrados,
+                    termosBase,
                     consulta: termosConsulta.join(' ')
                 }));
             }
@@ -1714,6 +1727,30 @@ async function buscarEstadoDaTecnicaMundialAoVivo(dados, diag, opcoes = {}) {
         }
     }
 
+    // Rigor "Completa": consultas extras de patentes (não interrompem a busca se falharem)
+    if (rigor.extrasEpo && !deveInterromper() && ['ok', 'parcial'].includes(status.patentes.estado) && variantes[0] && variantes[0].length >= 2) {
+        const doisTermos = variantes[0].slice(0, 2);
+        const subclasses = [...new Set((corr.codigos_cip || []).map(c => (c.match(/^[A-H]\d{2}[A-Z]/) || [''])[0]).filter(Boolean))];
+        const extras = [];
+        if (subclasses[1]) extras.push({ cip: subclasses[1], pais: '', rotulo: `área ${subclasses[1]}` });
+        extras.push({ cip: '', pais: 'BR', rotulo: 'patentes brasileiras (BR)' });
+        if (variantes[0].length >= 1) extras.push({ cip: '', pais: 'BR', rotulo: 'patentes brasileiras (BR), termo principal', termos: variantes[0].slice(0, 1) });
+        for (const ex of extras) {
+            if (deveInterromper()) break;
+            const termosEx = ex.termos || doisTermos;
+            aoProgredir({ base: 'patentes', fase: 'info', mensagem: `Consultando ${ex.rotulo}: "${termosEx.join(' ')}"` });
+            const resEx = await consultarPatentesEpo(termosEx, rigor.porBase, ex.cip, ex.pais);
+            if (resEx.estado === 'ok') {
+                status.patentes.consultas++;
+                status.patentes.recebidos += resEx.resultados.length;
+                registrar(resEx.resultados, variantes[0]);
+                aoProgredir({ base: 'patentes', fase: 'info', recebidos: resEx.resultados.length, mensagem: `${resEx.resultados.length} resultados (${ex.rotulo}).` });
+            } else {
+                aoProgredir({ base: 'patentes', fase: 'info', mensagem: `Consulta de ${ex.rotulo} indisponível (${resEx.mensagem || resEx.estado}). Seguindo sem ela.` });
+            }
+        }
+    }
+
     const interrompida = deveInterromper();
     const todos = Array.from(mapaResultados.values()).sort((a, b) => b.relevancia - a.relevancia || (b.estrelas || 0) - (a.estrelas || 0));
     const relevantes = todos.filter(r => r.relevancia >= LIMIAR_RELEVANCIA_ANTERIORIDADE && r.termosEncontrados.length >= 2);
@@ -1777,6 +1814,50 @@ function renderizarItemResultadoMundial(item) {
         </div>`;
 }
 
+// Os 3 resultados mais próximos do projeto, com os termos que batem e os que faltam.
+// Os termos que faltam são pistas do diferencial do projeto.
+function renderizarDestaqueMaisParecidos(r) {
+    const pesoBase = { Patente: 3, OpenAlex: 2, GitHub: 1 };
+    const top = r.todos
+        .filter(x => x.termosEncontrados && x.termosEncontrados.length >= 1)
+        .slice()
+        .sort((a, b) => b.relevancia - a.relevancia || b.termosEncontrados.length - a.termosEncontrados.length || (pesoBase[b.base] || 0) - (pesoBase[a.base] || 0))
+        .slice(0, 3);
+    if (top.length === 0) return '';
+    const origem = (r.termos && r.termos.origemPt) || {};
+    const rotuloTermo = t => origem[t] ? `${escaparHtml(origem[t])} <span class="termo-en">(${escaparHtml(t)})</span>` : escaparHtml(t);
+    const nomeBase = { Patente: 'Patente', OpenAlex: 'Artigo', GitHub: 'Repositório' };
+    const cards = top.map((item, i) => {
+        const achados = new Set(item.termosEncontrados);
+        const faltam = (item.termosBase || []).filter(t => !achados.has(t));
+        const chips = [
+            ...item.termosEncontrados.map(t => `<span class="termo-chip ok" title="Aparece neste resultado">✓ ${rotuloTermo(t)}</span>`),
+            ...faltam.map(t => `<span class="termo-chip falta" title="Não aparece neste resultado">✗ ${rotuloTermo(t)}</span>`)
+        ].join('');
+        const leitura = faltam.length === 0
+            ? 'Tem todos os termos principais do seu projeto. Leia com atenção: pode descrever a mesma solução.'
+            : `Não fala de ${faltam.map(t => escaparHtml(origem[t] || t)).join(', ')}. Se isso for parte central do seu projeto, pode ser o seu diferencial.`;
+        return `
+            <div class="destaque-card">
+                <div class="destaque-topo">
+                    <span class="destaque-pos">${i + 1}º</span>
+                    <span class="result-base">${nomeBase[item.base] || escaparHtml(item.base)}</span>
+                    <span class="result-score">${item.relevancia}%</span>
+                </div>
+                <a class="result-titulo" href="${urlSegura(item.link)}" target="_blank" rel="noopener">${escaparHtml(item.titulo)}</a>
+                <span class="muted small">${escaparHtml(item.ano)}${item.titular ? ' • ' + escaparHtml(item.titular) : ''}</span>
+                <div class="termos-chips">${chips}</div>
+                <p class="destaque-leitura">${leitura}</p>
+            </div>`;
+    }).join('');
+    return `
+        <section class="destaque-parecidos">
+            <h4>Os mais parecidos com o seu projeto</h4>
+            <p class="muted small">Compare termo a termo. O que falta em cada um mostra onde o seu projeto pode ser diferente.</p>
+            <div class="destaque-grid">${cards}</div>
+        </section>`;
+}
+
 function renderizarResultadoBuscaMundial(r) {
     let html = `
         <ul class="bases-status">
@@ -1792,6 +1873,8 @@ function renderizarResultadoBuscaMundial(r) {
             <a href="${urlSegura(r.links.googlePatents)}" target="_blank" rel="noopener" class="btn-secondary btn-sm">Google Patents ↗</a>
             <a href="${urlSegura(r.links.espacenet)}" target="_blank" rel="noopener" class="btn-secondary btn-sm">Espacenet ↗</a>
         </div>`;
+
+    html += renderizarDestaqueMaisParecidos(r);
 
     if (r.relevantes.length > 0) {
         html += `<h4 style="margin-bottom:0.6rem;">${r.relevantes.length} resultado(s) parecido(s) com o seu projeto</h4>
@@ -2311,7 +2394,7 @@ async function iniciarVerificacaoPorcentagemBloco2() {
         return `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
     };
     // Estimativa: ~2 s por consulta OpenAlex + intervalo obrigatório entre consultas do GitHub
-    const estimativaMs = rigor.variantes * 2500 + Math.max(0, rigor.variantes - 1) * INTERVALO_ENTRE_CONSULTAS_GITHUB_MS + 3000;
+    const estimativaMs = rigor.variantes * (rigor.porBase >= 100 ? 4500 : 2500) + Math.max(0, rigor.variantes - 1) * INTERVALO_ENTRE_CONSULTAS_GITHUB_MS + (rigor.extrasEpo ? 12000 : 3000);
 
     if (elNomeProj) elNomeProj.textContent = dados.nome_projeto || 'Seu Projeto';
     if (elNum) elNum.textContent = '0';

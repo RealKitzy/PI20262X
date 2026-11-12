@@ -580,3 +580,20 @@ details.mais > div { margin-top: 0.6rem; }
     #aba-relatorio { display: block !important; }
     details.mais > div { display: block !important; }
 }
+
+/* Destaque: os mais parecidos com o projeto */
+.destaque-parecidos { margin: 1.1rem 0 1.4rem; }
+.destaque-parecidos h4 { margin: 0 0 0.2rem; }
+.destaque-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.75rem; margin-top: 0.7rem; }
+.destaque-card { border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface); padding: 0.85rem 0.95rem; display: flex; flex-direction: column; gap: 0.4rem; min-width: 0; }
+.destaque-card .result-titulo { font-weight: 600; line-height: 1.35; overflow-wrap: anywhere; }
+.destaque-topo { display: flex; align-items: center; gap: 0.4rem; }
+.destaque-topo .result-score { margin-left: auto; }
+.destaque-pos { font-weight: 700; color: var(--accent); font-size: 0.85rem; }
+.termos-chips { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.15rem; }
+.termo-chip { font-size: 0.74rem; padding: 0.12rem 0.5rem; border-radius: 999px; border: 1px solid var(--border); white-space: nowrap; }
+.termo-chip.ok { color: var(--ok); background: var(--ok-soft); border-color: var(--ok-border); }
+.termo-chip.falta { color: var(--muted); background: var(--surface-2); border-style: dashed; }
+.termo-en { opacity: 0.7; }
+.destaque-leitura { font-size: 0.82rem; color: var(--text-2); margin: 0.1rem 0 0; line-height: 1.45; }
+@media (max-width: 860px) { .destaque-grid { grid-template-columns: 1fr; } }

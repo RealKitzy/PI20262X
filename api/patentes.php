@@ -13,7 +13,7 @@
  * Sem as variáveis, responde { estado: "sem_chave" } e a interface mantém as patentes como "apenas link".
  * A chave fica só no servidor: o navegador nunca a recebe.
  *
- * Uso: GET api/patentes.php?q=irrigation+soil+sensor&n=25[&cip=A01G]
+ * Uso: GET api/patentes.php?q=irrigation+soil+sensor&n=25[&cip=A01G][&pais=BR]
  */
 
 header('Content-Type: application/json; charset=utf-8');
@@ -221,6 +221,15 @@ if ($cip !== '') {
         responder(['sucesso' => false, 'estado' => 'erro', 'mensagem' => 'Classe CIP inválida (use a subclasse, ex.: G08B).'], 400);
     }
     $cql .= ' and ic=' . $cip;
+}
+
+// Filtro opcional pelo país de publicação (ex.: BR = patentes brasileiras). Só 2 letras são aceitas.
+$pais = strtoupper(trim((string) ($_GET['pais'] ?? '')));
+if ($pais !== '') {
+    if (!preg_match('/^[A-Z]{2}$/', $pais)) {
+        responder(['sucesso' => false, 'estado' => 'erro', 'mensagem' => 'País inválido (use 2 letras, ex.: BR).'], 400);
+    }
+    $cql .= ' and pn=' . $pais;
 }
 
 $arquivoCache = pastaCacheEpo() . DIRECTORY_SEPARATOR . 'busca_' . md5($cql . '|' . $quantidade) . '.json';

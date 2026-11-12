@@ -70,3 +70,9 @@
   - O registro mostra quantas patentes existem no total para aquela consulta.
 - **Campo opcional "Palavras-chave da busca"** no Bloco 2: os termos digitados ali (em inglês ou português) têm prioridade máxima na busca e entram no cálculo da classe CIP.
 - Testado em 10 descrições de áreas diferentes e no fluxo completo (busca com o EPO simulado, gravação da prova de autoria e certificado).
+
+## Acréscimo: busca "Completa" e destaque dos mais parecidos
+
+- **Rigor padrão agora é "Profunda"** (~1 min, 50 resultados por base, 6 combinações de termos).
+- **Novo rigor "Completa"** (~2 a 3 min): 100 resultados por base e 12 combinações de termos. Faz também consultas extras de patentes: a segunda área CIP mais forte do projeto e patentes brasileiras (BR). Para isso, o `api/patentes.php` aceita o parâmetro `pais`, que só aceita 2 letras (ex.: `pais=BR`). Se uma consulta extra falhar, a busca segue sem ela.
+- **"Os mais parecidos com o seu projeto":** no resultado, os 3 itens mais próximos aparecem em destaque, com os termos do projeto que aparecem (✓) e os que faltam (✗), em português com o termo em inglês entre parênteses. Quando falta um termo, o texto aponta que aquilo pode ser o diferencial do projeto.
