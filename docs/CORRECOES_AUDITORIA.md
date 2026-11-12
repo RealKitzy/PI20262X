@@ -93,3 +93,5 @@
 - Registros feitos por **outros usuários** continuam bloqueando como antes.
 - O texto de colisão só cita o Art. 124, XIX (marca) quando o nome realmente colide. Antes ele aparecia sempre, mesmo com a Camada D dizendo que o nome estava livre.
 - **Falso "texto aleatório" corrigido:** a verificação de teclado batido juntava todas as palavras antes de procurar consoantes seguidas. Assim, "receptor GPS, LTE" virava "receptorgpslte" e uma descrição válida era recusada. Agora a verificação é feita palavra por palavra (PHP e JS).
+- **Camada B (desenho industrial) marcada sem motivo:** palavras soltas como "pulseira", "caixa", "plástico" ou "3D" (ex.: "mapear em 3D") marcavam a Camada B com o texto "você citou gabinete/carcaça própria". Agora ela só é marcada quando a descrição fala do visual do aparelho (carcaça, gabinete, invólucro, formato próprio ou anatômico, "impressa em 3D", impermeável etc.).
+- **Só a verificação completa:** o seletor de rigor saiu da tela. Toda verificação usa o nível "Completa" (100 resultados por base, 12 combinações de termos, área CIP e patentes brasileiras). No lugar do seletor aparece "Verificação completa — leva de 1 a 3 min".

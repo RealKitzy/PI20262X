@@ -170,13 +170,9 @@
                                 <button type="button" class="btn-secondary" onclick="avancarBlocoUsuario(1)">← Voltar</button>
                                 <div class="acoes-direita">
                                     <div class="rigor">
-                                        <label for="seletor-tempo-auditoria" title="Quanto maior o rigor, mais resultados e mais combinações de termos são consultados.">Rigor da busca</label>
-                                        <select id="seletor-tempo-auditoria">
-                                            <option value="rapida">Rápida — ~10 s</option>
-                                            <option value="padrao">Padrão — ~30 s</option>
-                                            <option value="profunda" selected>Profunda — ~1 min</option>
-                                            <option value="completa">Completa — ~1 a 3 min</option>
-                                        </select>
+                                        <!-- A verificação usa sempre o rigor "Completa" -->
+                                        <input type="hidden" id="seletor-tempo-auditoria" value="completa">
+                                        <span class="dica" title="100 resultados por base, 12 combinações de termos, área técnica e patentes brasileiras.">Verificação completa — leva de 1 a 3 min</span>
                                     </div>
                                     <button type="button" class="btn-primary btn-lg" id="btn-verificar-bloco2" onclick="iniciarVerificacaoPorcentagemBloco2()">Verificar se já existe</button>
                                 </div>
@@ -561,6 +557,6 @@
     </footer>
 
     <script src="assets/js/vocabulario.js?v=20261112v1"></script>
-    <script src="assets/js/app.js?v=20261112v20"></script>
+    <script src="assets/js/app.js?v=20261112v22"></script>
 </body>
 </html>

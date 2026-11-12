@@ -935,7 +935,9 @@ function interpretarRelatoLivre(gerarDireto, modoSilencioso = false) {
     // 5. Identificar Camadas Físicas (A, B, C) e Linguagem Embarcada (Camada E)
     const temPcb = !/(sem placa|sem pcb|apenas software)/i.test(t);
     const temChip = /(chip|semicondutor|sil[ií]cio|asic|topografia|m[aá]scara|padis|vlsi|gdsii|cmos)/i.test(t);
-    const temDesign = /(carca[cç]a|gabinete|3d|design|est[eé]tic|pl[aá]stic|formato|anat[oô]mic|pulseira|caixa|ornamental|inv[oó]lucro|imperme[aá]vel)/i.test(t);
+    // Só marca a Camada B quando a descrição fala do visual/gabinete do aparelho.
+    // Palavras soltas como "pulseira", "caixa" ou "3D" (ex.: "mapear em 3D") não bastam.
+    const temDesign = /(carca[cç]a|gabinete|inv[oó]lucro|\bcase\b|design (pr[oó]prio|exclusivo|ergon[oô]mico|diferenciado)|est[eé]tic|ornamental|anat[oô]mic|ergon[oô]mic|formato (pr[oó]prio|exclusivo|[uú]nico|diferenciado)|(impress[oa]s?|imprim\w*|modelad[oa]s?) em 3d|imperme[aá]vel)/i.test(t);
     const temFirmware = !/(sem software|sem firmware|apenas mec[aâ]nico)/i.test(t);
 
     if (temChip) achados.push('<strong>Camada C — Semicondutores / Topografia de Chip (Lei nº 11.484/2007, Arts. 26 a 55):</strong> proteção específica de 10 anos para o leiaute tridimensional de máscaras de silício e elegibilidade fiscal ao PADIS.');
@@ -1304,7 +1306,7 @@ const INTERVALO_ENTRE_CONSULTAS_GITHUB_MS = 6500;
 
 function obterNivelRigorSelecionado() {
     const el = document.getElementById('seletor-tempo-auditoria');
-    const chave = el ? el.value : 'profunda';
+    const chave = el ? el.value : 'completa';
     return Object.assign({ chave }, NIVEIS_RIGOR_VARREDURA[chave] || NIVEIS_RIGOR_VARREDURA.padrao);
 }
 
@@ -2344,7 +2346,7 @@ function avancarBlocoUsuario(numeroBlocoDestino) {
         atualizarBalaoMascote(
             'Etapa 1 de 2 — Descrição',
             'Agora descreva o seu projeto.',
-            'Conte o que ele faz e com quais peças. Quando os 4 itens estiverem marcados, escolha o rigor e clique em <strong>Verificar se já existe</strong>.'
+            'Conte o que ele faz e com quais peças. Quando os 4 itens estiverem marcados, clique em <strong>Verificar se já existe</strong>.'
         );
     }
 
@@ -3233,7 +3235,7 @@ function renderizarRelatorioDiagnostico(dados, diag, verif = null, anterioridade
                 passou: Boolean(dados.possui_design_externo_novo),
                 titulo: '5. Carcaça Externa / Visual 3D do Aparelho (Camada B)',
                 explicacaoSimples: dados.possui_design_externo_novo
-                    ? 'Você citou gabinete/carcaça própria, então também pode proteger o visual externo do aparelho.'
+                    ? 'A descrição cita gabinete, carcaça ou formato próprio, então também dá para proteger o visual externo do aparelho.'
                     : 'A descrição não cita carcaça ou formato externo próprio (é opcional e não impede o registro).',
                 lei: 'Art. 94 da Lei 9.279/96 (Registro de Desenho Industrial no INPI).'
             },

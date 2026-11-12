@@ -36,7 +36,7 @@ O sistema analisa o projeto dividindo o hardware em **6 camadas (A até F)**, co
   - Consulta **de verdade** a **OpenAlex** (artigos científicos) e o **GitHub** (repositórios). Cada resultado recebe uma nota de relevância (% dos termos técnicos encontrados) e só conta como anterioridade a partir de **60%**.
   - **Patentes:** consulta real no **EPO – Open Patent Services** (mesma base do Espacenet, cobre o mundo todo, inclusive documentos brasileiros BR), via `api/patentes.php`. Precisa de chave gratuita (veja "Ativar a busca de patentes" abaixo); sem chave, as patentes ficam como links diretos. O pePI/INPI continua só como link, porque o INPI não tem API pública de busca.
   - Se uma base falhar, a tela mostra "indisponível" ou "limite atingido" — o sistema **nunca** preenche resultados inventados.
-  - **Rigor da varredura:** Rápida (10 resultados/base, 1 consulta), Padrão (25 resultados/base, 3 consultas) e Profunda (50 resultados/base, 6 consultas). A barra de progresso acompanha as consultas reais; o GitHub sem autenticação aceita 10 buscas por minuto, por isso há pausas entre consultas.
+  - **Verificação completa (sempre):** até 100 resultados por base, 12 combinações de termos, busca na área técnica (classe CIP) e em patentes brasileiras (BR). Leva de 1 a 3 minutos. A barra de progresso acompanha as consultas reais; o GitHub sem autenticação aceita 10 buscas por minuto, por isso há pausas entre consultas.
 - **Certificado de Autoria SHA-512:** gera um arquivo `.txt` com o hash SHA-512 real do projeto e um protocolo interno do Observatório (não substitui o depósito no INPI). A página também pode ser impressa/salva em PDF.
 
 ---
