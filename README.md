@@ -27,17 +27,18 @@ O sistema analisa o projeto dividindo o hardware em **6 camadas (A até F)**, co
 
 ## O que tem no sistema
 
-- **Fluxo Guiado em 3 Blocos (Etapa 01):**
-  - **Bloco 1 (Identificação do Titular e Marca):** validação de nome e CPF/CNPJ (11 a 14 dígitos reais).
-  - **Bloco 2 (Descrição Técnica do Projeto):** possui validação em tempo real de **4 quesitos técnicos obrigatórios** (Art. 24 da LPI) para bloquear cadastros vazios, palavrões, letras aleatórias ou frases sem relação com hardware/IoT/software.
-  - **Bloco 3 (Conferência Automática das Leis):** mostra as camadas jurídicas, normas da ANATEL e LGPD detectadas automaticamente a partir da descrição.
+- **Fluxo guiado em 2 blocos (Etapa 1):**
+  - **Bloco 1 (Titular e nome do projeto):** validação de nome, CPF/CNPJ (11 ou 14 dígitos) e e-mail.
+  - **Bloco 2 (Descrição do projeto):** validação em tempo real de **4 itens obrigatórios** (Art. 24 da LPI: texto real, peças, ação e aplicação), que bloqueia textos vazios, palavrões, letras aleatórias ou frases sem relação com hardware/IoT/software. Há um campo opcional de **palavras-chave**, que têm prioridade na busca.
+  - As camadas jurídicas, normas da ANATEL e LGPD são detectadas automaticamente a partir da descrição.
 - **Busca de Anterioridade e Prova de Autoria (Etapa 02):**
   - Compara o projeto com a **base do Observatório** (registros feitos por usuários + um **acervo de referência ilustrativo** com 15 produtos conhecidos — esses itens são exemplos didáticos e **não** são registros oficiais do INPI).
-  - Consulta **de verdade** a **OpenAlex** (artigos científicos) e o **GitHub** (repositórios). Cada resultado recebe uma nota de relevância (% dos termos técnicos encontrados) e só conta como anterioridade a partir de **60%**.
+  - Consulta **de verdade** a **OpenAlex** (artigos científicos) e o **GitHub** (repositórios). Cada resultado recebe uma nota de relevância (% dos termos técnicos principais encontrados, aceitando sinônimos) e só conta como anterioridade a partir de **60%**. O relatório separa os que **fazem o mesmo** (todos os termos) dos que são **do mesmo tema**, e destaca os 3 mais parecidos mostrando quais termos batem e quais faltam.
+  - A descrição em português é traduzida para os termos usados em patentes e artigos (`assets/js/vocabulario.js`: cerca de 560 palavras e 85 expressões), e a classe CIP é sugerida por 55 regras de área técnica.
   - **Patentes:** consulta real no **EPO – Open Patent Services** (mesma base do Espacenet, cobre o mundo todo, inclusive documentos brasileiros BR), via `api/patentes.php`. Precisa de chave gratuita (veja "Ativar a busca de patentes" abaixo); sem chave, as patentes ficam como links diretos. O pePI/INPI continua só como link, porque o INPI não tem API pública de busca.
   - Se uma base falhar, a tela mostra "indisponível" ou "limite atingido" — o sistema **nunca** preenche resultados inventados.
   - **Verificação completa (sempre):** até 100 resultados por base, 12 combinações de termos, busca na área técnica (classe CIP) e em patentes brasileiras (BR). Leva de 1 a 3 minutos. A barra de progresso acompanha as consultas reais; o GitHub sem autenticação aceita 10 buscas por minuto, por isso há pausas entre consultas.
-- **Certificado de Autoria SHA-512:** gera um arquivo `.txt` com o hash SHA-512 real do projeto e um protocolo interno do Observatório (não substitui o depósito no INPI). A página também pode ser impressa/salva em PDF.
+- **Certificado de Autoria SHA-512:** gera um arquivo `.txt` com o hash SHA-512 real do projeto, o resumo da busca mundial (bases, termos e os mais parecidos) e um protocolo interno do Observatório (não substitui o depósito no INPI). A página também pode ser impressa/salva em PDF.
 
 ---
 
@@ -50,13 +51,16 @@ observatorio-pi-hardware/
 ├── nixpacks.toml               # Alternativa de build (Nixpacks)
 ├── railway.json                # Configuração de inicialização no Railway
 ├── assets/
-│   ├── css/styles.css          # Estilização das páginas e tema escuro/laranja
+│   ├── css/styles.css          # Estilização (tema claro e escuro)
 │   ├── img/                    # Imagens e ícones usados na interface
-│   └── js/app.js               # Lógica do formulário, validações e geração dos relatórios
+│   └── js/
+│       ├── app.js              # Lógica do formulário, buscas, validações e relatórios
+│       └── vocabulario.js      # Dicionário PT→EN, sinônimos e regras da classe CIP
 ├── api/
 │   ├── anterioridade.php       # Comparação com a base do Observatório e gravação do protocolo interno
 │   ├── patentes.php            # Busca real de patentes no EPO OPS (chave em variável de ambiente)
 │   └── diagnostico.php         # Processamento do enquadramento legal no backend
+├── router.php                  # Libera só a página, assets/ e api/ (bloqueia banco e configuração)
 ├── config/
 │   └── database.php            # Conexão com o banco SQLite (criado automaticamente) ou MySQL
 ├── database/
@@ -87,7 +91,7 @@ Depois, abra `http://localhost:8000` no navegador. O banco SQLite (`database/obs
 4. No Railway, abra o serviço → aba **Variables** e crie:
    - `EPO_OPS_KEY` = Consumer Key
    - `EPO_OPS_SECRET` = Consumer Secret
-5. O Railway refaz o deploy sozinho. No modal da verificação, o card "Patentes (EPO / Espacenet)" passa de "Apenas link" para "consultado".
+5. O Railway refaz o deploy sozinho. No modal da verificação, o card "Patentes (EPO)" passa de "Apenas link" para a quantidade de patentes recebidas.
 
 Para testar localmente: `EPO_OPS_KEY=... EPO_OPS_SECRET=... php -S localhost:8000 router.php`.
 As chaves ficam só no servidor (nunca vão para o navegador), e buscas repetidas são guardadas por 24 h para economizar a cota gratuita.

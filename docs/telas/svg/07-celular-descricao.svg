@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="390" height="2105" viewBox="0 0 390 2105">
+<svg xmlns="http://www.w3.org/2000/svg" width="390" height="2194" viewBox="0 0 390 2194">
 <title>Celular — Descrição do projeto</title>
-<rect id="fundo" x="0" y="0" width="390" height="2105" fill="rgb(245,246,248)"/>
+<rect id="fundo" x="0" y="0" width="390" height="2194" fill="rgb(245,246,248)"/>
 <text id="texto-4" x="16.0" y="122.6" font-family="Inter, sans-serif" font-size="22.4" font-weight="700" letter-spacing="-0.448" fill="rgb(15,23,42)">Seu projeto de hardware já</text>
 <text id="texto-5" x="16.0" y="151.7" font-family="Inter, sans-serif" font-size="22.4" font-weight="700" letter-spacing="-0.448" fill="rgb(15,23,42)">existe? Descubra antes de</text>
 <text id="texto-6" x="16.0" y="180.8" font-family="Inter, sans-serif" font-size="22.4" font-weight="700" letter-spacing="-0.448" fill="rgb(15,23,42)">registrar.</text>
@@ -22,91 +22,95 @@
 <rect id="tab-step-32" x="214.9" y="451.7" width="21.0" height="21.0" rx="10.5" fill="rgb(248,250,252)" fill-opacity="0.550" stroke="rgb(227,231,238)" stroke-opacity="0.550" stroke-width="1"/>
 <text id="texto-33" x="221.7" y="465.2" font-family="Inter, sans-serif" font-size="11.52" font-weight="700" fill="rgb(100,116,139)" fill-opacity="0.550">2</text>
 <text id="texto-34" x="245.2" y="465.4" font-family="Inter, sans-serif" font-size="13.12" font-weight="500" fill="rgb(100,116,139)" fill-opacity="0.550">Resultado</text>
-<rect id="guide-36" x="16.0" y="510.4" width="358.0" height="164.8" rx="8.0" fill="rgb(255,255,255)" fill-opacity="1.000"/>
+<rect id="guide-36" x="16.0" y="510.4" width="358.0" height="142.3" rx="8.0" fill="rgb(255,255,255)" fill-opacity="1.000"/>
 <rect id="guide-36-borda-top" x="16.0" y="510.4" width="358.0" height="1.0" fill="rgb(227,231,238)" fill-opacity="1.000"/>
-<rect id="guide-36-borda-right" x="373.0" y="510.4" width="1.0" height="164.8" fill="rgb(227,231,238)" fill-opacity="1.000"/>
-<rect id="guide-36-borda-bottom" x="16.0" y="674.2" width="358.0" height="1.0" fill="rgb(227,231,238)" fill-opacity="1.000"/>
-<rect id="guide-36-borda-left" x="16.0" y="510.4" width="3.0" height="164.8" fill="rgb(194,65,12)" fill-opacity="1.000"/>
+<rect id="guide-36-borda-right" x="373.0" y="510.4" width="1.0" height="142.3" fill="rgb(227,231,238)" fill-opacity="1.000"/>
+<rect id="guide-36-borda-bottom" x="16.0" y="651.7" width="358.0" height="1.0" fill="rgb(227,231,238)" fill-opacity="1.000"/>
+<rect id="guide-36-borda-left" x="16.0" y="510.4" width="3.0" height="142.3" fill="rgb(194,65,12)" fill-opacity="1.000"/>
 <rect id="guide-icon-37" x="36.6" y="525.8" width="28.0" height="28.0" rx="14.0" fill="rgb(255,244,237)" fill-opacity="1.000"/>
 <text id="texto-38" x="48.6" y="543.8" font-family="Inter, sans-serif" font-size="14.4" font-weight="700" fill="rgb(194,65,12)">i</text>
 <text id="texto-41" x="79.0" y="538.0" font-family="Inter, sans-serif" font-size="11.52" font-weight="600" letter-spacing="0.6912" fill="rgb(100,116,139)">ETAPA 1 DE 2 — DESCRIÇÃO</text>
 <text id="texto-43" x="79.0" y="560.3" font-family="Inter, sans-serif" font-size="16" font-weight="600" letter-spacing="-0.16" fill="rgb(15,23,42)">Agora descreva o seu projeto.</text>
 <text id="texto-45" x="79.0" y="584.2" font-family="Inter, sans-serif" font-size="14.08" font-weight="400" fill="rgb(51,65,85)">Conte o que ele faz e com quais peças.</text>
 <text id="texto-46" x="79.0" y="606.7" font-family="Inter, sans-serif" font-size="14.08" font-weight="400" fill="rgb(51,65,85)">Quando os 4 itens estiverem marcados,</text>
-<text id="texto-47" x="79.0" y="629.2" font-family="Inter, sans-serif" font-size="14.08" font-weight="400" fill="rgb(51,65,85)">escolha o rigor e clique em</text>
-<text id="texto-49" x="263.0" y="629.2" font-family="Inter, sans-serif" font-size="14.08" font-weight="600" fill="rgb(51,65,85)">Verificar se</text>
-<text id="texto-50" x="79.0" y="651.8" font-family="Inter, sans-serif" font-size="14.08" font-weight="600" fill="rgb(51,65,85)">já existe</text>
-<text id="texto-51" x="134.9" y="651.8" font-family="Inter, sans-serif" font-size="14.08" font-weight="400" fill="rgb(51,65,85)">.</text>
-<rect id="card-54" x="16.5" y="695.7" width="357.0" height="1156.6" rx="11.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
-<text id="texto-58" x="34.6" y="733.1" font-family="Inter, sans-serif" font-size="20.8" font-weight="650" letter-spacing="-0.208" fill="rgb(15,23,42)">Conte o que você criou</text>
-<text id="texto-60" x="34.6" y="759.6" font-family="Inter, sans-serif" font-size="14.4" font-weight="400" fill="rgb(100,116,139)">Você não precisa entender de leis: o sistema</text>
-<text id="texto-61" x="34.6" y="782.6" font-family="Inter, sans-serif" font-size="14.4" font-weight="400" fill="rgb(100,116,139)">identifica sozinho placas, sensores,</text>
-<text id="texto-62" x="34.6" y="805.7" font-family="Inter, sans-serif" font-size="14.4" font-weight="400" fill="rgb(100,116,139)">conectividade e software a partir da sua</text>
-<text id="texto-63" x="34.6" y="828.7" font-family="Inter, sans-serif" font-size="14.4" font-weight="400" fill="rgb(100,116,139)">descrição.</text>
-<rect id="btn-secondary-64" x="35.1" y="852.7" width="99.8" height="30.7" rx="7.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(207,214,224)" stroke-opacity="1.000" stroke-width="1"/>
-<text id="texto-65" x="48.4" y="871.5" font-family="Inter, sans-serif" font-size="12.8" font-weight="500" fill="rgb(15,23,42)">Limpar tudo</text>
-<rect id="indicador-bloco-1-67" x="35.1" y="904.4" width="319.8" height="45.8" rx="7.5" fill="rgb(240,253,244)" fill-opacity="1.000" stroke="rgb(187,247,208)" stroke-opacity="1.000" stroke-width="1"/>
-<rect id="step-num-68" x="50.5" y="915.8" width="23.0" height="23.0" rx="11.5" fill="rgb(21,128,61)" fill-opacity="1.000" stroke="rgb(21,128,61)" stroke-opacity="1.000" stroke-width="1"/>
-<text id="texto-69" x="56.7" y="930.6" font-family="Inter, sans-serif" font-size="12" font-weight="700" fill="rgb(255,255,255)">✓</text>
-<text id="texto-70" x="83.6" y="930.3" font-family="Inter, sans-serif" font-size="13.6" font-weight="400" fill="rgb(21,128,61)">Titular e nome</text>
-<rect id="indicador-bloco-2-71" x="35.1" y="960.8" width="319.8" height="45.8" rx="7.5" fill="rgb(255,244,237)" fill-opacity="1.000" stroke="rgb(254,215,195)" stroke-opacity="1.000" stroke-width="1"/>
-<rect id="step-num-72" x="50.5" y="972.2" width="23.0" height="23.0" rx="11.5" fill="rgb(194,65,12)" fill-opacity="1.000" stroke="rgb(194,65,12)" stroke-opacity="1.000" stroke-width="1"/>
-<text id="texto-73" x="58.2" y="987.0" font-family="Inter, sans-serif" font-size="12" font-weight="700" fill="rgb(255,255,255)">2</text>
-<text id="texto-74" x="83.6" y="986.6" font-family="Inter, sans-serif" font-size="13.6" font-weight="600" fill="rgb(15,23,42)">Descrição do projeto</text>
-<text id="texto-78" x="34.6" y="1044.6" font-family="Inter, sans-serif" font-size="16.8" font-weight="600" letter-spacing="-0.168" fill="rgb(15,23,42)">Descreva a sua invenção</text>
-<rect id="status-tag-bloco-2-79" x="264.9" y="1030.0" width="90.0" height="23.2" rx="11.6" fill="rgb(248,250,252)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
-<text id="texto-80" x="275.0" y="1043.9" font-family="Inter, sans-serif" font-size="10.88" font-weight="600" letter-spacing="0.4352" fill="rgb(100,116,139)">Bloco 2 de 2</text>
-<text id="texto-83" x="34.6" y="1083.5" font-family="Inter, sans-serif" font-size="13.6" font-weight="600" fill="rgb(51,65,85)">O que ela faz, com quais peças e para quê</text>
-<rect id="campo-relato_livre_usuario-84" x="35.1" y="1097.5" width="319.8" height="134.9" rx="7.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(194,65,12)" stroke-opacity="1.000" stroke-width="1"/>
-<text id="texto-85" x="48.4" y="1123.0" font-family="Inter, sans-serif" font-size="14.72" font-weight="400" fill="rgb(15,23,42)">Sistema IoT com microcontrolador ESP32</text>
-<text id="texto-86" x="48.4" y="1145.8" font-family="Inter, sans-serif" font-size="14.72" font-weight="400" fill="rgb(15,23,42)">e módulo LoRa que mede a umidade do</text>
-<text id="texto-87" x="48.4" y="1168.7" font-family="Inter, sans-serif" font-size="14.72" font-weight="400" fill="rgb(15,23,42)">solo com sonda capacitiva e aciona</text>
-<text id="texto-88" x="48.4" y="1191.5" font-family="Inter, sans-serif" font-size="14.72" font-weight="400" fill="rgb(15,23,42)">válvula solenoide para controlar a</text>
-<text id="texto-89" x="48.4" y="1214.3" font-family="Inter, sans-serif" font-size="14.72" font-weight="400" fill="rgb(15,23,42)">irrigação agrícola automaticamente,</text>
-<text id="texto-90" x="48.4" y="1237.1" font-family="Inter, sans-serif" font-size="14.72" font-weight="400" fill="rgb(15,23,42)">enviando telemetria.</text>
-<rect id="medidor-qualificacao-bloco2-91" x="35.1" y="1246.2" width="319.8" height="369.3" rx="7.5" fill="rgb(248,250,252)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
-<text id="texto-94" x="51.6" y="1274.1" font-family="Inter, sans-serif" font-size="13.6" font-weight="600" fill="rgb(51,65,85)">A descrição precisa ter 4 elementos (Art.</text>
-<text id="texto-95" x="51.6" y="1295.8" font-family="Inter, sans-serif" font-size="13.6" font-weight="600" fill="rgb(51,65,85)">24 da LPI)</text>
-<rect id="badge-status-qualificacao-96" x="52.1" y="1313.9" width="114.5" height="26.6" rx="13.3" fill="rgb(240,253,244)" fill-opacity="1.000" stroke="rgb(187,247,208)" stroke-opacity="1.000" stroke-width="1"/>
-<text id="texto-97" x="63.0" y="1330.4" font-family="Inter, sans-serif" font-size="12" font-weight="600" fill="rgb(21,128,61)">4 de 4 — pronto</text>
-<rect id="chk-quesito-1-99" x="52.1" y="1351.0" width="285.8" height="34.3" rx="5.5" fill="rgb(240,253,244)" fill-opacity="1.000" stroke="rgb(187,247,208)" stroke-opacity="1.000" stroke-width="1"/>
-<text id="texto-101" x="62.2" y="1370.7" font-family="Inter, sans-serif" font-size="12.8" font-weight="700" fill="rgb(21,128,61)">✓</text>
-<text id="texto-103" x="79.8" y="1371.0" font-family="Inter, sans-serif" font-size="12.8" font-weight="600" fill="rgb(21,128,61)">Texto real</text>
-<text id="texto-104" x="144.2" y="1371.0" font-family="Inter, sans-serif" font-size="12.8" font-weight="400" fill="rgb(21,128,61)">— pelo menos 8 palavras</text>
-<rect id="chk-quesito-2-105" x="52.1" y="1392.7" width="285.8" height="34.3" rx="5.5" fill="rgb(240,253,244)" fill-opacity="1.000" stroke="rgb(187,247,208)" stroke-opacity="1.000" stroke-width="1"/>
-<text id="texto-107" x="62.2" y="1412.3" font-family="Inter, sans-serif" font-size="12.8" font-weight="700" fill="rgb(21,128,61)">✓</text>
-<text id="texto-109" x="79.8" y="1412.6" font-family="Inter, sans-serif" font-size="12.8" font-weight="600" fill="rgb(21,128,61)">Peças</text>
-<text id="texto-110" x="121.1" y="1412.6" font-family="Inter, sans-serif" font-size="12.8" font-weight="400" fill="rgb(21,128,61)">— placa, sensor, chip ou software</text>
-<rect id="chk-quesito-3-111" x="52.1" y="1434.3" width="285.8" height="54.7" rx="5.5" fill="rgb(240,253,244)" fill-opacity="1.000" stroke="rgb(187,247,208)" stroke-opacity="1.000" stroke-width="1"/>
-<text id="texto-113" x="62.2" y="1454.0" font-family="Inter, sans-serif" font-size="12.8" font-weight="700" fill="rgb(21,128,61)">✓</text>
-<text id="texto-115" x="79.8" y="1454.3" font-family="Inter, sans-serif" font-size="12.8" font-weight="600" fill="rgb(21,128,61)">Ação</text>
-<text id="texto-116" x="115.2" y="1454.3" font-family="Inter, sans-serif" font-size="12.8" font-weight="400" fill="rgb(21,128,61)">— o que faz (mede, controla,</text>
-<text id="texto-117" x="79.8" y="1474.7" font-family="Inter, sans-serif" font-size="12.8" font-weight="400" fill="rgb(21,128,61)">aciona…)</text>
-<rect id="chk-quesito-4-118" x="52.1" y="1496.4" width="285.8" height="54.7" rx="5.5" fill="rgb(240,253,244)" fill-opacity="1.000" stroke="rgb(187,247,208)" stroke-opacity="1.000" stroke-width="1"/>
-<text id="texto-120" x="62.2" y="1516.1" font-family="Inter, sans-serif" font-size="12.8" font-weight="700" fill="rgb(21,128,61)">✓</text>
-<text id="texto-122" x="79.8" y="1516.4" font-family="Inter, sans-serif" font-size="12.8" font-weight="600" fill="rgb(21,128,61)">Aplicação</text>
-<text id="texto-123" x="145.0" y="1516.4" font-family="Inter, sans-serif" font-size="12.8" font-weight="400" fill="rgb(21,128,61)">— onde atua (solo, saúde,</text>
-<text id="texto-124" x="79.8" y="1536.8" font-family="Inter, sans-serif" font-size="12.8" font-weight="400" fill="rgb(21,128,61)">Wi-Fi…)</text>
-<text id="texto-126" x="51.6" y="1573.5" font-family="Inter, sans-serif" font-size="12.8" font-weight="400" fill="rgb(21,128,61)">Descrição completa. Você já pode verificar se</text>
-<text id="texto-127" x="51.6" y="1594.0" font-family="Inter, sans-serif" font-size="12.8" font-weight="400" fill="rgb(21,128,61)">o projeto existe.</text>
-<rect id="rodape-bloco-2-usuario-128-borda-top" x="34.6" y="1636.0" width="320.8" height="1.0" fill="rgb(227,231,238)" fill-opacity="1.000"/>
-<rect id="btn-secondary-129" x="35.1" y="1655.0" width="319.8" height="40.7" rx="7.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(207,214,224)" stroke-opacity="1.000" stroke-width="1"/>
-<text id="texto-130" x="165.6" y="1679.3" font-family="Inter, sans-serif" font-size="14.4" font-weight="600" fill="rgb(15,23,42)">← Voltar</text>
-<text id="texto-134" x="34.6" y="1722.7" font-family="Inter, sans-serif" font-size="13.12" font-weight="600" fill="rgb(51,65,85)">Rigor da busca</text>
-<rect id="campo-seletor-tempo-auditoria-135" x="35.1" y="1738.5" width="319.8" height="35.0" rx="7.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(207,214,224)" stroke-opacity="1.000" stroke-width="1"/>
-<text id="texto-136" x="46.8" y="1759.8" font-family="Inter, sans-serif" font-size="13.6" font-weight="400" fill="rgb(15,23,42)">Padrão — ~30 s ▾</text>
-<rect id="btn-verificar-bloco2-137" x="35.1" y="1787.3" width="319.8" height="46.4" rx="7.5" fill="rgb(194,65,12)" fill-opacity="1.000" stroke="rgb(194,65,12)" stroke-opacity="1.000" stroke-width="1"/>
-<text id="texto-138" x="120.8" y="1814.1" font-family="Inter, sans-serif" font-size="15.2" font-weight="600" fill="rgb(255,255,255)">Verificar se já existe</text>
-<rect id="footer-139-borda-top" x="0.0" y="1900.8" width="390.0" height="1.0" fill="rgb(227,231,238)" fill-opacity="1.000"/>
-<text id="texto-142" x="16.0" y="1938.9" font-family="Inter, sans-serif" font-size="12.8" font-weight="600" fill="rgb(51,65,85)">Observatório de Propriedade Intelectual e Hardware</text>
-<text id="texto-143" x="16.0" y="1959.4" font-family="Inter, sans-serif" font-size="12.8" font-weight="600" fill="rgb(51,65,85)">Aberto</text>
-<text id="texto-144" x="62.0" y="1959.4" font-family="Inter, sans-serif" font-size="12.8" font-weight="400" fill="rgb(100,116,139)">— Projeto Integrador: Informática e Legislação</text>
-<text id="texto-145" x="16.0" y="1979.8" font-family="Inter, sans-serif" font-size="12.8" font-weight="400" fill="rgb(100,116,139)">Equipe: Antonio Kayky Gonçalves Vieira, Giullian Bernard</text>
-<text id="texto-146" x="16.0" y="2000.3" font-family="Inter, sans-serif" font-size="12.8" font-weight="400" fill="rgb(100,116,139)">Alencar Maia, Ítalo Brito da Costa e Luís Aquiles Lucena Sá</text>
-<text id="texto-148" x="16.0" y="2036.8" font-family="Inter, sans-serif" font-size="12.8" font-weight="400" fill="rgb(100,116,139)">CF/88 (Art. 5º, XXVII–XXIX) • Lei 9.279/96 • Lei 9.609/98 •</text>
-<text id="texto-149" x="16.0" y="2057.2" font-family="Inter, sans-serif" font-size="12.8" font-weight="400" fill="rgb(100,116,139)">Lei 9.610/98 • Lei 11.484/07</text>
-<rect id="topbar-150" x="0.0" y="0.0" width="390.0" height="66.6" rx="0.0" fill="rgb(255,255,255)" fill-opacity="1.000"/>
-<svg id="img-154" x="16.0" y="12.8" width="40" height="40" viewBox="0 0 64 64">
+<text id="texto-47" x="79.0" y="629.2" font-family="Inter, sans-serif" font-size="14.08" font-weight="400" fill="rgb(51,65,85)">clique em</text>
+<text id="texto-49" x="147.5" y="629.2" font-family="Inter, sans-serif" font-size="14.08" font-weight="600" fill="rgb(51,65,85)">Verificar se já existe</text>
+<text id="texto-50" x="285.0" y="629.2" font-family="Inter, sans-serif" font-size="14.08" font-weight="400" fill="rgb(51,65,85)">.</text>
+<rect id="card-53" x="16.5" y="673.2" width="357.0" height="1268.2" rx="11.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-57" x="34.6" y="710.6" font-family="Inter, sans-serif" font-size="20.8" font-weight="650" letter-spacing="-0.208" fill="rgb(15,23,42)">Conte o que você criou</text>
+<text id="texto-59" x="34.6" y="737.0" font-family="Inter, sans-serif" font-size="14.4" font-weight="400" fill="rgb(100,116,139)">Você não precisa entender de leis: o sistema</text>
+<text id="texto-60" x="34.6" y="760.1" font-family="Inter, sans-serif" font-size="14.4" font-weight="400" fill="rgb(100,116,139)">identifica sozinho placas, sensores,</text>
+<text id="texto-61" x="34.6" y="783.1" font-family="Inter, sans-serif" font-size="14.4" font-weight="400" fill="rgb(100,116,139)">conectividade e software a partir da sua</text>
+<text id="texto-62" x="34.6" y="806.2" font-family="Inter, sans-serif" font-size="14.4" font-weight="400" fill="rgb(100,116,139)">descrição.</text>
+<rect id="btn-secondary-63" x="35.1" y="830.2" width="99.8" height="30.7" rx="7.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(207,214,224)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-64" x="48.4" y="849.0" font-family="Inter, sans-serif" font-size="12.8" font-weight="500" fill="rgb(15,23,42)">Limpar tudo</text>
+<rect id="indicador-bloco-1-66" x="35.1" y="881.9" width="319.8" height="45.8" rx="7.5" fill="rgb(240,253,244)" fill-opacity="1.000" stroke="rgb(187,247,208)" stroke-opacity="1.000" stroke-width="1"/>
+<rect id="step-num-67" x="50.5" y="893.3" width="23.0" height="23.0" rx="11.5" fill="rgb(21,128,61)" fill-opacity="1.000" stroke="rgb(21,128,61)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-68" x="56.7" y="908.1" font-family="Inter, sans-serif" font-size="12" font-weight="700" fill="rgb(255,255,255)">✓</text>
+<text id="texto-69" x="83.6" y="907.7" font-family="Inter, sans-serif" font-size="13.6" font-weight="400" fill="rgb(21,128,61)">Titular e nome</text>
+<rect id="indicador-bloco-2-70" x="35.1" y="938.3" width="319.8" height="45.8" rx="7.5" fill="rgb(255,244,237)" fill-opacity="1.000" stroke="rgb(254,215,195)" stroke-opacity="1.000" stroke-width="1"/>
+<rect id="step-num-71" x="50.5" y="949.7" width="23.0" height="23.0" rx="11.5" fill="rgb(194,65,12)" fill-opacity="1.000" stroke="rgb(194,65,12)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-72" x="58.2" y="964.5" font-family="Inter, sans-serif" font-size="12" font-weight="700" fill="rgb(255,255,255)">2</text>
+<text id="texto-73" x="83.6" y="964.1" font-family="Inter, sans-serif" font-size="13.6" font-weight="600" fill="rgb(15,23,42)">Descrição do projeto</text>
+<text id="texto-77" x="34.6" y="1022.1" font-family="Inter, sans-serif" font-size="16.8" font-weight="600" letter-spacing="-0.168" fill="rgb(15,23,42)">Descreva a sua invenção</text>
+<rect id="status-tag-bloco-2-78" x="264.9" y="1007.5" width="90.0" height="23.2" rx="11.6" fill="rgb(248,250,252)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-79" x="275.0" y="1021.4" font-family="Inter, sans-serif" font-size="10.88" font-weight="600" letter-spacing="0.4352" fill="rgb(100,116,139)">Bloco 2 de 2</text>
+<text id="texto-82" x="34.6" y="1060.9" font-family="Inter, sans-serif" font-size="13.6" font-weight="600" fill="rgb(51,65,85)">O que ela faz, com quais peças e para quê</text>
+<rect id="campo-relato_livre_usuario-83" x="35.1" y="1075.0" width="319.8" height="134.9" rx="7.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(194,65,12)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-84" x="48.4" y="1100.5" font-family="Inter, sans-serif" font-size="14.72" font-weight="400" fill="rgb(15,23,42)">Sistema IoT com microcontrolador ESP32</text>
+<text id="texto-85" x="48.4" y="1123.3" font-family="Inter, sans-serif" font-size="14.72" font-weight="400" fill="rgb(15,23,42)">e módulo LoRa que mede a umidade do</text>
+<text id="texto-86" x="48.4" y="1146.1" font-family="Inter, sans-serif" font-size="14.72" font-weight="400" fill="rgb(15,23,42)">solo com sonda capacitiva e aciona</text>
+<text id="texto-87" x="48.4" y="1168.9" font-family="Inter, sans-serif" font-size="14.72" font-weight="400" fill="rgb(15,23,42)">válvula solenoide para controlar a</text>
+<text id="texto-88" x="48.4" y="1191.8" font-family="Inter, sans-serif" font-size="14.72" font-weight="400" fill="rgb(15,23,42)">irrigação agrícola automaticamente,</text>
+<text id="texto-89" x="48.4" y="1214.6" font-family="Inter, sans-serif" font-size="14.72" font-weight="400" fill="rgb(15,23,42)">enviando telemetria.</text>
+<text id="texto-92" x="34.6" y="1238.6" font-family="Inter, sans-serif" font-size="13.6" font-weight="600" fill="rgb(51,65,85)">Palavras-chave da busca</text>
+<text id="texto-94" x="203.3" y="1238.6" font-family="Inter, sans-serif" font-size="13.6" font-weight="600" fill="rgb(100,116,139)">(opcional)</text>
+<rect id="campo-palavras_chave_extra-95" x="35.1" y="1252.6" width="319.8" height="44.4" rx="7.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(207,214,224)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-96" x="48.4" y="1278.1" font-family="Inter, sans-serif" font-size="14.72" font-weight="400" fill="rgb(148,163,184)">Ex.: fall detection, wristband</text>
+<text id="texto-98" x="34.6" y="1316.0" font-family="Inter, sans-serif" font-size="12.48" font-weight="400" fill="rgb(100,116,139)">Termos que descrevem o núcleo da ideia, em inglês</text>
+<text id="texto-99" x="34.6" y="1336.0" font-family="Inter, sans-serif" font-size="12.48" font-weight="400" fill="rgb(100,116,139)">ou português. Eles têm prioridade na busca de</text>
+<text id="texto-100" x="34.6" y="1356.0" font-family="Inter, sans-serif" font-size="12.48" font-weight="400" fill="rgb(100,116,139)">patentes, artigos e repositórios.</text>
+<rect id="medidor-qualificacao-bloco2-101" x="35.1" y="1376.3" width="319.8" height="369.3" rx="7.5" fill="rgb(248,250,252)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-104" x="51.6" y="1404.2" font-family="Inter, sans-serif" font-size="13.6" font-weight="600" fill="rgb(51,65,85)">A descrição precisa ter 4 elementos (Art.</text>
+<text id="texto-105" x="51.6" y="1425.9" font-family="Inter, sans-serif" font-size="13.6" font-weight="600" fill="rgb(51,65,85)">24 da LPI)</text>
+<rect id="badge-status-qualificacao-106" x="52.1" y="1443.9" width="114.5" height="26.6" rx="13.3" fill="rgb(240,253,244)" fill-opacity="1.000" stroke="rgb(187,247,208)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-107" x="63.0" y="1460.5" font-family="Inter, sans-serif" font-size="12" font-weight="600" fill="rgb(21,128,61)">4 de 4 — pronto</text>
+<rect id="chk-quesito-1-109" x="52.1" y="1481.1" width="285.8" height="34.3" rx="5.5" fill="rgb(240,253,244)" fill-opacity="1.000" stroke="rgb(187,247,208)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-111" x="62.2" y="1500.8" font-family="Inter, sans-serif" font-size="12.8" font-weight="700" fill="rgb(21,128,61)">✓</text>
+<text id="texto-113" x="79.8" y="1501.1" font-family="Inter, sans-serif" font-size="12.8" font-weight="600" fill="rgb(21,128,61)">Texto real</text>
+<text id="texto-114" x="144.2" y="1501.1" font-family="Inter, sans-serif" font-size="12.8" font-weight="400" fill="rgb(21,128,61)">— pelo menos 8 palavras</text>
+<rect id="chk-quesito-2-115" x="52.1" y="1522.7" width="285.8" height="34.3" rx="5.5" fill="rgb(240,253,244)" fill-opacity="1.000" stroke="rgb(187,247,208)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-117" x="62.2" y="1542.4" font-family="Inter, sans-serif" font-size="12.8" font-weight="700" fill="rgb(21,128,61)">✓</text>
+<text id="texto-119" x="79.8" y="1542.7" font-family="Inter, sans-serif" font-size="12.8" font-weight="600" fill="rgb(21,128,61)">Peças</text>
+<text id="texto-120" x="121.1" y="1542.7" font-family="Inter, sans-serif" font-size="12.8" font-weight="400" fill="rgb(21,128,61)">— placa, sensor, chip ou software</text>
+<rect id="chk-quesito-3-121" x="52.1" y="1564.4" width="285.8" height="54.7" rx="5.5" fill="rgb(240,253,244)" fill-opacity="1.000" stroke="rgb(187,247,208)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-123" x="62.2" y="1584.0" font-family="Inter, sans-serif" font-size="12.8" font-weight="700" fill="rgb(21,128,61)">✓</text>
+<text id="texto-125" x="79.8" y="1584.3" font-family="Inter, sans-serif" font-size="12.8" font-weight="600" fill="rgb(21,128,61)">Ação</text>
+<text id="texto-126" x="115.2" y="1584.3" font-family="Inter, sans-serif" font-size="12.8" font-weight="400" fill="rgb(21,128,61)">— o que faz (mede, controla,</text>
+<text id="texto-127" x="79.8" y="1604.8" font-family="Inter, sans-serif" font-size="12.8" font-weight="400" fill="rgb(21,128,61)">aciona…)</text>
+<rect id="chk-quesito-4-128" x="52.1" y="1626.5" width="285.8" height="54.7" rx="5.5" fill="rgb(240,253,244)" fill-opacity="1.000" stroke="rgb(187,247,208)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-130" x="62.2" y="1646.1" font-family="Inter, sans-serif" font-size="12.8" font-weight="700" fill="rgb(21,128,61)">✓</text>
+<text id="texto-132" x="79.8" y="1646.5" font-family="Inter, sans-serif" font-size="12.8" font-weight="600" fill="rgb(21,128,61)">Aplicação</text>
+<text id="texto-133" x="145.0" y="1646.5" font-family="Inter, sans-serif" font-size="12.8" font-weight="400" fill="rgb(21,128,61)">— onde atua (solo, saúde,</text>
+<text id="texto-134" x="79.8" y="1666.9" font-family="Inter, sans-serif" font-size="12.8" font-weight="400" fill="rgb(21,128,61)">Wi-Fi…)</text>
+<text id="texto-136" x="51.6" y="1703.6" font-family="Inter, sans-serif" font-size="12.8" font-weight="400" fill="rgb(21,128,61)">Descrição completa. Você já pode verificar se</text>
+<text id="texto-137" x="51.6" y="1724.1" font-family="Inter, sans-serif" font-size="12.8" font-weight="400" fill="rgb(21,128,61)">o projeto existe.</text>
+<rect id="rodape-bloco-2-usuario-138-borda-top" x="34.6" y="1766.0" width="320.8" height="1.0" fill="rgb(227,231,238)" fill-opacity="1.000"/>
+<rect id="btn-secondary-139" x="35.1" y="1785.1" width="319.8" height="40.7" rx="7.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(207,214,224)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-140" x="165.6" y="1809.3" font-family="Inter, sans-serif" font-size="14.4" font-weight="600" fill="rgb(15,23,42)">← Voltar</text>
+<text id="texto-144" x="34.6" y="1854.8" font-family="Inter, sans-serif" font-size="15" font-weight="400" fill="rgb(15,23,42)">Verificação completa — leva de 1 a 3 min</text>
+<rect id="btn-verificar-bloco2-145" x="35.1" y="1876.4" width="319.8" height="46.4" rx="7.5" fill="rgb(194,65,12)" fill-opacity="1.000" stroke="rgb(194,65,12)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-146" x="120.8" y="1903.2" font-family="Inter, sans-serif" font-size="15.2" font-weight="600" fill="rgb(255,255,255)">Verificar se já existe</text>
+<rect id="footer-147-borda-top" x="0.0" y="1989.9" width="390.0" height="1.0" fill="rgb(227,231,238)" fill-opacity="1.000"/>
+<text id="texto-150" x="16.0" y="2028.0" font-family="Inter, sans-serif" font-size="12.8" font-weight="600" fill="rgb(51,65,85)">Observatório de Propriedade Intelectual e Hardware</text>
+<text id="texto-151" x="16.0" y="2048.4" font-family="Inter, sans-serif" font-size="12.8" font-weight="600" fill="rgb(51,65,85)">Aberto</text>
+<text id="texto-152" x="62.0" y="2048.4" font-family="Inter, sans-serif" font-size="12.8" font-weight="400" fill="rgb(100,116,139)">— Projeto Integrador: Informática e Legislação</text>
+<text id="texto-153" x="16.0" y="2068.9" font-family="Inter, sans-serif" font-size="12.8" font-weight="400" fill="rgb(100,116,139)">Equipe: Antonio Kayky Gonçalves Vieira, Giullian Bernard</text>
+<text id="texto-154" x="16.0" y="2089.4" font-family="Inter, sans-serif" font-size="12.8" font-weight="400" fill="rgb(100,116,139)">Alencar Maia, Ítalo Brito da Costa e Luís Aquiles Lucena Sá</text>
+<text id="texto-156" x="16.0" y="2125.8" font-family="Inter, sans-serif" font-size="12.8" font-weight="400" fill="rgb(100,116,139)">CF/88 (Art. 5º, XXVII–XXIX) • Lei 9.279/96 • Lei 9.609/98 •</text>
+<text id="texto-157" x="16.0" y="2146.3" font-family="Inter, sans-serif" font-size="12.8" font-weight="400" fill="rgb(100,116,139)">Lei 9.610/98 • Lei 11.484/07</text>
+<rect id="topbar-158" x="0.0" y="0.0" width="390.0" height="66.6" rx="0.0" fill="rgb(255,255,255)" fill-opacity="1.000"/>
+<svg id="img-162" x="16.0" y="12.8" width="40" height="40" viewBox="0 0 64 64">
   <defs>
     <linearGradient id="logo-gradiente" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#f97316"/>
@@ -130,8 +134,8 @@
     <path d="M35.2 35.2 41 41"/>
   </g>
 </svg>
-<text id="texto-157" x="68.8" y="26.9" font-family="Inter, sans-serif" font-size="14.08" font-weight="650" letter-spacing="-0.1408" fill="rgb(15,23,42)">Observatório de Propriedade</text>
-<text id="texto-158" x="68.8" y="45.2" font-family="Inter, sans-serif" font-size="14.08" font-weight="650" letter-spacing="-0.1408" fill="rgb(15,23,42)">Intelectual &amp; Hardware Aberto</text>
-<rect id="botao-tema-160" x="334.9" y="19.9" width="38.6" height="25.8" rx="12.9" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
-<text id="texto-162" x="347.4" y="36.9" font-family="Inter, sans-serif" font-size="15.2" font-weight="500" fill="rgb(51,65,85)">☾</text>
+<text id="texto-165" x="68.8" y="26.9" font-family="Inter, sans-serif" font-size="14.08" font-weight="650" letter-spacing="-0.1408" fill="rgb(15,23,42)">Observatório de Propriedade</text>
+<text id="texto-166" x="68.8" y="45.2" font-family="Inter, sans-serif" font-size="14.08" font-weight="650" letter-spacing="-0.1408" fill="rgb(15,23,42)">Intelectual &amp; Hardware Aberto</text>
+<rect id="botao-tema-168" x="334.9" y="19.9" width="38.6" height="25.8" rx="12.9" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-170" x="347.4" y="36.9" font-family="Inter, sans-serif" font-size="15.2" font-weight="500" fill="rgb(51,65,85)">☾</text>
 </svg>

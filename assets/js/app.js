@@ -8,6 +8,7 @@
 let ultimoProjetoAvaliado = null;
 let ultimoDiagnostico = null;
 let ultimaVerificacaoExistencia = null;
+let ultimoResultadoMundial = null; // última busca mundial (usada no certificado)
 let cacheRegistrosFixos = [];
 
 // Estado do Fluxo Guiado em Etapas (Modo Usuário Padrão)
@@ -466,8 +467,18 @@ function sha512PuroJS(texto) {
 }
 
 // Obtém todos os registros fixos combinando o banco SQL (via API) e o armazenamento persistente local
+// Leitura segura do armazenamento do navegador (pode estar bloqueado em modo privado)
+function lerListaLocal(chave) {
+    try {
+        const v = JSON.parse(localStorage.getItem(chave) || '[]');
+        return Array.isArray(v) ? v : [];
+    } catch (e) {
+        return [];
+    }
+}
+
 function obterRegistrosFixosLocais() {
-    const salvosUsuario = JSON.parse(localStorage.getItem('registros_fixos_observatorio_pi') || '[]');
+    const salvosUsuario = lerListaLocal('registros_fixos_observatorio_pi');
     const mapa = new Map();
     [...salvosUsuario, ...cacheRegistrosFixos, ...ACERVO_BASE_INPI_PADRAO].forEach(r => {
         if (r && r.protocolo_registro && !mapa.has(r.protocolo_registro)) {
@@ -478,10 +489,10 @@ function obterRegistrosFixosLocais() {
 }
 
 function salvarRegistroFixoNoLocalStorage(novoReg) {
-    const salvos = JSON.parse(localStorage.getItem('registros_fixos_observatorio_pi') || '[]');
+    const salvos = lerListaLocal('registros_fixos_observatorio_pi');
     const filtrados = salvos.filter(r => r.protocolo_registro !== novoReg.protocolo_registro);
     filtrados.unshift(novoReg);
-    localStorage.setItem('registros_fixos_observatorio_pi', JSON.stringify(filtrados));
+    try { localStorage.setItem('registros_fixos_observatorio_pi', JSON.stringify(filtrados.slice(0, 50))); } catch (e) {}
 }
 
 // Caso base inicial (IoT + Hardware + Software Embarcado real) para demonstração imediata
@@ -714,8 +725,8 @@ function validarSuficienciaDescritivaProjeto(textoRelato, nomeProjeto = '', trec
             valido: false,
             score_suficiencia: 0,
             quesitos: estadoQuesitos,
-            motivo: `Texto bloqueado por conter linguagem imprópria, gíria ou palavra de teste ("${matchImproprio[0]}").`,
-            orientacao: 'Este é um sistema acadêmico-jurídico fundamentado na Lei nº 9.279/96 (LPI). Remova palavras de teste/gírias e descreva de forma séria os componentes e o funcionamento do seu projeto.'
+            motivo: `O texto tem linguagem imprópria ou palavra de teste ("${matchImproprio[0]}").`,
+            orientacao: 'Descreva de forma séria as peças e o funcionamento do projeto.'
         };
     }
 
@@ -724,8 +735,8 @@ function validarSuficienciaDescritivaProjeto(textoRelato, nomeProjeto = '', trec
             valido: false,
             score_suficiencia: 5,
             quesitos: estadoQuesitos,
-            motivo: 'Sequência de caracteres aleatórios / sem sentido semântico detectada ("Gibberish").',
-            orientacao: 'O texto inserido contém letras batidas ao acaso ou palavras inexistentes. Pelo Art. 24 da Lei nº 9.279/96 (LPI), um pedido de proteção exige descrição técnica inteligível.'
+            motivo: 'O texto parece ter letras digitadas ao acaso ou palavras que não existem.',
+            orientacao: 'Escreva frases reais: a LPI exige uma descrição técnica clara do invento (Art. 24).'
         };
     }
 
@@ -734,8 +745,8 @@ function validarSuficienciaDescritivaProjeto(textoRelato, nomeProjeto = '', trec
             valido: false,
             score_suficiencia: 10,
             quesitos: estadoQuesitos,
-            motivo: 'Repetição artificial de palavras detectada (Spam / Sem Suficiência Descritiva — Art. 24 da LPI).',
-            orientacao: 'Não repita a mesma palavra várias vezes para tentar burlar o tamanho mínimo. Escreva uma frase real explicando o seu projeto.'
+            motivo: 'O texto repete as mesmas palavras muitas vezes.',
+            orientacao: 'Escreva uma frase real explicando o que o projeto faz, com quais peças e para quê.'
         };
     }
 
@@ -744,23 +755,23 @@ function validarSuficienciaDescritivaProjeto(textoRelato, nomeProjeto = '', trec
             valido: false,
             score_suficiencia: 15,
             quesitos: estadoQuesitos,
-            motivo: `Descrição muito curta (${palavras.length}/8 palavras mínimas — Art. 24 da Lei nº 9.279/96).`,
-            orientacao: 'Escreva pelo menos uma frase completa (mínimo de 8 palavras e 40 caracteres) explicando o que você desenvolveu, quais peças/placas usou e qual problema o projeto resolve.'
+            motivo: `Descrição muito curta (${palavras.length} de 8 palavras).`,
+            orientacao: 'Escreva pelo menos uma frase completa explicando o que o projeto faz, com quais peças e para quê.'
         };
     }
 
     if (!todosQuesitosOk) {
         const pendencias = [];
-        if (!quesito2Meio) pendencias.push('<strong>Quesito 2 (Arquitetura/Peças):</strong> cite o componente físico ou software (ex: <em>placa PCB, sensor, ESP32, Arduino, microcontrolador, aplicativo, gabinete</em>)');
-        if (!quesito3Acao) pendencias.push('<strong>Quesito 3 (Ação Técnica):</strong> explique o que o projeto faz (ex: <em>monitorar, controlar, medir, automatizar, acionar, detectar, transmitir</em>)');
-        if (!quesito4Contexto) pendencias.push('<strong>Quesito 4 (Contexto/Aplicação):</strong> informe onde ele atua ou qual tecnologia usa (ex: <em>umidade do solo, temperatura, batimentos cardíacos, Wi-Fi, LoRa, Bluetooth, impressão 3D</em>)');
+        if (!quesito2Meio) pendencias.push('as peças (ex.: placa, sensor, ESP32, Arduino, aplicativo)');
+        if (!quesito3Acao) pendencias.push('o que ele faz (ex.: mede, controla, detecta, aciona, envia)');
+        if (!quesito4Contexto) pendencias.push('onde atua ou qual tecnologia usa (ex.: solo, temperatura, saúde, Wi-Fi, LoRa, Bluetooth)');
 
         return {
             valido: false,
             score_suficiencia: quesitosAprovados * 22,
             quesitos: estadoQuesitos,
-            motivo: `Descrição Incompleta: cumpriu ${quesitosAprovados} de 4 quesitos obrigatórios (Art. 24 da LPI e IN INPI nº 30/2013).`,
-            orientacao: `Para provar que se trata de um projeto real e liberar a próxima etapa, complete no seu texto: ${pendencias.join('; ')}.`
+            motivo: `A descrição tem ${quesitosAprovados} dos 4 itens.`,
+            orientacao: `Inclua no texto: ${pendencias.join('; ')}.`
         };
     }
 
@@ -775,7 +786,7 @@ function validarSuficienciaDescritivaProjeto(textoRelato, nomeProjeto = '', trec
         finalidades_detectadas: finalidadesEncontradas,
         contextos_detectados: contextosEncontrados,
         quantidade_palavras: palavras.length,
-        motivo: `Veracidade e Suficiência Descritiva Aprovadas (4/4 Quesitos • ${score}% — Art. 24 da LPI): ${meiosEncontrados.length} componente(s), ${finalidadesEncontradas.length} ação(ões) e ${contextosEncontrados.length} contexto(s) técnico(s).`,
+        motivo: `Descrição completa: ${meiosEncontrados.length} peça(s), ${finalidadesEncontradas.length} ação(ões) e ${contextosEncontrados.length} aplicação(ões) identificadas.`,
         orientacao: ''
     };
 }
@@ -818,7 +829,7 @@ function atualizarPainelQuesitosBloco2(validacao) {
             msg.textContent = 'Descrição completa. Você já pode verificar se o projeto existe.';
         } else {
             msg.classList.add('erro');
-            msg.innerHTML = `${validacao.motivo} ${validacao.orientacao}`;
+            msg.textContent = `${validacao.motivo} ${validacao.orientacao}`;
         }
     }
 }
@@ -865,14 +876,14 @@ function interpretarRelatoLivre(gerarDireto, modoSilencioso = false) {
             feedback.innerHTML = `
                 <div style="padding: 0.75rem 1rem; border-radius: 10px; background: rgba(239, 68, 68, 0.14); border: 1px solid #ef4444; color: #fca5a5;">
                     <strong style="color: #f87171; display: block; margin-bottom: 0.3rem;">
-                        🚫 ${validacaoSuficiencia.motivo} (Qualificação: ${validacaoSuficiencia.quesitos ? validacaoSuficiencia.quesitos.aprovados : 0}/4 Quesitos)
+                        ${validacaoSuficiencia.motivo} (Qualificação: ${validacaoSuficiencia.quesitos ? validacaoSuficiencia.quesitos.aprovados : 0}/4 Quesitos)
                     </strong>
                     <span style="font-size: 0.85rem; color: #fee2e2;">${validacaoSuficiencia.orientacao}</span>
                 </div>
             `;
         }
         if (!modoSilencioso) {
-            alert(`Descrição Inválida / Insuficiente (Art. 24 da LPI):\n\n${validacaoSuficiencia.motivo}\n\n${validacaoSuficiencia.orientacao}`);
+            alert(`A descrição ainda não está completa.\n\n${validacaoSuficiencia.motivo}\n\n${validacaoSuficiencia.orientacao}`);
             campo.focus();
         }
         return;
@@ -883,14 +894,14 @@ function interpretarRelatoLivre(gerarDireto, modoSilencioso = false) {
 
     // 1. Identificar Titularidade / Vínculo (Art. 6º, 88-93 LPI, Art. 4º Lei 9.609/98 e Lei 10.973/04)
     let titularidade = 'AUTONOMO_EMPRESA';
-    let instituicao = 'Desenvolvimento Independente / Startup de Hardware & IoT';
+    let instituicao = 'Desenvolvimento independente';
     if (/(faculdade|universidade|tcc|laborat[oó]rio|ict|inicia[cç][aã]o cient[ií]fica|orientador|professor|mestrado|instituto federal|academic)/i.test(t)) {
         titularidade = 'VINCULO_EMPREGATICIO_ICT';
-        instituicao = 'Universidade / ICT (Gestão via Núcleo de Inovação Tecnológica — NIT)';
+        instituicao = 'Universidade / ICT';
         achados.push('<strong>Titularidade Acadêmica / ICT (Lei nº 10.973/2004, Art. 16 e Art. 88 da LPI):</strong> projetos desenvolvidos utilizando infraestrutura universitária exigem comunicação formal ao NIT para definição de cotitularidade e depósito no INPI.');
     } else if (/(s[oó]cio|cofundador|amigo|parceria|dupla|equipe|dividir|grupo|nossa equipe|desenvolvemos|criamos)/i.test(t)) {
         titularidade = 'PARCERIA_COAUTORIA';
-        instituicao = 'Sociedade de Cofundadores / Cotitularidade Técnica';
+        instituicao = 'Equipe de cofundadores';
         achados.push('<strong>Cotitularidade Societária (Art. 6º, § 3º e Art. 129 da LPI):</strong> recomendada formalização imediata de Cessão/Condomínio Patrimonial e unificação do registro de Marca para evitar cisão societária (precedente Arduino LLC vs. Arduino SRL).');
     }
 
@@ -940,7 +951,7 @@ function interpretarRelatoLivre(gerarDireto, modoSilencioso = false) {
     const temDesign = /(carca[cç]a|gabinete|inv[oó]lucro|\bcase\b|design (pr[oó]prio|exclusivo|ergon[oô]mico|diferenciado)|est[eé]tic|ornamental|anat[oô]mic|ergon[oô]mic|formato (pr[oó]prio|exclusivo|[uú]nico|diferenciado)|(impress[oa]s?|imprim\w*|modelad[oa]s?) em 3d|imperme[aá]vel)/i.test(t);
     const temFirmware = !/(sem software|sem firmware|apenas mec[aâ]nico)/i.test(t);
 
-    if (temChip) achados.push('<strong>Camada C — Semicondutores / Topografia de Chip (Lei nº 11.484/2007, Arts. 26 a 55):</strong> proteção específica de 10 anos para o leiaute tridimensional de máscaras de silício e elegibilidade fiscal ao PADIS.');
+    if (temChip) achados.push('<strong>Camada C — Semicondutores / Topografia de Chip (Lei nº 11.484/2007, Arts. 26 e seguintes):</strong> proteção específica de 10 anos para o leiaute tridimensional de máscaras de silício e elegibilidade fiscal ao PADIS.');
     if (temDesign) achados.push('<strong>Camada B — Design Externo / Gabinete (Lei nº 9.279/96, Arts. 94 a 121):</strong> forma plástica ornamental externa protegível por Registro de Desenho Industrial no INPI (até 25 anos).');
 
     const linguagensDetectadas = [];
@@ -1040,9 +1051,6 @@ function interpretarRelatoLivre(gerarDireto, modoSilencioso = false) {
         );
     }
 
-    if (gerarDireto) {
-        processarDiagnostico(null);
-    }
 }
 
 // Motor Local + API de Verificação Real de Existência (Anterioridade) e Apropriabilidade
@@ -1187,7 +1195,7 @@ async function verificarExistenciaLocalEApi(dados, diag, acao = 'VERIFICAR') {
         statusApropriacao = 'BLOQUEADO_TERCEIRO';
         podeRegistrar = false;
         tituloVeredito = 'Descrição insuficiente (Art. 24 da Lei nº 9.279/96)';
-        explicacaoVeredito = `${checkSuficiencia.motivo} ${checkSuficiencia.orientacao} Sem uma descrição técnica real e inteligível do dispositivo ou sistema, o pedido é nulo de pleno direito perante o INPI (Art. 24 e Art. 50 da LPI).`;
+        explicacaoVeredito = `${checkSuficiencia.motivo} ${checkSuficiencia.orientacao} Sem uma descrição técnica clara e suficiente, o pedido não atende ao Art. 24 da LPI, e uma patente concedida assim pode ser anulada (Art. 50, II da LPI).`;
     } else if (registroDoProprioUsuario) {
         statusApropriacao = 'JA_PERTENCE_AO_USUARIO';
         podeRegistrar = true;
@@ -2017,21 +2025,10 @@ function renderizarPainelVerificacaoExistencia(verif) {
     }
 }
 
-// Executa a verificação completa (Banco Fixo + Estado da Técnica Mundial)
-async function executarVerificacaoExistenciaCompleta(irParaRelatorio = false) {
-    const dados = ultimoProjetoAvaliado || coletarDadosFormularioAtual();
-    const diag = ultimoDiagnostico || motorDecisaoLocal(dados);
-    const verif = await verificarExistenciaLocalEApi(dados, diag, 'VERIFICAR');
-    renderizarPainelVerificacaoExistencia(verif);
-    buscarEstadoDaTecnicaMundialAoVivo(dados, diag);
-    if (irParaRelatorio) {
-        alternarAba('aba-relatorio');
-    }
-}
-
 // Ação do Botão Principal: Reivindicar e Fixar Titularidade da Criação no Banco de Dados
 async function registrarTitularidadeFixaUsuario() {
-    const dados = coletarDadosFormularioAtual();
+    // Grava exatamente o que foi verificado (e não o que estiver no formulário depois)
+    const dados = ultimoProjetoAvaliado || coletarDadosFormularioAtual();
     ultimoProjetoAvaliado = dados;
     // Mantém os ids salvos no banco (projeto/diagnóstico) para ligar a prova de autoria ao projeto
     const idsSalvos = ultimoDiagnostico ? { projeto_id: ultimoDiagnostico.projeto_id, diagnostico_id: ultimoDiagnostico.diagnostico_id } : {};
@@ -2055,7 +2052,8 @@ async function registrarTitularidadeFixaUsuario() {
         etapaAbaLiberadaUsuario = 3;
         aplicarRegrasDePerfilNaInterface();
     }
-    renderizarRelatorioDiagnostico(dados, ultimoDiagnostico, resultado);
+    // Mantém o resultado da busca mundial já feita (sem ele o veredito voltaria a "nenhum parecido")
+    renderizarRelatorioDiagnostico(dados, ultimoDiagnostico, resultado, ultimoResultadoMundial);
     gerarMinutaAutomatizada('CERTIFICADO_TITULARIDADE');
     atualizarBalaoMascote(
         'Prova de autoria gravada',
@@ -2202,7 +2200,7 @@ function gerarCorrelacaoPatentariaReal(dados, diag) {
     linhasCorrelacao.push({
         elemento: `<strong>6. Invólucro Físico Externo (Camada B) e Silício / Semicondutores (Camada C)</strong><br><span style="font-size:0.82rem;color:var(--text-secondary);">Gabinete 3D/injetado e topografia de circuitos integrados</span>`,
         protecao: `${dados.possui_design_externo_novo ? '<strong>Desenho Industrial Registrável (10 a 25 anos)</strong> sobre a configuração plástica ornamental externa.' : 'Sem pedido de Desenho Industrial (gabinete padrão).'} ${dados.possui_topografia_chip ? '<br><strong>Topografia de Circuito Integrado Registrável (10 anos)</strong> sobre máscaras 3D de silício.' : ''}`,
-        base_legal: `<strong>Lei nº 9.279/96 (LPI):</strong> Arts. 94 a 121 (Desenho Industrial) e Art. 195, III (repressão à violação de <em>trade dress</em>)<br><strong>Lei nº 11.484/2007:</strong> Arts. 26 a 55 (Topografia de CI e incentivos fiscais do PADIS)`,
+        base_legal: `<strong>Lei nº 9.279/96 (LPI):</strong> Arts. 94 a 121 (Desenho Industrial) e Art. 195, III (repressão à violação de <em>trade dress</em>)<br><strong>Lei nº 11.484/2007:</strong> Arts. 26 e seguintes (Topografia de CI e incentivos fiscais do PADIS)`,
         providencia: dados.possui_design_externo_novo || dados.possui_topografia_chip
             ? 'Depositar vistas ortogonais/perspectivas do gabinete no <strong>e-Desenho Industrial</strong> e/ou arquivos GDSII no <strong>e-Chip (INPI)</strong>.'
             : 'Caso desenvolva carenagem personalizada no futuro, depositar Desenho Industrial antes da comercialização para bloquear clones visuais.'
@@ -2212,7 +2210,7 @@ function gerarCorrelacaoPatentariaReal(dados, diag) {
         elemento: `<strong>7. Identidade Comercial (Camada D) e Titularidade Jurídica do Projeto</strong><br><span style="font-size:0.82rem;color:var(--text-secondary);">Marca "${dados.nome_projeto.split('—')[0].trim()}" e relação entre criadores/instituição</span>`,
         protecao: `<strong>Exclusividade Nacional sobre o Nome e Logotipo (10 anos renováveis indefinidamente)</strong>. Em projetos de hardware aberto, é o único ativo que impede clones de usarem o nome oficial.`,
         base_legal: `<strong>Lei nº 9.279/96 (LPI):</strong> Art. 129 (sistema atributivo de marca), Art. 189 (crime contra registro de marca), Arts. 6º e 88 a 93 (titularidade)<br><strong>Lei nº 10.973/2004:</strong> Arts. 6º, 11 e 16 (NIT/ICT)<br><strong>Lei nº 9.609/98:</strong> Art. 4º`,
-        providencia: `Protocolar pedido no <strong>e-Marcas (Classe NCL 9 — Aparelhos científicos, sensores e controladores eletrônicos)</strong> e clicar em <strong>"Reivindicar e Fixar Criação em Meu Nome"</strong> acima.`
+        providencia: `Protocolar pedido no <strong>e-Marcas (Classe NCL 9 — Aparelhos científicos, sensores e controladores eletrônicos)</strong> e clicar em <strong>"Gravar prova de autoria"</strong> no relatório.`
     });
 
     return {
@@ -2259,6 +2257,14 @@ function validarEmailRigido(email) {
     return true;
 }
 
+// 52998224725 → 529.982.247-25 ; 11222333000181 → 11.222.333/0001-81
+function formatarDocumento(doc) {
+    const d = String(doc || '').replace(/\D/g, '');
+    if (d.length === 11) return d.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+    if (d.length === 14) return d.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5');
+    return String(doc || '');
+}
+
 function validarDocumentoCpfCnpjRigido(doc) {
     if (!doc || typeof doc !== 'string') return false;
     const apenasDigitos = doc.replace(/\D/g, '');
@@ -2277,7 +2283,7 @@ function avancarBlocoUsuario(numeroBlocoDestino) {
         const nomeProj = document.getElementById('nome_projeto').value.trim();
 
         if (!nomeProj || !autorNome || !autorDoc || !autorEmail) {
-            alert('🚫 Campos Obrigatórios no Bloco 1:\n\nPara avançar para o Bloco 2, preencha obrigatoriamente:\n1. Nome do Projeto ou Marca\n2. Seu Nome Completo (ou Equipe)\n3. Seu CPF ou CNPJ\n4. Seu E-mail de Contato');
+            alert('Preencha todos os campos para continuar:\n\n• Nome do projeto ou marca\n• Seu nome completo ou da equipe\n• CPF ou CNPJ\n• E-mail');
             if (!nomeProj) document.getElementById('nome_projeto').focus();
             else if (!autorNome) document.getElementById('autor_nome').focus();
             else if (!autorDoc) document.getElementById('autor_documento').focus();
@@ -2290,25 +2296,25 @@ function avancarBlocoUsuario(numeroBlocoDestino) {
         const autorNormB1 = normalizarTextoComparacaoJS(autorNome);
 
         if (nomeProj.length < 5 || !/[aeiou]/i.test(projNormB1) || /(.)\1{3,}/i.test(projNormB1) || /[bcdfghjklmnpqrstvwxz]{6,}/i.test(projNormB1) || regexInadequadoB1.test(projNormB1)) {
-            alert('🚫 Nome do Projeto / Marca Inválido no Bloco 1:\n\nInforme um Nome de Projeto ou Marca real com no mínimo 5 caracteres (sem letras repetidas, palavras de teste ou termos inadequados).');
+            alert('Nome do projeto inválido.\n\nUse um nome real com pelo menos 5 caracteres, sem letras repetidas, palavras de teste ou termos inadequados.');
             document.getElementById('nome_projeto').focus();
             return;
         }
 
         if (autorNome.length < 5 || !/[aeiou]/i.test(autorNormB1) || /(.)\1{3,}/i.test(autorNormB1) || /[bcdfghjklmnpqrstvwxz]{6,}/i.test(autorNormB1) || regexInadequadoB1.test(autorNormB1)) {
-            alert('🚫 Identificação do Titular Inválida no Bloco 1:\n\nInforme um Nome Completo (ou Nome da Equipe) real com no mínimo 5 caracteres, sem palavras de teste, termos inadequados ou letras aleatórias.');
+            alert('Nome do titular inválido.\n\nInforme o nome completo (ou da equipe) com pelo menos 5 caracteres, sem palavras de teste, termos inadequados ou letras aleatórias.');
             document.getElementById('autor_nome').focus();
             return;
         }
 
         if (!validarDocumentoCpfCnpjRigido(autorDoc)) {
-            alert('🚫 CPF / CNPJ Inválido no Bloco 1:\n\nInforme exatamente 11 dígitos para CPF ou 14 dígitos para CNPJ (não são aceitos campos em branco ou números repetidos como 111.111.111-11).');
+            alert('CPF ou CNPJ inválido.\n\nInforme 11 dígitos (CPF) ou 14 dígitos (CNPJ). Números repetidos, como 111.111.111-11, não são aceitos.');
             document.getElementById('autor_documento').focus();
             return;
         }
 
         if (!validarEmailRigido(autorEmail)) {
-            alert('🚫 E-mail de Contato Inválido no Bloco 1:\n\nInforme um endereço de e-mail válido contendo obrigatoriamente o símbolo "@" e um domínio válido (exemplo: seu.nome@dominio.com.br).');
+            alert('E-mail inválido.\n\nInforme um e-mail completo, por exemplo: seu.nome@dominio.com.br');
             document.getElementById('autor_email').focus();
             return;
         }
@@ -2319,13 +2325,13 @@ function avancarBlocoUsuario(numeroBlocoDestino) {
         const relato = document.getElementById('relato_livre_usuario').value.trim();
         const nomeProj = document.getElementById('nome_projeto').value.trim();
         if (!relato) {
-            alert('🚫 Campo Obrigatório no Bloco 2:\n\nPreencha a Descrição do Projeto antes de avançar para o Bloco 3.');
+            alert('Descreva o projeto antes de continuar.');
             document.getElementById('relato_livre_usuario').focus();
             return;
         }
         const validacao = validarSuficienciaDescritivaProjeto(relato, nomeProj);
         if (!validacao.valido) {
-            alert(`🚫 Não foi possível avançar para o Bloco 3:\n\n${validacao.motivo}\n\n${validacao.orientacao}`);
+            alert(`A descrição ainda não está completa.\n\n${validacao.motivo}\n\n${validacao.orientacao}`);
             document.getElementById('relato_livre_usuario').focus();
             interpretarRelatoLivre(false, true);
             return;
@@ -2391,12 +2397,12 @@ async function iniciarVerificacaoPorcentagemBloco2() {
     const autorEmail = (autorEmailEl ? autorEmailEl.value : '').trim();
 
     const pendencias = [];
-    if (nomeProj.length < 3) pendencias.push({ el: nomeEl, msg: 'Nome do Projeto (mínimo 3 caracteres)' });
-    if (autorNome.length < 5) pendencias.push({ el: autorNomeEl, msg: 'Nome do Titular (mínimo 5 caracteres)' });
+    if (nomeProj.length < 5) pendencias.push({ el: nomeEl, msg: 'Nome do projeto (mínimo de 5 caracteres)' });
+    if (autorNome.length < 5) pendencias.push({ el: autorNomeEl, msg: 'Nome do titular (mínimo de 5 caracteres)' });
     if (!validarDocumentoCpfCnpjRigido(autorDoc)) pendencias.push({ el: autorDocEl, msg: 'CPF ou CNPJ válido' });
     if (!validarEmailRigido(autorEmail)) pendencias.push({ el: autorEmailEl, msg: 'E-mail válido' });
     if (pendencias.length > 0) {
-        alert('🚫 Corrija os dados do Bloco 1 antes de verificar:\n\n• ' + pendencias.map(p => p.msg).join('\n• ') +
+        alert('Corrija os dados do titular antes de verificar:\n\n• ' + pendencias.map(p => p.msg).join('\n• ') +
             '\n\nO sistema não preenche esses campos automaticamente, porque eles identificam o titular no certificado.');
         avancarBlocoUsuario(1);
         if (pendencias[0].el) pendencias[0].el.focus();
@@ -2407,7 +2413,15 @@ async function iniciarVerificacaoPorcentagemBloco2() {
     const relatoEl = document.getElementById('relato_livre_usuario');
     const relato = relatoEl ? relatoEl.value.trim() : '';
     if (!relato || relato.length < 10) {
-        alert('🚫 Descrição Obrigatória no Bloco 2:\n\nDescreva sua invenção (mínimo de 10 caracteres) para que a busca tenha termos técnicos.\n\nExemplo: Dispositivo portátil com microcontrolador ESP32 e sensores para monitoramento e controle remoto...');
+        alert('Descreva a sua invenção para que a busca tenha termos técnicos.\n\nExemplo: Pulseira com acelerômetro que detecta queda de idoso e envia alerta sem fio para o celular do cuidador.');
+        if (relatoEl) relatoEl.focus();
+        return;
+    }
+    // A descrição precisa cumprir os 4 itens do Art. 24 da LPI (texto real, peças, ação e aplicação)
+    const validacaoDescricao = validarSuficienciaDescritivaProjeto(relato, nomeProj);
+    if (!validacaoDescricao.valido) {
+        alert(`A descrição ainda não está completa.\n\n${validacaoDescricao.motivo}\n\n${validacaoDescricao.orientacao}`);
+        interpretarRelatoLivre(false, true);
         if (relatoEl) relatoEl.focus();
         return;
     }
@@ -2591,7 +2605,6 @@ async function iniciarVerificacaoPorcentagemBloco2() {
         progresso(97, 'Montando o relatório...');
         renderizarRelatorioDiagnostico(dados, ultimoDiagnostico, verif, resultadoMundial);
         renderizarPainelVerificacaoExistencia(verif);
-        salvarHistoricoLocal(dados, ultimoDiagnostico);
         gerarMinutaAutomatizada('CERTIFICADO_TITULARIDADE');
 
         etapaAbaLiberadaUsuario = Math.max(etapaAbaLiberadaUsuario, 2);
@@ -2695,7 +2708,7 @@ function aplicarRegrasDePerfilNaInterface() {
 // Navegação entre abas (com liberação progressiva por etapas)
 function alternarAba(abaId) {
     if (abaId === 'aba-relatorio' && etapaAbaLiberadaUsuario < 2) {
-        alert('🔒 Etapa 2 Bloqueada:\n\nConclua a descrição do projeto no Bloco 2 e clique em "Verificar se o Projeto já existe" para realizar a auditoria e liberar o Diagnóstico.');
+        alert('O resultado aparece depois da verificação.\n\nDescreva o projeto e clique em "Verificar se já existe".');
         return;
     }
 
@@ -2740,7 +2753,7 @@ function motorDecisaoLocal(dados) {
         alertasLicenca.unshift({
             nivel: 'ATENCAO',
             titulo: 'Alerta Urgente — Período de Graça em Curso (Art. 12 da Lei nº 9.279/1996)',
-            descricao: 'Como o projeto já foi divulgado publicamente (YouTube, GitHub, TCC ou feira) há menos de 12 meses, você ainda pode depositar Patente (PI/MU) ou Desenho Industrial invocando o Período de Graça (Art. 12 da LPI). Protocolize o pedido no INPI antes de completar 365 dias da primeira exposição pública e anexe as provas da divulgação pelo próprio autor.'
+            descricao: 'Como o projeto já foi divulgado publicamente (YouTube, GitHub, TCC ou feira) há menos de 12 meses, você ainda pode depositar Patente (PI/MU) invocando o Período de Graça (Art. 12 da LPI). Protocolize o pedido no INPI antes de completar 12 meses da primeira divulgação e guarde as provas de que ela foi feita pelo próprio autor. Para Desenho Industrial o prazo é menor: 180 dias (Art. 96, § 3º da LPI).'
         });
     } else if (divulgacao === 'DIVULGADO_MAIS_12M' && dados.grau_novidade_hardware !== 'MODULOS_PRONTOS_COTS') {
         score -= 10;
@@ -2793,7 +2806,7 @@ function motorDecisaoLocal(dados) {
         recomendacoesInpi.push({
             codigo: 'TCI',
             titulo: 'Camada C — Topografia de Circuito Integrado (Microchips / Silício)',
-            base_legal: 'Lei nº 11.484/2007 (Arts. 26 a 55 — Institui também o PADIS)',
+            base_legal: 'Lei nº 11.484/2007 (Arts. 26 e seguintes — Institui também o PADIS)',
             prioridade: 'Especialização Máxima em Semicondutores',
             prazo: '10 anos (a contar do depósito ou 1ª exploração econômica)',
             justificativa: 'Tutela o leiaute tridimensional das camadas que compõem o microchip (arquivos GDSII/OASIS), ressalvadas as exceções legais para ensino, pesquisa acadêmica e engenharia reversa lícita (Art. 37 da Lei 11.484/07). O projeto também pode pleitear incentivos fiscais do PADIS.'
@@ -2977,136 +2990,18 @@ function coletarDadosFormularioAtual() {
     };
 }
 
-// Submissão do Formulário de Arquitetura + Verificação Real de Existência/Anterioridade
-async function processarDiagnostico(event) {
+// Enter dentro do formulário: no Bloco 1 avança para o Bloco 2; no Bloco 2 inicia a verificação
+function enviarFormularioPorEnter(event) {
     if (event) event.preventDefault();
-
-    if (perfilAcessoAtual === 'USUARIO' && blocoAtualUsuario < 3) {
-        avancarBlocoUsuario(blocoAtualUsuario + 1);
-        return;
-    }
-
-    const gaveta = document.getElementById('gaveta-parametros-avancados');
-    const relatoEl = document.getElementById('relato_livre_usuario');
-    const nomeEl = document.getElementById('nome_projeto');
-    const resumoEl = document.getElementById('resumo_tecnico');
-
-    const textoRelato = relatoEl ? relatoEl.value.trim() : '';
-    const textoNome = nomeEl ? nomeEl.value.trim() : '';
-
-    if (!textoRelato) {
-        alert('🚫 A Descrição do Projeto (Bloco 2) é obrigatória para realizar a verificação e o diagnóstico.');
-        avancarBlocoUsuario(2);
-        if (relatoEl) relatoEl.focus();
-        return;
-    }
-
-    // Valida se o texto realmente descreve um projeto técnico real (Art. 24 da LPI — Suficiência Descritiva)
-    const validacaoReal = validarSuficienciaDescritivaProjeto(textoRelato, textoNome);
-    if (!validacaoReal.valido) {
-        alert(`🚫 Projeto Recusado por Insuficiência Descritiva (Art. 24 da Lei nº 9.279/96):\n\n${validacaoReal.motivo}\n\n${validacaoReal.orientacao}`);
-        if (relatoEl) relatoEl.focus();
-        interpretarRelatoLivre(false, true);
-        return;
-    }
-
-    // Garante que o relato livre sempre sincronize e auto-marque os parâmetros caso a gaveta avançada esteja fechada
-    if (!gaveta || !gaveta.open) {
-        autoMarcarEnquantoDigita();
-    } else if (resumoEl && !resumoEl.value.trim()) {
-        resumoEl.value = textoRelato || textoNome;
-    }
-
-    // Valida dados do titular também na submissão final
-    const autorNomeVal = document.getElementById('autor_nome').value.trim();
-    const autorDocVal = document.getElementById('autor_documento').value.trim();
-    const autorEmailVal = document.getElementById('autor_email').value.trim();
-
-    if (!textoNome || textoNome.length < 5 || !autorNomeVal || autorNomeVal.length < 5 || !validarDocumentoCpfCnpjRigido(autorDocVal) || !validarEmailRigido(autorEmailVal)) {
-        alert('🚫 Dados do Bloco 1 Incompletos ou Inválidos:\n\nVerifique se o Nome do Projeto (mín. 5 caracteres), Nome do Titular (mín. 5 caracteres), CPF/CNPJ (11 ou 14 dígitos) e E-mail (com @ e domínio válido) estão preenchidos corretamente.');
-        avancarBlocoUsuario(1);
-        return;
-    }
-    if (!document.getElementById('instituicao_empresa').value.trim()) {
-        document.getElementById('instituicao_empresa').value = 'Desenvolvimento Independente / Startup de Hardware & IoT';
-    }
-    if (resumoEl && !resumoEl.value.trim()) {
-        resumoEl.value = textoRelato || textoNome;
-    }
-
-    const dados = coletarDadosFormularioAtual();
-    ultimoProjetoAvaliado = dados;
-
-    try {
-        const resp = await fetch('api/diagnostico.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(dados)
-        });
-        if (resp.ok) {
-            const json = await resp.json();
-            if (json && json.sucesso) {
-                ultimoDiagnostico = Object.assign(motorDecisaoLocal(dados), {
-                    projeto_id: json.diagnostico.projeto_id,
-                    diagnostico_id: json.diagnostico.diagnostico_id
-                });
-                document.getElementById('engine-status-text').textContent = 'Motor PHP + SQL Fixo Ativo';
-            } else {
-                ultimoDiagnostico = motorDecisaoLocal(dados);
-            }
-        } else {
-            ultimoDiagnostico = motorDecisaoLocal(dados);
-        }
-    } catch (e) {
-        ultimoDiagnostico = motorDecisaoLocal(dados);
-    }
-
-    salvarHistoricoLocal(dados, ultimoDiagnostico);
-
-    // Executa imediatamente a verificação se o projeto já existe e se pode ser reivindicado
-    let resultadoMundial = null;
-    try {
-        resultadoMundial = await buscarEstadoDaTecnicaMundialAoVivo(dados, ultimoDiagnostico);
-    } catch (e) {
-        resultadoMundial = null;
-    }
-    const verif = await verificarExistenciaLocalEApi(dados, ultimoDiagnostico, 'VERIFICAR');
-    renderizarRelatorioDiagnostico(dados, ultimoDiagnostico, verif, resultadoMundial);
-    renderizarPainelVerificacaoExistencia(verif);
-
-    if (perfilAcessoAtual === 'USUARIO') {
-        etapaAbaLiberadaUsuario = verif && verif.status_apropriacao === 'JA_PERTENCE_AO_USUARIO' ? 3 : 2;
-        aplicarRegrasDePerfilNaInterface();
-    }
-
-    gerarMinutaAutomatizada('CERTIFICADO_TITULARIDADE');
-    alternarAba('aba-relatorio');
-
-    if (verif && !verif.pode_registrar_como_seu) {
-        atualizarBalaoMascote(
-            'ALERTA DE ANTERIORIDADE — CRIAÇÃO OU MARCA JÁ REGISTRADA POR TERCEIRO!',
-            `Colisão detectada com ${verif.bloqueio_terceiro ? escaparHtml(verif.bloqueio_terceiro.protocolo_registro) : 'registro anterior'}`,
-            `O projeto que você descreveu colide diretamente com uma criação ou marca já existente na base fixa (<strong>${verif.bloqueio_terceiro ? escaparHtml(verif.bloqueio_terceiro.nome_criacao_marca) : ''}</strong>). Confira no painel abaixo os artigos da LPI aplicáveis e o que você precisa diferenciar para poder registrar como seu.`
-        );
-    } else if (ultimoDiagnostico.risco_contaminacao_licenca === 'ALTO_CRITICO') {
-        atualizarBalaoMascote(
-            'RESULTADO DO DIAGNÓSTICO — CONFLITO CONTRATUAL DE LICENÇAS DETECTADO',
-            `Índice de Protegibilidade: ${ultimoDiagnostico.score_protegibilidade}/100 — Risco Crítico de Reciprocidade`,
-            `O projeto apresenta colisão entre a pretensão de fechamento comercial e o uso de ativos sob <strong>GPLv3 ou CERN-OHL-S / CC BY-SA</strong>. Lembre-se da premissa teórica do nosso estudo: a licença é uma autorização condicional; descumpri-la retira a permissão de uso e configura violação de Direito Autoral (Lei nº 9.610/98).`
-        );
-    } else {
-        atualizarBalaoMascote(
-            'Etapa 2 de 2 — Resultado',
-            'Nenhum projeto parecido nas bases consultadas',
-            'Você já pode gravar a prova de autoria no Observatório. Para ter exclusividade no Brasil, o pedido precisa ser feito no INPI.'
-        );
-    }
+    if (blocoAtualUsuario <= 1) avancarBlocoUsuario(2);
+    else iniciarVerificacaoPorcentagemBloco2();
 }
 
 // Renderiza as 6 Camadas (A a F), a Matriz de Correlação Engenharia-Lei e as tabelas do diagnóstico na Aba 2
 function renderizarRelatorioDiagnostico(dados, diag, verif = null, anterioridadeMundial = null) {
+    ultimoResultadoMundial = anterioridadeMundial;
     document.getElementById('rel-nome-projeto').textContent = dados.nome_projeto;
-    document.getElementById('rel-autor-projeto').textContent = `${dados.autor_nome} • ${dados.instituicao_empresa} (${dados.autor_documento})`;
+    document.getElementById('rel-autor-projeto').textContent = `${dados.autor_nome} • ${dados.instituicao_empresa} (${formatarDocumento(dados.autor_documento)})`;
     document.getElementById('kpi-score').textContent = `${diag.score_protegibilidade}/100`;
     document.getElementById('kpi-risco').textContent = diag.risco_contaminacao_licenca;
     document.getElementById('kpi-inpi').textContent = diag.protecao_inpi_primaria.split(' — ')[1] || diag.protecao_inpi_primaria;
@@ -3128,7 +3023,7 @@ function renderizarRelatorioDiagnostico(dados, diag, verif = null, anterioridade
     if (painelLeigo) {
         const temAnterioridadeMundial = anterioridadeMundial && anterioridadeMundial.totalAchadosMundo > 0;
         const jaExisteTerceiro = Boolean(verif && verif.bloqueio_terceiro && !verif.pode_registrar_como_seu);
-        const jaEhDoUsuario = Boolean(verif && verif.status_apropriacao === 'JA_PERTENCE_AO_USUARIO');
+        const jaEhDoUsuario = Boolean(verif && ['JA_PERTENCE_AO_USUARIO', 'REGISTRADO_COM_SUCESSO'].includes(verif.status_apropriacao));
         const colisaoMarca = Boolean(jaExisteTerceiro && verif.bloqueio_terceiro.colisao_marca);
 
         // Veredito principal: 3 estados visuais (ok / atencao / critico), título curto e explicação em linguagem simples
@@ -3202,7 +3097,7 @@ function renderizarRelatorioDiagnostico(dados, diag, verif = null, anterioridade
                 explicacaoSimples: dados.possui_firmware_proprio
                     ? `Seu código (${dados.linguagem_firmware}) é protegido por direito autoral desde a criação; o registro no INPI (e-Software) serve como prova de autoria.`
                     : 'Você indicou que o projeto não possui código/software próprio.',
-                lei: 'Art. 2º e Art. 3º da Lei 9.609/98 (Lei de Software — proteção de 50 anos via Hash SHA-512).'
+                lei: 'Art. 2º, § 2º e Art. 3º da Lei 9.609/98 (Lei de Software — proteção de 50 anos; no e-Software o código é identificado por um resumo hash).'
             },
             {
                 passou: Boolean(dados.possui_pcb_customizada),
@@ -3249,7 +3144,8 @@ function renderizarRelatorioDiagnostico(dados, diag, verif = null, anterioridade
             }
         ];
 
-        const colisoesLocais = verif && Array.isArray(verif.colisoes) ? verif.colisoes.filter(c => !c.mesmo_titular).length : 0;
+        // Conta todos os itens parecidos listados na base (inclusive um registro do próprio usuário, que aparece na lista)
+        const colisoesLocais = verif && Array.isArray(verif.colisoes) ? verif.colisoes.length : 0;
         const marcaItem = item => item.passou ? 'Pode proteger' : (item.atencao ? 'Atenção' : 'Não se aplica');
         const classeItem = item => item.passou ? 'ok' : (item.atencao ? 'atencao' : 'na');
 
@@ -3264,10 +3160,10 @@ function renderizarRelatorioDiagnostico(dados, diag, verif = null, anterioridade
                     </div>
                 </div>
                 <div class="verdict-numeros">
-                    <div><strong>${mundo ? mundo.mesmaSolucao.length : '—'}</strong><span>fazem o mesmo (todos os termos)</span></div>
+                    <div><strong>${mundo ? mundo.mesmaSolucao.length : '—'}</strong><span>${mundo && mundo.mesmaSolucao.length === 1 ? 'faz o mesmo' : 'fazem o mesmo'} (todos os termos)</span></div>
                     <div><strong>${mundo ? mundo.mesmoTema.length : '—'}</strong><span>do mesmo tema</span></div>
-                    <div><strong>${mundo ? mundo.totalAnalisados : '—'}</strong><span>resultados analisados</span></div>
-                    <div><strong>${colisoesLocais}</strong><span>itens parecidos na base do Observatório</span></div>
+                    <div><strong>${mundo ? mundo.totalAnalisados : '—'}</strong><span>${mundo && mundo.totalAnalisados === 1 ? 'resultado analisado' : 'resultados analisados'}</span></div>
+                    <div><strong>${colisoesLocais}</strong><span>${colisoesLocais === 1 ? 'item parecido' : 'itens parecidos'} na base do Observatório</span></div>
                 </div>
                 <div class="verdict-corpo">
                     <h4>O que você pode proteger</h4>
@@ -3281,10 +3177,14 @@ function renderizarRelatorioDiagnostico(dados, diag, verif = null, anterioridade
                         `).join('')}
                     </div>
                     <div class="cta-bar no-print">
-                        <p><strong>Próximo passo:</strong> grave a prova de autoria (hash SHA-512 com data) no Observatório. É um registro acadêmico interno; para ter exclusividade no Brasil, o pedido precisa ser feito no INPI.</p>
+                        <p>${jaExisteTerceiro
+                            ? '<strong>Próximo passo:</strong> para gravar a prova de autoria, use um nome próprio e descreva o que o seu projeto tem de diferente.'
+                            : (jaEhDoUsuario
+                                ? '<strong>Prova de autoria já gravada.</strong> Baixe o certificado. Para ter exclusividade no Brasil, o pedido precisa ser feito no INPI.'
+                                : '<strong>Próximo passo:</strong> grave a prova de autoria (hash SHA-512 com data) no Observatório. É um registro acadêmico interno; para ter exclusividade no Brasil, o pedido precisa ser feito no INPI.')}</p>
                         <div class="card-acoes">
-                            <button type="button" class="btn-primary" onclick="registrarTitularidadeFixaUsuario()">Gravar prova de autoria</button>
-                            <button type="button" class="btn-secondary" onclick="baixarCertificadoDireto()">Baixar certificado</button>
+                            ${jaEhDoUsuario ? '' : '<button type="button" class="btn-primary" onclick="registrarTitularidadeFixaUsuario()">Gravar prova de autoria</button>'}
+                            <button type="button" class="${jaEhDoUsuario ? 'btn-primary' : 'btn-secondary'}" onclick="baixarCertificadoDireto()">Baixar certificado</button>
                         </div>
                     </div>
                 </div>
@@ -3315,7 +3215,9 @@ function renderizarRelatorioDiagnostico(dados, diag, verif = null, anterioridade
 
         const temAnterioridadeRelevante = Boolean(anterioridadeMundial && anterioridadeMundial.totalAchadosMundo > 0);
         const statusCamadaF = temAnterioridadeRelevante && dados.modelo_negocio !== 'PUBLICACAO_DEFENSIVA'
-            ? `⚠️ Patente em dúvida: ${anterioridadeMundial.totalAchadosMundo} resultado(s) parecido(s) encontrado(s) — só o diferencial pode ser patenteável (Arts. 11 e 13 LPI)`
+            ? (anterioridadeMundial.mesmaSolucao && anterioridadeMundial.mesmaSolucao.length > 0
+                ? `Patente em dúvida: ${anterioridadeMundial.mesmaSolucao.length} resultado(s) fazem o mesmo — só o diferencial pode ser patenteável (Arts. 11 e 13 da LPI)`
+                : `Patente possível só do diferencial: ${anterioridadeMundial.totalAchadosMundo} resultado(s) do mesmo tema (atividade inventiva — Art. 13 da LPI)`)
             : dados.modelo_negocio === 'PUBLICACAO_DEFENSIVA'
             ? `Publicação Defensiva / Estado da Técnica (Art. 11 e 12 da LPI)`
             : (dados.grau_novidade_hardware === 'INEDITO_INVENTIVO'
@@ -3360,6 +3262,38 @@ function renderizarRelatorioDiagnostico(dados, diag, verif = null, anterioridade
     // (Removidos: painéis de reivindicação, correlação, recomendações, alertas e custos — os elementos não existem mais no index.html)
 }
 
+// Converte um trecho com HTML em texto puro (para o certificado .txt). DOMParser não executa scripts nem carrega imagens.
+function textoPuro(html) {
+    const doc = new DOMParser().parseFromString(String(html == null ? '' : html), 'text/html');
+    return (doc.body.textContent || '').replace(/\s+/g, ' ').trim();
+}
+
+// Resumo da busca mundial para o certificado
+function resumoBuscaMundialTexto(r) {
+    if (!r) return '• A busca mundial ainda não foi executada.';
+    const statusTexto = st => ({
+        ok: `consultada (${st.recebidos} resultado(s) em ${st.consultas} consulta(s))`,
+        parcial: `consulta parcial (${st.consultas} concluída(s))`,
+        limite: 'limite de consultas atingido — resultado incompleto',
+        erro: 'indisponível no momento — nenhum resultado considerado',
+        sem_termos: 'não consultada (descrição sem termos técnicos suficientes)',
+        apenas_link: 'sem consulta automática nesta instalação'
+    }[st.estado] || 'não consultada');
+    const linhas = [
+        `• Bases: Patentes (EPO) — ${statusTexto(r.status.patentes)}; Artigos (OpenAlex) — ${statusTexto(r.status.openalex)}; Repositórios (GitHub) — ${statusTexto(r.status.github)}.`,
+        `• Termos pesquisados: ${(r.termos && r.termos.ingles.length ? r.termos.ingles : (r.termos ? r.termos.portugues : [])).join(', ') || '—'}`,
+        `• Classe CIP usada nos links de patentes: ${r.cipPrincipal}`,
+        `• Resultados analisados: ${r.totalAnalisados} | Fazem o mesmo (todos os termos principais): ${(r.mesmaSolucao || []).length} | Do mesmo tema: ${(r.mesmoTema || []).length}`
+    ];
+    if (r.interrompida) linhas.push('• A busca foi encerrada pelo usuário antes do fim.');
+    const top = (r.todos || []).filter(x => x.termosEncontrados && x.termosEncontrados.length).slice(0, 5);
+    if (top.length) {
+        linhas.push('• Os mais parecidos encontrados:');
+        top.forEach((x, i) => linhas.push(`  ${i + 1}. [${x.base}] ${textoPuro(x.titulo)} (${x.ano}) — ${x.relevancia}% — ${x.link}`));
+    }
+    return linhas.join('\n');
+}
+
 // Gera o texto do Certificado de Autoria SHA-512 (único documento usado pela interface atual)
 function gerarMinutaAutomatizada(tipoDocumento) {
     const p = ultimoProjetoAvaliado || CASO_BASE_INICIAL;
@@ -3382,12 +3316,12 @@ Observatório Acadêmico — NÃO é documento emitido pelo INPI
 ================================================================================
 
 PROTOCOLO INTERNO DO OBSERVATÓRIO: ${protocoloAtivo}
-STATUS DA VERIFICAÇÃO DE EXISTÊNCIA: ${verif.titulo_veredito || 'VERIFICAÇÃO AINDA NÃO EXECUTADA'}
+STATUS NA BASE DO OBSERVATÓRIO: ${textoPuro(verif.titulo_veredito) || 'VERIFICAÇÃO AINDA NÃO EXECUTADA'}
 DATA E HORA DE EMISSÃO: ${new Date().toLocaleString('pt-BR')}
 
 1. QUALIFICAÇÃO DO(S) TITULAR(ES) E INVENTOR(ES)
 • Nome Completo / Equipe: ${p.autor_nome}
-• Documento (CPF / CNPJ): ${p.autor_documento}
+• Documento (CPF / CNPJ): ${formatarDocumento(p.autor_documento)}
 • Organização / Startup / ICT: ${p.instituicao_empresa}
 • E-mail informado: ${p.autor_email}
 
@@ -3397,28 +3331,31 @@ DATA E HORA DE EMISSÃO: ${new Date().toLocaleString('pt-BR')}
 • Memorial Descritivo Sintético (Art. 24 da Lei nº 9.279/96):
   "${p.resumo_tecnico}"
 
-3. LAUDO DE VERIFICAÇÃO DE EXISTÊNCIA E ANTERIORIDADE (ART. 11 E ART. 124 DA LPI)
-• Parecer do Motor de Colisão: ${verif.explicacao_veredito || 'Verificação ainda não executada.'}
-• Enquadramento Primário no INPI: ${d.protecao_inpi_primaria}
-• Enquadramento Complementar: ${d.protecao_inpi_secundaria}
+3. VERIFICAÇÃO NA BASE DO OBSERVATÓRIO (ART. 11 E ART. 124 DA LPI)
+• Parecer: ${textoPuro(verif.explicacao_veredito) || 'Verificação ainda não executada.'}
+• Enquadramento Primário no INPI: ${textoPuro(d.protecao_inpi_primaria)}
+• Enquadramento Complementar: ${textoPuro(d.protecao_inpi_secundaria)}
 • Licenciamento Definido (Camada A — Esquemático/PCB): ${d.licenca_hw_recomendada}
 • Licenciamento Definido (Camada E — Firmware ${p.linguagem_firmware}): ${d.licenca_sw_recomendada}
 
-4. MINUTA DA REIVINDICAÇÃO PATENTÁRIA VINCULADA (ART. 25 DA LPI E RES. INPI 158/2016)
+4. BUSCA MUNDIAL DE ANTERIORIDADE (PATENTES, ARTIGOS E REPOSITÓRIOS — ART. 11 DA LPI)
+${resumoBuscaMundialTexto(ultimoResultadoMundial)}
+
+5. MINUTA DA REIVINDICAÇÃO PATENTÁRIA (ART. 25 DA LPI E RES. INPI 158/2016) — RASCUNHO PARA ESTUDO
 ${corr.texto_reivindicacao_1}
 
-5. IMPRESSÃO DIGITAL CRIPTOGRÁFICA (PROVA DE AUTORIA ANTERIOR — ART. 3º LEI 9.609/98)
+6. IMPRESSÃO DIGITAL CRIPTOGRÁFICA (PROVA DE AUTORIA — ART. 3º DA LEI 9.609/98)
 Hash SHA-512 do Projeto e Código-Fonte:
 ${hashReal}
 
-6. RESSALVA LEGAL E NECESSIDADE DE VALIDAÇÃO OFICIAL NO PORTAL DO INPI (AUTARQUIA FEDERAL)
-• Natureza deste Certificado: Este documento constitui Laudo Acadêmico-Jurídico de Triagem de Anterioridade e Prova Técnica de Autoria/Integridade Criptográfica (SHA-512).
+7. RESSALVA LEGAL E NECESSIDADE DE VALIDAÇÃO OFICIAL NO INPI
+• Natureza deste certificado: triagem acadêmica de anterioridade e prova técnica de autoria e integridade (resumo SHA-512 com data).
 • Validação Estatal Obrigatória: Nos termos dos Arts. 6º, 19, 30 e 129 da Lei nº 9.279/1996 (LPI), a exclusividade comercial de Patente (PI/MU), Desenho Industrial (DI) ou Marca em todo o território nacional depende obrigatoriamente de busca complementar e protocolo formal do pedido diretamente no portal oficial do Instituto Nacional da Propriedade Industrial — INPI (https://www.gov.br/inpi/pt-br e https://busca.inpi.gov.br/pePI/), mediante recolhimento da Guia de Recolhimento da União (GRU) e exame técnico pelos examinadores federais.
 
-Declara-se, para fins de prova de anterioridade técnica e autoral nos termos do Art. 5º, XXVII a XXIX da CF/88, da Lei nº 9.279/1996 (LPI), da Lei nº 9.609/1998 e da Lei nº 9.610/1998, que a especificação técnica acima foi auditada e vinculada ao titular identificado sob o protocolo ${protocoloAtivo}.
+Declara-se, para fins de prova de anterioridade técnica e autoral nos termos do Art. 5º, XXVII a XXIX da CF/88, da Lei nº 9.279/1996 (LPI), da Lei nº 9.609/1998 e da Lei nº 9.610/1998, que a especificação técnica acima foi verificada pelo Observatório e vinculada ao titular identificado sob o protocolo ${protocoloAtivo}.
 
 __________________________________________________
-TITULAR / DEPOSITANTE: ${p.autor_nome} (${p.autor_documento})
+TITULAR: ${p.autor_nome} (${formatarDocumento(p.autor_documento)})
 Observatório de Propriedade Intelectual e Hardware Aberto — Brasil`;
     }
 
@@ -3433,7 +3370,7 @@ function baixarCertificadoDireto() {
     const viewer = document.getElementById('contract-viewer-box');
     const conteudo = viewer ? viewer.textContent : '';
     if (!conteudo) {
-        alert('Realize primeiro a auditoria do seu projeto para gerar o Certificado de Autoria.');
+        alert('Faça primeiro a verificação do projeto para gerar o certificado.');
         return;
     }
     // Arquivo de texto UTF-8 (o conteúdo é texto puro; antes era salvo com extensão .doc indevidamente)
@@ -3451,42 +3388,7 @@ function baixarCertificadoDireto() {
     URL.revokeObjectURL(url);
 }
 
-// Salva histórico de testes no navegador (atualiza a tabela de histórico, se existir na página)
-function salvarHistoricoLocal(dados, diag) {
-    const lista = JSON.parse(localStorage.getItem('historico_observatorio_pi') || '[]');
-    lista.unshift({
-        nome_projeto: dados.nome_projeto,
-        modelo_negocio: dados.modelo_negocio,
-        score: diag.score_protegibilidade,
-        risco: diag.risco_contaminacao_licenca,
-        inpi: diag.protecao_inpi_primaria,
-        lic_hw: diag.licenca_hw_recomendada,
-        lic_sw: diag.licenca_sw_recomendada,
-        data: diag.timestamp_avaliacao
-    });
-    localStorage.setItem('historico_observatorio_pi', JSON.stringify(lista.slice(0, 10)));
-    renderizarTabelaHistorico();
-}
 
-function renderizarTabelaHistorico() {
-    const tbody = document.getElementById('tabela-historico-body');
-    if (!tbody) return;
-    const lista = JSON.parse(localStorage.getItem('historico_observatorio_pi') || '[]');
-    if (lista.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#cbd5e1;">Nenhuma avaliação processada nesta sessão. Descreva seu caso na Etapa 1 e clique em Verificar se Já Existe.</td></tr>';
-        return;
-    }
-    tbody.innerHTML = lista.map(item => `
-        <tr>
-            <td><strong>${item.nome_projeto}</strong></td>
-            <td>${item.inpi}</td>
-            <td>${item.lic_hw}</td>
-            <td>${item.lic_sw}</td>
-            <td><strong>${item.score}/100</strong></td>
-            <td><span class="inpi-badge">${item.risco}</span></td>
-        </tr>
-    `).join('');
-}
 
 // ============================================================================
 // TEMA CLARO / ESCURO

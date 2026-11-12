@@ -518,9 +518,10 @@ details.mais > div { margin-top: 0.6rem; }
 @media (max-width: 820px) {
     .grid-2, .grid-3 { grid-template-columns: 1fr; }
     .intro h2 { font-size: 1.4rem; }
-    .verdict-numeros { grid-template-columns: 1fr; }
-    .verdict-numeros div { border-right: none; border-bottom: 1px solid var(--border); }
-    .verdict-numeros div:last-child { border-bottom: none; }
+    .verdict-numeros { grid-template-columns: repeat(2, 1fr); }
+    .verdict-numeros div { padding: 0.8rem 1rem; border-right: none; border-bottom: 1px solid var(--border); }
+    .verdict-numeros div:nth-child(odd) { border-right: 1px solid var(--border); }
+    .verdict-numeros div:nth-last-child(-n+2) { border-bottom: none; }
     .checklist { grid-template-columns: 1fr; }
 }
 @media (max-width: 600px) {
@@ -597,3 +598,9 @@ details.mais > div { margin-top: 0.6rem; }
 .termo-en { opacity: 0.7; }
 .destaque-leitura { font-size: 0.82rem; color: var(--text-2); margin: 0.1rem 0 0; line-height: 1.45; }
 @media (max-width: 860px) { .destaque-grid { grid-template-columns: 1fr; } }
+
+/* Impressão: sem animações (a animação de entrada da aba começava com opacidade 0 e a página saía em branco) */
+@media print {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .tab-panel.active { opacity: 1 !important; transform: none !important; }
+}

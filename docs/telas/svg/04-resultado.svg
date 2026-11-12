@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="3355" viewBox="0 0 1440 3355">
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="3733" viewBox="0 0 1440 3733">
 <title>Etapa 2 — Resultado</title>
-<rect id="fundo" x="0" y="0" width="1440" height="3355" fill="rgb(245,246,248)"/>
+<rect id="fundo" x="0" y="0" width="1440" height="3733" fill="rgb(245,246,248)"/>
 <rect id="tab-step-4" x="200.5" y="96.4" width="21.0" height="21.0" rx="10.5" fill="rgb(248,250,252)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
 <text id="texto-5" x="208.5" y="109.9" font-family="Inter, sans-serif" font-size="11.52" font-weight="700" fill="rgb(100,116,139)">1</text>
 <text id="texto-6" x="230.8" y="110.9" font-family="Inter, sans-serif" font-size="14.4" font-weight="500" fill="rgb(100,116,139)">Cadastro e descrição</text>
@@ -16,241 +16,335 @@
 <rect id="guide-icon-13" x="204.6" y="171.8" width="28.0" height="28.0" rx="14.0" fill="rgb(255,244,237)" fill-opacity="1.000"/>
 <text id="texto-14" x="216.6" y="189.8" font-family="Inter, sans-serif" font-size="14.4" font-weight="700" fill="rgb(194,65,12)">i</text>
 <text id="texto-17" x="247.0" y="184.0" font-family="Inter, sans-serif" font-size="11.52" font-weight="600" letter-spacing="0.6912" fill="rgb(100,116,139)">ETAPA 2 DE 2 — RESULTADO</text>
-<text id="texto-19" x="247.0" y="206.3" font-family="Inter, sans-serif" font-size="16" font-weight="600" letter-spacing="-0.16" fill="rgb(15,23,42)">Encontramos 3 resultado(s) parecido(s) com o seu projeto</text>
-<text id="texto-21" x="247.0" y="230.2" font-family="Inter, sans-serif" font-size="14.08" font-weight="400" fill="rgb(51,65,85)">Leia a lista em &quot;O que encontramos no mundo&quot; e compare com o seu diferencial. Marca e código-fonte continuam protegíveis.</text>
+<text id="texto-19" x="247.0" y="206.3" font-family="Inter, sans-serif" font-size="16" font-weight="600" letter-spacing="-0.16" fill="rgb(15,23,42)">2 resultado(s) fazem o mesmo que o seu projeto</text>
+<text id="texto-21" x="247.0" y="230.2" font-family="Inter, sans-serif" font-size="14.08" font-weight="400" fill="rgb(51,65,85)">Veja &quot;Os mais parecidos com o seu projeto&quot; e compare com o seu diferencial. Marca e código-fonte continuam protegíveis.</text>
 <rect id="card-24" x="184.5" y="274.2" width="1071.0" height="126.2" rx="11.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
 <text id="texto-27" x="209.0" y="310.9" font-family="Inter, sans-serif" font-size="11.52" font-weight="600" letter-spacing="0.6912" fill="rgb(100,116,139)">RELATÓRIO DE ANTERIORIDADE E PROTEÇÃO</text>
 <text id="texto-29" x="209.0" y="344.2" font-family="Inter, sans-serif" font-size="23.2" font-weight="650" letter-spacing="-0.232" fill="rgb(15,23,42)">AgroSonda Irrigação</text>
-<text id="texto-31" x="209.0" y="368.4" font-family="Inter, sans-serif" font-size="14.4" font-weight="400" fill="rgb(100,116,139)">Maria da Silva • Desenvolvimento Independente / Startup de Hardware &amp; IoT (529.982.247-25)</text>
+<text id="texto-31" x="209.0" y="368.4" font-family="Inter, sans-serif" font-size="14.4" font-weight="400" fill="rgb(100,116,139)">Maria da Silva • Desenvolvimento independente (529.982.247-25)</text>
 <rect id="btn-secondary-33" x="881.8" y="299.2" width="138.2" height="40.7" rx="7.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(207,214,224)" stroke-opacity="1.000" stroke-width="1"/>
 <text id="texto-34" x="901.5" y="323.4" font-family="Inter, sans-serif" font-size="14.4" font-weight="600" fill="rgb(15,23,42)">Imprimir / PDF</text>
 <rect id="btn-baixar-certificado-oficial-35" x="1030.6" y="299.2" width="199.9" height="40.7" rx="7.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(207,214,224)" stroke-opacity="1.000" stroke-width="1"/>
 <text id="texto-36" x="1050.3" y="323.4" font-family="Inter, sans-serif" font-size="14.4" font-weight="600" fill="rgb(15,23,42)">Baixar certificado (.txt)</text>
-<rect id="verdict-38" x="184.5" y="421.4" width="1071.0" height="1019.3" rx="11.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
+<rect id="verdict-38" x="184.5" y="421.4" width="1071.0" height="1021.8" rx="11.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
 <rect id="verdict-topo-39" x="185.0" y="421.9" width="1070.0" height="202.7" rx="0.0" fill="rgb(255,251,235)" fill-opacity="1.000"/>
 <rect id="verdict-icone-40" x="209.0" y="444.3" width="40.0" height="40.0" rx="20.0" fill="rgb(180,83,9)" fill-opacity="1.000"/>
 <text id="texto-41" x="225.9" y="468.7" font-family="Inter, sans-serif" font-size="18.4" font-weight="700" fill="rgb(255,255,255)">!</text>
 <text id="texto-44" x="265.0" y="456.5" font-family="Inter, sans-serif" font-size="11.52" font-weight="600" letter-spacing="0.6912" fill="rgb(100,116,139)">RESULTADO</text>
-<text id="texto-46" x="265.0" y="485.7" font-family="Inter, sans-serif" font-size="19.2" font-weight="600" letter-spacing="-0.192" fill="rgb(15,23,42)">Encontramos projetos parecidos com o seu</text>
-<text id="texto-49" x="265.0" y="513.2" font-family="Inter, sans-serif" font-size="14.88" font-weight="400" fill="rgb(51,65,85)">3 resultado(s) — 1 deles patente(s) — contêm a maior parte dos termos técnicos do seu projeto. Leia a lista em</text>
-<text id="texto-51" x="1048.3" y="513.2" font-family="Inter, sans-serif" font-size="14.88" font-weight="600" fill="rgb(51,65,85)">&quot;O que encontramos no</text>
-<text id="texto-52" x="265.0" y="537.0" font-family="Inter, sans-serif" font-size="14.88" font-weight="600" fill="rgb(51,65,85)">mundo&quot;</text>
-<text id="texto-53" x="322.5" y="537.0" font-family="Inter, sans-serif" font-size="14.88" font-weight="400" fill="rgb(51,65,85)">: se algum descrever a mesma solução, o conceito geral não é novo (Art. 11 da LPI).</text>
-<text id="texto-55" x="265.0" y="568.8" font-family="Inter, sans-serif" font-size="14.88" font-weight="400" fill="rgb(51,65,85)">Isso não impede o seu projeto. Você pode proteger a marca e o código-fonte, e uma patente ainda é possível se ficar restrita ao seu</text>
-<text id="texto-56" x="265.0" y="592.6" font-family="Inter, sans-serif" font-size="14.88" font-weight="400" fill="rgb(51,65,85)">diferencial.</text>
-<text id="texto-60" x="209.0" y="662.1" font-family="Inter, sans-serif" font-size="21.6" font-weight="700" fill="rgb(15,23,42)">3</text>
-<text id="texto-62" x="209.0" y="690.6" font-family="Inter, sans-serif" font-size="12.48" font-weight="400" fill="rgb(100,116,139)">resultados parecidos no mundo</text>
-<text id="texto-65" x="565.7" y="662.1" font-family="Inter, sans-serif" font-size="21.6" font-weight="700" fill="rgb(15,23,42)">6</text>
-<text id="texto-67" x="565.7" y="690.6" font-family="Inter, sans-serif" font-size="12.48" font-weight="400" fill="rgb(100,116,139)">resultados analisados</text>
-<text id="texto-70" x="922.3" y="662.1" font-family="Inter, sans-serif" font-size="21.6" font-weight="700" fill="rgb(15,23,42)">0</text>
-<text id="texto-72" x="922.3" y="690.6" font-family="Inter, sans-serif" font-size="12.48" font-weight="400" fill="rgb(100,116,139)">itens parecidos na base do Observatório</text>
-<text id="texto-75" x="209.0" y="746.7" font-family="Inter, sans-serif" font-size="15.2" font-weight="600" letter-spacing="-0.152" fill="rgb(15,23,42)">O que você pode proteger</text>
-<rect id="check-item-77" x="209.5" y="766.0" width="333.3" height="229.4" rx="7.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
-<rect id="check-marca-79" x="225.2" y="781.1" width="111.8" height="20.5" rx="4.0" fill="rgb(240,253,244)" fill-opacity="1.000"/>
-<text id="texto-80" x="232.4" y="793.5" font-family="Inter, sans-serif" font-size="11.2" font-weight="700" letter-spacing="0.336" fill="rgb(21,128,61)">PODE PROTEGER</text>
-<text id="texto-81" x="345.0" y="793.8" font-family="Inter, sans-serif" font-size="14.08" font-weight="600" fill="rgb(15,23,42)">Nome do Projeto / Marca</text>
-<text id="texto-82" x="345.0" y="816.3" font-family="Inter, sans-serif" font-size="14.08" font-weight="600" fill="rgb(15,23,42)">Comercial (Camada D)</text>
-<text id="texto-84" x="225.2" y="842.9" font-family="Inter, sans-serif" font-size="13.44" font-weight="400" fill="rgb(51,65,85)">O nome não colidiu com a base do</text>
-<text id="texto-85" x="225.2" y="864.4" font-family="Inter, sans-serif" font-size="13.44" font-weight="400" fill="rgb(51,65,85)">Observatório. Antes de depositar, confira na</text>
-<text id="texto-86" x="225.2" y="885.9" font-family="Inter, sans-serif" font-size="13.44" font-weight="400" fill="rgb(51,65,85)">busca de marcas do pePI/INPI (classe NCL 9)</text>
-<text id="texto-87" x="225.2" y="907.4" font-family="Inter, sans-serif" font-size="13.44" font-weight="400" fill="rgb(51,65,85)">se não existe marca igual ou parecida.</text>
-<text id="texto-89" x="225.2" y="933.7" font-family="Inter, sans-serif" font-size="12.16" font-weight="400" fill="rgb(100,116,139)">Art. 129 da Lei 9.279/96 (aquisição da marca pelo</text>
-<text id="texto-90" x="225.2" y="953.1" font-family="Inter, sans-serif" font-size="12.16" font-weight="400" fill="rgb(100,116,139)">registro) e Art. 133 (vigência de 10 anos, prorrogável</text>
-<text id="texto-91" x="225.2" y="972.5" font-family="Inter, sans-serif" font-size="12.16" font-weight="400" fill="rgb(100,116,139)">por períodos iguais e sucessivos).</text>
-<rect id="check-item-92" x="553.4" y="766.0" width="333.3" height="229.4" rx="7.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
-<rect id="check-marca-94" x="569.0" y="781.1" width="111.8" height="20.5" rx="4.0" fill="rgb(240,253,244)" fill-opacity="1.000"/>
-<text id="texto-95" x="576.2" y="793.5" font-family="Inter, sans-serif" font-size="11.2" font-weight="700" letter-spacing="0.336" fill="rgb(21,128,61)">PODE PROTEGER</text>
-<text id="texto-96" x="688.9" y="793.8" font-family="Inter, sans-serif" font-size="14.08" font-weight="600" fill="rgb(15,23,42)">Código-Fonte / Software</text>
-<text id="texto-97" x="688.9" y="816.3" font-family="Inter, sans-serif" font-size="14.08" font-weight="600" fill="rgb(15,23,42)">do Projeto (Camada E)</text>
-<text id="texto-99" x="569.0" y="842.9" font-family="Inter, sans-serif" font-size="13.44" font-weight="400" fill="rgb(51,65,85)">Seu código (C/C++ (Firmware de Controle e</text>
-<text id="texto-100" x="569.0" y="864.4" font-family="Inter, sans-serif" font-size="13.44" font-weight="400" fill="rgb(51,65,85)">Telemetria IoT)) é protegido por direito autoral</text>
-<text id="texto-101" x="569.0" y="885.9" font-family="Inter, sans-serif" font-size="13.44" font-weight="400" fill="rgb(51,65,85)">desde a criação; o registro no INPI (e-Software)</text>
-<text id="texto-102" x="634.6" y="907.4" font-family="Inter, sans-serif" font-size="13.44" font-weight="400" fill="rgb(51,65,85)">serve como prova de autoria.</text>
-<text id="texto-104" x="569.0" y="933.7" font-family="Inter, sans-serif" font-size="12.16" font-weight="400" fill="rgb(100,116,139)">Art. 2º e Art. 3º da Lei 9.609/98 (Lei de Software —</text>
-<text id="texto-105" x="569.0" y="953.1" font-family="Inter, sans-serif" font-size="12.16" font-weight="400" fill="rgb(100,116,139)">proteção de 50 anos via Hash SHA-512).</text>
-<rect id="check-item-106" x="897.2" y="766.0" width="333.3" height="229.4" rx="7.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
-<rect id="check-marca-108" x="912.9" y="781.1" width="111.8" height="20.5" rx="4.0" fill="rgb(240,253,244)" fill-opacity="1.000"/>
-<text id="texto-109" x="920.1" y="793.5" font-family="Inter, sans-serif" font-size="11.2" font-weight="700" letter-spacing="0.336" fill="rgb(21,128,61)">PODE PROTEGER</text>
-<text id="texto-110" x="1032.7" y="793.8" font-family="Inter, sans-serif" font-size="14.08" font-weight="600" fill="rgb(15,23,42)">Desenho da Placa /</text>
-<text id="texto-111" x="1032.7" y="816.3" font-family="Inter, sans-serif" font-size="14.08" font-weight="600" fill="rgb(15,23,42)">Esquemático Elétrico</text>
-<text id="texto-112" x="1032.7" y="838.8" font-family="Inter, sans-serif" font-size="14.08" font-weight="600" fill="rgb(15,23,42)">(Camada A)</text>
-<text id="texto-114" x="912.9" y="865.4" font-family="Inter, sans-serif" font-size="13.44" font-weight="400" fill="rgb(51,65,85)">O desenho da sua placa e o esquemático são</text>
-<text id="texto-115" x="912.9" y="886.9" font-family="Inter, sans-serif" font-size="13.44" font-weight="400" fill="rgb(51,65,85)">protegidos por direito autoral contra cópia do</text>
-<text id="texto-116" x="912.9" y="908.4" font-family="Inter, sans-serif" font-size="13.44" font-weight="400" fill="rgb(51,65,85)">desenho (não protege a função elétrica do</text>
-<text id="texto-117" x="912.9" y="929.9" font-family="Inter, sans-serif" font-size="13.44" font-weight="400" fill="rgb(51,65,85)">circuito).</text>
-<text id="texto-119" x="912.9" y="956.2" font-family="Inter, sans-serif" font-size="12.16" font-weight="400" fill="rgb(100,116,139)">Art. 7º, inciso X da Lei 9.610/98 (Direito Autoral</text>
-<text id="texto-120" x="912.9" y="975.6" font-family="Inter, sans-serif" font-size="12.16" font-weight="400" fill="rgb(100,116,139)">sobre projetos e esboços de engenharia).</text>
-<rect id="check-item-121" x="209.5" y="1006.0" width="333.3" height="230.5" rx="7.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(253,230,138)" stroke-opacity="1.000" stroke-width="1"/>
-<rect id="check-marca-123" x="225.2" y="1021.1" width="71.4" height="20.5" rx="4.0" fill="rgb(255,251,235)" fill-opacity="1.000"/>
-<text id="texto-124" x="232.4" y="1033.5" font-family="Inter, sans-serif" font-size="11.2" font-weight="700" letter-spacing="0.336" fill="rgb(180,83,9)">ATENÇÃO</text>
-<text id="texto-125" x="304.5" y="1033.8" font-family="Inter, sans-serif" font-size="14.08" font-weight="600" fill="rgb(15,23,42)">Patente do Funcionamento</text>
-<text id="texto-126" x="304.5" y="1056.3" font-family="Inter, sans-serif" font-size="14.08" font-weight="600" fill="rgb(15,23,42)">Físico (Camada F)</text>
-<text id="texto-128" x="225.2" y="1082.9" font-family="Inter, sans-serif" font-size="13.44" font-weight="400" fill="rgb(51,65,85)">Foram encontrados 3 resultado(s) relevante(s)</text>
-<text id="texto-129" x="225.2" y="1104.4" font-family="Inter, sans-serif" font-size="13.44" font-weight="400" fill="rgb(51,65,85)">(patentes, artigos ou repositórios) parecidos</text>
-<text id="texto-130" x="225.2" y="1125.9" font-family="Inter, sans-serif" font-size="13.44" font-weight="400" fill="rgb(51,65,85)">com o seu projeto. Leia-os: se descreverem a</text>
-<text id="texto-131" x="225.2" y="1147.4" font-family="Inter, sans-serif" font-size="13.44" font-weight="400" fill="rgb(51,65,85)">mesma solução, o conceito geral não é</text>
-<text id="texto-132" x="225.2" y="1168.9" font-family="Inter, sans-serif" font-size="13.44" font-weight="400" fill="rgb(51,65,85)">patenteável e o pedido deve se limitar ao seu</text>
-<text id="texto-133" x="225.2" y="1190.4" font-family="Inter, sans-serif" font-size="13.44" font-weight="400" fill="rgb(51,65,85)">diferencial (Arts. 11 e 13 da LPI).</text>
-<text id="texto-135" x="225.2" y="1216.7" font-family="Inter, sans-serif" font-size="12.16" font-weight="400" fill="rgb(100,116,139)">Art. 8º, Art. 9º, Art. 11 e Art. 13 da Lei 9.279/96 (LPI).</text>
-<rect id="check-item-136" x="553.4" y="1006.0" width="333.3" height="230.5" rx="7.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
-<rect id="check-marca-138" x="569.0" y="1021.1" width="104.6" height="20.5" rx="4.0" fill="rgb(248,250,252)" fill-opacity="1.000"/>
-<text id="texto-139" x="576.2" y="1033.5" font-family="Inter, sans-serif" font-size="11.2" font-weight="700" letter-spacing="0.336" fill="rgb(100,116,139)">NÃO SE APLICA</text>
-<text id="texto-140" x="681.6" y="1033.8" font-family="Inter, sans-serif" font-size="14.08" font-weight="600" fill="rgb(100,116,139)">Carcaça Externa / Visual</text>
-<text id="texto-141" x="681.6" y="1056.3" font-family="Inter, sans-serif" font-size="14.08" font-weight="600" fill="rgb(100,116,139)">3D do Aparelho (Camada B)</text>
-<text id="texto-143" x="569.0" y="1082.9" font-family="Inter, sans-serif" font-size="13.44" font-weight="400" fill="rgb(51,65,85)">A descrição não cita carcaça ou formato</text>
-<text id="texto-144" x="569.0" y="1104.4" font-family="Inter, sans-serif" font-size="13.44" font-weight="400" fill="rgb(51,65,85)">externo próprio (é opcional e não impede o</text>
-<text id="texto-145" x="569.0" y="1125.9" font-family="Inter, sans-serif" font-size="13.44" font-weight="400" fill="rgb(51,65,85)">registro).</text>
-<text id="texto-147" x="569.0" y="1152.2" font-family="Inter, sans-serif" font-size="12.16" font-weight="400" fill="rgb(100,116,139)">Art. 94 da Lei 9.279/96 (Registro de Desenho</text>
-<text id="texto-148" x="569.0" y="1171.6" font-family="Inter, sans-serif" font-size="12.16" font-weight="400" fill="rgb(100,116,139)">Industrial no INPI).</text>
-<rect id="check-item-149" x="897.2" y="1006.0" width="333.3" height="230.5" rx="7.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
-<rect id="check-marca-151" x="912.9" y="1021.1" width="104.6" height="20.5" rx="4.0" fill="rgb(248,250,252)" fill-opacity="1.000"/>
-<text id="texto-152" x="920.1" y="1033.5" font-family="Inter, sans-serif" font-size="11.2" font-weight="700" letter-spacing="0.336" fill="rgb(100,116,139)">NÃO SE APLICA</text>
-<text id="texto-153" x="1025.5" y="1033.8" font-family="Inter, sans-serif" font-size="14.08" font-weight="600" fill="rgb(100,116,139)">Fabricação de Microchip de</text>
-<text id="texto-154" x="1025.5" y="1056.3" font-family="Inter, sans-serif" font-size="14.08" font-weight="600" fill="rgb(100,116,139)">Silício do Zero (Camada C)</text>
-<text id="texto-156" x="912.9" y="1082.9" font-family="Inter, sans-serif" font-size="13.44" font-weight="400" fill="rgb(51,65,85)">Não se aplica: o projeto usa chips comerciais,</text>
-<text id="texto-157" x="912.9" y="1104.4" font-family="Inter, sans-serif" font-size="13.44" font-weight="400" fill="rgb(51,65,85)">como ESP32 ou Arduino (o normal na maioria</text>
-<text id="texto-158" x="912.9" y="1125.9" font-family="Inter, sans-serif" font-size="13.44" font-weight="400" fill="rgb(51,65,85)">dos projetos).</text>
-<text id="texto-160" x="912.9" y="1152.2" font-family="Inter, sans-serif" font-size="12.16" font-weight="400" fill="rgb(100,116,139)">Art. 26 da Lei 11.484/2007 (Topografia de Circuito</text>
-<text id="texto-161" x="912.9" y="1171.6" font-family="Inter, sans-serif" font-size="12.16" font-weight="400" fill="rgb(100,116,139)">Integrado).</text>
-<rect id="cta-bar-162" x="209.5" y="1257.5" width="1021.0" height="158.2" rx="7.5" fill="rgb(255,244,237)" fill-opacity="1.000" stroke="rgb(254,215,195)" stroke-opacity="1.000" stroke-width="1"/>
-<text id="texto-165" x="227.6" y="1288.4" font-family="Inter, sans-serif" font-size="14.08" font-weight="600" fill="rgb(51,65,85)">Próximo passo:</text>
-<text id="texto-166" x="336.2" y="1288.4" font-family="Inter, sans-serif" font-size="14.08" font-weight="400" fill="rgb(51,65,85)">grave a prova de autoria (hash SHA-512 com data) no Observatório. É um</text>
-<text id="texto-167" x="227.6" y="1310.9" font-family="Inter, sans-serif" font-size="14.08" font-weight="400" fill="rgb(51,65,85)">registro acadêmico interno; para ter exclusividade no Brasil, o pedido precisa ser feito no</text>
-<text id="texto-168" x="227.6" y="1333.5" font-family="Inter, sans-serif" font-size="14.08" font-weight="400" fill="rgb(51,65,85)">INPI.</text>
-<rect id="btn-primary-170" x="228.1" y="1358.0" width="202.6" height="40.7" rx="7.5" fill="rgb(194,65,12)" fill-opacity="1.000" stroke="rgb(194,65,12)" stroke-opacity="1.000" stroke-width="1"/>
-<text id="texto-171" x="247.8" y="1382.3" font-family="Inter, sans-serif" font-size="14.4" font-weight="600" fill="rgb(255,255,255)">Gravar prova de autoria</text>
-<rect id="btn-secondary-172" x="441.3" y="1358.0" width="162.3" height="40.7" rx="7.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(207,214,224)" stroke-opacity="1.000" stroke-width="1"/>
-<text id="texto-173" x="460.9" y="1382.3" font-family="Inter, sans-serif" font-size="14.4" font-weight="600" fill="rgb(15,23,42)">Baixar certificado</text>
-<rect id="card-174" x="184.5" y="1461.7" width="1071.0" height="775.9" rx="11.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
-<text id="texto-178" x="209.0" y="1498.4" font-family="Inter, sans-serif" font-size="11.52" font-weight="600" letter-spacing="0.6912" fill="rgb(100,116,139)">BUSCA DE ANTERIORIDADE (ART. 11 DA LPI)</text>
-<text id="texto-180" x="209.0" y="1529.5" font-family="Inter, sans-serif" font-size="20.8" font-weight="650" letter-spacing="-0.208" fill="rgb(15,23,42)">O que encontramos no mundo</text>
-<text id="texto-182" x="209.0" y="1556.0" font-family="Inter, sans-serif" font-size="14.4" font-weight="400" fill="rgb(100,116,139)">Patentes (EPO/Espacenet, inclui o Brasil), artigos científicos (OpenAlex) e repositórios (GitHub). Cada</text>
-<text id="texto-183" x="209.0" y="1579.0" font-family="Inter, sans-serif" font-size="14.4" font-weight="400" fill="rgb(100,116,139)">resultado recebe uma nota de relevância; a partir de 60% ele conta como possível anterioridade.</text>
-<rect id="base-dot-187" x="209.0" y="1611.5" width="8.0" height="8.0" rx="4.0" fill="rgb(21,128,61)" fill-opacity="1.000"/>
-<text id="texto-190" x="225.0" y="1620.3" font-family="Inter, sans-serif" font-size="13.6" font-weight="600" fill="rgb(51,65,85)">Patentes (EPO):</text>
-<text id="texto-191" x="331.8" y="1620.3" font-family="Inter, sans-serif" font-size="13.6" font-weight="400" fill="rgb(51,65,85)">consultado — 2 resultado(s) em 1 consulta(s)</text>
-<rect id="base-dot-193" x="209.0" y="1638.9" width="8.0" height="8.0" rx="4.0" fill="rgb(21,128,61)" fill-opacity="1.000"/>
-<text id="texto-196" x="225.0" y="1647.7" font-family="Inter, sans-serif" font-size="13.6" font-weight="600" fill="rgb(51,65,85)">Artigos (OpenAlex):</text>
-<text id="texto-197" x="359.1" y="1647.7" font-family="Inter, sans-serif" font-size="13.6" font-weight="400" fill="rgb(51,65,85)">consultado — 2 resultado(s) em 1 consulta(s)</text>
-<rect id="base-dot-199" x="209.0" y="1666.2" width="8.0" height="8.0" rx="4.0" fill="rgb(21,128,61)" fill-opacity="1.000"/>
-<text id="texto-202" x="225.0" y="1675.0" font-family="Inter, sans-serif" font-size="13.6" font-weight="600" fill="rgb(51,65,85)">Repositórios (GitHub):</text>
-<text id="texto-203" x="374.4" y="1675.0" font-family="Inter, sans-serif" font-size="13.6" font-weight="400" fill="rgb(51,65,85)">consultado — 2 resultado(s) em 1 consulta(s)</text>
-<rect id="base-dot-205" x="209.0" y="1693.5" width="8.0" height="8.0" rx="4.0" fill="rgb(29,78,216)" fill-opacity="1.000"/>
-<text id="texto-208" x="225.0" y="1702.4" font-family="Inter, sans-serif" font-size="13.6" font-weight="600" fill="rgb(51,65,85)">INPI (pePI):</text>
-<text id="texto-209" x="302.6" y="1702.4" font-family="Inter, sans-serif" font-size="13.6" font-weight="400" fill="rgb(51,65,85)">sem API pública — use o link abaixo</text>
-<text id="texto-211" x="209.0" y="1739.4" font-family="Inter, sans-serif" font-size="12.8" font-weight="400" fill="rgb(100,116,139)">Rigor Rápida • termos pesquisados:</text>
-<rect id="code-212" x="430.3" y="1730.3" width="171.8" height="14.1" rx="3.5" fill="rgb(248,250,252)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
-<text id="texto-213" x="434.6" y="1740.3" font-family="JetBrains Mono, monospace" font-size="10.88" font-weight="400" fill="rgb(100,116,139)">irrigation iot esp32 lora</text>
-<rect id="btn-secondary-215" x="209.5" y="1763.3" width="169.8" height="30.7" rx="7.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(207,214,224)" stroke-opacity="1.000" stroke-width="1"/>
-<text id="texto-216" x="222.8" y="1782.0" font-family="Inter, sans-serif" font-size="12.8" font-weight="500" fill="rgb(15,23,42)">Buscar no pePI (INPI) ↗</text>
-<rect id="btn-secondary-217" x="388.3" y="1763.3" width="264.8" height="30.7" rx="7.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(207,214,224)" stroke-opacity="1.000" stroke-width="1"/>
-<text id="texto-218" x="401.6" y="1782.0" font-family="Inter, sans-serif" font-size="12.8" font-weight="500" fill="rgb(15,23,42)">Google Patents — classe A01G 25/16 ↗</text>
-<rect id="btn-secondary-219" x="662.1" y="1763.3" width="133.1" height="30.7" rx="7.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(207,214,224)" stroke-opacity="1.000" stroke-width="1"/>
-<text id="texto-220" x="675.4" y="1782.0" font-family="Inter, sans-serif" font-size="12.8" font-weight="500" fill="rgb(15,23,42)">Google Patents ↗</text>
-<rect id="btn-secondary-221" x="804.2" y="1763.3" width="104.3" height="30.7" rx="7.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(207,214,224)" stroke-opacity="1.000" stroke-width="1"/>
-<text id="texto-222" x="817.5" y="1782.0" font-family="Inter, sans-serif" font-size="12.8" font-weight="500" fill="rgb(15,23,42)">Espacenet ↗</text>
-<text id="texto-224" x="209.0" y="1828.2" font-family="Inter, sans-serif" font-size="15.2" font-weight="600" letter-spacing="-0.152" fill="rgb(15,23,42)">3 resultado(s) parecido(s) com o seu projeto</text>
-<rect id="result-item-226" x="209.0" y="1843.8" width="1022.0" height="100.8" rx="8.0" fill="rgb(255,255,255)" fill-opacity="1.000"/>
-<rect id="result-item-226-borda-top" x="209.0" y="1843.8" width="1022.0" height="1.0" fill="rgb(227,231,238)" fill-opacity="1.000"/>
-<rect id="result-item-226-borda-right" x="1230.0" y="1843.8" width="1.0" height="100.8" fill="rgb(227,231,238)" fill-opacity="1.000"/>
-<rect id="result-item-226-borda-bottom" x="209.0" y="1943.6" width="1022.0" height="1.0" fill="rgb(227,231,238)" fill-opacity="1.000"/>
-<rect id="result-item-226-borda-left" x="209.0" y="1843.8" width="3.0" height="100.8" fill="rgb(180,83,9)" fill-opacity="1.000"/>
-<text id="texto-229" x="227.2" y="1873.0" font-family="Inter, sans-serif" font-size="11.2" font-weight="700" letter-spacing="0.448" fill="rgb(100,116,139)">GITHUB</text>
-<text id="texto-231" x="278.4" y="1873.4" font-family="Inter, sans-serif" font-size="14.4" font-weight="600" fill="rgb(15,23,42)">user/lora-soil-irrigation</text>
-<text id="texto-233" x="445.5" y="1873.5" font-family="Inter, sans-serif" font-size="13.12" font-weight="400" fill="rgb(100,116,139)">(2022)</text>
-<rect id="result-score-234" x="1162.5" y="1857.3" width="51.9" height="24.8" rx="12.4" fill="rgb(255,251,235)" fill-opacity="1.000" stroke="rgb(253,230,138)" stroke-opacity="1.000" stroke-width="1"/>
-<text id="texto-235" x="1171.0" y="1872.7" font-family="Inter, sans-serif" font-size="12.48" font-weight="700" fill="rgb(180,83,9)">100%</text>
-<text id="texto-237" x="227.2" y="1900.3" font-family="Inter, sans-serif" font-size="13.12" font-weight="400" fill="rgb(51,65,85)">ESP32 LoRa capacitive soil moisture sensor with solenoid valve irrigation</text>
-<text id="texto-239" x="227.2" y="1924.6" font-family="Inter, sans-serif" font-size="12.48" font-weight="400" fill="rgb(100,116,139)">★ 42 • Licença: MIT • Termos encontrados: irrigation, iot, esp32, lora</text>
-<rect id="result-item-240" x="209.0" y="1952.6" width="1022.0" height="75.8" rx="8.0" fill="rgb(255,255,255)" fill-opacity="1.000"/>
-<rect id="result-item-240-borda-top" x="209.0" y="1952.6" width="1022.0" height="1.0" fill="rgb(227,231,238)" fill-opacity="1.000"/>
-<rect id="result-item-240-borda-right" x="1230.0" y="1952.6" width="1.0" height="75.8" fill="rgb(227,231,238)" fill-opacity="1.000"/>
-<rect id="result-item-240-borda-bottom" x="209.0" y="2027.3" width="1022.0" height="1.0" fill="rgb(227,231,238)" fill-opacity="1.000"/>
-<rect id="result-item-240-borda-left" x="209.0" y="1952.6" width="3.0" height="75.8" fill="rgb(180,83,9)" fill-opacity="1.000"/>
-<text id="texto-243" x="227.2" y="1981.7" font-family="Inter, sans-serif" font-size="11.2" font-weight="700" letter-spacing="0.448" fill="rgb(100,116,139)">OPENALEX</text>
-<text id="texto-245" x="297.3" y="1982.1" font-family="Inter, sans-serif" font-size="14.4" font-weight="600" fill="rgb(15,23,42)">IoT soil moisture sensor for smart irrigation using LoRa</text>
-<text id="texto-247" x="680.2" y="1982.3" font-family="Inter, sans-serif" font-size="13.12" font-weight="400" fill="rgb(100,116,139)">(2021)</text>
-<rect id="result-score-248" x="1162.5" y="1966.1" width="51.9" height="24.8" rx="12.4" fill="rgb(255,251,235)" fill-opacity="1.000" stroke="rgb(253,230,138)" stroke-opacity="1.000" stroke-width="1"/>
-<text id="texto-249" x="1171.0" y="1981.5" font-family="Inter, sans-serif" font-size="12.48" font-weight="700" fill="rgb(180,83,9)">100%</text>
-<text id="texto-251" x="227.2" y="2008.4" font-family="Inter, sans-serif" font-size="12.48" font-weight="400" fill="rgb(100,116,139)">A. Autor • Sensors • Termos encontrados: irrigation, iot, esp32, lora</text>
-<rect id="result-item-252" x="209.0" y="2036.3" width="1022.0" height="123.0" rx="8.0" fill="rgb(255,255,255)" fill-opacity="1.000"/>
-<rect id="result-item-252-borda-top" x="209.0" y="2036.3" width="1022.0" height="1.0" fill="rgb(227,231,238)" fill-opacity="1.000"/>
-<rect id="result-item-252-borda-right" x="1230.0" y="2036.3" width="1.0" height="123.0" fill="rgb(227,231,238)" fill-opacity="1.000"/>
-<rect id="result-item-252-borda-bottom" x="209.0" y="2158.3" width="1022.0" height="1.0" fill="rgb(227,231,238)" fill-opacity="1.000"/>
-<rect id="result-item-252-borda-left" x="209.0" y="2036.3" width="3.0" height="123.0" fill="rgb(180,83,9)" fill-opacity="1.000"/>
-<text id="texto-255" x="227.2" y="2065.5" font-family="Inter, sans-serif" font-size="11.2" font-weight="700" letter-spacing="0.448" fill="rgb(100,116,139)">PATENTE</text>
-<text id="texto-257" x="286.7" y="2065.9" font-family="Inter, sans-serif" font-size="14.4" font-weight="600" fill="rgb(15,23,42)">BR 102019012345 A2 — Sistema de irrigação automática com sonda capacitiva de umidade do solo e LoRa (iot esp32)</text>
-<text id="texto-259" x="227.2" y="2090.0" font-family="Inter, sans-serif" font-size="13.12" font-weight="400" fill="rgb(100,116,139)">(2021)</text>
-<rect id="result-score-260" x="1162.5" y="2049.8" width="51.9" height="24.8" rx="12.4" fill="rgb(255,251,235)" fill-opacity="1.000" stroke="rgb(253,230,138)" stroke-opacity="1.000" stroke-width="1"/>
-<text id="texto-261" x="1171.0" y="2065.2" font-family="Inter, sans-serif" font-size="12.48" font-weight="700" fill="rgb(180,83,9)">100%</text>
-<text id="texto-263" x="227.2" y="2115.0" font-family="Inter, sans-serif" font-size="13.12" font-weight="400" fill="rgb(51,65,85)">An IoT irrigation system using an ESP32 microcontroller and LoRa radio.</text>
-<text id="texto-265" x="227.2" y="2139.4" font-family="Inter, sans-serif" font-size="12.48" font-weight="400" fill="rgb(100,116,139)">Titular: UNIV FEDERAL EXEMPLO [BR] • Publicada em 05/01/2021 • Termos encontrados: irrigation, iot, esp32, lora</text>
-<text id="texto-269" x="209.0" y="2197.2" font-family="Inter, sans-serif" font-size="13.6" font-weight="600" fill="rgb(100,116,139)">▸</text>
-<text id="texto-270" x="223.0" y="2197.2" font-family="Inter, sans-serif" font-size="13.6" font-weight="600" fill="rgb(51,65,85)">Ver outros 3 resultados com baixa relevância</text>
-<rect id="card-verificacao-anterioridade-titularidade-271" x="184.5" y="2258.6" width="1071.0" height="511.6" rx="11.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
-<text id="texto-275" x="209.0" y="2295.3" font-family="Inter, sans-serif" font-size="11.52" font-weight="600" letter-spacing="0.6912" fill="rgb(100,116,139)">BASE DO OBSERVATÓRIO</text>
-<text id="texto-277" x="209.0" y="2326.4" font-family="Inter, sans-serif" font-size="20.8" font-weight="650" letter-spacing="-0.208" fill="rgb(15,23,42)">Projetos já gravados e prova de autoria</text>
-<text id="texto-279" x="209.0" y="2352.9" font-family="Inter, sans-serif" font-size="14.4" font-weight="400" fill="rgb(100,116,139)">Compara com projetos gravados por outros usuários deste sistema e com 15 exemplos ilustrativos de</text>
-<text id="texto-280" x="209.0" y="2375.9" font-family="Inter, sans-serif" font-size="14.4" font-weight="400" fill="rgb(100,116,139)">produtos conhecidos.</text>
-<rect id="btn-secondary-282" x="209.5" y="2399.9" width="114.2" height="40.7" rx="7.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(207,214,224)" stroke-opacity="1.000" stroke-width="1"/>
-<text id="texto-283" x="222.8" y="2423.7" font-family="Inter, sans-serif" font-size="12.8" font-weight="500" fill="rgb(15,23,42)">Refazer busca</text>
-<rect id="btn-registrar-titularidade-fixa-284" x="334.3" y="2399.9" width="202.6" height="40.7" rx="7.5" fill="rgb(194,65,12)" fill-opacity="1.000" stroke="rgb(194,65,12)" stroke-opacity="1.000" stroke-width="1"/>
-<text id="texto-285" x="354.0" y="2424.1" font-family="Inter, sans-serif" font-size="14.4" font-weight="600" fill="rgb(255,255,255)">Gravar prova de autoria</text>
-<rect id="alert-card-287" x="209.0" y="2461.1" width="1022.0" height="193.9" rx="8.0" fill="rgb(240,253,244)" fill-opacity="1.000"/>
-<rect id="alert-card-287-borda-top" x="209.0" y="2461.1" width="1022.0" height="1.0" fill="rgb(187,247,208)" fill-opacity="1.000"/>
-<rect id="alert-card-287-borda-right" x="1230.0" y="2461.1" width="1.0" height="193.9" fill="rgb(187,247,208)" fill-opacity="1.000"/>
-<rect id="alert-card-287-borda-bottom" x="209.0" y="2653.9" width="1022.0" height="1.0" fill="rgb(187,247,208)" fill-opacity="1.000"/>
-<rect id="alert-card-287-borda-left" x="209.0" y="2461.1" width="3.0" height="193.9" fill="rgb(21,128,61)" fill-opacity="1.000"/>
-<text id="texto-289" x="229.6" y="2491.2" font-family="Inter, sans-serif" font-size="16.8" font-weight="600" letter-spacing="-0.168" fill="rgb(15,23,42)">Nenhuma colisão na base do Observatório</text>
-<text id="texto-291" x="229.6" y="2516.7" font-family="Inter, sans-serif" font-size="14.08" font-weight="400" fill="rgb(51,65,85)">Comparamos o projeto com a base do Observatório (registros feitos por usuários + acervo de referência ilustrativo com 15 produtos conhecidos) e</text>
-<text id="texto-292" x="229.6" y="2539.3" font-family="Inter, sans-serif" font-size="14.08" font-weight="400" fill="rgb(51,65,85)">não houve colisão. Atenção: isso NÃO é uma busca oficial no INPI — a novidade (Art. 11 da LPI) só é confirmada pelo exame do INPI. Confira</text>
-<text id="texto-293" x="229.6" y="2561.8" font-family="Inter, sans-serif" font-size="14.08" font-weight="400" fill="rgb(51,65,85)">também a busca mundial ao lado e consulte o pePI antes de depositar.</text>
-<rect id="hash-box-294" x="230.1" y="2579.9" width="981.8" height="59.1" rx="5.5" fill="rgb(248,250,252)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
-<text id="texto-296" x="242.6" y="2602.1" font-family="Inter, sans-serif" font-size="12" font-weight="600" fill="rgb(100,116,139)">Hash SHA-512 do projeto (prova de autoria com data)</text>
-<text id="texto-297" x="242.6" y="2623.1" font-family="JetBrains Mono, monospace" font-size="11.84" font-weight="400" fill="rgb(51,65,85)">bd19f2d9060ba76ad3d80223aa0d8c67084d5f36cb4b45835958e44bbbc56dec5ca815fb471a2e82ad4d1ac381130859c5e884ac15bf07e3665718ce2d44d93d</text>
-<text id="texto-300" x="209.0" y="2684.6" font-family="Inter, sans-serif" font-size="13.12" font-weight="400" fill="rgb(100,116,139)">Nenhum dos 15 itens da base do Observatório é parecido com o seu projeto.</text>
-<text id="texto-304" x="209.0" y="2729.7" font-family="Inter, sans-serif" font-size="13.6" font-weight="600" fill="rgb(100,116,139)">▸</text>
-<text id="texto-305" x="223.0" y="2729.7" font-family="Inter, sans-serif" font-size="13.6" font-weight="600" fill="rgb(51,65,85)">Ver todos os itens da base do Observatório</text>
-<rect id="card-306" x="184.5" y="2791.2" width="1071.0" height="295.0" rx="11.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
-<text id="texto-310" x="209.0" y="2827.9" font-family="Inter, sans-serif" font-size="11.52" font-weight="600" letter-spacing="0.6912" fill="rgb(100,116,139)">DIAGNÓSTICO JURÍDICO</text>
-<text id="texto-312" x="209.0" y="2859.0" font-family="Inter, sans-serif" font-size="20.8" font-weight="650" letter-spacing="-0.208" fill="rgb(15,23,42)">Indicadores do projeto</text>
-<rect id="kpi-box-314" x="209.5" y="2890.4" width="193.8" height="117.0" rx="7.5" fill="rgb(248,250,252)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
-<text id="texto-316" x="226.0" y="2917.6" font-family="Inter, sans-serif" font-size="11.84" font-weight="600" letter-spacing="0.4736" fill="rgb(100,116,139)">PROTEGIBILIDADE</text>
-<text id="texto-318" x="226.0" y="2951.3" font-family="Inter, sans-serif" font-size="24" font-weight="650" fill="rgb(15,23,42)">90/100</text>
-<rect id="kpi-box-319" x="416.3" y="2890.4" width="193.8" height="117.0" rx="7.5" fill="rgb(248,250,252)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
-<text id="texto-321" x="432.8" y="2917.6" font-family="Inter, sans-serif" font-size="11.84" font-weight="600" letter-spacing="0.4736" fill="rgb(100,116,139)">RISCO DE COPYLEFT</text>
-<text id="texto-323" x="432.8" y="2951.3" font-family="Inter, sans-serif" font-size="24" font-weight="650" fill="rgb(21,128,61)">Nenhum</text>
-<rect id="kpi-box-324" x="623.1" y="2890.4" width="193.8" height="117.0" rx="7.5" fill="rgb(248,250,252)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
-<text id="texto-326" x="639.6" y="2917.6" font-family="Inter, sans-serif" font-size="11.84" font-weight="600" letter-spacing="0.4736" fill="rgb(100,116,139)">PROTEÇÃO PRINCIPAL</text>
-<text id="texto-328" x="639.6" y="2943.9" font-family="Inter, sans-serif" font-size="15.68" font-weight="650" fill="rgb(15,23,42)">Marca + software</text>
-<text id="texto-329" x="639.6" y="2965.1" font-family="Inter, sans-serif" font-size="15.68" font-weight="650" fill="rgb(15,23,42)">(patente só do</text>
-<text id="texto-330" x="639.6" y="2986.3" font-family="Inter, sans-serif" font-size="15.68" font-weight="650" fill="rgb(15,23,42)">diferencial)</text>
-<rect id="kpi-box-331" x="829.9" y="2890.4" width="193.8" height="117.0" rx="7.5" fill="rgb(248,250,252)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
-<text id="texto-333" x="846.4" y="2917.6" font-family="Inter, sans-serif" font-size="11.84" font-weight="600" letter-spacing="0.4736" fill="rgb(100,116,139)">LICENÇA DO HARDWARE</text>
-<text id="texto-335" x="846.4" y="2943.9" font-family="Inter, sans-serif" font-size="15.68" font-weight="650" fill="rgb(15,23,42)">Proprietária (Tutela</text>
-<text id="texto-336" x="846.4" y="2965.1" font-family="Inter, sans-serif" font-size="15.68" font-weight="650" fill="rgb(15,23,42)">Gráfica LDA +</text>
-<text id="texto-337" x="846.4" y="2986.3" font-family="Inter, sans-serif" font-size="15.68" font-weight="650" fill="rgb(15,23,42)">Patente LPI)</text>
-<rect id="kpi-box-338" x="1036.7" y="2890.4" width="193.8" height="117.0" rx="7.5" fill="rgb(248,250,252)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
-<text id="texto-340" x="1053.2" y="2917.6" font-family="Inter, sans-serif" font-size="11.84" font-weight="600" letter-spacing="0.4736" fill="rgb(100,116,139)">LICENÇA DO FIRMWARE</text>
-<text id="texto-342" x="1053.2" y="2943.9" font-family="Inter, sans-serif" font-size="15.68" font-weight="650" fill="rgb(15,23,42)">Proprietária (Direito</text>
-<text id="texto-343" x="1053.2" y="2965.1" font-family="Inter, sans-serif" font-size="15.68" font-weight="650" fill="rgb(15,23,42)">Autoral Reservado</text>
-<text id="texto-344" x="1053.2" y="2986.3" font-family="Inter, sans-serif" font-size="15.68" font-weight="650" fill="rgb(15,23,42)">— Lei 9.609/98)</text>
-<text id="texto-348" x="209.0" y="3045.8" font-family="Inter, sans-serif" font-size="13.6" font-weight="600" fill="rgb(100,116,139)">▸</text>
-<text id="texto-349" x="223.0" y="3045.8" font-family="Inter, sans-serif" font-size="13.6" font-weight="600" fill="rgb(51,65,85)">Ver a matriz de proteção completa (camadas A a F)</text>
-<rect id="disclaimer-350-borda-top" x="184.0" y="3106.7" width="1072.0" height="1.0" fill="rgb(227,231,238)" fill-opacity="1.000"/>
-<text id="texto-351" x="184.0" y="3136.8" font-family="Inter, sans-serif" font-size="12.8" font-weight="400" fill="rgb(100,116,139)">Este relatório é uma triagem acadêmica. Ele não substitui a busca oficial nem o pedido no INPI (Arts. 6º, 19, 30 e 129 da Lei nº 9.279/96). Para registrar de fato, use o</text>
-<text id="texto-353" x="1185.7" y="3136.8" font-family="Inter, sans-serif" font-size="12.8" font-weight="400" fill="rgb(29,78,216)">pePI</text>
-<text id="texto-354" x="1216.2" y="3136.8" font-family="Inter, sans-serif" font-size="12.8" font-weight="400" fill="rgb(100,116,139)">e o</text>
-<text id="texto-355" x="184.0" y="3157.3" font-family="Inter, sans-serif" font-size="12.8" font-weight="400" fill="rgb(100,116,139)">portal</text>
-<text id="texto-357" x="222.7" y="3157.3" font-family="Inter, sans-serif" font-size="12.8" font-weight="400" fill="rgb(29,78,216)">gov.br/inpi</text>
-<text id="texto-358" x="286.7" y="3157.3" font-family="Inter, sans-serif" font-size="12.8" font-weight="400" fill="rgb(100,116,139)">.</text>
-<rect id="footer-359-borda-top" x="160.0" y="3212.6" width="1120.0" height="1.0" fill="rgb(227,231,238)" fill-opacity="1.000"/>
-<text id="texto-362" x="184.0" y="3250.7" font-family="Inter, sans-serif" font-size="12.8" font-weight="600" fill="rgb(51,65,85)">Observatório de Propriedade Intelectual e Hardware Aberto</text>
-<text id="texto-363" x="554.1" y="3250.7" font-family="Inter, sans-serif" font-size="12.8" font-weight="400" fill="rgb(100,116,139)">— Projeto Integrador: Informática e Legislação</text>
-<text id="texto-364" x="184.0" y="3271.2" font-family="Inter, sans-serif" font-size="12.8" font-weight="400" fill="rgb(100,116,139)">Equipe: Antonio Kayky Gonçalves Vieira, Giullian Bernard Alencar Maia, Ítalo Brito da Costa e Luís Aquiles Lucena Sá</text>
-<text id="texto-366" x="184.0" y="3307.7" font-family="Inter, sans-serif" font-size="12.8" font-weight="400" fill="rgb(100,116,139)">CF/88 (Art. 5º, XXVII–XXIX) • Lei 9.279/96 • Lei 9.609/98 • Lei 9.610/98 • Lei 11.484/07</text>
-<rect id="topbar-367" x="0.0" y="0.0" width="1440.0" height="67.4" rx="0.0" fill="rgb(255,255,255)" fill-opacity="1.000"/>
-<svg id="img-371" x="184.0" y="13.2" width="40" height="40" viewBox="0 0 64 64">
+<text id="texto-46" x="265.0" y="485.7" font-family="Inter, sans-serif" font-size="19.2" font-weight="600" letter-spacing="-0.192" fill="rgb(15,23,42)">Encontramos projetos que fazem o mesmo que o seu</text>
+<text id="texto-50" x="265.0" y="513.2" font-family="Inter, sans-serif" font-size="14.88" font-weight="600" fill="rgb(51,65,85)">2</text>
+<text id="texto-51" x="278.5" y="513.2" font-family="Inter, sans-serif" font-size="14.88" font-weight="400" fill="rgb(51,65,85)">resultado(s) — 1 deles patente(s) — têm</text>
+<text id="texto-53" x="564.3" y="513.2" font-family="Inter, sans-serif" font-size="14.88" font-weight="600" fill="rgb(51,65,85)">todos</text>
+<text id="texto-54" x="609.1" y="513.2" font-family="Inter, sans-serif" font-size="14.88" font-weight="400" fill="rgb(51,65,85)">os termos principais do seu projeto, e outros 1 são do mesmo tema. Leia &quot;Os mais</text>
+<text id="texto-55" x="265.0" y="537.0" font-family="Inter, sans-serif" font-size="14.88" font-weight="400" fill="rgb(51,65,85)">parecidos com o seu projeto&quot;: se algum descrever a mesma solução, o conceito geral não é novo (Art. 11 da LPI).</text>
+<text id="texto-57" x="265.0" y="568.8" font-family="Inter, sans-serif" font-size="14.88" font-weight="400" fill="rgb(51,65,85)">Isso não impede o seu projeto. Você pode proteger a marca e o código-fonte, e uma patente ainda é possível se ficar restrita ao seu</text>
+<text id="texto-58" x="265.0" y="592.6" font-family="Inter, sans-serif" font-size="14.88" font-weight="400" fill="rgb(51,65,85)">diferencial.</text>
+<text id="texto-62" x="209.0" y="662.1" font-family="Inter, sans-serif" font-size="21.6" font-weight="700" fill="rgb(15,23,42)">2</text>
+<text id="texto-64" x="209.0" y="690.6" font-family="Inter, sans-serif" font-size="12.48" font-weight="400" fill="rgb(100,116,139)">fazem o mesmo (todos os termos)</text>
+<text id="texto-67" x="476.5" y="662.1" font-family="Inter, sans-serif" font-size="21.6" font-weight="700" fill="rgb(15,23,42)">1</text>
+<text id="texto-69" x="476.5" y="690.6" font-family="Inter, sans-serif" font-size="12.48" font-weight="400" fill="rgb(100,116,139)">do mesmo tema</text>
+<text id="texto-72" x="744.0" y="662.1" font-family="Inter, sans-serif" font-size="21.6" font-weight="700" fill="rgb(15,23,42)">7</text>
+<text id="texto-74" x="744.0" y="690.6" font-family="Inter, sans-serif" font-size="12.48" font-weight="400" fill="rgb(100,116,139)">resultados analisados</text>
+<text id="texto-77" x="1011.5" y="662.1" font-family="Inter, sans-serif" font-size="21.6" font-weight="700" fill="rgb(15,23,42)">0</text>
+<text id="texto-79" x="1011.5" y="690.6" font-family="Inter, sans-serif" font-size="12.48" font-weight="400" fill="rgb(100,116,139)">itens parecidos na base do</text>
+<text id="texto-80" x="1011.5" y="714.6" font-family="Inter, sans-serif" font-size="12.48" font-weight="400" fill="rgb(100,116,139)">Observatório</text>
+<text id="texto-83" x="209.0" y="770.7" font-family="Inter, sans-serif" font-size="15.2" font-weight="600" letter-spacing="-0.152" fill="rgb(15,23,42)">O que você pode proteger</text>
+<rect id="check-item-85" x="209.5" y="790.0" width="333.3" height="229.4" rx="7.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
+<rect id="check-marca-87" x="225.2" y="805.1" width="111.8" height="20.5" rx="4.0" fill="rgb(240,253,244)" fill-opacity="1.000"/>
+<text id="texto-88" x="232.4" y="817.5" font-family="Inter, sans-serif" font-size="11.2" font-weight="700" letter-spacing="0.336" fill="rgb(21,128,61)">PODE PROTEGER</text>
+<text id="texto-89" x="345.0" y="817.8" font-family="Inter, sans-serif" font-size="14.08" font-weight="600" fill="rgb(15,23,42)">Nome do Projeto / Marca</text>
+<text id="texto-90" x="345.0" y="840.3" font-family="Inter, sans-serif" font-size="14.08" font-weight="600" fill="rgb(15,23,42)">Comercial (Camada D)</text>
+<text id="texto-92" x="225.2" y="866.9" font-family="Inter, sans-serif" font-size="13.44" font-weight="400" fill="rgb(51,65,85)">O nome não colidiu com a base do</text>
+<text id="texto-93" x="225.2" y="888.4" font-family="Inter, sans-serif" font-size="13.44" font-weight="400" fill="rgb(51,65,85)">Observatório. Antes de depositar, confira na</text>
+<text id="texto-94" x="225.2" y="909.9" font-family="Inter, sans-serif" font-size="13.44" font-weight="400" fill="rgb(51,65,85)">busca de marcas do pePI/INPI (classe NCL 9)</text>
+<text id="texto-95" x="225.2" y="931.4" font-family="Inter, sans-serif" font-size="13.44" font-weight="400" fill="rgb(51,65,85)">se não existe marca igual ou parecida.</text>
+<text id="texto-97" x="225.2" y="957.7" font-family="Inter, sans-serif" font-size="12.16" font-weight="400" fill="rgb(100,116,139)">Art. 129 da Lei 9.279/96 (aquisição da marca pelo</text>
+<text id="texto-98" x="225.2" y="977.1" font-family="Inter, sans-serif" font-size="12.16" font-weight="400" fill="rgb(100,116,139)">registro) e Art. 133 (vigência de 10 anos, prorrogável</text>
+<text id="texto-99" x="225.2" y="996.5" font-family="Inter, sans-serif" font-size="12.16" font-weight="400" fill="rgb(100,116,139)">por períodos iguais e sucessivos).</text>
+<rect id="check-item-100" x="553.4" y="790.0" width="333.3" height="229.4" rx="7.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
+<rect id="check-marca-102" x="569.0" y="805.1" width="111.8" height="20.5" rx="4.0" fill="rgb(240,253,244)" fill-opacity="1.000"/>
+<text id="texto-103" x="576.2" y="817.5" font-family="Inter, sans-serif" font-size="11.2" font-weight="700" letter-spacing="0.336" fill="rgb(21,128,61)">PODE PROTEGER</text>
+<text id="texto-104" x="688.9" y="817.8" font-family="Inter, sans-serif" font-size="14.08" font-weight="600" fill="rgb(15,23,42)">Código-Fonte / Software</text>
+<text id="texto-105" x="688.9" y="840.3" font-family="Inter, sans-serif" font-size="14.08" font-weight="600" fill="rgb(15,23,42)">do Projeto (Camada E)</text>
+<text id="texto-107" x="569.0" y="866.9" font-family="Inter, sans-serif" font-size="13.44" font-weight="400" fill="rgb(51,65,85)">Seu código (C/C++ (Firmware de Controle e</text>
+<text id="texto-108" x="569.0" y="888.4" font-family="Inter, sans-serif" font-size="13.44" font-weight="400" fill="rgb(51,65,85)">Telemetria IoT)) é protegido por direito autoral</text>
+<text id="texto-109" x="569.0" y="909.9" font-family="Inter, sans-serif" font-size="13.44" font-weight="400" fill="rgb(51,65,85)">desde a criação; o registro no INPI (e-Software)</text>
+<text id="texto-110" x="634.6" y="931.4" font-family="Inter, sans-serif" font-size="13.44" font-weight="400" fill="rgb(51,65,85)">serve como prova de autoria.</text>
+<text id="texto-112" x="569.0" y="957.7" font-family="Inter, sans-serif" font-size="12.16" font-weight="400" fill="rgb(100,116,139)">Art. 2º, § 2º e Art. 3º da Lei 9.609/98 (Lei de</text>
+<text id="texto-113" x="569.0" y="977.1" font-family="Inter, sans-serif" font-size="12.16" font-weight="400" fill="rgb(100,116,139)">Software — proteção de 50 anos; no e-Software o</text>
+<text id="texto-114" x="569.0" y="996.5" font-family="Inter, sans-serif" font-size="12.16" font-weight="400" fill="rgb(100,116,139)">código é identificado por um resumo hash).</text>
+<rect id="check-item-115" x="897.2" y="790.0" width="333.3" height="229.4" rx="7.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
+<rect id="check-marca-117" x="912.9" y="805.1" width="111.8" height="20.5" rx="4.0" fill="rgb(240,253,244)" fill-opacity="1.000"/>
+<text id="texto-118" x="920.1" y="817.5" font-family="Inter, sans-serif" font-size="11.2" font-weight="700" letter-spacing="0.336" fill="rgb(21,128,61)">PODE PROTEGER</text>
+<text id="texto-119" x="1032.7" y="817.8" font-family="Inter, sans-serif" font-size="14.08" font-weight="600" fill="rgb(15,23,42)">Desenho da Placa /</text>
+<text id="texto-120" x="1032.7" y="840.3" font-family="Inter, sans-serif" font-size="14.08" font-weight="600" fill="rgb(15,23,42)">Esquemático Elétrico</text>
+<text id="texto-121" x="1032.7" y="862.8" font-family="Inter, sans-serif" font-size="14.08" font-weight="600" fill="rgb(15,23,42)">(Camada A)</text>
+<text id="texto-123" x="912.9" y="889.4" font-family="Inter, sans-serif" font-size="13.44" font-weight="400" fill="rgb(51,65,85)">O desenho da sua placa e o esquemático são</text>
+<text id="texto-124" x="912.9" y="910.9" font-family="Inter, sans-serif" font-size="13.44" font-weight="400" fill="rgb(51,65,85)">protegidos por direito autoral contra cópia do</text>
+<text id="texto-125" x="912.9" y="932.4" font-family="Inter, sans-serif" font-size="13.44" font-weight="400" fill="rgb(51,65,85)">desenho (não protege a função elétrica do</text>
+<text id="texto-126" x="912.9" y="953.9" font-family="Inter, sans-serif" font-size="13.44" font-weight="400" fill="rgb(51,65,85)">circuito).</text>
+<text id="texto-128" x="912.9" y="980.2" font-family="Inter, sans-serif" font-size="12.16" font-weight="400" fill="rgb(100,116,139)">Art. 7º, inciso X da Lei 9.610/98 (Direito Autoral</text>
+<text id="texto-129" x="912.9" y="999.6" font-family="Inter, sans-serif" font-size="12.16" font-weight="400" fill="rgb(100,116,139)">sobre projetos e esboços de engenharia).</text>
+<rect id="check-item-130" x="209.5" y="1030.0" width="333.3" height="209.0" rx="7.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(253,230,138)" stroke-opacity="1.000" stroke-width="1"/>
+<rect id="check-marca-132" x="225.2" y="1045.1" width="71.4" height="20.5" rx="4.0" fill="rgb(255,251,235)" fill-opacity="1.000"/>
+<text id="texto-133" x="232.4" y="1057.5" font-family="Inter, sans-serif" font-size="11.2" font-weight="700" letter-spacing="0.336" fill="rgb(180,83,9)">ATENÇÃO</text>
+<text id="texto-134" x="304.5" y="1057.8" font-family="Inter, sans-serif" font-size="14.08" font-weight="600" fill="rgb(15,23,42)">Patente do Funcionamento</text>
+<text id="texto-135" x="304.5" y="1080.3" font-family="Inter, sans-serif" font-size="14.08" font-weight="600" fill="rgb(15,23,42)">Físico (Camada F)</text>
+<text id="texto-137" x="225.2" y="1106.9" font-family="Inter, sans-serif" font-size="13.44" font-weight="400" fill="rgb(51,65,85)">2 resultado(s) têm todos os termos principais</text>
+<text id="texto-138" x="225.2" y="1128.4" font-family="Inter, sans-serif" font-size="13.44" font-weight="400" fill="rgb(51,65,85)">do seu projeto. Leia-os: se descreverem a</text>
+<text id="texto-139" x="225.2" y="1149.9" font-family="Inter, sans-serif" font-size="13.44" font-weight="400" fill="rgb(51,65,85)">mesma solução, o conceito geral não é</text>
+<text id="texto-140" x="225.2" y="1171.4" font-family="Inter, sans-serif" font-size="13.44" font-weight="400" fill="rgb(51,65,85)">patenteável e o pedido deve se limitar ao seu</text>
+<text id="texto-141" x="225.2" y="1192.9" font-family="Inter, sans-serif" font-size="13.44" font-weight="400" fill="rgb(51,65,85)">diferencial (Arts. 11 e 13 da LPI).</text>
+<text id="texto-143" x="225.2" y="1219.2" font-family="Inter, sans-serif" font-size="12.16" font-weight="400" fill="rgb(100,116,139)">Art. 8º, Art. 9º, Art. 11 e Art. 13 da Lei 9.279/96 (LPI).</text>
+<rect id="check-item-144" x="553.4" y="1030.0" width="333.3" height="209.0" rx="7.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
+<rect id="check-marca-146" x="569.0" y="1045.1" width="104.6" height="20.5" rx="4.0" fill="rgb(248,250,252)" fill-opacity="1.000"/>
+<text id="texto-147" x="576.2" y="1057.5" font-family="Inter, sans-serif" font-size="11.2" font-weight="700" letter-spacing="0.336" fill="rgb(100,116,139)">NÃO SE APLICA</text>
+<text id="texto-148" x="681.6" y="1057.8" font-family="Inter, sans-serif" font-size="14.08" font-weight="600" fill="rgb(100,116,139)">Carcaça Externa / Visual</text>
+<text id="texto-149" x="681.6" y="1080.3" font-family="Inter, sans-serif" font-size="14.08" font-weight="600" fill="rgb(100,116,139)">3D do Aparelho (Camada B)</text>
+<text id="texto-151" x="569.0" y="1106.9" font-family="Inter, sans-serif" font-size="13.44" font-weight="400" fill="rgb(51,65,85)">A descrição não cita carcaça ou formato</text>
+<text id="texto-152" x="569.0" y="1128.4" font-family="Inter, sans-serif" font-size="13.44" font-weight="400" fill="rgb(51,65,85)">externo próprio (é opcional e não impede o</text>
+<text id="texto-153" x="569.0" y="1149.9" font-family="Inter, sans-serif" font-size="13.44" font-weight="400" fill="rgb(51,65,85)">registro).</text>
+<text id="texto-155" x="569.0" y="1176.2" font-family="Inter, sans-serif" font-size="12.16" font-weight="400" fill="rgb(100,116,139)">Art. 94 da Lei 9.279/96 (Registro de Desenho</text>
+<text id="texto-156" x="569.0" y="1195.6" font-family="Inter, sans-serif" font-size="12.16" font-weight="400" fill="rgb(100,116,139)">Industrial no INPI).</text>
+<rect id="check-item-157" x="897.2" y="1030.0" width="333.3" height="209.0" rx="7.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
+<rect id="check-marca-159" x="912.9" y="1045.1" width="104.6" height="20.5" rx="4.0" fill="rgb(248,250,252)" fill-opacity="1.000"/>
+<text id="texto-160" x="920.1" y="1057.5" font-family="Inter, sans-serif" font-size="11.2" font-weight="700" letter-spacing="0.336" fill="rgb(100,116,139)">NÃO SE APLICA</text>
+<text id="texto-161" x="1025.5" y="1057.8" font-family="Inter, sans-serif" font-size="14.08" font-weight="600" fill="rgb(100,116,139)">Fabricação de Microchip de</text>
+<text id="texto-162" x="1025.5" y="1080.3" font-family="Inter, sans-serif" font-size="14.08" font-weight="600" fill="rgb(100,116,139)">Silício do Zero (Camada C)</text>
+<text id="texto-164" x="912.9" y="1106.9" font-family="Inter, sans-serif" font-size="13.44" font-weight="400" fill="rgb(51,65,85)">Não se aplica: o projeto usa chips comerciais,</text>
+<text id="texto-165" x="912.9" y="1128.4" font-family="Inter, sans-serif" font-size="13.44" font-weight="400" fill="rgb(51,65,85)">como ESP32 ou Arduino (o normal na maioria</text>
+<text id="texto-166" x="912.9" y="1149.9" font-family="Inter, sans-serif" font-size="13.44" font-weight="400" fill="rgb(51,65,85)">dos projetos).</text>
+<text id="texto-168" x="912.9" y="1176.2" font-family="Inter, sans-serif" font-size="12.16" font-weight="400" fill="rgb(100,116,139)">Art. 26 da Lei 11.484/2007 (Topografia de Circuito</text>
+<text id="texto-169" x="912.9" y="1195.6" font-family="Inter, sans-serif" font-size="12.16" font-weight="400" fill="rgb(100,116,139)">Integrado).</text>
+<rect id="cta-bar-170" x="209.5" y="1260.0" width="1021.0" height="158.2" rx="7.5" fill="rgb(255,244,237)" fill-opacity="1.000" stroke="rgb(254,215,195)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-173" x="227.6" y="1290.9" font-family="Inter, sans-serif" font-size="14.08" font-weight="600" fill="rgb(51,65,85)">Próximo passo:</text>
+<text id="texto-174" x="336.2" y="1290.9" font-family="Inter, sans-serif" font-size="14.08" font-weight="400" fill="rgb(51,65,85)">grave a prova de autoria (hash SHA-512 com data) no Observatório. É um</text>
+<text id="texto-175" x="227.6" y="1313.4" font-family="Inter, sans-serif" font-size="14.08" font-weight="400" fill="rgb(51,65,85)">registro acadêmico interno; para ter exclusividade no Brasil, o pedido precisa ser feito no</text>
+<text id="texto-176" x="227.6" y="1336.0" font-family="Inter, sans-serif" font-size="14.08" font-weight="400" fill="rgb(51,65,85)">INPI.</text>
+<rect id="btn-primary-178" x="228.1" y="1360.5" width="202.6" height="40.7" rx="7.5" fill="rgb(194,65,12)" fill-opacity="1.000" stroke="rgb(194,65,12)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-179" x="247.8" y="1384.8" font-family="Inter, sans-serif" font-size="14.4" font-weight="600" fill="rgb(255,255,255)">Gravar prova de autoria</text>
+<rect id="btn-secondary-180" x="441.3" y="1360.5" width="162.3" height="40.7" rx="7.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(207,214,224)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-181" x="460.9" y="1384.8" font-family="Inter, sans-serif" font-size="14.4" font-weight="600" fill="rgb(15,23,42)">Baixar certificado</text>
+<rect id="card-182" x="184.5" y="1464.2" width="1071.0" height="1151.0" rx="11.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-186" x="209.0" y="1500.9" font-family="Inter, sans-serif" font-size="11.52" font-weight="600" letter-spacing="0.6912" fill="rgb(100,116,139)">BUSCA DE ANTERIORIDADE (ART. 11 DA LPI)</text>
+<text id="texto-188" x="209.0" y="1532.0" font-family="Inter, sans-serif" font-size="20.8" font-weight="650" letter-spacing="-0.208" fill="rgb(15,23,42)">O que encontramos no mundo</text>
+<text id="texto-190" x="209.0" y="1558.5" font-family="Inter, sans-serif" font-size="14.4" font-weight="400" fill="rgb(100,116,139)">Patentes (EPO/Espacenet, inclui o Brasil), artigos científicos (OpenAlex) e repositórios (GitHub). Cada</text>
+<text id="texto-191" x="209.0" y="1581.5" font-family="Inter, sans-serif" font-size="14.4" font-weight="400" fill="rgb(100,116,139)">resultado recebe uma nota de relevância; a partir de 60% ele conta como possível anterioridade.</text>
+<rect id="base-dot-195" x="209.0" y="1614.0" width="8.0" height="8.0" rx="4.0" fill="rgb(21,128,61)" fill-opacity="1.000"/>
+<text id="texto-198" x="225.0" y="1622.8" font-family="Inter, sans-serif" font-size="13.6" font-weight="600" fill="rgb(51,65,85)">Patentes (EPO):</text>
+<text id="texto-199" x="331.8" y="1622.8" font-family="Inter, sans-serif" font-size="13.6" font-weight="400" fill="rgb(51,65,85)">consultado — 31 resultado(s) em 17 consulta(s)</text>
+<rect id="base-dot-201" x="209.0" y="1641.4" width="8.0" height="8.0" rx="4.0" fill="rgb(21,128,61)" fill-opacity="1.000"/>
+<text id="texto-204" x="225.0" y="1650.2" font-family="Inter, sans-serif" font-size="13.6" font-weight="600" fill="rgb(51,65,85)">Artigos (OpenAlex):</text>
+<text id="texto-205" x="359.1" y="1650.2" font-family="Inter, sans-serif" font-size="13.6" font-weight="400" fill="rgb(51,65,85)">consultado — 24 resultado(s) em 12 consulta(s)</text>
+<rect id="base-dot-207" x="209.0" y="1668.7" width="8.0" height="8.0" rx="4.0" fill="rgb(21,128,61)" fill-opacity="1.000"/>
+<text id="texto-210" x="225.0" y="1677.5" font-family="Inter, sans-serif" font-size="13.6" font-weight="600" fill="rgb(51,65,85)">Repositórios (GitHub):</text>
+<text id="texto-211" x="374.4" y="1677.5" font-family="Inter, sans-serif" font-size="13.6" font-weight="400" fill="rgb(51,65,85)">consultado — 24 resultado(s) em 12 consulta(s)</text>
+<rect id="base-dot-213" x="209.0" y="1696.0" width="8.0" height="8.0" rx="4.0" fill="rgb(29,78,216)" fill-opacity="1.000"/>
+<text id="texto-216" x="225.0" y="1704.9" font-family="Inter, sans-serif" font-size="13.6" font-weight="600" fill="rgb(51,65,85)">INPI (pePI):</text>
+<text id="texto-217" x="302.6" y="1704.9" font-family="Inter, sans-serif" font-size="13.6" font-weight="400" fill="rgb(51,65,85)">sem API pública — use o link abaixo</text>
+<text id="texto-219" x="209.0" y="1741.9" font-family="Inter, sans-serif" font-size="12.8" font-weight="400" fill="rgb(100,116,139)">Rigor Completa • termos pesquisados:</text>
+<rect id="code-220" x="447.1" y="1732.8" width="204.4" height="14.1" rx="3.5" fill="rgb(248,250,252)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-221" x="451.4" y="1742.8" font-family="JetBrains Mono, monospace" font-size="10.88" font-weight="400" fill="rgb(100,116,139)">soil moisture irrigation probe</text>
+<rect id="code-222" x="656.1" y="1732.8" width="165.2" height="14.1" rx="3.5" fill="rgb(248,250,252)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-223" x="660.4" y="1742.8" font-family="JetBrains Mono, monospace" font-size="10.88" font-weight="400" fill="rgb(100,116,139)">soil moisture irrigation</text>
+<rect id="code-224" x="825.9" y="1732.8" width="132.6" height="14.1" rx="3.5" fill="rgb(248,250,252)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-225" x="830.2" y="1742.8" font-family="JetBrains Mono, monospace" font-size="10.88" font-weight="400" fill="rgb(100,116,139)">soil moisture probe</text>
+<rect id="code-226" x="963.1" y="1732.8" width="165.2" height="14.1" rx="3.5" fill="rgb(248,250,252)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-227" x="967.4" y="1742.8" font-family="JetBrains Mono, monospace" font-size="10.88" font-weight="400" fill="rgb(100,116,139)">soil moisture capacitive</text>
+<rect id="code-228" x="209.5" y="1732.8" width="1012.1" height="34.5" rx="3.5" fill="rgb(248,250,252)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-229" x="1137.3" y="1742.8" font-family="JetBrains Mono, monospace" font-size="10.88" font-weight="400" fill="rgb(100,116,139)">soil moisture</text>
+<text id="texto-230" x="209.0" y="1763.3" font-family="JetBrains Mono, monospace" font-size="10.88" font-weight="400" fill="rgb(100,116,139)">valve</text>
+<rect id="code-231" x="250.5" y="1753.2" width="178.3" height="14.1" rx="3.5" fill="rgb(248,250,252)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-232" x="254.8" y="1763.3" font-family="JetBrains Mono, monospace" font-size="10.88" font-weight="400" fill="rgb(100,116,139)">soil moisture agricultural</text>
+<rect id="code-233" x="433.4" y="1753.2" width="119.5" height="14.1" rx="3.5" fill="rgb(248,250,252)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-234" x="437.7" y="1763.3" font-family="JetBrains Mono, monospace" font-size="10.88" font-weight="400" fill="rgb(100,116,139)">soil moisture iot</text>
+<rect id="code-235" x="557.6" y="1753.2" width="165.2" height="14.1" rx="3.5" fill="rgb(248,250,252)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-236" x="561.9" y="1763.3" font-family="JetBrains Mono, monospace" font-size="10.88" font-weight="400" fill="rgb(100,116,139)">iot esp32 lora solenoide</text>
+<rect id="code-237" x="727.4" y="1753.2" width="93.4" height="14.1" rx="3.5" fill="rgb(248,250,252)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-238" x="731.7" y="1763.3" font-family="JetBrains Mono, monospace" font-size="10.88" font-weight="400" fill="rgb(100,116,139)">soil moisture</text>
+<rect id="code-239" x="825.5" y="1753.2" width="106.5" height="14.1" rx="3.5" fill="rgb(248,250,252)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-240" x="829.8" y="1763.3" font-family="JetBrains Mono, monospace" font-size="10.88" font-weight="400" fill="rgb(100,116,139)">soil irrigation</text>
+<rect id="code-241" x="936.6" y="1753.2" width="73.9" height="14.1" rx="3.5" fill="rgb(248,250,252)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-242" x="940.9" y="1763.3" font-family="JetBrains Mono, monospace" font-size="10.88" font-weight="400" fill="rgb(100,116,139)">soil probe</text>
+<rect id="code-243" x="1015.1" y="1753.2" width="106.5" height="14.1" rx="3.5" fill="rgb(248,250,252)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-244" x="1019.4" y="1763.3" font-family="JetBrains Mono, monospace" font-size="10.88" font-weight="400" fill="rgb(100,116,139)">soil capacitive</text>
+<rect id="btn-secondary-246" x="209.5" y="1786.2" width="169.8" height="30.7" rx="7.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(207,214,224)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-247" x="222.8" y="1805.0" font-family="Inter, sans-serif" font-size="12.8" font-weight="500" fill="rgb(15,23,42)">Buscar no pePI (INPI) ↗</text>
+<rect id="btn-secondary-248" x="388.3" y="1786.2" width="264.8" height="30.7" rx="7.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(207,214,224)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-249" x="401.6" y="1805.0" font-family="Inter, sans-serif" font-size="12.8" font-weight="500" fill="rgb(15,23,42)">Google Patents — classe A01G 25/16 ↗</text>
+<rect id="btn-secondary-250" x="662.1" y="1786.2" width="133.1" height="30.7" rx="7.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(207,214,224)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-251" x="675.4" y="1805.0" font-family="Inter, sans-serif" font-size="12.8" font-weight="500" fill="rgb(15,23,42)">Google Patents ↗</text>
+<rect id="btn-secondary-252" x="804.2" y="1786.2" width="104.3" height="30.7" rx="7.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(207,214,224)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-253" x="817.5" y="1805.0" font-family="Inter, sans-serif" font-size="12.8" font-weight="500" fill="rgb(15,23,42)">Espacenet ↗</text>
+<text id="texto-256" x="209.0" y="1851.2" font-family="Inter, sans-serif" font-size="15.2" font-weight="600" letter-spacing="-0.152" fill="rgb(15,23,42)">Os mais parecidos com o seu projeto</text>
+<text id="texto-258" x="209.0" y="1874.1" font-family="Inter, sans-serif" font-size="13.12" font-weight="400" fill="rgb(100,116,139)">Compare termo a termo. O que falta em cada um mostra onde o seu projeto pode ser diferente.</text>
+<rect id="destaque-card-260" x="209.5" y="1893.1" width="331.7" height="274.2" rx="7.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-263" x="225.2" y="1923.0" font-family="Inter, sans-serif" font-size="13.6" font-weight="700" fill="rgb(194,65,12)">1º</text>
+<text id="texto-265" x="244.0" y="1922.2" font-family="Inter, sans-serif" font-size="11.2" font-weight="700" letter-spacing="0.448" fill="rgb(100,116,139)">PATENTE</text>
+<rect id="result-score-266" x="473.1" y="1907.7" width="51.9" height="24.8" rx="12.4" fill="rgb(248,250,252)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-267" x="481.6" y="1923.1" font-family="Inter, sans-serif" font-size="12.48" font-weight="700" fill="rgb(100,116,139)">100%</text>
+<text id="texto-269" x="225.2" y="1952.9" font-family="Inter, sans-serif" font-size="14.4" font-weight="600" fill="rgb(15,23,42)">US 2021012345 B2 — Automatic irrigation</text>
+<text id="texto-270" x="225.2" y="1972.3" font-family="Inter, sans-serif" font-size="14.4" font-weight="600" fill="rgb(15,23,42)">system with capacitive soil moisture probe</text>
+<text id="texto-271" x="225.2" y="1991.8" font-family="Inter, sans-serif" font-size="14.4" font-weight="600" fill="rgb(15,23,42)">and LoRa radio</text>
+<text id="texto-273" x="225.2" y="2017.7" font-family="Inter, sans-serif" font-size="13.12" font-weight="400" fill="rgb(100,116,139)">2012 • EXEMPLO [US]</text>
+<rect id="termo-chip-275" x="225.7" y="2034.3" width="85.1" height="23.8" rx="11.9" fill="rgb(240,253,244)" fill-opacity="1.000" stroke="rgb(187,247,208)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-276" x="234.2" y="2049.0" font-family="Inter, sans-serif" font-size="11.84" font-weight="400" fill="rgb(21,128,61)">✓ solo</text>
+<text id="texto-278" x="274.6" y="2049.0" font-family="Inter, sans-serif" font-size="11.84" font-weight="400" fill="rgb(21,128,61)" fill-opacity="0.700">(soil)</text>
+<rect id="termo-chip-279" x="316.6" y="2034.3" width="139.4" height="23.8" rx="11.9" fill="rgb(240,253,244)" fill-opacity="1.000" stroke="rgb(187,247,208)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-280" x="325.1" y="2049.0" font-family="Inter, sans-serif" font-size="11.84" font-weight="400" fill="rgb(21,128,61)">✓ umidade</text>
+<text id="texto-282" x="390.5" y="2049.0" font-family="Inter, sans-serif" font-size="11.84" font-weight="400" fill="rgb(21,128,61)" fill-opacity="0.700">(moisture)</text>
+<rect id="termo-chip-283" x="225.7" y="2063.9" width="142.0" height="23.8" rx="11.9" fill="rgb(240,253,244)" fill-opacity="1.000" stroke="rgb(187,247,208)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-284" x="234.2" y="2078.6" font-family="Inter, sans-serif" font-size="11.84" font-weight="400" fill="rgb(21,128,61)">✓ irrigação</text>
+<text id="texto-286" x="300.8" y="2078.6" font-family="Inter, sans-serif" font-size="11.84" font-weight="400" fill="rgb(21,128,61)" fill-opacity="0.700">(irrigation)</text>
+<rect id="termo-chip-287" x="373.5" y="2063.9" width="109.6" height="23.8" rx="11.9" fill="rgb(240,253,244)" fill-opacity="1.000" stroke="rgb(187,247,208)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-288" x="382.0" y="2078.6" font-family="Inter, sans-serif" font-size="11.84" font-weight="400" fill="rgb(21,128,61)">✓ sonda</text>
+<text id="texto-290" x="433.3" y="2078.6" font-family="Inter, sans-serif" font-size="11.84" font-weight="400" fill="rgb(21,128,61)" fill-opacity="0.700">(probe)</text>
+<text id="texto-292" x="225.2" y="2108.8" font-family="Inter, sans-serif" font-size="13.12" font-weight="400" fill="rgb(51,65,85)">Tem todos os termos principais do seu projeto.</text>
+<text id="texto-293" x="225.2" y="2127.8" font-family="Inter, sans-serif" font-size="13.12" font-weight="400" fill="rgb(51,65,85)">Leia com atenção: pode descrever a mesma</text>
+<text id="texto-294" x="225.2" y="2146.8" font-family="Inter, sans-serif" font-size="13.12" font-weight="400" fill="rgb(51,65,85)">solução.</text>
+<rect id="destaque-card-295" x="554.2" y="1893.1" width="331.7" height="274.2" rx="7.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-298" x="569.8" y="1923.0" font-family="Inter, sans-serif" font-size="13.6" font-weight="700" fill="rgb(194,65,12)">2º</text>
+<text id="texto-300" x="591.4" y="1922.2" font-family="Inter, sans-serif" font-size="11.2" font-weight="700" letter-spacing="0.448" fill="rgb(100,116,139)">REPOSITÓRIO</text>
+<rect id="result-score-301" x="817.8" y="1907.7" width="51.9" height="24.8" rx="12.4" fill="rgb(248,250,252)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-302" x="826.3" y="1923.1" font-family="Inter, sans-serif" font-size="12.48" font-weight="700" fill="rgb(100,116,139)">100%</text>
+<text id="texto-304" x="569.8" y="1952.9" font-family="Inter, sans-serif" font-size="14.4" font-weight="600" fill="rgb(15,23,42)">user/lora-soil-irrigation</text>
+<text id="texto-306" x="569.8" y="1978.8" font-family="Inter, sans-serif" font-size="13.12" font-weight="400" fill="rgb(100,116,139)">2022</text>
+<rect id="termo-chip-308" x="570.3" y="1995.5" width="44.6" height="23.8" rx="11.9" fill="rgb(240,253,244)" fill-opacity="1.000" stroke="rgb(187,247,208)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-309" x="578.8" y="2010.2" font-family="Inter, sans-serif" font-size="11.84" font-weight="400" fill="rgb(21,128,61)">✓ iot</text>
+<rect id="termo-chip-310" x="620.8" y="1995.5" width="65.7" height="23.8" rx="11.9" fill="rgb(240,253,244)" fill-opacity="1.000" stroke="rgb(187,247,208)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-311" x="629.3" y="2010.2" font-family="Inter, sans-serif" font-size="11.84" font-weight="400" fill="rgb(21,128,61)">✓ esp32</text>
+<rect id="termo-chip-312" x="692.3" y="1995.5" width="51.8" height="23.8" rx="11.9" fill="rgb(240,253,244)" fill-opacity="1.000" stroke="rgb(187,247,208)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-313" x="700.8" y="2010.2" font-family="Inter, sans-serif" font-size="11.84" font-weight="400" fill="rgb(21,128,61)">✓ lora</text>
+<rect id="termo-chip-314" x="749.9" y="1995.5" width="85.0" height="23.8" rx="11.9" fill="rgb(240,253,244)" fill-opacity="1.000" stroke="rgb(187,247,208)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-315" x="758.4" y="2010.2" font-family="Inter, sans-serif" font-size="11.84" font-weight="400" fill="rgb(21,128,61)">✓ solenoide</text>
+<text id="texto-317" x="569.8" y="2040.4" font-family="Inter, sans-serif" font-size="13.12" font-weight="400" fill="rgb(51,65,85)">Tem todos os termos principais do seu projeto.</text>
+<text id="texto-318" x="569.8" y="2059.4" font-family="Inter, sans-serif" font-size="13.12" font-weight="400" fill="rgb(51,65,85)">Leia com atenção: pode descrever a mesma</text>
+<text id="texto-319" x="569.8" y="2078.4" font-family="Inter, sans-serif" font-size="13.12" font-weight="400" fill="rgb(51,65,85)">solução.</text>
+<rect id="destaque-card-320" x="898.8" y="1893.1" width="331.7" height="274.2" rx="7.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-323" x="914.5" y="1923.0" font-family="Inter, sans-serif" font-size="13.6" font-weight="700" fill="rgb(194,65,12)">3º</text>
+<text id="texto-325" x="936.2" y="1922.2" font-family="Inter, sans-serif" font-size="11.2" font-weight="700" letter-spacing="0.448" fill="rgb(100,116,139)">ARTIGO</text>
+<rect id="result-score-326" x="1169.5" y="1907.7" width="44.8" height="24.8" rx="12.4" fill="rgb(248,250,252)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-327" x="1178.0" y="1923.1" font-family="Inter, sans-serif" font-size="12.48" font-weight="700" fill="rgb(100,116,139)">75%</text>
+<text id="texto-329" x="914.5" y="1952.9" font-family="Inter, sans-serif" font-size="14.4" font-weight="600" fill="rgb(15,23,42)">IoT soil moisture sensor for smart irrigation</text>
+<text id="texto-330" x="914.5" y="1972.3" font-family="Inter, sans-serif" font-size="14.4" font-weight="600" fill="rgb(15,23,42)">using LoRa</text>
+<text id="texto-332" x="914.5" y="1998.3" font-family="Inter, sans-serif" font-size="13.12" font-weight="400" fill="rgb(100,116,139)">2021</text>
+<rect id="termo-chip-334" x="915.0" y="2014.9" width="85.1" height="23.8" rx="11.9" fill="rgb(240,253,244)" fill-opacity="1.000" stroke="rgb(187,247,208)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-335" x="923.5" y="2029.6" font-family="Inter, sans-serif" font-size="11.84" font-weight="400" fill="rgb(21,128,61)">✓ solo</text>
+<text id="texto-337" x="963.9" y="2029.6" font-family="Inter, sans-serif" font-size="11.84" font-weight="400" fill="rgb(21,128,61)" fill-opacity="0.700">(soil)</text>
+<rect id="termo-chip-338" x="1005.9" y="2014.9" width="139.4" height="23.8" rx="11.9" fill="rgb(240,253,244)" fill-opacity="1.000" stroke="rgb(187,247,208)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-339" x="1014.4" y="2029.6" font-family="Inter, sans-serif" font-size="11.84" font-weight="400" fill="rgb(21,128,61)">✓ umidade</text>
+<text id="texto-341" x="1079.8" y="2029.6" font-family="Inter, sans-serif" font-size="11.84" font-weight="400" fill="rgb(21,128,61)" fill-opacity="0.700">(moisture)</text>
+<rect id="termo-chip-342" x="915.0" y="2044.4" width="142.0" height="23.8" rx="11.9" fill="rgb(240,253,244)" fill-opacity="1.000" stroke="rgb(187,247,208)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-343" x="923.5" y="2059.2" font-family="Inter, sans-serif" font-size="11.84" font-weight="400" fill="rgb(21,128,61)">✓ irrigação</text>
+<text id="texto-345" x="990.1" y="2059.2" font-family="Inter, sans-serif" font-size="11.84" font-weight="400" fill="rgb(21,128,61)" fill-opacity="0.700">(irrigation)</text>
+<rect id="termo-chip-346" x="1062.8" y="2044.4" width="109.6" height="23.8" rx="11.9" fill="rgb(248,250,252)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-347" x="1071.3" y="2059.2" font-family="Inter, sans-serif" font-size="11.84" font-weight="400" fill="rgb(100,116,139)">✗ sonda</text>
+<text id="texto-349" x="1122.7" y="2059.2" font-family="Inter, sans-serif" font-size="11.84" font-weight="400" fill="rgb(100,116,139)" fill-opacity="0.700">(probe)</text>
+<text id="texto-351" x="914.5" y="2089.3" font-family="Inter, sans-serif" font-size="13.12" font-weight="400" fill="rgb(51,65,85)">Não fala de sonda. Se isso for parte central do</text>
+<text id="texto-352" x="914.5" y="2108.4" font-family="Inter, sans-serif" font-size="13.12" font-weight="400" fill="rgb(51,65,85)">seu projeto, pode ser o seu diferencial.</text>
+<text id="texto-354" x="209.0" y="2203.9" font-family="Inter, sans-serif" font-size="15.2" font-weight="600" letter-spacing="-0.152" fill="rgb(15,23,42)">3 resultado(s) parecido(s) com o seu projeto</text>
+<text id="texto-356" x="209.0" y="2226.8" font-family="Inter, sans-serif" font-size="13.12" font-weight="400" fill="rgb(100,116,139)">2 com todos os termos principais (podem ser a mesma solução) • 1 do mesmo tema, sem todos os termos</text>
+<rect id="result-item-358" x="209.0" y="2243.7" width="1022.0" height="100.8" rx="8.0" fill="rgb(255,255,255)" fill-opacity="1.000"/>
+<rect id="result-item-358-borda-top" x="209.0" y="2243.7" width="1022.0" height="1.0" fill="rgb(227,231,238)" fill-opacity="1.000"/>
+<rect id="result-item-358-borda-right" x="1230.0" y="2243.7" width="1.0" height="100.8" fill="rgb(227,231,238)" fill-opacity="1.000"/>
+<rect id="result-item-358-borda-bottom" x="209.0" y="2343.5" width="1022.0" height="1.0" fill="rgb(227,231,238)" fill-opacity="1.000"/>
+<rect id="result-item-358-borda-left" x="209.0" y="2243.7" width="3.0" height="100.8" fill="rgb(180,83,9)" fill-opacity="1.000"/>
+<text id="texto-361" x="227.2" y="2272.9" font-family="Inter, sans-serif" font-size="11.2" font-weight="700" letter-spacing="0.448" fill="rgb(100,116,139)">GITHUB</text>
+<text id="texto-363" x="278.4" y="2273.3" font-family="Inter, sans-serif" font-size="14.4" font-weight="600" fill="rgb(15,23,42)">user/lora-soil-irrigation</text>
+<text id="texto-365" x="445.5" y="2273.4" font-family="Inter, sans-serif" font-size="13.12" font-weight="400" fill="rgb(100,116,139)">(2022)</text>
+<rect id="result-score-366" x="1162.5" y="2257.2" width="51.9" height="24.8" rx="12.4" fill="rgb(255,251,235)" fill-opacity="1.000" stroke="rgb(253,230,138)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-367" x="1171.0" y="2272.6" font-family="Inter, sans-serif" font-size="12.48" font-weight="700" fill="rgb(180,83,9)">100%</text>
+<text id="texto-369" x="227.2" y="2300.2" font-family="Inter, sans-serif" font-size="13.12" font-weight="400" fill="rgb(51,65,85)">ESP32 LoRa capacitive soil moisture sensor with solenoid valve irrigation</text>
+<text id="texto-371" x="227.2" y="2324.5" font-family="Inter, sans-serif" font-size="12.48" font-weight="400" fill="rgb(100,116,139)">★ 42 • Licença: MIT • Termos encontrados: iot, esp32, lora, solenoide</text>
+<rect id="result-item-372" x="209.0" y="2352.5" width="1022.0" height="100.8" rx="8.0" fill="rgb(255,255,255)" fill-opacity="1.000"/>
+<rect id="result-item-372-borda-top" x="209.0" y="2352.5" width="1022.0" height="1.0" fill="rgb(227,231,238)" fill-opacity="1.000"/>
+<rect id="result-item-372-borda-right" x="1230.0" y="2352.5" width="1.0" height="100.8" fill="rgb(227,231,238)" fill-opacity="1.000"/>
+<rect id="result-item-372-borda-bottom" x="209.0" y="2452.2" width="1022.0" height="1.0" fill="rgb(227,231,238)" fill-opacity="1.000"/>
+<rect id="result-item-372-borda-left" x="209.0" y="2352.5" width="3.0" height="100.8" fill="rgb(180,83,9)" fill-opacity="1.000"/>
+<text id="texto-375" x="227.2" y="2381.6" font-family="Inter, sans-serif" font-size="11.2" font-weight="700" letter-spacing="0.448" fill="rgb(100,116,139)">PATENTE</text>
+<text id="texto-377" x="286.7" y="2382.0" font-family="Inter, sans-serif" font-size="14.4" font-weight="600" fill="rgb(15,23,42)">US 2021012345 B2 — Automatic irrigation system with capacitive soil moisture probe and LoRa radio</text>
+<text id="texto-379" x="988.8" y="2382.1" font-family="Inter, sans-serif" font-size="13.12" font-weight="400" fill="rgb(100,116,139)">(2012)</text>
+<rect id="result-score-380" x="1162.5" y="2366.0" width="51.9" height="24.8" rx="12.4" fill="rgb(255,251,235)" fill-opacity="1.000" stroke="rgb(253,230,138)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-381" x="1171.0" y="2381.4" font-family="Inter, sans-serif" font-size="12.48" font-weight="700" fill="rgb(180,83,9)">100%</text>
+<text id="texto-383" x="227.2" y="2408.9" font-family="Inter, sans-serif" font-size="13.12" font-weight="400" fill="rgb(51,65,85)">An irrigation controller reads a capacitive soil moisture sensor and opens a solenoid valve; data is sent by LoRa.</text>
+<text id="texto-385" x="227.2" y="2433.2" font-family="Inter, sans-serif" font-size="12.48" font-weight="400" fill="rgb(100,116,139)">Titular: EXEMPLO [US] • Publicada em 10/07/2012 • Termos encontrados: soil, moisture, irrigation, probe</text>
+<rect id="result-item-386" x="209.0" y="2461.2" width="1022.0" height="75.8" rx="8.0" fill="rgb(255,255,255)" fill-opacity="1.000"/>
+<rect id="result-item-386-borda-top" x="209.0" y="2461.2" width="1022.0" height="1.0" fill="rgb(227,231,238)" fill-opacity="1.000"/>
+<rect id="result-item-386-borda-right" x="1230.0" y="2461.2" width="1.0" height="75.8" fill="rgb(227,231,238)" fill-opacity="1.000"/>
+<rect id="result-item-386-borda-bottom" x="209.0" y="2536.0" width="1022.0" height="1.0" fill="rgb(227,231,238)" fill-opacity="1.000"/>
+<rect id="result-item-386-borda-left" x="209.0" y="2461.2" width="3.0" height="75.8" fill="rgb(180,83,9)" fill-opacity="1.000"/>
+<text id="texto-389" x="227.2" y="2490.4" font-family="Inter, sans-serif" font-size="11.2" font-weight="700" letter-spacing="0.448" fill="rgb(100,116,139)">OPENALEX</text>
+<text id="texto-391" x="297.3" y="2490.8" font-family="Inter, sans-serif" font-size="14.4" font-weight="600" fill="rgb(15,23,42)">IoT soil moisture sensor for smart irrigation using LoRa</text>
+<text id="texto-393" x="680.2" y="2490.9" font-family="Inter, sans-serif" font-size="13.12" font-weight="400" fill="rgb(100,116,139)">(2021)</text>
+<rect id="result-score-394" x="1169.5" y="2474.7" width="44.8" height="24.8" rx="12.4" fill="rgb(255,251,235)" fill-opacity="1.000" stroke="rgb(253,230,138)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-395" x="1178.0" y="2490.1" font-family="Inter, sans-serif" font-size="12.48" font-weight="700" fill="rgb(180,83,9)">75%</text>
+<text id="texto-397" x="227.2" y="2517.0" font-family="Inter, sans-serif" font-size="12.48" font-weight="400" fill="rgb(100,116,139)">A. Autor • Sensors • Termos encontrados: soil, moisture, irrigation</text>
+<text id="texto-401" x="209.0" y="2574.8" font-family="Inter, sans-serif" font-size="13.6" font-weight="600" fill="rgb(100,116,139)">▸</text>
+<text id="texto-402" x="223.0" y="2574.8" font-family="Inter, sans-serif" font-size="13.6" font-weight="600" fill="rgb(51,65,85)">Ver outros 4 resultados com baixa relevância</text>
+<rect id="card-verificacao-anterioridade-titularidade-403" x="184.5" y="2636.2" width="1071.0" height="511.6" rx="11.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-407" x="209.0" y="2672.9" font-family="Inter, sans-serif" font-size="11.52" font-weight="600" letter-spacing="0.6912" fill="rgb(100,116,139)">BASE DO OBSERVATÓRIO</text>
+<text id="texto-409" x="209.0" y="2704.1" font-family="Inter, sans-serif" font-size="20.8" font-weight="650" letter-spacing="-0.208" fill="rgb(15,23,42)">Projetos já gravados e prova de autoria</text>
+<text id="texto-411" x="209.0" y="2730.5" font-family="Inter, sans-serif" font-size="14.4" font-weight="400" fill="rgb(100,116,139)">Compara com projetos gravados por outros usuários deste sistema e com 15 exemplos ilustrativos de</text>
+<text id="texto-412" x="209.0" y="2753.5" font-family="Inter, sans-serif" font-size="14.4" font-weight="400" fill="rgb(100,116,139)">produtos conhecidos.</text>
+<rect id="btn-secondary-414" x="209.5" y="2777.5" width="114.2" height="40.7" rx="7.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(207,214,224)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-415" x="222.8" y="2801.3" font-family="Inter, sans-serif" font-size="12.8" font-weight="500" fill="rgb(15,23,42)">Refazer busca</text>
+<rect id="btn-registrar-titularidade-fixa-416" x="334.3" y="2777.5" width="202.6" height="40.7" rx="7.5" fill="rgb(194,65,12)" fill-opacity="1.000" stroke="rgb(194,65,12)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-417" x="354.0" y="2801.8" font-family="Inter, sans-serif" font-size="14.4" font-weight="600" fill="rgb(255,255,255)">Gravar prova de autoria</text>
+<rect id="alert-card-419" x="209.0" y="2838.7" width="1022.0" height="193.9" rx="8.0" fill="rgb(240,253,244)" fill-opacity="1.000"/>
+<rect id="alert-card-419-borda-top" x="209.0" y="2838.7" width="1022.0" height="1.0" fill="rgb(187,247,208)" fill-opacity="1.000"/>
+<rect id="alert-card-419-borda-right" x="1230.0" y="2838.7" width="1.0" height="193.9" fill="rgb(187,247,208)" fill-opacity="1.000"/>
+<rect id="alert-card-419-borda-bottom" x="209.0" y="3031.6" width="1022.0" height="1.0" fill="rgb(187,247,208)" fill-opacity="1.000"/>
+<rect id="alert-card-419-borda-left" x="209.0" y="2838.7" width="3.0" height="193.9" fill="rgb(21,128,61)" fill-opacity="1.000"/>
+<text id="texto-421" x="229.6" y="2868.8" font-family="Inter, sans-serif" font-size="16.8" font-weight="600" letter-spacing="-0.168" fill="rgb(15,23,42)">Nenhuma colisão na base do Observatório</text>
+<text id="texto-423" x="229.6" y="2894.4" font-family="Inter, sans-serif" font-size="14.08" font-weight="400" fill="rgb(51,65,85)">Comparamos o projeto com a base do Observatório (registros feitos por usuários + acervo de referência ilustrativo com 15 produtos conhecidos) e</text>
+<text id="texto-424" x="229.6" y="2916.9" font-family="Inter, sans-serif" font-size="14.08" font-weight="400" fill="rgb(51,65,85)">não houve colisão. Atenção: isso NÃO é uma busca oficial no INPI — a novidade (Art. 11 da LPI) só é confirmada pelo exame do INPI. Confira</text>
+<text id="texto-425" x="229.6" y="2939.4" font-family="Inter, sans-serif" font-size="14.08" font-weight="400" fill="rgb(51,65,85)">também a busca mundial ao lado e consulte o pePI antes de depositar.</text>
+<rect id="hash-box-426" x="230.1" y="2957.6" width="981.8" height="59.1" rx="5.5" fill="rgb(248,250,252)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-428" x="242.6" y="2979.7" font-family="Inter, sans-serif" font-size="12" font-weight="600" fill="rgb(100,116,139)">Hash SHA-512 do projeto (prova de autoria com data)</text>
+<text id="texto-429" x="242.6" y="3000.8" font-family="JetBrains Mono, monospace" font-size="11.84" font-weight="400" fill="rgb(51,65,85)">bd19f2d9060ba76ad3d80223aa0d8c67084d5f36cb4b45835958e44bbbc56dec5ca815fb471a2e82ad4d1ac381130859c5e884ac15bf07e3665718ce2d44d93d</text>
+<text id="texto-432" x="209.0" y="3062.2" font-family="Inter, sans-serif" font-size="13.12" font-weight="400" fill="rgb(100,116,139)">Nenhum dos 15 itens da base do Observatório é parecido com o seu projeto.</text>
+<text id="texto-436" x="209.0" y="3107.4" font-family="Inter, sans-serif" font-size="13.6" font-weight="600" fill="rgb(100,116,139)">▸</text>
+<text id="texto-437" x="223.0" y="3107.4" font-family="Inter, sans-serif" font-size="13.6" font-weight="600" fill="rgb(51,65,85)">Ver todos os itens da base do Observatório</text>
+<rect id="card-438" x="184.5" y="3168.8" width="1071.0" height="295.0" rx="11.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-442" x="209.0" y="3205.5" font-family="Inter, sans-serif" font-size="11.52" font-weight="600" letter-spacing="0.6912" fill="rgb(100,116,139)">DIAGNÓSTICO JURÍDICO</text>
+<text id="texto-444" x="209.0" y="3236.7" font-family="Inter, sans-serif" font-size="20.8" font-weight="650" letter-spacing="-0.208" fill="rgb(15,23,42)">Indicadores do projeto</text>
+<rect id="kpi-box-446" x="209.5" y="3268.0" width="193.8" height="117.0" rx="7.5" fill="rgb(248,250,252)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-448" x="226.0" y="3295.3" font-family="Inter, sans-serif" font-size="11.84" font-weight="600" letter-spacing="0.4736" fill="rgb(100,116,139)">PROTEGIBILIDADE</text>
+<text id="texto-450" x="226.0" y="3328.9" font-family="Inter, sans-serif" font-size="24" font-weight="650" fill="rgb(15,23,42)">90/100</text>
+<rect id="kpi-box-451" x="416.3" y="3268.0" width="193.8" height="117.0" rx="7.5" fill="rgb(248,250,252)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-453" x="432.8" y="3295.3" font-family="Inter, sans-serif" font-size="11.84" font-weight="600" letter-spacing="0.4736" fill="rgb(100,116,139)">RISCO DE COPYLEFT</text>
+<text id="texto-455" x="432.8" y="3328.9" font-family="Inter, sans-serif" font-size="24" font-weight="650" fill="rgb(21,128,61)">Nenhum</text>
+<rect id="kpi-box-456" x="623.1" y="3268.0" width="193.8" height="117.0" rx="7.5" fill="rgb(248,250,252)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-458" x="639.6" y="3295.3" font-family="Inter, sans-serif" font-size="11.84" font-weight="600" letter-spacing="0.4736" fill="rgb(100,116,139)">PROTEÇÃO PRINCIPAL</text>
+<text id="texto-460" x="639.6" y="3321.6" font-family="Inter, sans-serif" font-size="15.68" font-weight="650" fill="rgb(15,23,42)">Marca + software</text>
+<text id="texto-461" x="639.6" y="3342.7" font-family="Inter, sans-serif" font-size="15.68" font-weight="650" fill="rgb(15,23,42)">(patente só do</text>
+<text id="texto-462" x="639.6" y="3363.9" font-family="Inter, sans-serif" font-size="15.68" font-weight="650" fill="rgb(15,23,42)">diferencial)</text>
+<rect id="kpi-box-463" x="829.9" y="3268.0" width="193.8" height="117.0" rx="7.5" fill="rgb(248,250,252)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-465" x="846.4" y="3295.3" font-family="Inter, sans-serif" font-size="11.84" font-weight="600" letter-spacing="0.4736" fill="rgb(100,116,139)">LICENÇA DO HARDWARE</text>
+<text id="texto-467" x="846.4" y="3321.6" font-family="Inter, sans-serif" font-size="15.68" font-weight="650" fill="rgb(15,23,42)">Proprietária (Tutela</text>
+<text id="texto-468" x="846.4" y="3342.7" font-family="Inter, sans-serif" font-size="15.68" font-weight="650" fill="rgb(15,23,42)">Gráfica LDA +</text>
+<text id="texto-469" x="846.4" y="3363.9" font-family="Inter, sans-serif" font-size="15.68" font-weight="650" fill="rgb(15,23,42)">Patente LPI)</text>
+<rect id="kpi-box-470" x="1036.7" y="3268.0" width="193.8" height="117.0" rx="7.5" fill="rgb(248,250,252)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-472" x="1053.2" y="3295.3" font-family="Inter, sans-serif" font-size="11.84" font-weight="600" letter-spacing="0.4736" fill="rgb(100,116,139)">LICENÇA DO FIRMWARE</text>
+<text id="texto-474" x="1053.2" y="3321.6" font-family="Inter, sans-serif" font-size="15.68" font-weight="650" fill="rgb(15,23,42)">Proprietária (Direito</text>
+<text id="texto-475" x="1053.2" y="3342.7" font-family="Inter, sans-serif" font-size="15.68" font-weight="650" fill="rgb(15,23,42)">Autoral Reservado</text>
+<text id="texto-476" x="1053.2" y="3363.9" font-family="Inter, sans-serif" font-size="15.68" font-weight="650" fill="rgb(15,23,42)">— Lei 9.609/98)</text>
+<text id="texto-480" x="209.0" y="3423.4" font-family="Inter, sans-serif" font-size="13.6" font-weight="600" fill="rgb(100,116,139)">▸</text>
+<text id="texto-481" x="223.0" y="3423.4" font-family="Inter, sans-serif" font-size="13.6" font-weight="600" fill="rgb(51,65,85)">Ver a matriz de proteção completa (camadas A a F)</text>
+<rect id="disclaimer-482-borda-top" x="184.0" y="3484.3" width="1072.0" height="1.0" fill="rgb(227,231,238)" fill-opacity="1.000"/>
+<text id="texto-483" x="184.0" y="3514.4" font-family="Inter, sans-serif" font-size="12.8" font-weight="400" fill="rgb(100,116,139)">Este relatório é uma triagem acadêmica. Ele não substitui a busca oficial nem o pedido no INPI (Arts. 6º, 19, 30 e 129 da Lei nº 9.279/96). Para registrar de fato, use o</text>
+<text id="texto-485" x="1185.7" y="3514.4" font-family="Inter, sans-serif" font-size="12.8" font-weight="400" fill="rgb(29,78,216)">pePI</text>
+<text id="texto-486" x="1216.2" y="3514.4" font-family="Inter, sans-serif" font-size="12.8" font-weight="400" fill="rgb(100,116,139)">e o</text>
+<text id="texto-487" x="184.0" y="3534.9" font-family="Inter, sans-serif" font-size="12.8" font-weight="400" fill="rgb(100,116,139)">portal</text>
+<text id="texto-489" x="222.7" y="3534.9" font-family="Inter, sans-serif" font-size="12.8" font-weight="400" fill="rgb(29,78,216)">gov.br/inpi</text>
+<text id="texto-490" x="286.7" y="3534.9" font-family="Inter, sans-serif" font-size="12.8" font-weight="400" fill="rgb(100,116,139)">.</text>
+<rect id="footer-491-borda-top" x="160.0" y="3590.3" width="1120.0" height="1.0" fill="rgb(227,231,238)" fill-opacity="1.000"/>
+<text id="texto-494" x="184.0" y="3628.3" font-family="Inter, sans-serif" font-size="12.8" font-weight="600" fill="rgb(51,65,85)">Observatório de Propriedade Intelectual e Hardware Aberto</text>
+<text id="texto-495" x="554.1" y="3628.3" font-family="Inter, sans-serif" font-size="12.8" font-weight="400" fill="rgb(100,116,139)">— Projeto Integrador: Informática e Legislação</text>
+<text id="texto-496" x="184.0" y="3648.8" font-family="Inter, sans-serif" font-size="12.8" font-weight="400" fill="rgb(100,116,139)">Equipe: Antonio Kayky Gonçalves Vieira, Giullian Bernard Alencar Maia, Ítalo Brito da Costa e Luís Aquiles Lucena Sá</text>
+<text id="texto-498" x="184.0" y="3685.3" font-family="Inter, sans-serif" font-size="12.8" font-weight="400" fill="rgb(100,116,139)">CF/88 (Art. 5º, XXVII–XXIX) • Lei 9.279/96 • Lei 9.609/98 • Lei 9.610/98 • Lei 11.484/07</text>
+<rect id="topbar-499" x="0.0" y="0.0" width="1440.0" height="67.4" rx="0.0" fill="rgb(255,255,255)" fill-opacity="1.000"/>
+<svg id="img-503" x="184.0" y="13.2" width="40" height="40" viewBox="0 0 64 64">
   <defs>
     <linearGradient id="logo-gradiente" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#f97316"/>
@@ -274,12 +368,12 @@
     <path d="M35.2 35.2 41 41"/>
   </g>
 </svg>
-<text id="texto-374" x="236.8" y="27.3" font-family="Inter, sans-serif" font-size="16" font-weight="650" letter-spacing="-0.16" fill="rgb(15,23,42)">Observatório de Propriedade Intelectual &amp; Hardware Aberto</text>
-<text id="texto-376" x="236.8" y="46.6" font-family="Inter, sans-serif" font-size="12.48" font-weight="400" fill="rgb(100,116,139)">Projeto Integrador — Informática e Legislação</text>
-<rect id="engine-badge-378" x="1032.8" y="17.9" width="125.0" height="30.6" rx="15.3" fill="none" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
-<rect id="engine-dot-379" x="1045.3" y="29.7" width="7.0" height="7.0" rx="3.5" fill="rgb(21,128,61)" fill-opacity="1.000"/>
-<text id="texto-381" x="1059.5" y="36.2" font-family="Inter, sans-serif" font-size="12.48" font-weight="400" fill="rgb(100,116,139)">Sistema online</text>
-<rect id="botao-tema-382" x="1168.3" y="17.6" width="87.2" height="31.1" rx="15.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
-<text id="texto-384" x="1180.8" y="37.3" font-family="Inter, sans-serif" font-size="15.2" font-weight="500" fill="rgb(51,65,85)">☾</text>
-<text id="texto-386" x="1200.9" y="36.0" font-family="Inter, sans-serif" font-size="12.8" font-weight="500" fill="rgb(51,65,85)">Escuro</text>
+<text id="texto-506" x="236.8" y="27.3" font-family="Inter, sans-serif" font-size="16" font-weight="650" letter-spacing="-0.16" fill="rgb(15,23,42)">Observatório de Propriedade Intelectual &amp; Hardware Aberto</text>
+<text id="texto-508" x="236.8" y="46.6" font-family="Inter, sans-serif" font-size="12.48" font-weight="400" fill="rgb(100,116,139)">Projeto Integrador — Informática e Legislação</text>
+<rect id="engine-badge-510" x="1032.8" y="17.9" width="125.0" height="30.6" rx="15.3" fill="none" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
+<rect id="engine-dot-511" x="1045.3" y="29.7" width="7.0" height="7.0" rx="3.5" fill="rgb(21,128,61)" fill-opacity="1.000"/>
+<text id="texto-513" x="1059.5" y="36.2" font-family="Inter, sans-serif" font-size="12.48" font-weight="400" fill="rgb(100,116,139)">Sistema online</text>
+<rect id="botao-tema-514" x="1168.3" y="17.6" width="87.2" height="31.1" rx="15.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-516" x="1180.8" y="37.3" font-family="Inter, sans-serif" font-size="15.2" font-weight="500" fill="rgb(51,65,85)">☾</text>
+<text id="texto-518" x="1200.9" y="36.0" font-family="Inter, sans-serif" font-size="12.8" font-weight="500" fill="rgb(51,65,85)">Escuro</text>
 </svg>

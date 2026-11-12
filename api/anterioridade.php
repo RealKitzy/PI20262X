@@ -81,7 +81,7 @@ function validarSuficienciaDescritivaPHP(string $relato, string $nomeProjeto = '
     if (mb_strlen($relatoLimpo, 'UTF-8') < 40) {
         return [
             'valido' => false,
-            'motivo' => 'Descrição muito curta — Quesito 1 reprovado (Art. 24 da Lei nº 9.279/96 — Insuficiência Descritiva).',
+            'motivo' => 'Descrição muito curta (Art. 24 da LPI).',
             'orientacao' => 'Escreva um relato real com pelo menos 40 caracteres e 8 palavras explicando quais peças/sensores seu projeto usa, o que ele faz e onde é aplicado.'
         ];
     }
@@ -98,7 +98,7 @@ function validarSuficienciaDescritivaPHP(string $relato, string $nomeProjeto = '
     if (preg_match($regexInadequado, $textoBusca)) {
         return [
             'valido' => false,
-            'motivo' => 'Linguagem imprópria, gíria de teste ou conteúdo sem seriedade acadêmica/técnica detectado (Quesito 1 reprovado).',
+            'motivo' => 'O texto tem linguagem imprópria ou palavra de teste.',
             'orientacao' => 'O sistema bloqueia termos chulos, brincadeiras ou frases de teste ("qualquer coisa", "testando", etc.). Descreva um projeto real de Engenharia, Hardware, IoT ou Software com linguagem técnica adequada.'
         ];
     }
@@ -118,7 +118,7 @@ function validarSuficienciaDescritivaPHP(string $relato, string $nomeProjeto = '
     if ($temSequenciaCaotica || $proporcaoVogais < 0.28 || $proporcaoVogais > 0.72) {
         return [
             'valido' => false,
-            'motivo' => 'Sequência de caracteres aleatórios / batida no teclado detectada ("Gibberish" — Quesito 1 reprovado).',
+            'motivo' => 'O texto parece ter letras digitadas ao acaso.',
             'orientacao' => 'O texto inserido contém letras aleatórias sem formar palavras reais em português. Pelo Art. 24 da Lei nº 9.279/96 (LPI), descreva de forma clara e compreensível como o seu dispositivo funciona.'
         ];
     }
@@ -126,7 +126,7 @@ function validarSuficienciaDescritivaPHP(string $relato, string $nomeProjeto = '
     if (count($palavras) < 8 || count($palavrasUnicas) < 6 || $ratioDiversidade < 0.45) {
         return [
             'valido' => false,
-            'motivo' => 'Estrutura textual insuficiente ou repetitiva (Quesito 1 reprovado — Art. 24 da LPI).',
+            'motivo' => 'O texto é curto demais ou repete as mesmas palavras.',
             'orientacao' => 'Não repita palavras para burlar o tamanho e escreva pelo menos 8 palavras distintas (mínimo de 40 caracteres) explicando a arquitetura e o funcionamento real do projeto.'
         ];
     }
@@ -156,7 +156,7 @@ function validarSuficienciaDescritivaPHP(string $relato, string $nomeProjeto = '
     if (!$q2Hardware && !$q3Acao) {
         return [
             'valido' => false,
-            'motivo' => 'Frase fora de contexto tecnológico — Ausência de Componentes e de Finalidade Técnica (Art. 10 e Art. 24 da LPI).',
+            'motivo' => 'O texto não descreve peças nem o que o projeto faz.',
             'orientacao' => 'O texto digitado é uma frase comum sem relação com um projeto de Engenharia, Hardware, IoT ou Software. Descreva QUAIS peças/componentes você usou (Quesito 2), O QUE o projeto faz (Quesito 3) e EM QUAL contexto/protocolo ele opera (Quesito 4).'
         ];
     }
@@ -164,7 +164,7 @@ function validarSuficienciaDescritivaPHP(string $relato, string $nomeProjeto = '
     if (!$q2Hardware) {
         return [
             'valido' => false,
-            'motivo' => 'Quesito 2 pendente: Falta informar a Arquitetura / Peças / Componentes do projeto (Art. 24 da LPI).',
+            'motivo' => 'Faltam as peças do projeto (placa, sensor, chip ou software).',
             'orientacao' => 'Informe quais componentes físicos ou lógicos compõem sua criação (ex: placa ESP32, Arduino, PCB customizada, sensores, atuadores, gabinete 3D ou firmware).'
         ];
     }
@@ -172,7 +172,7 @@ function validarSuficienciaDescritivaPHP(string $relato, string $nomeProjeto = '
     if (!$q3Acao) {
         return [
             'valido' => false,
-            'motivo' => 'Quesito 3 pendente: Falta descrever a Ação Técnica / O que o dispositivo faz (Art. 24 da LPI).',
+            'motivo' => 'Falta dizer o que o projeto faz (mede, controla, detecta…).',
             'orientacao' => 'Você citou componentes, mas não explicou a função prática que o sistema executa (ex: medir, monitorar, controlar, acionar, detectar, transmitir dados ou automatizar).'
         ];
     }
@@ -180,7 +180,7 @@ function validarSuficienciaDescritivaPHP(string $relato, string $nomeProjeto = '
     if (!$q4Contexto) {
         return [
             'valido' => false,
-            'motivo' => 'Quesito 4 pendente: Falta informar o Contexto Físico, Grandeza Medida ou Protocolo de Comunicação (Art. 24 da LPI).',
+            'motivo' => 'Falta dizer onde o projeto atua ou qual tecnologia usa (solo, saúde, Wi-Fi…).',
             'orientacao' => 'Complete a descrição informando onde ou como o projeto atua (ex: umidade do solo, temperatura, batimento cardíaco, energia solar, comunicação Wi-Fi, LoRa, Bluetooth, MQTT ou carenagem 3D).'
         ];
     }
@@ -350,7 +350,7 @@ if ($method === 'POST') {
         $statusApropriacao = 'BLOQUEADO_TERCEIRO';
         $podeRegistrar = false;
         $tituloVeredito = 'Descrição insuficiente (Art. 24 da Lei nº 9.279/96)';
-        $explicacaoVeredito = $checkSuficiencia['motivo'] . ' ' . $checkSuficiencia['orientacao'] . ' Sem uma descrição técnica real e inteligível do dispositivo ou sistema, o pedido é nulo de pleno direito perante o INPI (Art. 24 e Art. 50 da LPI).';
+        $explicacaoVeredito = $checkSuficiencia['motivo'] . ' ' . $checkSuficiencia['orientacao'] . ' Sem uma descrição técnica clara e suficiente, o pedido não atende ao Art. 24 da LPI, e uma patente concedida assim pode ser anulada (Art. 50, II da LPI).';
     } elseif ($registroDoProprioUsuario !== null) {
         $statusApropriacao = 'JA_PERTENCE_AO_USUARIO';
         $podeRegistrar = true;

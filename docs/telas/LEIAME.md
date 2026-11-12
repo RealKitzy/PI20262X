@@ -14,7 +14,7 @@ Para o texto aparecer igual, as fontes usadas são **Inter** e **JetBrains Mono*
 | Arquivo | Tela |
 |---|---|
 | 01-cadastro-identificacao | Etapa 1 — Identificação do titular |
-| 02-cadastro-descricao | Etapa 1 — Descrição do projeto |
+| 02-cadastro-descricao | Etapa 1 — Descrição do projeto (com palavras-chave opcionais) |
 | 03-verificacao-em-andamento | Janela de verificação em andamento |
 | 04-resultado | Etapa 2 — Resultado |
 | 05-cadastro-descricao-escuro | Etapa 1 — Descrição (tema escuro) |

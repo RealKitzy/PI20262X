@@ -95,3 +95,27 @@
 - **Falso "texto aleatório" corrigido:** a verificação de teclado batido juntava todas as palavras antes de procurar consoantes seguidas. Assim, "receptor GPS, LTE" virava "receptorgpslte" e uma descrição válida era recusada. Agora a verificação é feita palavra por palavra (PHP e JS).
 - **Camada B (desenho industrial) marcada sem motivo:** palavras soltas como "pulseira", "caixa", "plástico" ou "3D" (ex.: "mapear em 3D") marcavam a Camada B com o texto "você citou gabinete/carcaça própria". Agora ela só é marcada quando a descrição fala do visual do aparelho (carcaça, gabinete, invólucro, formato próprio ou anatômico, "impressa em 3D", impermeável etc.).
 - **Só a verificação completa:** o seletor de rigor saiu da tela. Toda verificação usa o nível "Completa" (100 resultados por base, 12 combinações de termos, área CIP e patentes brasileiras). No lugar do seletor aparece "Verificação completa — leva de 1 a 3 min".
+
+## Revisão geral (textos, leis citadas e funcionamento)
+
+**Erros de funcionamento corrigidos**
+- **O botão "Verificar se já existe" não exigia os 4 itens da descrição.** Um texto como "asdfgh qwerty teste" abria a busca normalmente. Agora a verificação só começa com a descrição completa; caso contrário, aparece o motivo e o que falta.
+- **Depois de gravar a prova de autoria, o relatório "esquecia" a busca mundial** e o resultado podia virar "Nenhum projeto parecido". Agora o resultado da busca é mantido.
+- **A gravação usava o formulário atual**, e não o que foi verificado. Se a pessoa editasse a descrição depois da busca, gravava um texto diferente do verificado. Agora grava exatamente o que foi verificado.
+- **"Refazer busca"** fazia a busca mundial em segundo plano, sem barra de progresso e sem atualizar o relatório. Agora abre a verificação completa normalmente.
+- **Enter no formulário** chamava um fluxo antigo (Bloco 3, que não aparece mais). Agora o Enter avança do Bloco 1 para o Bloco 2 e, no Bloco 2, inicia a verificação. O fluxo antigo (`processarDiagnostico`) e o histórico local sem tabela na página foram removidos.
+- **Impressão / PDF podia sair em branco:** a animação de entrada da aba começava com opacidade 0. As animações agora ficam desligadas na impressão.
+- **Armazenamento do navegador:** a leitura agora é protegida (em modo privado ou com o armazenamento bloqueado, o site não quebra mais).
+- **Certificado:** ganhou a seção "Busca mundial de anterioridade", com bases consultadas, termos, classe CIP, contagens e os mais parecidos com link. Textos com marcação HTML (ex.: `&quot;`) agora saem limpos no `.txt`, e o CPF/CNPJ sai formatado.
+- **Botões do resultado:** depois de gravar, o botão "Gravar prova de autoria" some e fica só "Baixar certificado". O número de itens parecidos na base passou a contar também o registro do próprio usuário, que já aparecia na lista. Os rótulos ficam no singular quando o número é 1.
+
+**Textos e leis citadas**
+- Os alertas foram reescritos em linguagem simples, sem emojis e sem jargão ("Gibberish", "Quesito 1 reprovado", "Bloco 3"). Antes, alguns traziam marcação HTML aparecendo como texto (`<strong>`, `<em>`).
+- **Período de graça do Desenho Industrial:** o texto dizia que o DI também tinha 12 meses (Art. 12). O prazo do DI é de **180 dias** (Art. 96, § 3º da LPI). Corrigido.
+- **"Pedido nulo de pleno direito (Arts. 24 e 50)":** o Art. 50 trata da nulidade de uma patente **concedida**. O texto agora diz que o pedido não atende ao Art. 24 e que uma patente concedida assim pode ser anulada (Art. 50, II).
+- **Lei 11.484/2007:** "Arts. 26 a 55" virou "Arts. 26 e seguintes", porque a faixa citada não era exata.
+- **Lei de Software:** "proteção de 50 anos via Hash SHA-512" dava a entender que o prazo vem do hash. Agora: 50 anos pelo Art. 2º, § 2º; no e-Software o código é identificado por um resumo hash.
+- O texto que mandava clicar em "Reivindicar e Fixar Criação em Meu Nome" (botão que não existe mais) agora aponta para "Gravar prova de autoria".
+- A instituição padrão ficou mais simples ("Desenvolvimento independente", "Universidade / ICT", "Equipe de cofundadores").
+- As demais referências legais foram conferidas: LPI (Arts. 6º, 8º–13, 24, 25, 40, 88, 94, 96, 108, 124, 125, 129, 133, 189, 195), Lei 9.609/98, Lei 9.610/98 (Art. 7º, X e XII), Lei 10.973/04, LGPD (Arts. 5º, 6º, 7º, 11 e 46), LGT (Arts. 162 e 173), Res. ANATEL 715/2019, Ato ANATEL 14448/2017, RDC ANVISA 751/2022 e 657/2022, Res. INPI 158/2016 e CF/88 (Art. 5º, XXVII–XXIX).
+- `README.md` e as telas em `docs/telas/` foram atualizados para o site atual.
