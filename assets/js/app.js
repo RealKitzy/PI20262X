@@ -525,6 +525,7 @@ function limparFormularioCompleto() {
     document.getElementById('autor_email').value = '';
     document.getElementById('instituicao_empresa').value = '';
     document.getElementById('resumo_tecnico').value = '';
+    if (document.getElementById('palavras_chave_extra')) document.getElementById('palavras_chave_extra').value = '';
     document.getElementById('grau_novidade_hardware').value = 'INEDITO_INVENTIVO';
     if (document.getElementById('divulgacao_previa')) {
         document.getElementById('divulgacao_previa').value = 'SIGILO_MANTIDO';
@@ -1302,64 +1303,106 @@ function urlSegura(url) {
     return /^https?:\/\//i.test(url || '') ? escaparHtml(url) : '#';
 }
 
-// Dicionário PT -> EN para consultar bases internacionais. Termos fora do dicionário NÃO são descartados:
-// eles seguem na consulta em português (OpenAlex e GitHub também indexam conteúdo em português).
-const DICIONARIO_TERMOS_TECNICOS_PT_EN = {
-    'rastreadora': 'tracker', 'rastreador': 'tracker', 'rastreamento': 'tracking', 'localizador': 'tracker',
-    'radiofrequencia': 'rfid', 'localizacao': 'location', 'portatil': 'portable',
-    'coleira': 'collar', 'animais': 'pet', 'animal': 'pet', 'pet': 'pet', 'cachorro': 'dog', 'cao': 'dog',
-    'gato': 'cat', 'fechadura': 'lock', 'biometrica': 'biometric', 'biometria': 'biometric', 'digital': 'fingerprint',
-    'oximetro': 'oximeter', 'oxigenio': 'oxygen', 'saturacao': 'spo2', 'fotopletismografia': 'photoplethysmography',
-    'veicular': 'vehicle', 'veiculo': 'vehicle', 'autonomo': 'autonomous', 'autonoma': 'autonomous',
-    'irrigacao': 'irrigation', 'solo': 'soil', 'umidade': 'humidity', 'agricola': 'agriculture', 'agricultura': 'agriculture',
-    'estufa': 'greenhouse', 'relogio': 'smartwatch', 'cardiaco': 'heart', 'cardiaca': 'heart', 'batimentos': 'heart',
-    'antena': 'antenna', 'temperatura': 'temperature', 'pressao': 'pressure', 'camera': 'camera',
-    'seguranca': 'security', 'alarme': 'alarm', 'sensor': 'sensor', 'sensores': 'sensor', 'sonda': 'probe',
-    'capacitiva': 'capacitive', 'capacitivo': 'capacitive', 'valvula': 'valve', 'valvulas': 'valve',
-    'solenoide': 'solenoid', 'telemetria': 'telemetry', 'monitoramento': 'monitoring', 'controle': 'control',
-    'energia': 'energy', 'bateria': 'battery', 'solar': 'solar', 'robo': 'robot', 'robotico': 'robotic',
-    'braco': 'arm', 'impressora': 'printer', 'luz': 'light', 'iluminacao': 'lighting', 'automacao': 'automation',
-    'residencial': 'home', 'casa': 'home', 'agua': 'water', 'vazamento': 'leak', 'gas': 'gas', 'fumaca': 'smoke',
-    'queda': 'fall', 'idoso': 'elderly', 'idosos': 'elderly', 'saude': 'health', 'medico': 'medical',
-    'vestivel': 'wearable', 'pulseira': 'wristband', 'acelerometro': 'accelerometer', 'giroscopio': 'gyroscope',
-    'motor': 'motor', 'motores': 'motor', 'drone': 'drone', 'voz': 'voice', 'microfone': 'microphone',
-    'reconhecimento': 'recognition', 'facial': 'face', 'estacionamento': 'parking', 'lixo': 'waste',
-    'reciclagem': 'recycling', 'qualidade': 'quality', 'ar': 'air', 'poluicao': 'pollution'
-};
+// Vocabulário (dicionário PT→EN, prioridades, sinônimos e regras CIP) fica em assets/js/vocabulario.js.
+// Termos fora do dicionário NÃO são descartados: seguem na consulta em português (OpenAlex e GitHub indexam português).
 
-const SIGLAS_TECNICAS_UNIVERSAIS = ['uwb', 'gps', 'gnss', 'ble', 'bluetooth', 'wifi', 'lora', 'lorawan', 'iot', 'pcb', 'esp32',
-    'esp8266', 'stm32', 'arduino', 'raspberry', 'lidar', 'rfid', 'nfc', 'led', 'sonar', 'radar', 'mqtt', 'zigbee', 'spo2',
-    'ecg', 'ppg', 'lte', 'nbiot', 'can', 'modbus', 'freertos', 'fpga', 'mems', 'oled', 'lcd', 'ultrassonico'];
+// Palavras que não ajudam a encontrar anterioridade (verbos e termos vagos)
+const PALAVRAS_GENERICAS_BUSCA = new Set(['aciona', 'acionar', 'controlar', 'controla', 'modulo', 'modulos', 'enviando', 'envia',
+    'enviar', 'automaticamente', 'microcontrolador', 'utiliza', 'utilizar', 'permite', 'possui', 'atraves', 'mede', 'medir',
+    'detecta', 'detectar', 'funciona', 'realiza', 'transmite', 'dados', 'usuario', 'usuarios', 'tempo', 'real', 'sistema',
+    'projeto', 'dispositivo', 'aparelho', 'placa', 'quando', 'sempre', 'pessoa', 'pessoas', 'ambiente', 'conectado',
+    'conectada', 'ligado', 'ligada', 'utilizando', 'baseado', 'baseada', 'composto', 'composta', 'contendo', 'possuindo',
+    'capaz', 'atraves', 'durante', 'outro', 'outra', 'cada', 'todos', 'todas', 'mesmo', 'mesma', 'muito', 'pouco', 'varios',
+    'varias', 'algum', 'alguma', 'onde', 'tambem', 'ainda', 'entao', 'apenas', 'proprio', 'propria', 'deposita', 'avisa',
+    'informa', 'identifica', 'monitora', 'verifica', 'registra', 'mostra', 'exibe', 'gera', 'faz', 'usa', 'tem', 'sao', 'esta',
+    'estao', 'pode', 'podem', 'deve', 'serve', 'ajuda', 'feito', 'feita', 'criado', 'criada', 'desenvolvido', 'desenvolvida',
+    'quais', 'qual', 'livre', 'livres', 'certo', 'certa', 'libera', 'liberar', 'mostra', 'mostrar', 'grande', 'pequeno',
+    'pequena', 'melhor', 'facil', 'rapido', 'rapida', 'simples', 'barato', 'barata', 'baixo', 'baixa', 'custo', 'alto', 'alta',
+    'antes', 'depois', 'agora', 'enquanto', 'assim', 'porque', 'parte', 'lugar', 'local', 'coisa', 'coisas', 'vezes', 'cada']);
 
-// Monta os termos de busca: lista em inglês (dicionário + siglas) e lista em português (termos fora do dicionário)
+const STOPWORDS_BUSCA = new Set(['de', 'da', 'do', 'das', 'dos', 'em', 'no', 'na', 'nos', 'nas', 'um', 'uma', 'uns', 'umas',
+    'para', 'por', 'com', 'sem', 'sob', 'sobre', 'entre', 'que', 'se', 'ou', 'ao', 'aos', 'as', 'os', 'o', 'a', 'e', 'é',
+    'pelo', 'pela', 'pelos', 'pelas', 'seu', 'sua', 'seus', 'suas', 'meu', 'minha', 'nosso', 'nossa', 'como', 'mais', 'menos',
+    'quero', 'patentear', 'proteger', 'novo', 'nova', 'tipo', 'forma', 'meio', 'uso', 'caso', 'personalizado', 'the', 'and',
+    'for', 'with', 'of', 'to', 'in', 'on', 'by']);
+
+// Tenta encontrar a palavra no dicionário no singular (cameras → camera, sensores → sensor, animais → animal, botoes → botao)
+function traduzirPalavraPt(palavra) {
+    if (!palavra) return null;
+    const candidatas = [palavra];
+    if (palavra.endsWith('oes') || palavra.endsWith('aes')) candidatas.push(palavra.slice(0, -3) + 'ao');
+    if (palavra.endsWith('ais')) candidatas.push(palavra.slice(0, -3) + 'al');
+    if (palavra.endsWith('eis')) candidatas.push(palavra.slice(0, -3) + 'el');
+    if (palavra.endsWith('res') || palavra.endsWith('zes') || palavra.endsWith('ses')) candidatas.push(palavra.slice(0, -2));
+    if (palavra.endsWith('s')) candidatas.push(palavra.slice(0, -1));
+    for (const c of candidatas) {
+        if (Object.prototype.hasOwnProperty.call(DICIONARIO_PT_EN, c)) return DICIONARIO_PT_EN[c];
+    }
+    return null;
+}
+
+function nivelTermoEn(termo) {
+    return Object.prototype.hasOwnProperty.call(NIVEL_TERMO_EN, termo) ? NIVEL_TERMO_EN[termo] : 2;
+}
+
+// Monta os termos de busca: lista em inglês (dicionário + siglas + palavras-chave do usuário) e lista em português.
+// A lista em inglês é ordenada do assunto central para o termo genérico, porque o EPO e o GitHub usam só os 3 primeiros.
 function montarTermosDeBusca(dados) {
-    const tokens = extrairTokensTecnicosJS(`${dados.nome_projeto} ${dados.resumo_tecnico}`)
-        .filter(t => !t.includes(' ') && !/^\d+$/.test(t));
-    const ingles = [];
+    const candidatosEn = []; // { termo, nivel, ordem }
     const portugues = [];
-    // Verbos e palavras genéricas que não ajudam a encontrar anterioridade
-    const genericos = new Set(['aciona', 'acionar', 'controlar', 'controla', 'modulo', 'modulos', 'enviando', 'envia', 'enviar',
-        'automaticamente', 'automatico', 'automatica', 'microcontrolador', 'utiliza', 'utilizar', 'permite', 'possui', 'atraves',
-        'mede', 'medir', 'detecta', 'detectar', 'funciona', 'realiza', 'transmite', 'dados', 'usuario', 'usuarios', 'tempo', 'real']);
-    tokens.forEach(t => {
-        if (genericos.has(t)) return;
-        if (DICIONARIO_TERMOS_TECNICOS_PT_EN[t]) {
-            ingles.push(DICIONARIO_TERMOS_TECNICOS_PT_EN[t]);
-        } else if (SIGLAS_TECNICAS_UNIVERSAIS.includes(t)) {
-            ingles.push(t);
-            portugues.push(t);
-        } else if (t.length >= 5) {
-            portugues.push(t);
-        }
-    });
+    let ordem = 0;
+    const addEn = (termo, nivelExtra = 0) => {
+        if (!termo) return;
+        candidatosEn.push({ termo, nivel: nivelTermoEn(termo) + nivelExtra, ordem: ordem++ });
+    };
+
+    // 1. Palavras-chave informadas pelo usuário (prioridade máxima). Aceita inglês ou português.
+    const extras = normalizarTextoComparacaoJS(dados.palavras_chave_extra || '').split(' ').filter(p => p.length >= 2 && !STOPWORDS_BUSCA.has(p)).slice(0, 6);
+    extras.forEach(p => addEn(traduzirPalavraPt(p) || p, 10));
+
+    // 2. Descrição: primeiro as expressões de várias palavras, depois as palavras soltas.
+    //    O nome do projeto só contribui com termos conhecidos (nomes inventados como "Senpu" atrapalham a busca).
+    const processar = (textoBruto, ehNome) => {
+        let texto = ` ${normalizarTextoComparacaoJS(textoBruto)} `;
+        Object.keys(EXPRESSOES_PT_EN).sort((a, b) => b.length - a.length).forEach(expr => {
+            if (texto.includes(` ${expr} `)) {
+                EXPRESSOES_PT_EN[expr].forEach(t => addEn(t));
+                texto = texto.split(` ${expr} `).join(' ');
+            }
+        });
+        texto.trim().split(' ').forEach(p => {
+            if (!p || STOPWORDS_BUSCA.has(p) || /^\d+$/.test(p)) return;
+            const traducao = traduzirPalavraPt(p);
+            if (traducao) { addEn(traducao); return; }
+            if (SIGLAS_TECNICAS.includes(p)) { addEn(p); if (!ehNome) portugues.push(p); return; }
+            if (Object.prototype.hasOwnProperty.call(NIVEL_TERMO_EN, p)) { addEn(p); return; } // já escrito em inglês
+            if (ehNome || PALAVRAS_GENERICAS_BUSCA.has(p) || p.length < 5) return;
+            if (/(am|em|ando|endo|indo|ou|ava|ia)$/.test(p) && !/(agem|gem)$/.test(p)) return; // verbos conjugados (mostram, enviando, ligou)
+            portugues.push(p);
+        });
+    };
+    processar(dados.resumo_tecnico || '', false);
+    processar(dados.nome_projeto || '', true);
+
+    // Ordena por prioridade (estável pela ordem em que apareceu) e remove repetidos
+    const vistos = new Set();
+    let ingles = candidatosEn
+        .sort((a, b) => b.nivel - a.nivel || a.ordem - b.ordem)
+        .map(c => c.termo)
+        .filter(t => !vistos.has(t) && vistos.add(t));
+
     // Remove sinônimos: se a descrição cita os dois, fica só o termo mais comum em patentes/artigos
     // (ex.: "bluetooth" e "ble" juntos fazem a busca exigir as duas palavras e quase nada é encontrado)
-    const SINONIMOS = { ble: 'bluetooth', lorawan: 'lora', gnss: 'gps', nbiot: 'lte', esp8266: 'esp32' };
+    const SINONIMOS = { ble: 'bluetooth', lorawan: 'lora', gnss: 'gps', nbiot: 'lte', esp8266: 'esp32', printing: 'printer',
+        tracking: 'tracker', locator: 'tracker', uav: 'drone', quadcopter: 'drone', smartwatch: 'watch', moisture: 'humidity' };
     const semSinonimos = arr => {
         const conj = new Set(arr);
-        return [...conj].filter(t => !(SINONIMOS[t] && conj.has(SINONIMOS[t])));
+        return arr.filter(t => !(SINONIMOS[t] && conj.has(SINONIMOS[t])));
     };
-    return { ingles: semSinonimos(ingles).slice(0, 8), portugues: semSinonimos(portugues).slice(0, 8) };
+    ingles = semSinonimos(ingles);
+    const vistosPt = new Set();
+    const pt = semSinonimos(portugues.filter(t => !vistosPt.has(t) && vistosPt.add(t)));
+    return { ingles: ingles.slice(0, 8), portugues: pt.slice(0, 8) };
 }
 
 // Gera as variantes de consulta (quanto maior o rigor, mais combinações de termos são consultadas)
@@ -1384,10 +1427,16 @@ function gerarVariantesDeConsulta(termos, quantidade) {
 function calcularRelevanciaResultado(termosConsulta, textoResultado) {
     const texto = ` ${normalizarTextoComparacaoJS(textoResultado)} `;
     if (!termosConsulta.length || !texto.trim()) return { percentual: 0, encontrados: [] };
+    // Cada termo vale se ele OU um sinônimo aparecer (ex.: "elderly" também aceita "senior" e "older")
     const encontrados = termosConsulta.filter(t => {
         const termo = normalizarTextoComparacaoJS(t);
-        const raiz = termo.length > 5 ? termo.slice(0, termo.length - 1) : termo; // tolera plural simples
-        return texto.includes(` ${termo}`) || texto.includes(` ${raiz}`);
+        const formas = [termo, ...((typeof EQUIVALENTES_EN !== 'undefined' && EQUIVALENTES_EN[termo]) || []).map(normalizarTextoComparacaoJS)];
+        return formas.some(f => {
+            if (!f) return false;
+            if (f.length <= 3) return texto.includes(` ${f} `) || texto.includes(` ${f}s `); // termos curtos: palavra inteira
+            const raiz = f.length > 5 ? f.slice(0, f.length - 1) : f; // tolera plural simples
+            return texto.includes(` ${f}`) || texto.includes(` ${raiz}`);
+        });
     });
     return {
         percentual: Math.round((encontrados.length / termosConsulta.length) * 100),
@@ -1437,8 +1486,9 @@ async function consultarOpenAlex(termosConsulta, porPagina) {
 }
 
 // Patentes reais no EPO (via backend PHP). Retorna { estado, resultados, mensagem }
-async function consultarPatentesEpo(termosConsulta, porPagina) {
-    const url = `api/patentes.php?q=${encodeURIComponent(termosConsulta.join(' '))}&n=${porPagina}`;
+async function consultarPatentesEpo(termosConsulta, porPagina, subclasseCip = '') {
+    const filtroCip = subclasseCip ? `&cip=${encodeURIComponent(subclasseCip)}` : '';
+    const url = `api/patentes.php?q=${encodeURIComponent(termosConsulta.join(' '))}&n=${porPagina}${filtroCip}`;
     let json;
     try {
         const resp = await fetchComTempoLimite(url, 20000);
@@ -1452,6 +1502,7 @@ async function consultarPatentesEpo(termosConsulta, porPagina) {
     }
     return {
         estado: 'ok',
+        total: json.total || 0,
         resultados: (json.resultados || []).map(p => ({
             base: 'Patente',
             id: p.id,
@@ -1586,13 +1637,38 @@ async function buscarEstadoDaTecnicaMundialAoVivo(dados, diag, opcoes = {}) {
         // Patentes (EPO OPS via backend). Para de tentar se não houver chave/backend ou se o limite for atingido.
         if (['pendente', 'ok', 'parcial'].includes(status.patentes.estado)) {
             aoProgredir({ base: 'patentes', fase: 'consultando', consulta: termosConsulta.slice(0, 3).join(' '), indice: i, total: variantes.length });
-            const res = await consultarPatentesEpo(termosConsulta.slice(0, 3), rigor.porBase);
+            let res = await consultarPatentesEpo(termosConsulta.slice(0, 3), rigor.porBase);
+            // Nenhuma patente com os 3 termos juntos: tenta de novo só com os 2 termos mais importantes
+            if (res.estado === 'ok' && res.resultados.length === 0 && termosConsulta.length >= 3) {
+                const doisTermos = termosConsulta.slice(0, 2);
+                aoProgredir({ base: 'patentes', fase: 'info', mensagem: `Nenhuma patente com os 3 termos. Tentando só "${doisTermos.join(' ')}"...` });
+                const res2 = await consultarPatentesEpo(doisTermos, rigor.porBase);
+                if (res2.estado === 'ok') { status.patentes.consultas++; res = res2; }
+            }
             if (res.estado === 'ok') {
                 status.patentes.consultas++;
                 status.patentes.recebidos += res.resultados.length;
                 status.patentes.estado = 'ok';
+                if (res.total) status.patentes.totalEncontrado = Math.max(status.patentes.totalEncontrado || 0, res.total);
                 registrar(res.resultados, termosConsulta);
-                aoProgredir({ base: 'patentes', fase: 'ok', consulta: rotuloConsulta, recebidos: res.resultados.length, indice: i, total: variantes.length });
+                aoProgredir({ base: 'patentes', fase: 'ok', consulta: rotuloConsulta, recebidos: res.resultados.length, totalNaBase: res.total, indice: i, total: variantes.length });
+
+                // Na primeira consulta, faz também uma busca restrita à área técnica (subclasse CIP) do projeto.
+                // Traz patentes do mesmo campo mesmo quando usam outras palavras. Se falhar, não afeta o resto.
+                const subclasse = (cipPrincipal.match(/^[A-H]\d{2}[A-Z]/) || [''])[0];
+                if (i === 0 && subclasse && termosConsulta.length >= 2 && !deveInterromper()) {
+                    const doisTermos = termosConsulta.slice(0, 2);
+                    aoProgredir({ base: 'patentes', fase: 'info', mensagem: `Consultando só a área ${subclasse}: "${doisTermos.join(' ')}"` });
+                    const resCip = await consultarPatentesEpo(doisTermos, rigor.porBase, subclasse);
+                    if (resCip.estado === 'ok') {
+                        status.patentes.consultas++;
+                        status.patentes.recebidos += resCip.resultados.length;
+                        registrar(resCip.resultados, termosConsulta);
+                        aoProgredir({ base: 'patentes', fase: 'info', recebidos: resCip.resultados.length, mensagem: `${resCip.resultados.length} patentes da área ${subclasse} recebidas.` });
+                    } else {
+                        aoProgredir({ base: 'patentes', fase: 'info', mensagem: `Busca por área ${subclasse} indisponível (${resCip.mensagem || resCip.estado}). Seguindo sem ela.` });
+                    }
+                }
             } else if (res.estado === 'sem_chave' || res.estado === 'sem_backend') {
                 status.patentes = { estado: 'apenas_link', consultas: 0, recebidos: 0, erro: res.mensagem };
                 aoProgredir({ base: 'patentes', fase: 'apenas_link', erro: res.mensagem, indice: i, total: variantes.length });
@@ -1868,30 +1944,24 @@ async function registrarTitularidadeFixaUsuario() {
 // Gera a Classificação Internacional de Patentes (CIP/IPC), a Reivindicação Independente nº 1 (Art. 24 e 25 LPI)
 // e a Matriz de Correlação Componente de Engenharia IoT/Hardware <-> Artigo Exato de Lei
 function gerarCorrelacaoPatentariaReal(dados, diag) {
-    const textoContexto = `${dados.nome_projeto} ${dados.resumo_tecnico} ${dados.linguagem_firmware}`.toLowerCase();
-
-    // 1. Determinar a Classificação Internacional de Patentes (CIP / IPC — Padrão OMPI/INPI)
+    // 1. Classe CIP / IPC (padrão OMPI/INPI) — regras por área técnica em assets/js/vocabulario.js.
+    //    Cada área soma pontos pelos padrões encontrados; as áreas mais fortes definem a classe principal.
+    const textoContexto = ` ${normalizarTextoComparacaoJS(`${dados.nome_projeto} ${dados.resumo_tecnico} ${dados.palavras_chave_extra || ''}`)} `;
+    const areasCip = REGRAS_CIP
+        .map(regra => ({ regra, pontos: regra.peso * regra.padroes.filter(re => re.test(textoContexto)).length }))
+        .filter(a => a.pontos > 0)
+        .sort((a, b) => b.pontos - a.pontos);
     const codigosCip = [];
-    if (/(irrig|solo|agr[ií]col|agro|umidade|planta|estufa)/i.test(textoContexto)) {
-        codigosCip.push('A01G 25/16 (Sistemas de controle automático de irrigação agrícola)');
-    }
-    if (/(iot|lora|lorawan|mqtt|sem fio|wireless|esp32|ble|zigbee|telemetria|rede de sensores)/i.test(textoContexto)) {
-        codigosCip.push('H04W 4/38 (Redes de comunicação sem fio para coleta de dados de sensores / IoT)');
-        codigosCip.push('H04L 67/12 (Protocolos dedicados a dispositivos embarcados M2M / telemetria)');
-    }
-    if (/(m[eé]dic|sa[uú]de|batimento|ox[ií]metro|ecg|vital|wearable|pulseira|paciente)/i.test(textoContexto)) {
-        codigosCip.push('A61B 5/00 (Dispositivos de medição para diagnóstico biomédico e monitoramento de sinais vitais)');
-        codigosCip.push('G16H 40/67 (Sistemas de TIC para operação remota de dispositivos médicos / IoMT)');
-    }
-    if (/(rob[oô]|aut[oô]nom|lidar|[oó]ptic|laser|navega[cç][aã]o|motor|atuador|v[aá]lvula|controle)/i.test(textoContexto)) {
-        codigosCip.push('G05B 19/042 (Sistemas de controle funcional em malha fechada utilizando unidades microcontroladoras)');
-    }
-    if (dados.possui_topografia_chip || /(chip|sil[ií]cio|asic|fpga|semicondutor|verilog|vhdl)/i.test(textoContexto)) {
-        codigosCip.push('H01L 27/02 (Dispositivos semicondutores integrados e topografia de circuitos em silício)');
+    areasCip.slice(0, 3).forEach((a, i) => {
+        // Área principal: até 2 códigos; demais áreas: o código principal de cada uma
+        a.regra.codigos.slice(0, i === 0 ? 2 : 1).forEach(c => { if (!codigosCip.includes(c)) codigosCip.push(c); });
+    });
+    if (dados.possui_topografia_chip && !codigosCip.some(c => c.startsWith('H01L'))) {
+        codigosCip.push('H01L 27/02 (Circuitos integrados em silício)');
     }
     if (codigosCip.length === 0) {
-        codigosCip.push('G05B 19/042 (Sistemas eletrônicos de controle digital programável com sensores e atuadores)');
-        codigosCip.push('H05K 1/02 (Detalhes construtivos de Placas de Circuito Impresso — PCB)');
+        codigosCip.push('G05B 19/042 (Controle por microcontrolador com sensores e atuadores)');
+        codigosCip.push('H05K 1/02 (Detalhes construtivos de placas de circuito impresso — PCB)');
     }
 
     // 2. Construir a Minuta de Reivindicação Independente nº 1 (Art. 24 e 25 da LPI + IN INPI nº 30/2013)
@@ -2356,13 +2426,21 @@ async function iniciarVerificacaoPorcentagemBloco2() {
                 } else if (ev.fase === 'consultando') {
                     chip(chipId, 'badge-consultando', `Consulta ${ev.indice + 1}/${ev.total}`);
                     log(`[${nome}] Consultando: "${ev.consulta}"`);
+                } else if (ev.fase === 'info') {
+                    if (ev.recebidos) {
+                        recebidos[ev.base] += ev.recebidos;
+                        chip(chipId, 'badge-consultando', `${recebidos[ev.base]} recebidos`);
+                    }
+                    log(`[${nome}] ${ev.mensagem}`, ev.recebidos ? 'success' : undefined);
+                    return;
                 } else if (ev.fase === 'aguardando') {
                     log(`[GITHUB] Aguardando ${Math.ceil(ev.esperaMs / 1000)} s (limite de 10 consultas/min da API).`);
                 } else if (ev.fase === 'ok') {
                     passosConcluidos++;
                     recebidos[ev.base] += ev.recebidos;
                     chip(chipId, 'badge-consultando', `${recebidos[ev.base]} recebidos`);
-                    log(`[${nome}] ${ev.recebidos} resultados recebidos.`, 'success');
+                    const totalBase = ev.totalNaBase && ev.totalNaBase > ev.recebidos ? ` (de ${ev.totalNaBase.toLocaleString('pt-BR')} encontrados no total)` : '';
+                    log(`[${nome}] ${ev.recebidos} resultados recebidos${totalBase}.`, 'success');
                 } else {
                     passosConcluidos++;
                     chip(chipId, 'badge-erro', ev.fase === 'limite' ? 'Limite atingido' : 'Indisponível');
@@ -2749,6 +2827,7 @@ function coletarDadosFormularioAtual() {
         autor_email: document.getElementById('autor_email').value.trim(),
         instituicao_empresa: document.getElementById('instituicao_empresa').value.trim(),
         resumo_tecnico: document.getElementById('resumo_tecnico').value.trim(),
+        palavras_chave_extra: document.getElementById('palavras_chave_extra') ? document.getElementById('palavras_chave_extra').value.trim().slice(0, 120) : '',
         grau_novidade_hardware: document.getElementById('grau_novidade_hardware').value,
         divulgacao_previa: document.getElementById('divulgacao_previa') ? document.getElementById('divulgacao_previa').value : 'SIGILO_MANTIDO',
         conectividade_iot_rf: document.getElementById('conectividade_iot_rf') ? document.getElementById('conectividade_iot_rf').value : 'MODULO_RF_HOMOLOGADO',

@@ -13,7 +13,7 @@
  * Sem as variáveis, responde { estado: "sem_chave" } e a interface mantém as patentes como "apenas link".
  * A chave fica só no servidor: o navegador nunca a recebe.
  *
- * Uso: GET api/patentes.php?q=irrigation+soil+sensor&n=25
+ * Uso: GET api/patentes.php?q=irrigation+soil+sensor&n=25[&cip=A01G]
  */
 
 header('Content-Type: application/json; charset=utf-8');
@@ -213,6 +213,15 @@ $quantidade = max(1, min(100, (int) ($_GET['n'] ?? 25)));
 
 // ta = título + resumo; "all" = todos os termos precisam aparecer
 $cql = 'ta all "' . implode(' ', $termos) . '"';
+
+// Filtro opcional pela área técnica (subclasse CIP/IPC, ex.: G08B). Só o formato exato é aceito.
+$cip = strtoupper(trim((string) ($_GET['cip'] ?? '')));
+if ($cip !== '') {
+    if (!preg_match('/^[A-H][0-9]{2}[A-Z]$/', $cip)) {
+        responder(['sucesso' => false, 'estado' => 'erro', 'mensagem' => 'Classe CIP inválida (use a subclasse, ex.: G08B).'], 400);
+    }
+    $cql .= ' and ic=' . $cip;
+}
 
 $arquivoCache = pastaCacheEpo() . DIRECTORY_SEPARATOR . 'busca_' . md5($cql . '|' . $quantidade) . '.json';
 if (is_file($arquivoCache) && (time() - filemtime($arquivoCache)) < EPO_TEMPO_CACHE_SEGUNDOS) {

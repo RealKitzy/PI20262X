@@ -55,3 +55,18 @@
 - **CPF/CNPJ exposto na API pública.** A lista de provas de autoria (`GET /api/anterioridade.php`) devolvia o documento completo de quem gravou. Agora sai mascarado (ex.: `***.982.247-**`), em linha com a LGPD. A comparação de titularidade continua usando o valor completo, só no servidor.
 - **Termos da busca de patentes:** cada termo agora tem no máximo 40 caracteres, para evitar consultas gigantes ao EPO.
 - Testes feitos: entradas inválidas nas três APIs, tentativa de acessar arquivos privados (inclusive com `../`), fluxo completo com gravação e certificado, e busca de patentes com respostas simuladas do EPO.
+
+## Acréscimo: precisão da busca em todos os assuntos
+
+- **Vocabulário técnico novo** (`assets/js/vocabulario.js`): cerca de 560 palavras e 85 expressões em português com tradução para o inglês usado em patentes e artigos. Cobre saúde, agro, animais, casa e segurança, energia, transporte, indústria, impressão 3D, meio ambiente, educação e esporte. Antes eram cerca de 90 palavras. Plurais são reconhecidos (sensores → sensor, câmeras → câmera).
+- **Expressões compostas** são lidas antes das palavras soltas: "impressora 3D", "sem fio", "umidade do solo", "cadeira de rodas", "detector de fumaça" etc.
+- **Ordem dos termos por importância:** o assunto central (queda, fumaça, campainha, irrigação…) vem antes das peças (acelerômetro, câmera) e dos termos genéricos (sensor, Wi-Fi, celular). Isso importa porque o EPO e o GitHub recebem só os 3 primeiros termos. Exemplo: antes a consulta era "wristband accelerometer elderly"; agora é "fall elderly accelerometer".
+- **Nome do projeto:** nomes inventados (ex.: "Senpu") não entram mais na busca. Só palavras conhecidas do nome são usadas.
+- **Sinônimos na relevância:** um resultado conta o termo se usar um sinônimo (ex.: "elderly" também aceita "senior" e "older"; "drone" aceita "UAV"; "printer" aceita "additive").
+- **Classe CIP por área técnica:** 55 regras (quedas, sinais vitais, fumaça, campainha, fechaduras, drones, LiDAR, impressão 3D, estacionamento, resíduos, energia solar etc.). Cada área recebe pontos pelos termos encontrados e a mais forte vira a classe principal. Comunicação sem fio (H04W 4/38) só aparece como classe secundária, porque está presente em quase todo projeto IoT.
+- **EPO mais completo:**
+  - Se nenhuma patente tiver os 3 termos juntos, o sistema tenta de novo com os 2 mais importantes.
+  - Na primeira consulta, faz também uma busca restrita à área técnica do projeto (subclasse CIP, ex.: G08B). O parâmetro novo `cip` do `api/patentes.php` aceita apenas o formato exato da subclasse (letra, 2 números, letra).
+  - O registro mostra quantas patentes existem no total para aquela consulta.
+- **Campo opcional "Palavras-chave da busca"** no Bloco 2: os termos digitados ali (em inglês ou português) têm prioridade máxima na busca e entram no cálculo da classe CIP.
+- Testado em 10 descrições de áreas diferentes e no fluxo completo (busca com o EPO simulado, gravação da prova de autoria e certificado).
