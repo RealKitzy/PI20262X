@@ -652,7 +652,9 @@ function validarSuficienciaDescritivaProjeto(textoRelato, nomeProjeto = '', trec
     const apenasLetras = relatoLimpo.toLowerCase().replace(/[^a-záàãâäéèêëíìîïóòõôöúùûüç]/gi, '');
     const vogais = (apenasLetras.match(/[aeiouáàãâäéèêëíìîïóòõôöúùûü]/gi) || []).length;
     const proporcaoVogais = apenasLetras.length > 0 ? (vogais / apenasLetras.length) : 0;
-    const temSequenciaCaotica = /[bcdfghjklmnpqrstvwxz]{6,}/i.test(apenasLetras) || /(.)\1{3,}/i.test(apenasLetras);
+    // Sequências verificadas palavra por palavra (juntar as palavras criava falsos positivos, ex.: "receptor GPS LTE")
+    const letrasPorPalavra = relatoLimpo.toLowerCase().replace(/[^a-záàãâäéèêëíìîïóòõôöúùûüç]+/gi, ' ');
+    const temSequenciaCaotica = /[bcdfghjklmnpqrstvwxz]{6,}/i.test(letrasPorPalavra) || /(.)\1{3,}/i.test(letrasPorPalavra);
     const palavrasValidasPt = palavras.filter(p => /[aeiouáàãâéêíóôõú0-9]/i.test(p) && !/[bcdfghjklmnpqrstvwxz]{5,}/i.test(p) && p.length <= 24);
     const ratioPalavrasValidas = palavras.length > 0 ? (palavrasValidasPt.length / palavras.length) : 0;
 
@@ -1105,6 +1107,7 @@ async function verificarExistenciaLocalEApi(dados, diag, acao = 'VERIFICAR') {
     const todosRegistros = obterRegistrosFixosLocais();
     const colisoesEncontradas = [];
     let bloqueioTerceiro = null;
+    let referenciaConhecida = null;
     let registroDoProprioUsuario = null;
 
     todosRegistros.forEach(reg => {
@@ -1157,7 +1160,12 @@ async function verificarExistenciaLocalEApi(dados, diag, acao = 'VERIFICAR') {
             if (mesmoTitular && (hashIgual || colisaoMarca || similaridade >= 60.0)) {
                 registroDoProprioUsuario = itemColisao;
             } else if (!mesmoTitular && (hashIgual || colisaoMarca || similaridade >= 42.0)) {
-                if (!bloqueioTerceiro || itemColisao.similaridade_percentual > bloqueioTerceiro.similaridade_percentual) {
+                // Acervo ilustrativo = produtos conhecidos do mercado: semelhança só técnica avisa, mas não bloqueia
+                if (reg.origem_base === 'ACERVO_REFERENCIA_ILUSTRATIVO' && !colisaoMarca && !hashIgual) {
+                    if (!referenciaConhecida || itemColisao.similaridade_percentual > referenciaConhecida.similaridade_percentual) {
+                        referenciaConhecida = itemColisao;
+                    }
+                } else if (!bloqueioTerceiro || itemColisao.similaridade_percentual > bloqueioTerceiro.similaridade_percentual) {
                     bloqueioTerceiro = itemColisao;
                 }
             }
@@ -1187,7 +1195,10 @@ async function verificarExistenciaLocalEApi(dados, diag, acao = 'VERIFICAR') {
         statusApropriacao = 'BLOQUEADO_TERCEIRO';
         podeRegistrar = false;
         tituloVeredito = `Colisão com item de outro titular (${escaparHtml(bloqueioTerceiro.protocolo_registro)})`;
-        explicacaoVeredito = `Não é possível apropriar-se diretamente desta criação como sua: detectamos colisão direta (${bloqueioTerceiro.similaridade_percentual}% de superposição / colisão nominativa) com o ativo "${escaparHtml(bloqueioTerceiro.nome_criacao_marca)}", já registrado sob titularidade de ${escaparHtml(bloqueioTerceiro.titular_nome)} (${escaparHtml(bloqueioTerceiro.instituicao_empresa)}). Pelo Art. 11 (Estado da Técnica), Art. 124, XIX (proibição de reprodução de marca alheia) e Art. 195 da Lei nº 9.279/96, para registrar uma versão própria você deve: (1) adotar um nome comercial/marca distinto; e (2) especificar uma melhoria construtiva/funcional própria (Modelo de Utilidade — Art. 9º da LPI) ou reimplementação limpa.`;
+        const artigosBloqueio = bloqueioTerceiro.colisao_marca
+            ? 'Pelo Art. 11 (estado da técnica), Art. 124, XIX (proibição de reproduzir marca alheia) e Art. 195 da Lei nº 9.279/96, para registrar uma versão própria você deve: (1) adotar um nome comercial distinto; e (2) especificar uma melhoria construtiva ou funcional própria (Modelo de Utilidade — Art. 9º da LPI).'
+            : 'Pelo Art. 11 da Lei nº 9.279/96 (estado da técnica), para registrar uma versão própria você deve especificar uma melhoria construtiva ou funcional própria (Modelo de Utilidade — Art. 9º da LPI) ou uma reimplementação limpa.';
+        explicacaoVeredito = `Não é possível apropriar-se diretamente desta criação como sua: detectamos colisão direta (${bloqueioTerceiro.similaridade_percentual}% de semelhança${bloqueioTerceiro.colisao_marca ? ' / nome igual ou parecido' : ''}) com "${escaparHtml(bloqueioTerceiro.nome_criacao_marca)}", já gravado por ${escaparHtml(bloqueioTerceiro.titular_nome)} (${escaparHtml(bloqueioTerceiro.instituicao_empresa)}). ${artigosBloqueio}`;
     } else if (dados.divulgacao_previa === 'DIVULGADO_MAIS_12M') {
         statusApropriacao = 'PARCIAL_ESTADO_DA_TECNICA';
         podeRegistrar = true;
@@ -1198,6 +1209,11 @@ async function verificarExistenciaLocalEApi(dados, diag, acao = 'VERIFICAR') {
         podeRegistrar = true;
         tituloVeredito = 'Hardware base já existe no mercado; marca, firmware e desenho da placa podem ser protegidos';
         explicacaoVeredito = 'Os módulos eletrônicos comerciais utilizados (COTS) já pertencem aos seus respectivos fabricantes e ao estado da técnica (Art. 8º e Art. 10, V da LPI). Você não pode patentear o hardware base como invenção sua, mas PODE colocar como sua propriedade exclusiva: (1) a Marca do seu produto (Art. 129 LPI); (2) o seu Código-Fonte/Firmware autoral (Lei 9.609/98); e (3) o desenho específico da sua PCB/Gabinete (Lei 9.610/98 e Art. 94 LPI).';
+    }
+
+    if (statusApropriacao === 'DISPONIVEL_EXCLUSIVO' && referenciaConhecida) {
+        tituloVeredito = 'Parecido com um produto conhecido do acervo de referência';
+        explicacaoVeredito = `O projeto tem ${referenciaConhecida.similaridade_percentual}% de semelhança técnica com "${escaparHtml(referenciaConhecida.nome_criacao_marca)}", um produto conhecido do mercado que está no acervo ilustrativo do Observatório. Isso indica que a ideia geral já existe (estado da técnica, Art. 11 da LPI), mas não impede gravar a sua prova de autoria: o nome é diferente e o acervo não representa um registro de outro usuário. Para uma patente, foque no que o seu projeto faz de diferente.`;
     }
 
     let novoRegistroGravado = null;
@@ -1256,6 +1272,7 @@ async function verificarExistenciaLocalEApi(dados, diag, acao = 'VERIFICAR') {
         tokens_analisados: tokensUsuario.slice(0, 18),
         colisoes: colisoesEncontradas,
         bloqueio_terceiro: bloqueioTerceiro,
+        referencia_conhecida: referenciaConhecida,
         registro_gravado: novoRegistroGravado,
         registros_fixos: obterRegistrosFixosLocais()
     };
@@ -2505,6 +2522,9 @@ async function iniciarVerificacaoPorcentagemBloco2() {
         if (verif && verif.bloqueio_terceiro) {
             chip('chip-status-inpi', 'badge-erro', 'Colisão');
             log(`[OBSERVATÓRIO] Colisão com "${escaparHtml(verif.bloqueio_terceiro.nome_criacao_marca)}" (${verif.bloqueio_terceiro.similaridade_percentual}%).`, 'warn');
+        } else if (verif && verif.referencia_conhecida) {
+            chip('chip-status-inpi', 'badge-consultando', 'Parecido com produto conhecido');
+            log(`[OBSERVATÓRIO] Parecido com o produto de referência "${escaparHtml(verif.referencia_conhecida.nome_criacao_marca)}" (${verif.referencia_conhecida.similaridade_percentual}%). Aviso apenas: não bloqueia a gravação.`, 'warn');
         } else {
             chip('chip-status-inpi', 'badge-concluido', `${totalBaseLocal} itens • sem colisão`);
             log(`[OBSERVATÓRIO] ${totalBaseLocal} itens comparados (registros de usuários + acervo ilustrativo): sem colisão.`, 'success');
@@ -3122,7 +3142,9 @@ function renderizarRelatorioDiagnostico(dados, diag, verif = null, anterioridade
             iconeVeredito = '!';
             tituloVeredito = 'Já existe um projeto muito parecido na base do Observatório';
             textoVeredito = `<p>O seu projeto colide com <strong>${escaparHtml(verif.bloqueio_terceiro.nome_criacao_marca)}</strong> (titular: ${escaparHtml(verif.bloqueio_terceiro.titular_nome)}, ${verif.bloqueio_terceiro.similaridade_percentual}% de semelhança).</p>
-                <p>Pelo Art. 11 da LPI, o conceito geral não pode ser patenteado, e pelo Art. 124, XIX, não dá para registrar uma marca igual ou parecida. Você ainda pode proteger o seu código-fonte (Lei 9.609/98), usar um nome próprio e pedir patente só do que for realmente novo no seu projeto.</p>`;
+                <p>${colisaoMarca
+                    ? 'Pelo Art. 11 da LPI, o conceito geral não pode ser patenteado, e pelo Art. 124, XIX, não dá para registrar uma marca igual ou parecida. Você ainda pode proteger o seu código-fonte (Lei 9.609/98), usar um nome próprio e pedir patente só do que for realmente novo no seu projeto.'
+                    : 'Pelo Art. 11 da LPI, o conceito geral não pode ser patenteado. O nome do seu projeto é diferente, então a marca continua protegível. Você ainda pode proteger o seu código-fonte (Lei 9.609/98) e pedir patente só do que for realmente novo no seu projeto.'}</p>`;
         } else if (temAnterioridadeMundial && mundo.mesmaSolucao.length > 0) {
             const qtdPatMesma = mundo.patentesMesmaSolucao.length;
             estadoVeredito = 'atencao';
@@ -3148,9 +3170,17 @@ function renderizarRelatorioDiagnostico(dados, diag, verif = null, anterioridade
             tituloVeredito = 'Nenhum projeto parecido nas bases consultadas';
             const incompleta = mundo && mundo.basesComFalha && mundo.basesComFalha.length ? ' Uma das bases não respondeu por completo, então a busca ficou incompleta.' : '';
             const semPatentes = mundo && mundo.patentesConsultadas ? '' : ' As patentes não foram consultadas automaticamente nesta instalação.';
-            textoVeredito = `<p>Não encontramos nada com relevância de ${LIMIAR_RELEVANCIA_ANTERIORIDADE}% ou mais.${incompleta}${semPatentes} Isso é um bom sinal, mas não garante que o projeto seja novo: confira também no pePI/INPI antes de depositar.</p>`;
+            textoVeredito = `<p>Nas bases mundiais, não encontramos nada com relevância de ${LIMIAR_RELEVANCIA_ANTERIORIDADE}% ou mais.${incompleta}${semPatentes} Isso é um bom sinal, mas não garante que o projeto seja novo: confira também no pePI/INPI antes de depositar.</p>`;
         }
 
+        // Produto conhecido do acervo de referência: aviso extra (não bloqueia a gravação)
+        if (!jaExisteTerceiro && verif && verif.referencia_conhecida) {
+            const ref = verif.referencia_conhecida;
+            textoVeredito += `<p>Na base do Observatório, o projeto também é parecido com <strong>${escaparHtml(ref.nome_criacao_marca)}</strong> (${ref.similaridade_percentual}%), um produto conhecido do mercado no acervo de referência. É mais um sinal de que a ideia geral já existe, mas não impede gravar a sua prova de autoria.</p>`;
+            if (estadoVeredito === 'ok') { estadoVeredito = 'atencao'; iconeVeredito = 'i'; tituloVeredito = 'Parecido com um produto conhecido do mercado'; }
+        }
+
+        const referenciaParecida = Boolean(!jaExisteTerceiro && verif && verif.referencia_conhecida);
         const podePatenteFisica = dados.divulgacao_previa !== 'DIVULGADO_MAIS_12M' && dados.grau_novidade_hardware !== 'MODULOS_PRONTOS_COTS' && dados.modelo_negocio !== 'PUBLICACAO_DEFENSIVA';
 
         const itensChecklist = [
@@ -3181,8 +3211,8 @@ function renderizarRelatorioDiagnostico(dados, diag, verif = null, anterioridade
                 lei: 'Art. 7º, inciso X da Lei 9.610/98 (Direito Autoral sobre projetos e esboços de engenharia).'
             },
             {
-                passou: podePatenteFisica && !jaExisteTerceiro && !temAnterioridadeMundial,
-                atencao: jaExisteTerceiro || temAnterioridadeMundial,
+                passou: podePatenteFisica && !jaExisteTerceiro && !temAnterioridadeMundial && !referenciaParecida,
+                atencao: jaExisteTerceiro || temAnterioridadeMundial || referenciaParecida,
                 titulo: '4. Patente do Funcionamento Físico (Camada F)',
                 explicacaoSimples: jaExisteTerceiro
                     ? `Encontramos um projeto equivalente na base (${escaparHtml(verif.bloqueio_terceiro.nome_criacao_marca)} — ${escaparHtml(verif.bloqueio_terceiro.titular_nome)}). O conceito geral não é patenteável (Art. 11 da LPI); só um diferencial seu poderia ser.`
@@ -3190,11 +3220,13 @@ function renderizarRelatorioDiagnostico(dados, diag, verif = null, anterioridade
                         ? (anterioridadeMundial.mesmaSolucao.length > 0
                             ? `${anterioridadeMundial.mesmaSolucao.length} resultado(s) têm todos os termos principais do seu projeto. Leia-os: se descreverem a mesma solução, o conceito geral não é patenteável e o pedido deve se limitar ao seu diferencial (Arts. 11 e 13 da LPI).`
                             : `Nenhum resultado tem todos os termos do seu projeto, mas ${anterioridadeMundial.totalAchadosMundo} são do mesmo tema. A patente é possível se a combinação não for óbvia para um técnico da área (atividade inventiva, Art. 13 da LPI).`)
-                        : (podePatenteFisica
+                        : (referenciaParecida
+                            ? `O projeto é parecido com ${escaparHtml(verif.referencia_conhecida.nome_criacao_marca)}, um produto conhecido do mercado. O conceito geral não é novo (Art. 11 da LPI); só um diferencial seu poderia ser patenteado.`
+                            : (podePatenteFisica
                             ? 'Pela descrição (hardware com efeito técnico físico), o projeto pode, em tese, ser patenteado — desde que a busca no pePI/Google Patents não revele solução igual.'
                             : (dados.divulgacao_previa === 'DIVULGADO_MAIS_12M'
                                 ? 'Não cabe patente física porque foi divulgado há mais de 12 meses (caiu em domínio público técnico).'
-                                : 'Como usa apenas peças comerciais prontas sem circuito novo, você protege a Marca e o Código, mas não o hardware pronto.'))),
+                                : 'Como usa apenas peças comerciais prontas sem circuito novo, você protege a Marca e o Código, mas não o hardware pronto.')))),
                 lei: 'Art. 8º, Art. 9º, Art. 11 e Art. 13 da Lei 9.279/96 (LPI).'
             },
             {

@@ -86,3 +86,10 @@
 - O aviso "Encontramos projetos que fazem o mesmo que o seu" só aparece quando existe item do primeiro grupo. Se houver só itens do mesmo tema, o resultado diz "Há projetos do mesmo tema, mas nenhum igual ao seu", com a ressalva da atividade inventiva (Art. 13 da LPI).
 - Palavras do nome do projeto (ex.: "luz" em "sent luz") passaram a ter a menor prioridade na busca. Antes elas podiam tirar um termo da descrição da consulta.
 - Os termos em português mostrados no destaque ficaram mais precisos dentro das expressões ("detector de fumaça" → fumaça = smoke, detector = detector).
+
+## Acréscimo: acervo de referência não bloqueia mais a gravação
+
+- **Produtos conhecidos do acervo ilustrativo** (Fi Collar, Velodyne etc.) representam o mercado, não registros de outros usuários. Antes, uma semelhança só técnica com eles mostrava "Colisão", dava o veredito vermelho e impedia gravar a prova de autoria. Agora vira um aviso: "Parecido com um produto conhecido do mercado", a Camada F fica em "Atenção" e a gravação continua liberada. Se o **nome** do projeto copiar o nome do produto, a gravação continua bloqueada.
+- Registros feitos por **outros usuários** continuam bloqueando como antes.
+- O texto de colisão só cita o Art. 124, XIX (marca) quando o nome realmente colide. Antes ele aparecia sempre, mesmo com a Camada D dizendo que o nome estava livre.
+- **Falso "texto aleatório" corrigido:** a verificação de teclado batido juntava todas as palavras antes de procurar consoantes seguidas. Assim, "receptor GPS, LTE" virava "receptorgpslte" e uma descrição válida era recusada. Agora a verificação é feita palavra por palavra (PHP e JS).

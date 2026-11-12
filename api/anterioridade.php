@@ -108,9 +108,12 @@ function validarSuficienciaDescritivaPHP(string $relato, string $nomeProjeto = '
     $qtdLetras = strlen($apenasLetras);
     $qtdVogais = preg_match_all('/[aeiou]/', $apenasLetras);
     $proporcaoVogais = $qtdLetras > 0 ? ($qtdVogais / $qtdLetras) : 0.0;
-    $temSequenciaCaotica = (bool)preg_match('/[bcdfghjklmnpqrstvwxz]{6,}/', $apenasLetras)
-        || (bool)preg_match('/(.)\1{3,}/', $apenasLetras)
-        || (bool)preg_match('/(asdf|qwer|zxcv|hjkl|ghjk|bnm|fghj|tyui|vbnm)/', $apenasLetras);
+    // As sequências são verificadas palavra por palavra: juntar tudo criava falsos positivos
+    // (ex.: "receptor GPS LTE" virava "receptorgpslte", com 6 consoantes seguidas)
+    $letrasPorPalavra = trim((string) preg_replace('/[^a-z]+/', ' ', $norm));
+    $temSequenciaCaotica = (bool)preg_match('/[bcdfghjklmnpqrstvwxz]{6,}/', $letrasPorPalavra)
+        || (bool)preg_match('/(.)\1{3,}/', $letrasPorPalavra)
+        || (bool)preg_match('/(asdf|qwer|zxcv|hjkl|ghjk|bnm|fghj|tyui|vbnm)/', $letrasPorPalavra);
 
     if ($temSequenciaCaotica || $proporcaoVogais < 0.28 || $proporcaoVogais > 0.72) {
         return [
@@ -272,6 +275,7 @@ if ($method === 'POST') {
     $todosRegistros = $db->query("SELECT * FROM registros_titularidade ORDER BY id DESC")->fetchAll();
     $colisoesEncontradas = [];
     $bloqueioTerceiro = null;
+    $referenciaConhecida = null; // item do acervo ilustrativo parecido só tecnicamente: avisa, mas não bloqueia
     $registroDoProprioUsuario = null;
 
     foreach ($todosRegistros as $reg) {
@@ -319,7 +323,13 @@ if ($method === 'POST') {
             if ($mesmoTitular && ($hashIgual || $colisaoMarca || $similaridade >= 60.0)) {
                 $registroDoProprioUsuario = $itemColisao;
             } elseif (!$mesmoTitular && ($hashIgual || $colisaoMarca || $similaridade >= 42.0)) {
-                if ($bloqueioTerceiro === null || $itemColisao['similaridade_percentual'] > $bloqueioTerceiro['similaridade_percentual']) {
+                // O acervo ilustrativo representa produtos conhecidos do mercado, não registros de outros usuários.
+                // Semelhança só técnica com ele é um aviso (estado da técnica); nome igual continua bloqueando.
+                if ($reg['origem_base'] === 'ACERVO_REFERENCIA_ILUSTRATIVO' && !$colisaoMarca && !$hashIgual) {
+                    if ($referenciaConhecida === null || $itemColisao['similaridade_percentual'] > $referenciaConhecida['similaridade_percentual']) {
+                        $referenciaConhecida = $itemColisao;
+                    }
+                } elseif ($bloqueioTerceiro === null || $itemColisao['similaridade_percentual'] > $bloqueioTerceiro['similaridade_percentual']) {
                     $bloqueioTerceiro = $itemColisao;
                 }
             }
@@ -350,7 +360,10 @@ if ($method === 'POST') {
         $statusApropriacao = 'BLOQUEADO_TERCEIRO';
         $podeRegistrar = false;
         $tituloVeredito = 'Colisão com item de outro titular (' . htmlspecialchars((string) $bloqueioTerceiro['protocolo_registro'], ENT_QUOTES, 'UTF-8') . ')';
-        $explicacaoVeredito = 'Não é possível apropriar-se diretamente desta criação como sua: detectamos colisão direta (' . $bloqueioTerceiro['similaridade_percentual'] . '% de superposição / colisão nominativa) com o ativo "' . htmlspecialchars((string) $bloqueioTerceiro['nome_criacao_marca'], ENT_QUOTES, 'UTF-8') . '", já registrado sob titularidade de ' . htmlspecialchars((string) $bloqueioTerceiro['titular_nome'], ENT_QUOTES, 'UTF-8') . ' (' . htmlspecialchars((string) $bloqueioTerceiro['instituicao_empresa'], ENT_QUOTES, 'UTF-8') . '). Pelo Art. 11 (Estado da Técnica), Art. 124, XIX (proibição de reprodução de marca alheia) e Art. 195 da Lei nº 9.279/96, para registrar uma versão própria você deve: (1) adotar um nome comercial/marca distinto; e (2) especificar uma melhoria construtiva/funcional própria (Modelo de Utilidade — Art. 9º da LPI) ou reimplementação limpa.';
+        $artigosBloqueio = $bloqueioTerceiro['colisao_marca']
+            ? 'Pelo Art. 11 (estado da técnica), Art. 124, XIX (proibição de reproduzir marca alheia) e Art. 195 da Lei nº 9.279/96, para registrar uma versão própria você deve: (1) adotar um nome comercial distinto; e (2) especificar uma melhoria construtiva ou funcional própria (Modelo de Utilidade — Art. 9º da LPI).'
+            : 'Pelo Art. 11 da Lei nº 9.279/96 (estado da técnica), para registrar uma versão própria você deve especificar uma melhoria construtiva ou funcional própria (Modelo de Utilidade — Art. 9º da LPI) ou uma reimplementação limpa.';
+        $explicacaoVeredito = 'Não é possível apropriar-se diretamente desta criação como sua: detectamos colisão direta (' . $bloqueioTerceiro['similaridade_percentual'] . '% de semelhança' . ($bloqueioTerceiro['colisao_marca'] ? ' / nome igual ou parecido' : '') . ') com "' . htmlspecialchars((string) $bloqueioTerceiro['nome_criacao_marca'], ENT_QUOTES, 'UTF-8') . '", já gravado por ' . htmlspecialchars((string) $bloqueioTerceiro['titular_nome'], ENT_QUOTES, 'UTF-8') . ' (' . htmlspecialchars((string) $bloqueioTerceiro['instituicao_empresa'], ENT_QUOTES, 'UTF-8') . '). ' . $artigosBloqueio;
     } elseif ($divulgacao === 'DIVULGADO_MAIS_12M') {
         $statusApropriacao = 'PARCIAL_ESTADO_DA_TECNICA';
         $podeRegistrar = true;
@@ -361,6 +374,11 @@ if ($method === 'POST') {
         $podeRegistrar = true;
         $tituloVeredito = 'Hardware base já existe no mercado; marca, firmware e desenho da placa podem ser protegidos';
         $explicacaoVeredito = 'Os módulos eletrônicos comerciais utilizados (COTS) já pertencem aos seus respectivos fabricantes e ao estado da técnica (Art. 8º e Art. 10, V da LPI). Você não pode patentear o hardware base como invenção sua, mas PODE colocar como sua propriedade exclusiva: (1) a Marca do seu produto (Art. 129 LPI); (2) o seu Código-Fonte/Firmware autoral (Lei 9.609/98); e (3) o desenho específico da sua PCB/Gabinete (Lei 9.610/98 e Art. 94 LPI).';
+    }
+
+    if ($statusApropriacao === 'DISPONIVEL_EXCLUSIVO' && $referenciaConhecida !== null) {
+        $tituloVeredito = 'Parecido com um produto conhecido do acervo de referência';
+        $explicacaoVeredito = 'O projeto tem ' . $referenciaConhecida['similaridade_percentual'] . '% de semelhança técnica com "' . htmlspecialchars((string) $referenciaConhecida['nome_criacao_marca'], ENT_QUOTES, 'UTF-8') . '", um produto conhecido do mercado que está no acervo ilustrativo do Observatório. Isso indica que a ideia geral já existe (estado da técnica, Art. 11 da LPI), mas não impede gravar a sua prova de autoria: o nome é diferente e o acervo não representa um registro de outro usuário. Para uma patente, foque no que o seu projeto faz de diferente.';
     }
 
     // Se a ação for REGISTRAR, grava de forma fixa e permanente no banco SQLite/MySQL
@@ -442,6 +460,7 @@ if ($method === 'POST') {
         'tokens_analisados' => array_slice($tokensUsuario, 0, 20),
         'colisoes' => $colisoesEncontradas,
         'bloqueio_terceiro' => $bloqueioTerceiro,
+        'referencia_conhecida' => $referenciaConhecida,
         'registro_gravado' => is_array($novoRegistroGravado) ? registrosPublicos([$novoRegistroGravado])[0] : $novoRegistroGravado,
         'registros_fixos' => registrosPublicos($registrosAtualizados)
     ], JSON_UNESCAPED_UNICODE);
