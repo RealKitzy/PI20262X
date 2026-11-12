@@ -198,14 +198,14 @@ if (!function_exists('curl_init')) {
 }
 
 // Termos: só letras/números (evita injeção na consulta CQL do EPO)
-$termos = preg_split('/\s+/', strtolower((string) ($_GET['q'] ?? '')));
+$termos = preg_split('/\s+/u', (string) ($_GET['q'] ?? '')) ?: [];
+// Mantém letras com acento (patentes brasileiras são indexadas em português: "fumaça", "irrigação")
 $termos = array_values(array_unique(array_filter(array_map(function ($t) {
-    $t = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $t);
-    return preg_replace('/[^a-z0-9]/', '', (string) $t);
+    return (string) preg_replace('/[^\p{L}\p{N}]/u', '', mb_strtolower((string) $t, 'UTF-8'));
 }, $termos), function ($t) {
-    return strlen($t) >= 2;
+    return mb_strlen($t, 'UTF-8') >= 2;
 })));
-$termos = array_slice(array_map(function ($t) { return substr($t, 0, 40); }, $termos), 0, 6);
+$termos = array_slice(array_map(function ($t) { return mb_substr($t, 0, 40, 'UTF-8'); }, $termos), 0, 6);
 if (count($termos) < 1) {
     responder(['sucesso' => false, 'estado' => 'erro', 'mensagem' => 'Informe os termos da busca (parâmetro q).'], 400);
 }

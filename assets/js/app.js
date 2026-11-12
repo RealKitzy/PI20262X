@@ -1376,7 +1376,7 @@ function montarTermosDeBusca(dados) {
         });
         Object.keys(EXPRESSOES_PT_EN).sort((a, b) => b.length - a.length).forEach(expr => {
             if (texto.includes(` ${expr} `)) {
-                EXPRESSOES_PT_EN[expr].forEach(t => addEn(t, 0, expr));
+                EXPRESSOES_PT_EN[expr].forEach(t => addEn(t, 0, expr.split(' ').map(w => grafia[w] || w).join(' ')));
                 texto = texto.split(` ${expr} `).join(' ');
             }
         });
@@ -1733,8 +1733,15 @@ async function buscarEstadoDaTecnicaMundialAoVivo(dados, diag, opcoes = {}) {
         const subclasses = [...new Set((corr.codigos_cip || []).map(c => (c.match(/^[A-H]\d{2}[A-Z]/) || [''])[0]).filter(Boolean))];
         const extras = [];
         if (subclasses[1]) extras.push({ cip: subclasses[1], pais: '', rotulo: `área ${subclasses[1]}` });
-        extras.push({ cip: '', pais: 'BR', rotulo: 'patentes brasileiras (BR)' });
-        if (variantes[0].length >= 1) extras.push({ cip: '', pais: 'BR', rotulo: 'patentes brasileiras (BR), termo principal', termos: variantes[0].slice(0, 1) });
+        // Patentes brasileiras costumam ter título e resumo só em português: busca em inglês e também com as palavras do usuário
+        const origem = termos.origemPt || {};
+        const emPortugues = lista => [...new Set(lista.map(t => origem[t] || '').join(' ').split(/\s+/)
+            .filter(w => w.length >= 2 && !STOPWORDS_BUSCA.has(normalizarTextoComparacaoJS(w))))];
+        const ptDois = emPortugues(doisTermos);
+        const ptUm = emPortugues(variantes[0].slice(0, 1));
+        extras.push({ cip: '', pais: 'BR', rotulo: 'patentes brasileiras (BR) em inglês' });
+        if (ptDois.length >= 1) extras.push({ cip: '', pais: 'BR', rotulo: 'patentes brasileiras (BR) em português', termos: ptDois });
+        if (ptUm.length >= 1 && ptUm.join(' ') !== ptDois.join(' ')) extras.push({ cip: '', pais: 'BR', rotulo: 'patentes brasileiras (BR), termo principal em português', termos: ptUm });
         for (const ex of extras) {
             if (deveInterromper()) break;
             const termosEx = ex.termos || doisTermos;
@@ -2394,7 +2401,7 @@ async function iniciarVerificacaoPorcentagemBloco2() {
         return `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
     };
     // Estimativa: ~2 s por consulta OpenAlex + intervalo obrigatório entre consultas do GitHub
-    const estimativaMs = rigor.variantes * (rigor.porBase >= 100 ? 4500 : 2500) + Math.max(0, rigor.variantes - 1) * INTERVALO_ENTRE_CONSULTAS_GITHUB_MS + (rigor.extrasEpo ? 12000 : 3000);
+    const estimativaMs = rigor.variantes * (rigor.porBase >= 100 ? 2000 : 2500) + Math.max(0, rigor.variantes - 1) * INTERVALO_ENTRE_CONSULTAS_GITHUB_MS + (rigor.extrasEpo ? 12000 : 3000);
 
     if (elNomeProj) elNomeProj.textContent = dados.nome_projeto || 'Seu Projeto';
     if (elNum) elNum.textContent = '0';
