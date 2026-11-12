@@ -1376,16 +1376,22 @@ function montarTermosDeBusca(dados) {
         });
         Object.keys(EXPRESSOES_PT_EN).sort((a, b) => b.length - a.length).forEach(expr => {
             if (texto.includes(` ${expr} `)) {
-                EXPRESSOES_PT_EN[expr].forEach(t => addEn(t, 0, expr.split(' ').map(w => grafia[w] || w).join(' ')));
+                // Rótulo em português de cada termo: "detector de fumaça" → smoke = fumaça, detector = detector
+                // (em português o adjetivo vem depois; em inglês, antes — por isso a ordem é invertida)
+                const palavrasPt = expr.split(' ').filter(w => !STOPWORDS_BUSCA.has(w)).map(w => grafia[w] || w);
+                const termosEn = EXPRESSOES_PT_EN[expr];
+                const alinhado = termosEn.length > 1 && termosEn.length === palavrasPt.length;
+                termosEn.forEach((t, i) => addEn(t, ehNome ? -5 : 0,
+                    alinhado ? palavrasPt[palavrasPt.length - 1 - i] : expr.split(' ').map(w => grafia[w] || w).join(' ')));
                 texto = texto.split(` ${expr} `).join(' ');
             }
         });
         texto.trim().split(' ').forEach(p => {
             if (!p || STOPWORDS_BUSCA.has(p) || /^\d+$/.test(p)) return;
             const traducao = traduzirPalavraPt(p);
-            if (traducao) { addEn(traducao, 0, grafia[p] || p); return; }
-            if (SIGLAS_TECNICAS.includes(p)) { addEn(p); if (!ehNome) portugues.push(p); return; }
-            if (Object.prototype.hasOwnProperty.call(NIVEL_TERMO_EN, p)) { addEn(p); return; } // já escrito em inglês
+            if (traducao) { addEn(traducao, ehNome ? -5 : 0, grafia[p] || p); return; } // nome do projeto: só como último recurso
+            if (SIGLAS_TECNICAS.includes(p)) { addEn(p, ehNome ? -5 : 0); if (!ehNome) portugues.push(p); return; }
+            if (Object.prototype.hasOwnProperty.call(NIVEL_TERMO_EN, p)) { addEn(p, ehNome ? -5 : 0); return; } // já escrito em inglês
             if (ehNome || PALAVRAS_GENERICAS_BUSCA.has(p) || p.length < 5) return;
             if (/(am|em|ando|endo|indo|ou|ava|ia)$/.test(p) && !/(agem|gem)$/.test(p)) return; // verbos conjugados (mostram, enviando, ligou)
             portugues.push(p);
@@ -1735,7 +1741,7 @@ async function buscarEstadoDaTecnicaMundialAoVivo(dados, diag, opcoes = {}) {
         if (subclasses[1]) extras.push({ cip: subclasses[1], pais: '', rotulo: `área ${subclasses[1]}` });
         // Patentes brasileiras costumam ter título e resumo só em português: busca em inglês e também com as palavras do usuário
         const origem = termos.origemPt || {};
-        const emPortugues = lista => [...new Set(lista.map(t => origem[t] || '').join(' ').split(/\s+/)
+        const emPortugues = lista => [...new Set(lista.map(t => origem[t] || t).join(' ').split(/\s+/)
             .filter(w => w.length >= 2 && !STOPWORDS_BUSCA.has(normalizarTextoComparacaoJS(w))))];
         const ptDois = emPortugues(doisTermos);
         const ptUm = emPortugues(variantes[0].slice(0, 1));
@@ -1761,6 +1767,9 @@ async function buscarEstadoDaTecnicaMundialAoVivo(dados, diag, opcoes = {}) {
     const interrompida = deveInterromper();
     const todos = Array.from(mapaResultados.values()).sort((a, b) => b.relevancia - a.relevancia || (b.estrelas || 0) - (a.estrelas || 0));
     const relevantes = todos.filter(r => r.relevancia >= LIMIAR_RELEVANCIA_ANTERIORIDADE && r.termosEncontrados.length >= 2);
+    // "Mesma solução" = tem TODOS os termos principais do projeto; os demais relevantes são "do mesmo tema"
+    const mesmaSolucao = relevantes.filter(r => (r.termosBase || []).length >= 2 && r.termosEncontrados.length >= r.termosBase.length);
+    const mesmoTema = relevantes.filter(r => !mesmaSolucao.includes(r));
     const basesComFalha = ['openalex', 'github', 'patentes'].filter(b => ['erro', 'limite', 'parcial'].includes(status[b].estado));
 
     const resultado = {
@@ -1779,7 +1788,10 @@ async function buscarEstadoDaTecnicaMundialAoVivo(dados, diag, opcoes = {}) {
         patentesConsultadas: status.patentes.consultas > 0,
         reposRelevantes: relevantes.filter(r => r.base === 'GitHub'),
         totalAnalisados: todos.length,
-        totalAchadosMundo: relevantes.length
+        totalAchadosMundo: relevantes.length,
+        mesmaSolucao,
+        mesmoTema,
+        patentesMesmaSolucao: mesmaSolucao.filter(r => r.base === 'Patente')
     };
 
     if (painelMundial) painelMundial.innerHTML = renderizarResultadoBuscaMundial(resultado);
@@ -1884,7 +1896,9 @@ function renderizarResultadoBuscaMundial(r) {
     html += renderizarDestaqueMaisParecidos(r);
 
     if (r.relevantes.length > 0) {
-        html += `<h4 style="margin-bottom:0.6rem;">${r.relevantes.length} resultado(s) parecido(s) com o seu projeto</h4>
+        const nMesma = (r.mesmaSolucao || []).length;
+        html += `<h4 style="margin-bottom:0.2rem;">${r.relevantes.length} resultado(s) parecido(s) com o seu projeto</h4>
+            <p class="muted small" style="margin:0 0 0.6rem;">${nMesma} com todos os termos principais (podem ser a mesma solução) • ${r.relevantes.length - nMesma} do mesmo tema, sem todos os termos</p>
             <div class="result-list">${r.relevantes.slice(0, 15).map(renderizarItemResultadoMundial).join('')}</div>`;
     } else if (r.totalAnalisados > 0) {
         html += `<div class="alert-card alert-SUCESSO"><h4>Nenhum resultado com relevância de ${LIMIAR_RELEVANCIA_ANTERIORIDADE}% ou mais</h4><p>Foram analisados ${r.totalAnalisados} resultados. Isso não prova que o projeto é novo — confira também nos links acima.</p></div>`;
@@ -2547,7 +2561,7 @@ async function iniciarVerificacaoPorcentagemBloco2() {
         chip('chip-status-github', classeChip(st.github), textoChip(st.github));
         if (st.patentes.estado === 'apenas_link') chip('chip-status-googlepatents', 'badge-link', 'Apenas link');
         else chip('chip-status-googlepatents', classeChip(st.patentes), textoChip(st.patentes));
-        log(`[RELEVÂNCIA] ${resultadoMundial.totalAnalisados} resultados analisados; ${resultadoMundial.totalAchadosMundo} com relevância ≥ ${LIMIAR_RELEVANCIA_ANTERIORIDADE}%.`,
+        log(`[RELEVÂNCIA] ${resultadoMundial.totalAnalisados} resultados analisados; ${resultadoMundial.mesmaSolucao.length} com todos os termos principais e ${resultadoMundial.mesmoTema.length} do mesmo tema.`,
             resultadoMundial.totalAchadosMundo > 0 ? 'warn' : 'success');
         if (resultadoMundial.interrompida) log('[USUÁRIO] Busca encerrada antes do fim — o relatório usa apenas o que já foi consultado.', 'warn');
 
@@ -2579,10 +2593,16 @@ async function iniciarVerificacaoPorcentagemBloco2() {
                 'Há um projeto muito parecido na base do Observatório',
                 `O seu projeto é muito semelhante a <strong>${verif.bloqueio_terceiro ? escaparHtml(verif.bloqueio_terceiro.nome_criacao_marca) : 'um item da base'}</strong>. Veja os detalhes no relatório.`
             );
+        } else if (resultadoMundial.mesmaSolucao.length > 0) {
+            atualizarBalaoMascote(
+                'Etapa 2 de 2 — Resultado',
+                `${resultadoMundial.mesmaSolucao.length} resultado(s) fazem o mesmo que o seu projeto`,
+                'Veja "Os mais parecidos com o seu projeto" e compare com o seu diferencial. Marca e código-fonte continuam protegíveis.'
+            );
         } else if (resultadoMundial.totalAchadosMundo > 0) {
             atualizarBalaoMascote(
                 'Etapa 2 de 2 — Resultado',
-                `Encontramos ${resultadoMundial.totalAchadosMundo} resultado(s) parecido(s) com o seu projeto`,
+                `${resultadoMundial.totalAchadosMundo} resultado(s) do mesmo tema, nenhum com todos os termos do seu projeto`,
                 'Leia a lista em "O que encontramos no mundo" e compare com o seu diferencial. Marca e código-fonte continuam protegíveis.'
             );
         } else {
@@ -3103,12 +3123,19 @@ function renderizarRelatorioDiagnostico(dados, diag, verif = null, anterioridade
             tituloVeredito = 'Já existe um projeto muito parecido na base do Observatório';
             textoVeredito = `<p>O seu projeto colide com <strong>${escaparHtml(verif.bloqueio_terceiro.nome_criacao_marca)}</strong> (titular: ${escaparHtml(verif.bloqueio_terceiro.titular_nome)}, ${verif.bloqueio_terceiro.similaridade_percentual}% de semelhança).</p>
                 <p>Pelo Art. 11 da LPI, o conceito geral não pode ser patenteado, e pelo Art. 124, XIX, não dá para registrar uma marca igual ou parecida. Você ainda pode proteger o seu código-fonte (Lei 9.609/98), usar um nome próprio e pedir patente só do que for realmente novo no seu projeto.</p>`;
-        } else if (temAnterioridadeMundial) {
+        } else if (temAnterioridadeMundial && mundo.mesmaSolucao.length > 0) {
+            const qtdPatMesma = mundo.patentesMesmaSolucao.length;
             estadoVeredito = 'atencao';
             iconeVeredito = '!';
-            tituloVeredito = 'Encontramos projetos parecidos com o seu';
-            textoVeredito = `<p>${mundo.totalAchadosMundo} resultado(s)${qtdPatentesRelevantes ? ` — ${qtdPatentesRelevantes} deles patente(s) —` : ''} contêm a maior parte dos termos técnicos do seu projeto. Leia a lista em <strong>"O que encontramos no mundo"</strong>: se algum descrever a mesma solução, o conceito geral não é novo (Art. 11 da LPI).</p>
+            tituloVeredito = 'Encontramos projetos que fazem o mesmo que o seu';
+            textoVeredito = `<p><strong>${mundo.mesmaSolucao.length}</strong> resultado(s)${qtdPatMesma ? ` — ${qtdPatMesma} deles patente(s) —` : ''} têm <strong>todos</strong> os termos principais do seu projeto, e outros ${mundo.mesmoTema.length} são do mesmo tema. Leia "Os mais parecidos com o seu projeto": se algum descrever a mesma solução, o conceito geral não é novo (Art. 11 da LPI).</p>
                 <p>Isso não impede o seu projeto. Você pode proteger a marca e o código-fonte, e uma patente ainda é possível se ficar restrita ao seu diferencial.</p>`;
+        } else if (temAnterioridadeMundial) {
+            estadoVeredito = 'atencao';
+            iconeVeredito = 'i';
+            tituloVeredito = 'Há projetos do mesmo tema, mas nenhum igual ao seu';
+            textoVeredito = `<p>${mundo.totalAchadosMundo} resultado(s)${qtdPatentesRelevantes ? ` — ${qtdPatentesRelevantes} deles patente(s) —` : ''} são do mesmo tema, mas <strong>nenhum</strong> tem todos os termos principais do seu projeto. A combinação que você descreveu pode ser o seu diferencial.</p>
+                <p>Ainda assim, leia "Os mais parecidos com o seu projeto": uma patente exige atividade inventiva (Art. 13 da LPI), e uma combinação óbvia de soluções conhecidas pode não bastar.</p>`;
         } else if (mundo && mundo.totalAnalisados === 0 && mundo.basesComFalha.length > 0) {
             estadoVeredito = 'atencao';
             iconeVeredito = '?';
@@ -3160,7 +3187,9 @@ function renderizarRelatorioDiagnostico(dados, diag, verif = null, anterioridade
                 explicacaoSimples: jaExisteTerceiro
                     ? `Encontramos um projeto equivalente na base (${escaparHtml(verif.bloqueio_terceiro.nome_criacao_marca)} — ${escaparHtml(verif.bloqueio_terceiro.titular_nome)}). O conceito geral não é patenteável (Art. 11 da LPI); só um diferencial seu poderia ser.`
                     : (temAnterioridadeMundial
-                        ? `Foram encontrados ${anterioridadeMundial.totalAchadosMundo} resultado(s) relevante(s) (patentes, artigos ou repositórios) parecidos com o seu projeto. Leia-os: se descreverem a mesma solução, o conceito geral não é patenteável e o pedido deve se limitar ao seu diferencial (Arts. 11 e 13 da LPI).`
+                        ? (anterioridadeMundial.mesmaSolucao.length > 0
+                            ? `${anterioridadeMundial.mesmaSolucao.length} resultado(s) têm todos os termos principais do seu projeto. Leia-os: se descreverem a mesma solução, o conceito geral não é patenteável e o pedido deve se limitar ao seu diferencial (Arts. 11 e 13 da LPI).`
+                            : `Nenhum resultado tem todos os termos do seu projeto, mas ${anterioridadeMundial.totalAchadosMundo} são do mesmo tema. A patente é possível se a combinação não for óbvia para um técnico da área (atividade inventiva, Art. 13 da LPI).`)
                         : (podePatenteFisica
                             ? 'Pela descrição (hardware com efeito técnico físico), o projeto pode, em tese, ser patenteado — desde que a busca no pePI/Google Patents não revele solução igual.'
                             : (dados.divulgacao_previa === 'DIVULGADO_MAIS_12M'
@@ -3201,7 +3230,8 @@ function renderizarRelatorioDiagnostico(dados, diag, verif = null, anterioridade
                     </div>
                 </div>
                 <div class="verdict-numeros">
-                    <div><strong>${mundo ? mundo.totalAchadosMundo : '—'}</strong><span>resultados parecidos no mundo</span></div>
+                    <div><strong>${mundo ? mundo.mesmaSolucao.length : '—'}</strong><span>fazem o mesmo (todos os termos)</span></div>
+                    <div><strong>${mundo ? mundo.mesmoTema.length : '—'}</strong><span>do mesmo tema</span></div>
                     <div><strong>${mundo ? mundo.totalAnalisados : '—'}</strong><span>resultados analisados</span></div>
                     <div><strong>${colisoesLocais}</strong><span>itens parecidos na base do Observatório</span></div>
                 </div>

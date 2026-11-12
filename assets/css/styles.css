@@ -357,7 +357,7 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--a
 .verdict.critico .verdict-topo { background: var(--danger-soft); }
 .verdict.critico .verdict-icone { background: var(--danger); }
 
-.verdict-numeros { display: grid; grid-template-columns: repeat(3, 1fr); border-bottom: 1px solid var(--border); }
+.verdict-numeros { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid var(--border); }
 .verdict-numeros div { padding: 0.9rem 1.5rem; border-right: 1px solid var(--border); }
 .verdict-numeros div:last-child { border-right: none; }
 .verdict-numeros strong { display: block; font-size: 1.35rem; font-weight: 700; }

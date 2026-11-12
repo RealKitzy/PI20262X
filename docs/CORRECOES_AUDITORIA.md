@@ -77,3 +77,12 @@
 - **Novo rigor "Completa"** (~2 a 3 min): 100 resultados por base e 12 combinações de termos. Faz também consultas extras de patentes: a segunda área CIP mais forte do projeto e patentes brasileiras (BR). Para isso, o `api/patentes.php` aceita o parâmetro `pais`, que só aceita 2 letras (ex.: `pais=BR`). Se uma consulta extra falhar, a busca segue sem ela.
 - **"Os mais parecidos com o seu projeto":** no resultado, os 3 itens mais próximos aparecem em destaque, com os termos do projeto que aparecem (✓) e os que faltam (✗), em português com o termo em inglês entre parênteses. Quando falta um termo, o texto aponta que aquilo pode ser o diferencial do projeto.
 - **Patentes brasileiras em português:** patentes do Brasil costumam ter título e resumo só em português, então a busca BR (rigor Completa) é feita em inglês e também com as palavras que o usuário escreveu (ex.: "detector fumaça"). O `api/patentes.php` passou a aceitar letras com acento nos termos; aspas, espaços e sinais continuam bloqueados.
+
+## Acréscimo: "fazem o mesmo" separado de "mesmo tema"
+
+- O relatório separa os resultados em dois grupos:
+  - **fazem o mesmo:** têm **todos** os termos principais do projeto;
+  - **do mesmo tema:** têm ao menos 60% dos termos, mas não todos.
+- O aviso "Encontramos projetos que fazem o mesmo que o seu" só aparece quando existe item do primeiro grupo. Se houver só itens do mesmo tema, o resultado diz "Há projetos do mesmo tema, mas nenhum igual ao seu", com a ressalva da atividade inventiva (Art. 13 da LPI).
+- Palavras do nome do projeto (ex.: "luz" em "sent luz") passaram a ter a menor prioridade na busca. Antes elas podiam tirar um termo da descrição da consulta.
+- Os termos em português mostrados no destaque ficaram mais precisos dentro das expressões ("detector de fumaça" → fumaça = smoke, detector = detector).
