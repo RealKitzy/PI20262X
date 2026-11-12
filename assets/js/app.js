@@ -1352,8 +1352,14 @@ function montarTermosDeBusca(dados) {
             portugues.push(t);
         }
     });
-    const unicos = arr => [...new Set(arr)];
-    return { ingles: unicos(ingles).slice(0, 8), portugues: unicos(portugues).slice(0, 8) };
+    // Remove sinônimos: se a descrição cita os dois, fica só o termo mais comum em patentes/artigos
+    // (ex.: "bluetooth" e "ble" juntos fazem a busca exigir as duas palavras e quase nada é encontrado)
+    const SINONIMOS = { ble: 'bluetooth', lorawan: 'lora', gnss: 'gps', nbiot: 'lte', esp8266: 'esp32' };
+    const semSinonimos = arr => {
+        const conj = new Set(arr);
+        return [...conj].filter(t => !(SINONIMOS[t] && conj.has(SINONIMOS[t])));
+    };
+    return { ingles: semSinonimos(ingles).slice(0, 8), portugues: semSinonimos(portugues).slice(0, 8) };
 }
 
 // Gera as variantes de consulta (quanto maior o rigor, mais combinações de termos são consultadas)
@@ -1579,8 +1585,8 @@ async function buscarEstadoDaTecnicaMundialAoVivo(dados, diag, opcoes = {}) {
 
         // Patentes (EPO OPS via backend). Para de tentar se não houver chave/backend ou se o limite for atingido.
         if (['pendente', 'ok', 'parcial'].includes(status.patentes.estado)) {
-            aoProgredir({ base: 'patentes', fase: 'consultando', consulta: rotuloConsulta, indice: i, total: variantes.length });
-            const res = await consultarPatentesEpo(termosConsulta, rigor.porBase);
+            aoProgredir({ base: 'patentes', fase: 'consultando', consulta: termosConsulta.slice(0, 3).join(' '), indice: i, total: variantes.length });
+            const res = await consultarPatentesEpo(termosConsulta.slice(0, 3), rigor.porBase);
             if (res.estado === 'ok') {
                 status.patentes.consultas++;
                 status.patentes.recebidos += res.resultados.length;
