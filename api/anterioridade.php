@@ -185,6 +185,20 @@ function validarSuficienciaDescritivaPHP(string $relato, string $nomeProjeto = '
     return ['valido' => true, 'motivo' => '', 'orientacao' => ''];
 }
 
+// LGPD: o CPF/CNPJ de quem gravou uma prova de autoria nunca sai completo da API (a lista é pública)
+function mascararDocumento($doc): string {
+    $d = preg_replace('/\D/', '', (string) $doc);
+    if (strlen($d) === 11) return '***.' . substr($d, 3, 3) . '.' . substr($d, 6, 3) . '-**';
+    if (strlen($d) === 14) return '**.' . substr($d, 2, 3) . '.' . substr($d, 5, 3) . '/' . substr($d, 8, 4) . '-**';
+    return (string) $doc; // itens ilustrativos ("N/D ...")
+}
+function registrosPublicos(array $linhas): array {
+    return array_map(function ($r) {
+        if (is_array($r) && array_key_exists('titular_documento', $r)) $r['titular_documento'] = mascararDocumento($r['titular_documento']);
+        return $r;
+    }, $linhas);
+}
+
 $db = Database::getConnection();
 $method = $_SERVER['REQUEST_METHOD'];
 
@@ -192,7 +206,7 @@ if ($method === 'GET') {
     $registros = $db->query("SELECT * FROM registros_titularidade ORDER BY id DESC LIMIT 50")->fetchAll();
     echo json_encode([
         'sucesso' => true,
-        'registros_fixos' => $registros
+        'registros_fixos' => registrosPublicos($registros)
     ], JSON_UNESCAPED_UNICODE);
     exit;
 }
@@ -291,7 +305,7 @@ if ($method === 'POST') {
                 'origem_base' => $reg['origem_base'],
                 'nome_criacao_marca' => $reg['nome_criacao_marca'],
                 'titular_nome' => $reg['titular_nome'],
-                'titular_documento' => $reg['titular_documento'],
+                'titular_documento' => mascararDocumento($reg['titular_documento']),
                 'instituicao_empresa' => $reg['instituicao_empresa'],
                 'modalidade_protecao' => $reg['modalidade_protecao'],
                 'status_juridico' => $reg['status_juridico'],
@@ -371,12 +385,22 @@ if ($method === 'POST') {
             $protocoloGerado = 'BR-OBS-' . date('Y') . '-' . strtoupper(substr(hash('sha256', $nomeProjeto . microtime(true)), 0, 6));
             $palavrasChaveStr = implode(' ', array_slice($tokensUsuario, 0, 35));
 
+            // Liga a prova de autoria ao titular (usuarios) e ao projeto avaliado (projetos_avaliados)
+            $usuarioId = Database::obterOuCriarUsuario($db, $autorNome, $autorDoc, (string) $autorEmail, (string) $instituicao);
+            $projetoId = null;
+            $projetoInformado = (int) ($input['projeto_id'] ?? 0);
+            if ($projetoInformado > 0 && $usuarioId) {
+                $stmtProj = $db->prepare("SELECT id FROM projetos_avaliados WHERE id = ? AND usuario_id = ?");
+                $stmtProj->execute([$projetoInformado, $usuarioId]);
+                $projetoId = $stmtProj->fetchColumn() ? $projetoInformado : null;
+            }
+
             $stmtInsert = $db->prepare("
                 INSERT INTO registros_titularidade (
                     protocolo_registro, origem_base, nome_criacao_marca, titular_nome, titular_documento,
                     instituicao_empresa, resumo_tecnico, palavras_chave, classificacao_cip,
-                    modalidade_protecao, camadas_protegidas, status_juridico, hash_sha512
-                ) VALUES (?, 'REGISTRO_FIXO_USUARIO', ?, ?, ?, ?, ?, ?, ?, ?, ?, 'PROTEGIDO_EXCLUSIVO', ?)
+                    modalidade_protecao, camadas_protegidas, status_juridico, hash_sha512, usuario_id, projeto_id
+                ) VALUES (?, 'REGISTRO_FIXO_USUARIO', ?, ?, ?, ?, ?, ?, ?, ?, ?, 'PROTEGIDO_EXCLUSIVO', ?, ?, ?)
             ");
             $stmtInsert->execute([
                 $protocoloGerado,
@@ -389,7 +413,9 @@ if ($method === 'POST') {
                 $cip,
                 $modalidade,
                 $camadas,
-                $hashCriacao
+                $hashCriacao,
+                $usuarioId,
+                $projetoId
             ]);
 
             $novoId = (int)$db->lastInsertId();
@@ -416,8 +442,8 @@ if ($method === 'POST') {
         'tokens_analisados' => array_slice($tokensUsuario, 0, 20),
         'colisoes' => $colisoesEncontradas,
         'bloqueio_terceiro' => $bloqueioTerceiro,
-        'registro_gravado' => $novoRegistroGravado,
-        'registros_fixos' => $registrosAtualizados
+        'registro_gravado' => is_array($novoRegistroGravado) ? registrosPublicos([$novoRegistroGravado])[0] : $novoRegistroGravado,
+        'registros_fixos' => registrosPublicos($registrosAtualizados)
     ], JSON_UNESCAPED_UNICODE);
     exit;
 }

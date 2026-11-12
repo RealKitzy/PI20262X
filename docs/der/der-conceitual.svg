@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1650" height="972" viewBox="0 0 1650 972">
+<title>DER conceitual — Observatório de PI</title>
+<rect width="1650" height="972" fill="#ffffff"/>
+<text x="40.0" y="36.0" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="bold" fill="#1a1a1a" text-anchor="start">Modelo conceitual — Observatório de PI &amp; Hardware Aberto</text>
+<line x1="495" y1="230" x2="315.0" y2="230.0" stroke="#333333" stroke-width="1.2"/>
+<text x="345.0" y="218.0" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a" text-anchor="middle">(1,1)</text>
+<line x1="495" y1="230" x2="675.0" y2="230.0" stroke="#333333" stroke-width="1.2"/>
+<text x="645.0" y="218.0" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a" text-anchor="middle">(0,n)</text>
+<line x1="1025" y1="230" x2="845.0" y2="230.0" stroke="#333333" stroke-width="1.2"/>
+<text x="875.0" y="218.0" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a" text-anchor="middle">(1,1)</text>
+<line x1="1025" y1="230" x2="1205.0" y2="230.0" stroke="#333333" stroke-width="1.2"/>
+<text x="1175.0" y="218.0" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a" text-anchor="middle">(1,n)</text>
+<line x1="230" y1="430" x2="230.0" y2="253.0" stroke="#333333" stroke-width="1.2"/>
+<text x="246.0" y="287.0" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a" text-anchor="middle">(0,1)</text>
+<line x1="230" y1="430" x2="464.5" y2="607.0" stroke="#333333" stroke-width="1.2"/>
+<text x="450.2" y="580.2" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a" text-anchor="middle">(0,n)</text>
+<line x1="760" y1="430" x2="760.0" y2="253.0" stroke="#333333" stroke-width="1.2"/>
+<text x="776.0" y="287.0" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a" text-anchor="middle">(0,1)</text>
+<line x1="760" y1="430" x2="525.5" y2="607.0" stroke="#333333" stroke-width="1.2"/>
+<text x="539.8" y="580.2" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a" text-anchor="middle">(0,n)</text>
+<line x1="1150" y1="430" x2="1105.8" y2="607.0" stroke="#333333" stroke-width="1.2"/>
+<text x="1128.5" y="585.8" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a" text-anchor="middle">(0,1)</text>
+<line x1="1150" y1="430" x2="1273.9" y2="253.0" stroke="#333333" stroke-width="1.2"/>
+<text x="1243.6" y="272.4" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a" text-anchor="middle">(0,n)</text>
+<line x1="1430" y1="430" x2="1447.7" y2="607.0" stroke="#333333" stroke-width="1.2"/>
+<text x="1460.6" y="579.6" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a" text-anchor="middle">(0,1)</text>
+<line x1="1430" y1="430" x2="1306.1" y2="253.0" stroke="#333333" stroke-width="1.2"/>
+<text x="1336.4" y="272.4" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a" text-anchor="middle">(0,n)</text>
+<line x1="167.0" y1="207.0" x2="167.0" y2="105.0" stroke="#333333" stroke-width="1"/>
+<line x1="167.0" y1="189.0" x2="181.0" y2="189.0" stroke="#333333" stroke-width="1"/>
+<circle cx="186.0" cy="189.0" r="4.5" fill="#1a1a1a" stroke="#1a1a1a" stroke-width="1.1"/>
+<text x="196.0" y="193.0" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a" text-anchor="start">id</text>
+<line x1="167.0" y1="168.0" x2="181.0" y2="168.0" stroke="#333333" stroke-width="1"/>
+<circle cx="186.0" cy="168.0" r="4.5" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.1"/>
+<text x="196.0" y="172.0" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a" text-anchor="start">nome</text>
+<line x1="167.0" y1="147.0" x2="181.0" y2="147.0" stroke="#333333" stroke-width="1"/>
+<circle cx="186.0" cy="147.0" r="4.5" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.1"/>
+<text x="196.0" y="151.0" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a" text-anchor="start">CPF/CNPJ</text>
+<line x1="167.0" y1="126.0" x2="181.0" y2="126.0" stroke="#333333" stroke-width="1"/>
+<circle cx="186.0" cy="126.0" r="4.5" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.1"/>
+<text x="196.0" y="130.0" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a" text-anchor="start">e-mail</text>
+<line x1="167.0" y1="105.0" x2="181.0" y2="105.0" stroke="#333333" stroke-width="1"/>
+<circle cx="186.0" cy="105.0" r="4.5" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.1"/>
+<text x="196.0" y="109.0" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a" text-anchor="start">instituição</text>
+<line x1="697.0" y1="207.0" x2="697.0" y2="105.0" stroke="#333333" stroke-width="1"/>
+<line x1="697.0" y1="189.0" x2="711.0" y2="189.0" stroke="#333333" stroke-width="1"/>
+<circle cx="716.0" cy="189.0" r="4.5" fill="#1a1a1a" stroke="#1a1a1a" stroke-width="1.1"/>
+<text x="726.0" y="193.0" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a" text-anchor="start">id</text>
+<line x1="697.0" y1="168.0" x2="711.0" y2="168.0" stroke="#333333" stroke-width="1"/>
+<circle cx="716.0" cy="168.0" r="4.5" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.1"/>
+<text x="726.0" y="172.0" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a" text-anchor="start">nome do projeto</text>
+<line x1="697.0" y1="147.0" x2="711.0" y2="147.0" stroke="#333333" stroke-width="1"/>
+<circle cx="716.0" cy="147.0" r="4.5" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.1"/>
+<text x="726.0" y="151.0" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a" text-anchor="start">resumo técnico</text>
+<line x1="697.0" y1="126.0" x2="711.0" y2="126.0" stroke="#333333" stroke-width="1"/>
+<circle cx="716.0" cy="126.0" r="4.5" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.1"/>
+<text x="726.0" y="130.0" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a" text-anchor="start">grau de novidade</text>
+<line x1="697.0" y1="105.0" x2="711.0" y2="105.0" stroke="#333333" stroke-width="1"/>
+<circle cx="716.0" cy="105.0" r="4.5" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.1"/>
+<text x="726.0" y="109.0" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a" text-anchor="start">modelo de negócio</text>
+<line x1="1227.0" y1="207.0" x2="1227.0" y2="126.0" stroke="#333333" stroke-width="1"/>
+<line x1="1227.0" y1="189.0" x2="1241.0" y2="189.0" stroke="#333333" stroke-width="1"/>
+<circle cx="1246.0" cy="189.0" r="4.5" fill="#1a1a1a" stroke="#1a1a1a" stroke-width="1.1"/>
+<text x="1256.0" y="193.0" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a" text-anchor="start">id</text>
+<line x1="1227.0" y1="168.0" x2="1241.0" y2="168.0" stroke="#333333" stroke-width="1"/>
+<circle cx="1246.0" cy="168.0" r="4.5" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.1"/>
+<text x="1256.0" y="172.0" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a" text-anchor="start">protegibilidade</text>
+<line x1="1227.0" y1="147.0" x2="1241.0" y2="147.0" stroke="#333333" stroke-width="1"/>
+<circle cx="1246.0" cy="147.0" r="4.5" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.1"/>
+<text x="1256.0" y="151.0" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a" text-anchor="start">risco de copyleft</text>
+<line x1="1227.0" y1="126.0" x2="1241.0" y2="126.0" stroke="#333333" stroke-width="1"/>
+<circle cx="1246.0" cy="126.0" r="4.5" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.1"/>
+<text x="1256.0" y="130.0" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a" text-anchor="start">proteção principal</text>
+<line x1="432.0" y1="653.0" x2="432.0" y2="734.0" stroke="#333333" stroke-width="1"/>
+<line x1="432.0" y1="671.0" x2="446.0" y2="671.0" stroke="#333333" stroke-width="1"/>
+<circle cx="451.0" cy="671.0" r="4.5" fill="#1a1a1a" stroke="#1a1a1a" stroke-width="1.1"/>
+<text x="461.0" y="675.0" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a" text-anchor="start">protocolo</text>
+<line x1="432.0" y1="692.0" x2="446.0" y2="692.0" stroke="#333333" stroke-width="1"/>
+<circle cx="451.0" cy="692.0" r="4.5" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.1"/>
+<text x="461.0" y="696.0" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a" text-anchor="start">hash SHA-512</text>
+<line x1="432.0" y1="713.0" x2="446.0" y2="713.0" stroke="#333333" stroke-width="1"/>
+<circle cx="451.0" cy="713.0" r="4.5" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.1"/>
+<text x="461.0" y="717.0" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a" text-anchor="start">data</text>
+<line x1="432.0" y1="734.0" x2="446.0" y2="734.0" stroke="#333333" stroke-width="1"/>
+<circle cx="451.0" cy="734.0" r="4.5" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.1"/>
+<text x="461.0" y="738.0" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a" text-anchor="start">origem</text>
+<line x1="1037.0" y1="653.0" x2="1037.0" y2="734.0" stroke="#333333" stroke-width="1"/>
+<line x1="1037.0" y1="671.0" x2="1051.0" y2="671.0" stroke="#333333" stroke-width="1"/>
+<circle cx="1056.0" cy="671.0" r="4.5" fill="#1a1a1a" stroke="#1a1a1a" stroke-width="1.1"/>
+<text x="1066.0" y="675.0" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a" text-anchor="start">código</text>
+<line x1="1037.0" y1="692.0" x2="1051.0" y2="692.0" stroke="#333333" stroke-width="1"/>
+<circle cx="1056.0" cy="692.0" r="4.5" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.1"/>
+<text x="1066.0" y="696.0" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a" text-anchor="start">nome</text>
+<line x1="1037.0" y1="713.0" x2="1051.0" y2="713.0" stroke="#333333" stroke-width="1"/>
+<circle cx="1056.0" cy="713.0" r="4.5" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.1"/>
+<text x="1066.0" y="717.0" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a" text-anchor="start">base legal</text>
+<line x1="1037.0" y1="734.0" x2="1051.0" y2="734.0" stroke="#333333" stroke-width="1"/>
+<circle cx="1056.0" cy="734.0" r="4.5" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.1"/>
+<text x="1066.0" y="738.0" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a" text-anchor="start">vigência</text>
+<line x1="1387.0" y1="653.0" x2="1387.0" y2="734.0" stroke="#333333" stroke-width="1"/>
+<line x1="1387.0" y1="671.0" x2="1401.0" y2="671.0" stroke="#333333" stroke-width="1"/>
+<circle cx="1406.0" cy="671.0" r="4.5" fill="#1a1a1a" stroke="#1a1a1a" stroke-width="1.1"/>
+<text x="1416.0" y="675.0" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a" text-anchor="start">código</text>
+<line x1="1387.0" y1="692.0" x2="1401.0" y2="692.0" stroke="#333333" stroke-width="1"/>
+<circle cx="1406.0" cy="692.0" r="4.5" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.1"/>
+<text x="1416.0" y="696.0" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a" text-anchor="start">nome</text>
+<line x1="1387.0" y1="713.0" x2="1401.0" y2="713.0" stroke="#333333" stroke-width="1"/>
+<circle cx="1406.0" cy="713.0" r="4.5" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.1"/>
+<text x="1416.0" y="717.0" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a" text-anchor="start">tipo</text>
+<line x1="1387.0" y1="734.0" x2="1401.0" y2="734.0" stroke="#333333" stroke-width="1"/>
+<circle cx="1406.0" cy="734.0" r="4.5" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.1"/>
+<text x="1416.0" y="738.0" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a" text-anchor="start">efeito viral</text>
+<polygon points="495,202.0 555.0,230 495,258.0 435.0,230" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="495.0" y="234.0" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a" text-anchor="middle">submete</text>
+<polygon points="1025,202.0 1085.0,230 1025,258.0 965.0,230" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="1025.0" y="234.0" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a" text-anchor="middle">gera</text>
+<polygon points="230,402.0 290.0,430 230,458.0 170.0,430" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="230.0" y="434.0" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a" text-anchor="middle">é titular de</text>
+<polygon points="760,402.0 820.0,430 760,458.0 700.0,430" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="760.0" y="434.0" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a" text-anchor="middle">origina</text>
+<polygon points="1150,402.0 1210.0,430 1150,458.0 1090.0,430" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="1150.0" y="434.0" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a" text-anchor="middle">fundamenta</text>
+<polygon points="1430,402.0 1490.0,430 1430,458.0 1370.0,430" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="1430.0" y="434.0" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" fill="#1a1a1a" text-anchor="middle">recomenda</text>
+<rect x="145.0" y="207.0" width="170" height="46" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.5"/>
+<text x="230.0" y="235.0" font-family="Arial, Helvetica, sans-serif" font-size="13.5" font-weight="bold" fill="#1a1a1a" text-anchor="middle">Usuário</text>
+<rect x="675.0" y="207.0" width="170" height="46" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.5"/>
+<text x="760.0" y="235.0" font-family="Arial, Helvetica, sans-serif" font-size="13.5" font-weight="bold" fill="#1a1a1a" text-anchor="middle">Projeto avaliado</text>
+<rect x="1205.0" y="207.0" width="170" height="46" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.5"/>
+<text x="1290.0" y="235.0" font-family="Arial, Helvetica, sans-serif" font-size="13.5" font-weight="bold" fill="#1a1a1a" text-anchor="middle">Diagnóstico</text>
+<rect x="410.0" y="607.0" width="170" height="46" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.5"/>
+<text x="495.0" y="635.0" font-family="Arial, Helvetica, sans-serif" font-size="13.5" font-weight="bold" fill="#1a1a1a" text-anchor="middle">Prova de autoria</text>
+<rect x="1015.0" y="607.0" width="170" height="46" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.5"/>
+<text x="1100.0" y="635.0" font-family="Arial, Helvetica, sans-serif" font-size="13.5" font-weight="bold" fill="#1a1a1a" text-anchor="middle">Modalidade INPI</text>
+<rect x="1365.0" y="607.0" width="170" height="46" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.5"/>
+<text x="1450.0" y="635.0" font-family="Arial, Helvetica, sans-serif" font-size="13.5" font-weight="bold" fill="#1a1a1a" text-anchor="middle">Licença</text>
+<g id="selo"><rect x="860" y="780" width="740" height="162" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.2"/>
+<line x1="860" y1="810" x2="1600" y2="810" stroke="#1a1a1a" stroke-width="0.8"/>
+<text x="870.0" y="800.0" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="bold" fill="#1a1a1a" text-anchor="start">Modelo conceitual (DER)</text>
+<text x="870.0" y="828.0" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="normal" fill="#1a1a1a" text-anchor="start">Observatório de Propriedade Intelectual &amp; Hardware Aberto</text>
+<text x="870.0" y="844.0" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="normal" fill="#555555" text-anchor="start">Projeto Integrador — Informática e Legislação</text>
+<text x="870.0" y="860.0" font-family="Arial, Helvetica, sans-serif" font-size="10" font-weight="normal" fill="#555555" text-anchor="start">Equipe: Antonio Kayky G. Vieira · Giullian Bernard A. Maia · Ítalo Brito da Costa · Luís Aquiles L. Sá</text>
+<line x1="860" y1="868" x2="1600" y2="868" stroke="#1a1a1a" stroke-width="0.8"/>
+<text x="870.0" y="880.0" font-family="Arial, Helvetica, sans-serif" font-size="10" font-weight="normal" fill="#555555" text-anchor="start">Notação: Peter Chen — estilo brModelo</text>
+<text x="1590.0" y="880.0" font-family="Arial, Helvetica, sans-serif" font-size="10" font-weight="normal" fill="#555555" text-anchor="end">Versão 2.0 · 11/11/2026 · fonte: database/schema.sql</text>
+<line x1="860" y1="886" x2="1600" y2="886" stroke="#1a1a1a" stroke-width="0.8"/>
+<circle cx="878" cy="902" r="4.5" fill="#1a1a1a" stroke="#1a1a1a"/><text x="888.0" y="906.0" font-family="Arial, Helvetica, sans-serif" font-size="10.5" font-weight="normal" fill="#1a1a1a" text-anchor="start">atributo identificador</text>
+<circle cx="1038" cy="902" r="4.5" fill="#fff" stroke="#1a1a1a"/><text x="1048.0" y="906.0" font-family="Arial, Helvetica, sans-serif" font-size="10.5" font-weight="normal" fill="#1a1a1a" text-anchor="start">atributo</text>
+<text x="1130.0" y="906.0" font-family="Arial, Helvetica, sans-serif" font-size="10.5" font-weight="normal" fill="#1a1a1a" text-anchor="start">(mín,máx): quantos de cada lado participam — ex.: (0,n) = nenhum ou vários</text>
+<text x="870.0" y="926.0" font-family="Arial, Helvetica, sans-serif" font-size="10.5" font-weight="normal" fill="#555555" text-anchor="start">Prova de autoria tem dono (0,1): os 15 itens do acervo ilustrativo não pertencem a nenhum usuário.</text>
+</g>
+</svg>

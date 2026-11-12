@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1680" height="850" viewBox="0 0 1680 850">
+<title>DER lógico — Observatório de PI</title>
+<rect width="1680" height="850" fill="#ffffff"/>
+<text x="40.0" y="36.0" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="bold" fill="#1a1a1a" text-anchor="start">Modelo lógico — banco de dados do Observatório</text>
+<g id="tabela-usuarios">
+<rect x="40" y="60" width="330" height="172" fill="#ffffff" stroke="#333333" stroke-width="1"/>
+<rect x="40" y="60" width="330" height="26" fill="#d9e3ee" stroke="#333333" stroke-width="1"/>
+<text x="48.0" y="77.5" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="bold" fill="#1a1a1a" text-anchor="start">usuarios</text>
+<g><circle cx="50.5" cy="98.0" r="3.3" fill="#f2c230" stroke="#9a7400" stroke-width="0.9"/><path d="M53.6 98.0 h6 M57.5 98.0 v2.6 M59.6 98.0 v2" stroke="#9a7400" stroke-width="1.3" fill="none"/></g>
+<text x="66" y="102.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan font-weight="bold">id</tspan><tspan fill="#666666" font-size="11"> INT</tspan></text>
+<path d="M54 113.5 L58.5 118.0 L54 122.5 L49.5 118.0 Z" fill="#2f7fc1" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="66" y="122.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>nome_completo</tspan><tspan fill="#666666" font-size="11"> VARCHAR(150)</tspan></text>
+<path d="M54 133.5 L58.5 138.0 L54 142.5 L49.5 138.0 Z" fill="#2f7fc1" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="66" y="142.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>documento_cpf_cnpj</tspan><tspan fill="#666666" font-size="11"> VARCHAR(25) UQ</tspan></text>
+<path d="M54 153.5 L58.5 158.0 L54 162.5 L49.5 158.0 Z" fill="#2f7fc1" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="66" y="162.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>email</tspan><tspan fill="#666666" font-size="11"> VARCHAR(120)</tspan></text>
+<path d="M54 173.5 L58.5 178.0 L54 182.5 L49.5 178.0 Z" fill="none" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="66" y="182.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>instituicao_empresa</tspan><tspan fill="#666666" font-size="11"> VARCHAR(150)</tspan></text>
+<path d="M54 193.5 L58.5 198.0 L54 202.5 L49.5 198.0 Z" fill="none" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="66" y="202.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>perfil</tspan><tspan fill="#666666" font-size="11"> VARCHAR(50)</tspan></text>
+<path d="M54 213.5 L58.5 218.0 L54 222.5 L49.5 218.0 Z" fill="none" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="66" y="222.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>criado_em</tspan><tspan fill="#666666" font-size="11"> DATETIME</tspan></text>
+<line x1="40" y1="226" x2="370" y2="226" stroke="#d0d0d0" stroke-width="0.8"/>
+</g>
+<g id="tabela-projetos_avaliados">
+<rect x="450" y="60" width="330" height="352" fill="#ffffff" stroke="#333333" stroke-width="1"/>
+<rect x="450" y="60" width="330" height="26" fill="#d9e3ee" stroke="#333333" stroke-width="1"/>
+<text x="458.0" y="77.5" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="bold" fill="#1a1a1a" text-anchor="start">projetos_avaliados</text>
+<g><circle cx="460.5" cy="98.0" r="3.3" fill="#f2c230" stroke="#9a7400" stroke-width="0.9"/><path d="M463.6 98.0 h6 M467.5 98.0 v2.6 M469.6 98.0 v2" stroke="#9a7400" stroke-width="1.3" fill="none"/></g>
+<text x="476" y="102.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan font-weight="bold">id</tspan><tspan fill="#666666" font-size="11"> INT</tspan></text>
+<path d="M464 113.5 L468.5 118.0 L464 122.5 L459.5 118.0 Z" fill="#c0392b" stroke="#c0392b" stroke-width="1.1"/>
+<text x="476" y="122.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>usuario_id</tspan><tspan fill="#666666" font-size="11"> INT</tspan></text>
+<path d="M464 133.5 L468.5 138.0 L464 142.5 L459.5 138.0 Z" fill="#2f7fc1" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="476" y="142.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>nome_projeto</tspan><tspan fill="#666666" font-size="11"> VARCHAR(180)</tspan></text>
+<path d="M464 153.5 L468.5 158.0 L464 162.5 L459.5 158.0 Z" fill="#2f7fc1" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="476" y="162.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>resumo_tecnico</tspan><tspan fill="#666666" font-size="11"> TEXT</tspan></text>
+<path d="M464 173.5 L468.5 178.0 L464 182.5 L459.5 178.0 Z" fill="#2f7fc1" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="476" y="182.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>grau_novidade_hardware</tspan><tspan fill="#666666" font-size="11"> VARCHAR(40)</tspan></text>
+<path d="M464 193.5 L468.5 198.0 L464 202.5 L459.5 198.0 Z" fill="none" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="476" y="202.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>possui_pcb_customizada</tspan><tspan fill="#666666" font-size="11"> BOOLEAN</tspan></text>
+<path d="M464 213.5 L468.5 218.0 L464 222.5 L459.5 218.0 Z" fill="none" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="476" y="222.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>possui_topografia_chip</tspan><tspan fill="#666666" font-size="11"> BOOLEAN</tspan></text>
+<path d="M464 233.5 L468.5 238.0 L464 242.5 L459.5 238.0 Z" fill="none" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="476" y="242.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>possui_design_externo_novo</tspan><tspan fill="#666666" font-size="11"> BOOLEAN</tspan></text>
+<path d="M464 253.5 L468.5 258.0 L464 262.5 L459.5 258.0 Z" fill="none" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="476" y="262.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>usa_hardware_aberto_terceiros</tspan><tspan fill="#666666" font-size="11"> VARCHAR(40)</tspan></text>
+<path d="M464 273.5 L468.5 278.0 L464 282.5 L459.5 278.0 Z" fill="none" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="476" y="282.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>possui_firmware_proprio</tspan><tspan fill="#666666" font-size="11"> BOOLEAN</tspan></text>
+<path d="M464 293.5 L468.5 298.0 L464 302.5 L459.5 298.0 Z" fill="none" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="476" y="302.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>linguagem_firmware</tspan><tspan fill="#666666" font-size="11"> VARCHAR(80)</tspan></text>
+<path d="M464 313.5 L468.5 318.0 L464 322.5 L459.5 318.0 Z" fill="none" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="476" y="322.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>licenca_bibliotecas_terceiros</tspan><tspan fill="#666666" font-size="11"> VARCHAR(40)</tspan></text>
+<path d="M464 333.5 L468.5 338.0 L464 342.5 L459.5 338.0 Z" fill="none" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="476" y="342.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>vinculacao_firmware</tspan><tspan fill="#666666" font-size="11"> VARCHAR(40)</tspan></text>
+<path d="M464 353.5 L468.5 358.0 L464 362.5 L459.5 358.0 Z" fill="#2f7fc1" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="476" y="362.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>modelo_negocio</tspan><tspan fill="#666666" font-size="11"> VARCHAR(50)</tspan></text>
+<path d="M464 373.5 L468.5 378.0 L464 382.5 L459.5 378.0 Z" fill="none" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="476" y="382.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>titularidade_tipo</tspan><tspan fill="#666666" font-size="11"> VARCHAR(50)</tspan></text>
+<path d="M464 393.5 L468.5 398.0 L464 402.5 L459.5 398.0 Z" fill="none" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="476" y="402.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>data_submissao</tspan><tspan fill="#666666" font-size="11"> DATETIME</tspan></text>
+<line x1="450" y1="406" x2="780" y2="406" stroke="#d0d0d0" stroke-width="0.8"/>
+</g>
+<g id="tabela-diagnosticos_gerados">
+<rect x="860" y="60" width="330" height="292" fill="#ffffff" stroke="#333333" stroke-width="1"/>
+<rect x="860" y="60" width="330" height="26" fill="#d9e3ee" stroke="#333333" stroke-width="1"/>
+<text x="868.0" y="77.5" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="bold" fill="#1a1a1a" text-anchor="start">diagnosticos_gerados</text>
+<g><circle cx="870.5" cy="98.0" r="3.3" fill="#f2c230" stroke="#9a7400" stroke-width="0.9"/><path d="M873.6 98.0 h6 M877.5 98.0 v2.6 M879.6 98.0 v2" stroke="#9a7400" stroke-width="1.3" fill="none"/></g>
+<text x="886" y="102.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan font-weight="bold">id</tspan><tspan fill="#666666" font-size="11"> INT</tspan></text>
+<path d="M874 113.5 L878.5 118.0 L874 122.5 L869.5 118.0 Z" fill="#c0392b" stroke="#c0392b" stroke-width="1.1"/>
+<text x="886" y="122.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>projeto_id</tspan><tspan fill="#666666" font-size="11"> INT</tspan></text>
+<path d="M874 133.5 L878.5 138.0 L874 142.5 L869.5 138.0 Z" fill="#2f7fc1" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="886" y="142.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>score_protegibilidade</tspan><tspan fill="#666666" font-size="11"> INT</tspan></text>
+<path d="M874 153.5 L878.5 158.0 L874 162.5 L869.5 158.0 Z" fill="#2f7fc1" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="886" y="162.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>risco_contaminacao_licenca</tspan><tspan fill="#666666" font-size="11"> VARCHAR(30)</tspan></text>
+<path d="M874 173.5 L878.5 178.0 L874 182.5 L869.5 178.0 Z" fill="#2f7fc1" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="886" y="182.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>protecao_inpi_primaria</tspan><tspan fill="#666666" font-size="11"> VARCHAR(200)</tspan></text>
+<path d="M874 193.5 L878.5 198.0 L874 202.5 L869.5 198.0 Z" fill="none" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="886" y="202.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>protecao_inpi_secundaria</tspan><tspan fill="#666666" font-size="11"> VARCHAR(255)</tspan></text>
+<path d="M874 213.5 L878.5 218.0 L874 222.5 L869.5 218.0 Z" fill="#2f7fc1" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="886" y="222.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>licenca_hw_recomendada</tspan><tspan fill="#666666" font-size="11"> VARCHAR(200)</tspan></text>
+<path d="M874 233.5 L878.5 238.0 L874 242.5 L869.5 238.0 Z" fill="#2f7fc1" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="886" y="242.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>licenca_sw_recomendada</tspan><tspan fill="#666666" font-size="11"> VARCHAR(200)</tspan></text>
+<path d="M874 253.5 L878.5 258.0 L874 262.5 L869.5 258.0 Z" fill="#c0392b" stroke="#c0392b" stroke-width="1.1"/>
+<text x="886" y="262.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>modalidade_primaria_codigo</tspan><tspan fill="#666666" font-size="11"> VARCHAR(20)</tspan></text>
+<path d="M874 273.5 L878.5 278.0 L874 282.5 L869.5 278.0 Z" fill="#c0392b" stroke="#c0392b" stroke-width="1.1"/>
+<text x="886" y="282.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>licenca_hw_codigo</tspan><tspan fill="#666666" font-size="11"> VARCHAR(30)</tspan></text>
+<path d="M874 293.5 L878.5 298.0 L874 302.5 L869.5 298.0 Z" fill="#c0392b" stroke="#c0392b" stroke-width="1.1"/>
+<text x="886" y="302.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>licenca_sw_codigo</tspan><tspan fill="#666666" font-size="11"> VARCHAR(30)</tspan></text>
+<path d="M874 313.5 L878.5 318.0 L874 322.5 L869.5 318.0 Z" fill="#2f7fc1" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="886" y="322.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>json_parecer_completo</tspan><tspan fill="#666666" font-size="11"> TEXT</tspan></text>
+<path d="M874 333.5 L878.5 338.0 L874 342.5 L869.5 338.0 Z" fill="none" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="886" y="342.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>criado_em</tspan><tspan fill="#666666" font-size="11"> DATETIME</tspan></text>
+<line x1="860" y1="346" x2="1190" y2="346" stroke="#d0d0d0" stroke-width="0.8"/>
+</g>
+<g id="tabela-modalidades_inpi">
+<rect x="1300" y="60" width="330" height="192" fill="#ffffff" stroke="#333333" stroke-width="1"/>
+<rect x="1300" y="60" width="330" height="26" fill="#d9e3ee" stroke="#333333" stroke-width="1"/>
+<text x="1308.0" y="77.5" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="bold" fill="#1a1a1a" text-anchor="start">modalidades_inpi</text>
+<g><circle cx="1310.5" cy="98.0" r="3.3" fill="#f2c230" stroke="#9a7400" stroke-width="0.9"/><path d="M1313.6 98.0 h6 M1317.5 98.0 v2.6 M1319.6 98.0 v2" stroke="#9a7400" stroke-width="1.3" fill="none"/></g>
+<text x="1326" y="102.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan font-weight="bold">id</tspan><tspan fill="#666666" font-size="11"> INT</tspan></text>
+<path d="M1314 113.5 L1318.5 118.0 L1314 122.5 L1309.5 118.0 Z" fill="#2f7fc1" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="1326" y="122.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>codigo</tspan><tspan fill="#666666" font-size="11"> VARCHAR(20) UQ</tspan></text>
+<path d="M1314 133.5 L1318.5 138.0 L1314 142.5 L1309.5 138.0 Z" fill="#2f7fc1" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="1326" y="142.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>nome</tspan><tspan fill="#666666" font-size="11"> VARCHAR(120)</tspan></text>
+<path d="M1314 153.5 L1318.5 158.0 L1314 162.5 L1309.5 158.0 Z" fill="#2f7fc1" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="1326" y="162.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>base_legal</tspan><tspan fill="#666666" font-size="11"> VARCHAR(150)</tspan></text>
+<path d="M1314 173.5 L1318.5 178.0 L1314 182.5 L1309.5 178.0 Z" fill="#2f7fc1" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="1326" y="182.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>prazo_vigencia</tspan><tspan fill="#666666" font-size="11"> VARCHAR(80)</tspan></text>
+<path d="M1314 193.5 L1318.5 198.0 L1314 202.5 L1309.5 198.0 Z" fill="#2f7fc1" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="1326" y="202.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>escopo_protecao</tspan><tspan fill="#666666" font-size="11"> TEXT</tspan></text>
+<path d="M1314 213.5 L1318.5 218.0 L1314 222.5 L1309.5 218.0 Z" fill="#2f7fc1" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="1326" y="222.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>requisitos_legais</tspan><tspan fill="#666666" font-size="11"> TEXT</tspan></text>
+<path d="M1314 233.5 L1318.5 238.0 L1314 242.5 L1309.5 238.0 Z" fill="#2f7fc1" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="1326" y="242.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>aplicacao_iot_hardware</tspan><tspan fill="#666666" font-size="11"> TEXT</tspan></text>
+<line x1="1300" y1="246" x2="1630" y2="246" stroke="#d0d0d0" stroke-width="0.8"/>
+</g>
+<g id="tabela-licencas_catalogo">
+<rect x="1300" y="330" width="330" height="232" fill="#ffffff" stroke="#333333" stroke-width="1"/>
+<rect x="1300" y="330" width="330" height="26" fill="#d9e3ee" stroke="#333333" stroke-width="1"/>
+<text x="1308.0" y="347.5" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="bold" fill="#1a1a1a" text-anchor="start">licencas_catalogo</text>
+<g><circle cx="1310.5" cy="368.0" r="3.3" fill="#f2c230" stroke="#9a7400" stroke-width="0.9"/><path d="M1313.6 368.0 h6 M1317.5 368.0 v2.6 M1319.6 368.0 v2" stroke="#9a7400" stroke-width="1.3" fill="none"/></g>
+<text x="1326" y="372.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan font-weight="bold">id</tspan><tspan fill="#666666" font-size="11"> INT</tspan></text>
+<path d="M1314 383.5 L1318.5 388.0 L1314 392.5 L1309.5 388.0 Z" fill="#2f7fc1" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="1326" y="392.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>codigo</tspan><tspan fill="#666666" font-size="11"> VARCHAR(30) UQ</tspan></text>
+<path d="M1314 403.5 L1318.5 408.0 L1314 412.5 L1309.5 408.0 Z" fill="#2f7fc1" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="1326" y="412.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>nome</tspan><tspan fill="#666666" font-size="11"> VARCHAR(120)</tspan></text>
+<path d="M1314 423.5 L1318.5 428.0 L1314 432.5 L1309.5 428.0 Z" fill="#2f7fc1" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="1326" y="432.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>camada_alvo</tspan><tspan fill="#666666" font-size="11"> VARCHAR(40)</tspan></text>
+<path d="M1314 443.5 L1318.5 448.0 L1314 452.5 L1309.5 448.0 Z" fill="#2f7fc1" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="1326" y="452.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>tipo_permissividade</tspan><tspan fill="#666666" font-size="11"> VARCHAR(40)</tspan></text>
+<path d="M1314 463.5 L1318.5 468.0 L1314 472.5 L1309.5 468.0 Z" fill="none" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="1326" y="472.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>efeito_viral</tspan><tspan fill="#666666" font-size="11"> BOOLEAN</tspan></text>
+<path d="M1314 483.5 L1318.5 488.0 L1314 492.5 L1309.5 488.0 Z" fill="none" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="1326" y="492.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>permite_uso_comercial</tspan><tspan fill="#666666" font-size="11"> BOOLEAN</tspan></text>
+<path d="M1314 503.5 L1318.5 508.0 L1314 512.5 L1309.5 508.0 Z" fill="none" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="1326" y="512.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>exige_abertura_derivados</tspan><tspan fill="#666666" font-size="11"> BOOLEAN</tspan></text>
+<path d="M1314 523.5 L1318.5 528.0 L1314 532.5 L1309.5 528.0 Z" fill="none" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="1326" y="532.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>compatibilidade_patente</tspan><tspan fill="#666666" font-size="11"> VARCHAR(100)</tspan></text>
+<path d="M1314 543.5 L1318.5 548.0 L1314 552.5 L1309.5 548.0 Z" fill="#2f7fc1" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="1326" y="552.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>descricao_juridica</tspan><tspan fill="#666666" font-size="11"> TEXT</tspan></text>
+<line x1="1300" y1="556" x2="1630" y2="556" stroke="#d0d0d0" stroke-width="0.8"/>
+</g>
+<g id="tabela-registros_titularidade">
+<rect x="40" y="330" width="330" height="372" fill="#ffffff" stroke="#333333" stroke-width="1"/>
+<rect x="40" y="330" width="330" height="26" fill="#d9e3ee" stroke="#333333" stroke-width="1"/>
+<text x="48.0" y="347.5" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="bold" fill="#1a1a1a" text-anchor="start">registros_titularidade</text>
+<g><circle cx="50.5" cy="368.0" r="3.3" fill="#f2c230" stroke="#9a7400" stroke-width="0.9"/><path d="M53.6 368.0 h6 M57.5 368.0 v2.6 M59.6 368.0 v2" stroke="#9a7400" stroke-width="1.3" fill="none"/></g>
+<text x="66" y="372.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan font-weight="bold">id</tspan><tspan fill="#666666" font-size="11"> INT</tspan></text>
+<path d="M54 383.5 L58.5 388.0 L54 392.5 L49.5 388.0 Z" fill="#2f7fc1" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="66" y="392.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>protocolo_registro</tspan><tspan fill="#666666" font-size="11"> VARCHAR(50) UQ</tspan></text>
+<path d="M54 403.5 L58.5 408.0 L54 412.5 L49.5 408.0 Z" fill="#2f7fc1" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="66" y="412.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>origem_base</tspan><tspan fill="#666666" font-size="11"> VARCHAR(40)</tspan></text>
+<path d="M54 423.5 L58.5 428.0 L54 432.5 L49.5 428.0 Z" fill="#2f7fc1" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="66" y="432.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>nome_criacao_marca</tspan><tspan fill="#666666" font-size="11"> VARCHAR(180)</tspan></text>
+<path d="M54 443.5 L58.5 448.0 L54 452.5 L49.5 448.0 Z" fill="#2f7fc1" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="66" y="452.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>titular_nome</tspan><tspan fill="#666666" font-size="11"> VARCHAR(160)</tspan></text>
+<path d="M54 463.5 L58.5 468.0 L54 472.5 L49.5 468.0 Z" fill="#2f7fc1" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="66" y="472.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>titular_documento</tspan><tspan fill="#666666" font-size="11"> VARCHAR(40)</tspan></text>
+<path d="M54 483.5 L58.5 488.0 L54 492.5 L49.5 488.0 Z" fill="none" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="66" y="492.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>instituicao_empresa</tspan><tspan fill="#666666" font-size="11"> VARCHAR(160)</tspan></text>
+<path d="M54 503.5 L58.5 508.0 L54 512.5 L49.5 508.0 Z" fill="#2f7fc1" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="66" y="512.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>resumo_tecnico</tspan><tspan fill="#666666" font-size="11"> TEXT</tspan></text>
+<path d="M54 523.5 L58.5 528.0 L54 532.5 L49.5 528.0 Z" fill="#2f7fc1" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="66" y="532.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>palavras_chave</tspan><tspan fill="#666666" font-size="11"> TEXT</tspan></text>
+<path d="M54 543.5 L58.5 548.0 L54 552.5 L49.5 548.0 Z" fill="#2f7fc1" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="66" y="552.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>classificacao_cip</tspan><tspan fill="#666666" font-size="11"> VARCHAR(140)</tspan></text>
+<path d="M54 563.5 L58.5 568.0 L54 572.5 L49.5 568.0 Z" fill="#2f7fc1" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="66" y="572.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>modalidade_protecao</tspan><tspan fill="#666666" font-size="11"> VARCHAR(120)</tspan></text>
+<path d="M54 583.5 L58.5 588.0 L54 592.5 L49.5 588.0 Z" fill="#2f7fc1" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="66" y="592.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>camadas_protegidas</tspan><tspan fill="#666666" font-size="11"> VARCHAR(160)</tspan></text>
+<path d="M54 603.5 L58.5 608.0 L54 612.5 L49.5 608.0 Z" fill="#2f7fc1" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="66" y="612.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>status_juridico</tspan><tspan fill="#666666" font-size="11"> VARCHAR(60)</tspan></text>
+<path d="M54 623.5 L58.5 628.0 L54 632.5 L49.5 628.0 Z" fill="#2f7fc1" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="66" y="632.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>hash_sha512</tspan><tspan fill="#666666" font-size="11"> VARCHAR(130)</tspan></text>
+<path d="M54 643.5 L58.5 648.0 L54 652.5 L49.5 648.0 Z" fill="none" stroke="#2f7fc1" stroke-width="1.1"/>
+<text x="66" y="652.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>data_registro</tspan><tspan fill="#666666" font-size="11"> DATETIME</tspan></text>
+<path d="M54 663.5 L58.5 668.0 L54 672.5 L49.5 668.0 Z" fill="#c0392b" stroke="#c0392b" stroke-width="1.1"/>
+<text x="66" y="672.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>usuario_id</tspan><tspan fill="#666666" font-size="11"> INT</tspan></text>
+<path d="M54 683.5 L58.5 688.0 L54 692.5 L49.5 688.0 Z" fill="#c0392b" stroke="#c0392b" stroke-width="1.1"/>
+<text x="66" y="692.0" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1a1a1a"><tspan>projeto_id</tspan><tspan fill="#666666" font-size="11"> INT</tspan></text>
+<line x1="40" y1="696" x2="370" y2="696" stroke="#d0d0d0" stroke-width="0.8"/>
+</g>
+<g fill="none" stroke="#333333" stroke-width="1.2"><path d="M370 98.0 H410.0 V118.0 H450"/><line x1="379" y1="91.0" x2="379" y2="105.0"/><line x1="384" y1="91.0" x2="384" y2="105.0"/><line x1="450" y1="110.0" x2="438" y2="118.0"/><line x1="450" y1="126.0" x2="438" y2="118.0"/><circle cx="432" cy="118.0" r="4" fill="#ffffff"/></g><text x="394.0" y="92.0" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="normal" fill="#555555" text-anchor="start" font-style="italic">submete</text>
+<g fill="none" stroke="#333333" stroke-width="1.2"><path d="M780 98.0 H820.0 V118.0 H860"/><line x1="789" y1="91.0" x2="789" y2="105.0"/><line x1="794" y1="91.0" x2="794" y2="105.0"/><line x1="860" y1="110.0" x2="848" y2="118.0"/><line x1="860" y1="126.0" x2="848" y2="118.0"/><line x1="844" y1="111.0" x2="844" y2="125.0"/></g><text x="804.0" y="92.0" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="normal" fill="#555555" text-anchor="start" font-style="italic">gera</text>
+<g fill="none" stroke="#333333" stroke-width="1.2"><path d="M1300 118.0 H1250 V258.0 H1190"/><line x1="1291" y1="111.0" x2="1291" y2="125.0"/><circle cx="1282" cy="118.0" r="4" fill="#ffffff"/><line x1="1190" y1="250.0" x2="1202" y2="258.0"/><line x1="1190" y1="266.0" x2="1202" y2="258.0"/><circle cx="1208" cy="258.0" r="4" fill="#ffffff"/></g><text x="1276.0" y="112.0" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="normal" fill="#555555" text-anchor="end" font-style="italic">fundamenta</text>
+<g fill="none" stroke="#333333" stroke-width="1.2"><path d="M1300 388.0 H1232 V278.0 H1190"/><line x1="1291" y1="381.0" x2="1291" y2="395.0"/><circle cx="1282" cy="388.0" r="4" fill="#ffffff"/><line x1="1190" y1="270.0" x2="1202" y2="278.0"/><line x1="1190" y1="286.0" x2="1202" y2="278.0"/><circle cx="1208" cy="278.0" r="4" fill="#ffffff"/></g><text x="1276.0" y="382.0" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="normal" fill="#555555" text-anchor="end" font-style="italic">recomenda (hw)</text>
+<g fill="none" stroke="#333333" stroke-width="1.2"><path d="M1300 388.0 H1268 V298.0 H1190"/><line x1="1291" y1="381.0" x2="1291" y2="395.0"/><circle cx="1282" cy="388.0" r="4" fill="#ffffff"/><line x1="1190" y1="290.0" x2="1202" y2="298.0"/><line x1="1190" y1="306.0" x2="1202" y2="298.0"/><circle cx="1208" cy="298.0" r="4" fill="#ffffff"/></g><text x="1276.0" y="403.0" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="normal" fill="#555555" text-anchor="end" font-style="italic">recomenda (sw)</text>
+<g fill="none" stroke="#333333" stroke-width="1.2"><path d="M40 98.0 H18 V668.0 H40"/><line x1="31" y1="91.0" x2="31" y2="105.0"/><circle cx="22" cy="98.0" r="4" fill="#ffffff"/><line x1="40" y1="660.0" x2="28" y2="668.0"/><line x1="40" y1="676.0" x2="28" y2="668.0"/><circle cx="22" cy="668.0" r="4" fill="#ffffff"/></g><text x="13.0" y="383.0" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="normal" fill="#555555" text-anchor="middle" font-style="italic" transform="rotate(-90 13 383.0)">é titular de</text>
+<g fill="none" stroke="#333333" stroke-width="1.2"><path d="M510 412 V688.0 H370"/><g transform="rotate(90 510 412)"><line x1="519" y1="405" x2="519" y2="419"/><circle cx="528" cy="412" r="4" fill="#ffffff"/></g><line x1="370" y1="680.0" x2="382" y2="688.0"/><line x1="370" y1="696.0" x2="382" y2="688.0"/><circle cx="388" cy="688.0" r="4" fill="#ffffff"/></g><text x="518.0" y="550.0" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="normal" fill="#555555" text-anchor="start" font-style="italic">origina</text>
+<g id="selo"><rect x="900" y="640" width="740" height="162" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.2"/>
+<line x1="900" y1="670" x2="1640" y2="670" stroke="#1a1a1a" stroke-width="0.8"/>
+<text x="910.0" y="660.0" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="bold" fill="#1a1a1a" text-anchor="start">Modelo lógico (MER)</text>
+<text x="910.0" y="688.0" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="normal" fill="#1a1a1a" text-anchor="start">Observatório de Propriedade Intelectual &amp; Hardware Aberto</text>
+<text x="910.0" y="704.0" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="normal" fill="#555555" text-anchor="start">Projeto Integrador — Informática e Legislação</text>
+<text x="910.0" y="720.0" font-family="Arial, Helvetica, sans-serif" font-size="10" font-weight="normal" fill="#555555" text-anchor="start">Equipe: Antonio Kayky G. Vieira · Giullian Bernard A. Maia · Ítalo Brito da Costa · Luís Aquiles L. Sá</text>
+<line x1="900" y1="728" x2="1640" y2="728" stroke="#1a1a1a" stroke-width="0.8"/>
+<text x="910.0" y="740.0" font-family="Arial, Helvetica, sans-serif" font-size="10" font-weight="normal" fill="#555555" text-anchor="start">Notação: pé de galinha (crow&#x27;s foot) — estilo MySQL Workbench</text>
+<text x="1630.0" y="740.0" font-family="Arial, Helvetica, sans-serif" font-size="10" font-weight="normal" fill="#555555" text-anchor="end">Versão 2.0 · 11/11/2026 · fonte: database/schema.sql</text>
+<line x1="900" y1="746" x2="1640" y2="746" stroke="#1a1a1a" stroke-width="0.8"/>
+<g><circle cx="913.5" cy="762" r="3.3" fill="#f2c230" stroke="#9a7400" stroke-width="0.9"/><path d="M916.6 762 h6 M920.5 762 v2.6 M922.6 762 v2" stroke="#9a7400" stroke-width="1.3" fill="none"/></g><text x="930.0" y="766.0" font-family="Arial, Helvetica, sans-serif" font-size="10.5" font-weight="normal" fill="#1a1a1a" text-anchor="start">chave primária</text>
+<path d="M1029 757.5 L1033.5 762 L1029 766.5 L1024.5 762 Z" fill="#c0392b" stroke="#c0392b" stroke-width="1.1"/><text x="1042.0" y="766.0" font-family="Arial, Helvetica, sans-serif" font-size="10.5" font-weight="normal" fill="#1a1a1a" text-anchor="start">chave estrangeira</text>
+<path d="M1141 757.5 L1145.5 762 L1141 766.5 L1136.5 762 Z" fill="#2f7fc1" stroke="#2f7fc1" stroke-width="1.1"/><text x="1154.0" y="766.0" font-family="Arial, Helvetica, sans-serif" font-size="10.5" font-weight="normal" fill="#1a1a1a" text-anchor="start">obrigatório</text>
+<path d="M1253 757.5 L1257.5 762 L1253 766.5 L1248.5 762 Z" fill="none" stroke="#2f7fc1" stroke-width="1.1"/><text x="1266.0" y="766.0" font-family="Arial, Helvetica, sans-serif" font-size="10.5" font-weight="normal" fill="#1a1a1a" text-anchor="start">opcional</text>
+<text x="1358.0" y="766.0" font-family="Arial, Helvetica, sans-serif" font-size="10.5" font-weight="normal" fill="#1a1a1a" text-anchor="start">UQ = valor único</text>
+<g fill="none" stroke="#333333" stroke-width="1.2"><line x1="910" y1="786" x2="950" y2="786"/><line x1="941" y1="779" x2="941" y2="793"/><line x1="936" y1="779" x2="936" y2="793"/></g><text x="960.0" y="790.0" font-family="Arial, Helvetica, sans-serif" font-size="10.5" font-weight="normal" fill="#1a1a1a" text-anchor="start">1 e só 1</text>
+<g fill="none" stroke="#333333" stroke-width="1.2"><line x1="1060" y1="786" x2="1100" y2="786"/><line x1="1091" y1="779" x2="1091" y2="793"/><circle cx="1082" cy="786" r="4" fill="#ffffff"/></g><text x="1110.0" y="790.0" font-family="Arial, Helvetica, sans-serif" font-size="10.5" font-weight="normal" fill="#1a1a1a" text-anchor="start">0 ou 1</text>
+<g fill="none" stroke="#333333" stroke-width="1.2"><line x1="1210" y1="786" x2="1250" y2="786"/><line x1="1250" y1="778" x2="1238" y2="786"/><line x1="1250" y1="794" x2="1238" y2="786"/><line x1="1234" y1="779" x2="1234" y2="793"/></g><text x="1260.0" y="790.0" font-family="Arial, Helvetica, sans-serif" font-size="10.5" font-weight="normal" fill="#1a1a1a" text-anchor="start">1 ou mais</text>
+<g fill="none" stroke="#333333" stroke-width="1.2"><line x1="1360" y1="786" x2="1400" y2="786"/><line x1="1400" y1="778" x2="1388" y2="786"/><line x1="1400" y1="794" x2="1388" y2="786"/><circle cx="1382" cy="786" r="4" fill="#ffffff"/></g><text x="1410.0" y="790.0" font-family="Arial, Helvetica, sans-serif" font-size="10.5" font-weight="normal" fill="#1a1a1a" text-anchor="start">0 ou mais</text>
+</g>
+</svg>

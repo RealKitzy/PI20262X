@@ -38,3 +38,20 @@
 - A página está ajustada para celular e para impressão em PDF.
 - Novo ícone (chip com lupa, em `assets/img/logo.svg`), também usado como favicon da aba do navegador. As imagens antigas foram removidas.
 - Tema claro e escuro: um botão no topo alterna entre os dois e a escolha fica salva no navegador. Sem escolha salva, o site segue o tema do sistema operacional. A impressão sempre sai no tema claro.
+
+## Acréscimo: modelagem de dados (DER)
+
+- O DER antigo não batia com o banco real: faltava `registros_titularidade` e mostrava duas tabelas sem uso.
+- `minutas_geradas` e `regras_classificacao` foram removidas do banco (`DROP TABLE IF EXISTS` para bancos antigos).
+- `usuarios.documento_cpf_cnpj` agora é único e guardado só com dígitos; uma nova verificação reaproveita o cadastro do mesmo titular.
+- `registros_titularidade` ganhou `usuario_id` e `projeto_id` (chaves estrangeiras opcionais) e passou a ficar ligada ao titular e ao projeto.
+- `diagnosticos_gerados` ganhou os códigos da modalidade e das licenças (chaves estrangeiras para os catálogos). Os campos de texto foram ampliados, porque alguns valores passavam do limite em MySQL/PostgreSQL.
+- Bancos já existentes são atualizados automaticamente na primeira requisição (`config/database.php`).
+- Novos arquivos em `docs/der/`: DER conceitual, DER lógico, dicionário de dados e decisões de modelagem, todos gerados a partir do banco real.
+
+## Acréscimo: revisão de segurança antes da publicação
+
+- **O banco de dados podia ser baixado pela internet.** O servidor embutido do PHP (`php -S`) entrega qualquer arquivo da pasta, então `/database/observatorio_pi.sqlite` (com CPFs e e-mails), `/config/` e `/database/schema.sql` ficavam abertos. O novo `router.php` libera só a página, `assets/` e `api/`; todo o resto responde 404. O `Dockerfile`, o `railway.json` e o `nixpacks.toml` já iniciam o servidor com o roteador.
+- **CPF/CNPJ exposto na API pública.** A lista de provas de autoria (`GET /api/anterioridade.php`) devolvia o documento completo de quem gravou. Agora sai mascarado (ex.: `***.982.247-**`), em linha com a LGPD. A comparação de titularidade continua usando o valor completo, só no servidor.
+- **Termos da busca de patentes:** cada termo agora tem no máximo 40 caracteres, para evitar consultas gigantes ao EPO.
+- Testes feitos: entradas inválidas nas três APIs, tentativa de acessar arquivos privados (inclusive com `../`), fluxo completo com gravação e certificado, e busca de patentes com respostas simuladas do EPO.

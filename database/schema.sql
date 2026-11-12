@@ -8,7 +8,7 @@
 CREATE TABLE IF NOT EXISTS usuarios (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     nome_completo VARCHAR(150) NOT NULL,
-    documento_cpf_cnpj VARCHAR(25) NOT NULL,
+    documento_cpf_cnpj VARCHAR(25) NOT NULL UNIQUE, -- só dígitos (11 = CPF, 14 = CNPJ); um cadastro por titular
     email VARCHAR(120) NOT NULL,
     instituicao_empresa VARCHAR(150),
     perfil VARCHAR(50) DEFAULT 'Projetista IoT / Embarcados', -- Startup, ICT/Universidade, Maker, Indústria
@@ -41,25 +41,11 @@ CREATE TABLE IF NOT EXISTS licencas_catalogo (
     descricao_juridica TEXT NOT NULL
 );
 
--- 4. Regras do Motor de Decisão (Mapeamento Arquitetura -> Diagnóstico)
-CREATE TABLE IF NOT EXISTS regras_classificacao (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    codigo_regra VARCHAR(40) NOT NULL UNIQUE,
-    camada_avaliada VARCHAR(40) NOT NULL, -- CIRCUITO_PCB, CHIP_SEMICONDUTOR, FIRMWARE_SW, GABINETE_MECANICO, LICENCIAMENTO
-    condicao_logica TEXT NOT NULL,
-    modalidade_inpi_codigo VARCHAR(20),
-    licenca_recomendada_codigo VARCHAR(30),
-    nivel_alerta VARCHAR(20) DEFAULT 'INFO', -- INFO, SUCESSO, ATENCAO, CRITICO
-    titulo_diagnostico VARCHAR(180) NOT NULL,
-    parecer_tecnico_juridico TEXT NOT NULL,
-    FOREIGN KEY (modalidade_inpi_codigo) REFERENCES modalidades_inpi(codigo),
-    FOREIGN KEY (licenca_recomendada_codigo) REFERENCES licencas_catalogo(codigo)
-);
 
--- 5. Projetos de Hardware/IoT Submetidos à Plataforma
+-- 4. Projetos de Hardware/IoT Submetidos à Plataforma
 CREATE TABLE IF NOT EXISTS projetos_avaliados (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    usuario_id INTEGER,
+    usuario_id INTEGER NOT NULL,
     nome_projeto VARCHAR(180) NOT NULL,
     resumo_tecnico TEXT NOT NULL,
     -- Camada de Hardware / Eletrônica
@@ -80,32 +66,31 @@ CREATE TABLE IF NOT EXISTS projetos_avaliados (
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 );
 
--- 6. Diagnósticos Gerados pelo Motor de Decisão
+-- 5. Diagnósticos Gerados pelo Motor de Decisão
 CREATE TABLE IF NOT EXISTS diagnosticos_gerados (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     projeto_id INTEGER NOT NULL,
     score_protegibilidade INTEGER NOT NULL, -- 0 a 100
     risco_contaminacao_licenca VARCHAR(30) NOT NULL, -- NULO, BAIXO, MEDIO, ALTO_CRITICO
-    protecao_inpi_primaria VARCHAR(80) NOT NULL,
-    protecao_inpi_secundaria VARCHAR(120),
-    licenca_hw_recomendada VARCHAR(50) NOT NULL,
-    licenca_sw_recomendada VARCHAR(50) NOT NULL,
+    protecao_inpi_primaria VARCHAR(200) NOT NULL,   -- texto descritivo exibido no relatório
+    protecao_inpi_secundaria VARCHAR(255),
+    licenca_hw_recomendada VARCHAR(200) NOT NULL,
+    licenca_sw_recomendada VARCHAR(200) NOT NULL,
+    modalidade_primaria_codigo VARCHAR(20) NULL,    -- código da modalidade principal (catálogo modalidades_inpi)
+    licenca_hw_codigo VARCHAR(30) NULL,             -- licença de hardware recomendada (catálogo licencas_catalogo)
+    licenca_sw_codigo VARCHAR(30) NULL,             -- licença de software recomendada (catálogo licencas_catalogo)
     json_parecer_completo TEXT NOT NULL, -- Armazena o detalhamento das regras acionadas
     criado_em DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (projeto_id) REFERENCES projetos_avaliados(id)
+    FOREIGN KEY (projeto_id) REFERENCES projetos_avaliados(id),
+    FOREIGN KEY (modalidade_primaria_codigo) REFERENCES modalidades_inpi(codigo),
+    FOREIGN KEY (licenca_hw_codigo) REFERENCES licencas_catalogo(codigo),
+    FOREIGN KEY (licenca_sw_codigo) REFERENCES licencas_catalogo(codigo)
 );
 
--- 7. Minutas e Contratos Customizados Gerados
-CREATE TABLE IF NOT EXISTS minutas_geradas (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    diagnostico_id INTEGER NOT NULL,
-    tipo_documento VARCHAR(60) NOT NULL, -- CESSAO_DIREITOS, LICENCIAMENTO_COMERCIAL_IOT, TERMO_OPEN_HARDWARE_CERN, MEMORIAL_INPI
-    partes_qualificacao TEXT NOT NULL,
-    conteudo_minuta TEXT NOT NULL,
-    hash_verificacao VARCHAR(64) NOT NULL,
-    gerado_em DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (diagnostico_id) REFERENCES diagnosticos_gerados(id)
-);
+
+-- Tabelas de versões anteriores que o sistema não usa mais
+DROP TABLE IF EXISTS minutas_geradas;
+DROP TABLE IF EXISTS regras_classificacao;
 
 -- ============================================================================
 -- CARGA INICIAL DE DADOS (SEED): MODALIDADES DO INPI E LICENÇAS LIVRES
@@ -129,7 +114,7 @@ INSERT OR IGNORE INTO licencas_catalogo (codigo, nome, camada_alvo, tipo_permiss
 ('CERN-OHL-S', 'CERN Open Hardware Licence v2 - Strongly Reciprocal / CC BY-SA 4.0', 'HARDWARE', 'COPYLEFT_FORTE', 1, 1, 1, 'Incompatível com fechamento do desenho derivado; atenção à fragilidade do copyleft na Camada A', 'Qualquer produto derivado do desenho deve disponibilizar as fontes de hardware (CAD, esquemáticos, Gerber, BOM). Na CC BY-SA 4.0 não há cláusula específica de patentes para a função elétrica.'),
 ('PROPRIETARIA', 'Licença Proprietária / Segredo Industrial / EULA', 'AMBOS', 'FECHADA', 0, 1, 0, 'Totalmente compatível com depósito de Patentes (PI/MU), TCI e Registro de Marca no INPI', 'Reserva todos os direitos patrimoniais ao titular, combinando proteção industrial no INPI e cláusulas de confidencialidade.');
 
--- 8. Base Fixa de Titularidade do Observatório + Acervo de REFERÊNCIA ILUSTRATIVO
+-- 6. Base Fixa de Titularidade do Observatório + Acervo de REFERÊNCIA ILUSTRATIVO
 --    (os 15 itens REF-ILUSTR-xx são exemplos didáticos de produtos conhecidos; NÃO são registros oficiais do INPI)
 CREATE TABLE IF NOT EXISTS registros_titularidade (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -146,7 +131,11 @@ CREATE TABLE IF NOT EXISTS registros_titularidade (
     camadas_protegidas VARCHAR(160) NOT NULL,
     status_juridico VARCHAR(60) NOT NULL DEFAULT 'PROTEGIDO_EXCLUSIVO', -- PROTEGIDO_EXCLUSIVO, OPEN_HARDWARE_MARCA_PROTEGIDA, DOMINIO_PUBLICO_ESTADO_DA_TECNICA
     hash_sha512 VARCHAR(130) NOT NULL,
-    data_registro DATETIME DEFAULT CURRENT_TIMESTAMP
+    data_registro DATETIME DEFAULT CURRENT_TIMESTAMP,
+    usuario_id INTEGER NULL,  -- titular (vazio nos itens do acervo ilustrativo)
+    projeto_id INTEGER NULL,  -- projeto avaliado que originou a prova de autoria
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
+    FOREIGN KEY (projeto_id) REFERENCES projetos_avaliados(id)
 );
 
 -- Remove as linhas antigas do acervo (versões anteriores usavam protocolos fictícios no formato INPI-...)

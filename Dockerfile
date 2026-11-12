@@ -13,4 +13,4 @@ RUN mkdir -p /app/database && chmod -R 777 /app/database
 EXPOSE 8080
 
 # Mantém o servidor web PHP ativo continuamente na porta 8080 (ou $PORT do Railway)
-CMD ["sh", "-c", "php -S 0.0.0.0:${PORT:-8080} -t /app"]
+CMD ["sh", "-c", "php -S 0.0.0.0:${PORT:-8080} -t /app /app/router.php"]

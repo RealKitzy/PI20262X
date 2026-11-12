@@ -108,5 +108,69 @@ class Database {
             $sql = str_replace('INSERT OR IGNORE INTO', 'INSERT IGNORE INTO', $sql);
         }
         $pdo->exec($sql);
+        self::migrarBancoExistente($pdo, $driver);
+    }
+
+    /**
+     * Atualiza bancos criados por versões anteriores (CREATE TABLE IF NOT EXISTS não altera tabelas existentes).
+     * Cada passo é independente e ignorado se já estiver aplicado.
+     */
+    private static function migrarBancoExistente(PDO $pdo, string $driver): void {
+        $colunasNovas = [
+            'registros_titularidade' => ['usuario_id' => 'INTEGER NULL', 'projeto_id' => 'INTEGER NULL'],
+            'diagnosticos_gerados' => ['modalidade_primaria_codigo' => 'VARCHAR(20) NULL', 'licenca_hw_codigo' => 'VARCHAR(30) NULL', 'licenca_sw_codigo' => 'VARCHAR(30) NULL'],
+        ];
+        foreach ($colunasNovas as $tabela => $colunas) {
+            $existentes = self::listarColunas($pdo, $driver, $tabela);
+            foreach ($colunas as $coluna => $tipo) {
+                if (!in_array($coluna, $existentes, true)) {
+                    try { $pdo->exec("ALTER TABLE {$tabela} ADD COLUMN {$coluna} {$tipo}"); } catch (PDOException $e) {}
+                }
+            }
+        }
+        // Um cadastro por CPF/CNPJ (falha em silêncio se o banco antigo já tiver duplicados)
+        try {
+            if ($driver === 'mysql') {
+                $existe = $pdo->query("SHOW INDEX FROM usuarios WHERE Key_name = 'idx_usuarios_documento'")->fetch();
+                if (!$existe) $pdo->exec("CREATE UNIQUE INDEX idx_usuarios_documento ON usuarios (documento_cpf_cnpj)");
+            } else {
+                $pdo->exec("CREATE UNIQUE INDEX IF NOT EXISTS idx_usuarios_documento ON usuarios (documento_cpf_cnpj)");
+            }
+        } catch (PDOException $e) {}
+    }
+
+    /**
+     * Retorna o id do usuário com este CPF/CNPJ, criando o cadastro se ainda não existir
+     * (e atualizando nome, e-mail e instituição se já existir). O documento é guardado só com dígitos.
+     */
+    public static function obterOuCriarUsuario(PDO $pdo, string $nome, string $documento, string $email, string $instituicao): ?int {
+        $doc = preg_replace('/\D/', '', $documento);
+        if (strlen($doc) !== 11 && strlen($doc) !== 14) {
+            return null;
+        }
+        $busca = $pdo->prepare("SELECT id FROM usuarios WHERE documento_cpf_cnpj = ?");
+        $busca->execute([$doc]);
+        $id = $busca->fetchColumn();
+        if ($id) {
+            $pdo->prepare("UPDATE usuarios SET nome_completo = ?, email = ?, instituicao_empresa = ? WHERE id = ?")
+                ->execute([$nome, $email, $instituicao, $id]);
+            return (int) $id;
+        }
+        $pdo->prepare("INSERT INTO usuarios (nome_completo, documento_cpf_cnpj, email, instituicao_empresa) VALUES (?, ?, ?, ?)")
+            ->execute([$nome, $doc, $email, $instituicao]);
+        return (int) $pdo->lastInsertId();
+    }
+
+    private static function listarColunas(PDO $pdo, string $driver, string $tabela): array {
+        try {
+            if ($driver === 'sqlite') {
+                return array_column($pdo->query("PRAGMA table_info({$tabela})")->fetchAll(), 'name');
+            }
+            $stmt = $pdo->prepare("SELECT column_name FROM information_schema.columns WHERE table_name = ?");
+            $stmt->execute([$tabela]);
+            return array_map('strtolower', $stmt->fetchAll(PDO::FETCH_COLUMN));
+        } catch (PDOException $e) {
+            return [];
+        }
     }
 }

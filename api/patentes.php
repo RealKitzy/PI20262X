@@ -205,7 +205,7 @@ $termos = array_values(array_unique(array_filter(array_map(function ($t) {
 }, $termos), function ($t) {
     return strlen($t) >= 2;
 })));
-$termos = array_slice($termos, 0, 6);
+$termos = array_slice(array_map(function ($t) { return substr($t, 0, 40); }, $termos), 0, 6);
 if (count($termos) < 1) {
     responder(['sucesso' => false, 'estado' => 'erro', 'mensagem' => 'Informe os termos da busca (parâmetro q).'], 400);
 }

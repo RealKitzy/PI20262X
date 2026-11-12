@@ -277,6 +277,19 @@ function executarMotorDecisao(array $dados): array {
     ];
 }
 
+// Converte o texto da licença recomendada no código do catálogo licencas_catalogo (chave estrangeira)
+function codigoLicencaCatalogo(string $texto): ?string {
+    $t = strtoupper($texto);
+    if (strpos($t, 'CERN-OHL-S') !== false || strpos($t, 'CC BY-SA') !== false) return 'CERN-OHL-S';
+    if (strpos($t, 'CERN-OHL-W') !== false) return 'CERN-OHL-W';
+    if (strpos($t, 'CERN-OHL-P') !== false || strpos($t, 'SOLDERPAD') !== false || strpos($t, 'TAPR') !== false) return 'CERN-OHL-P';
+    if (strpos($t, 'LGPL') !== false) return 'LGPLv3';
+    if (strpos($t, 'GPL') !== false) return 'GPLv3';
+    if (strpos($t, 'MIT') !== false || strpos($t, 'APACHE') !== false) return 'MIT';
+    if (strpos($t, 'PROPRIET') !== false) return 'PROPRIETARIA';
+    return null;
+}
+
 $method = $_SERVER['REQUEST_METHOD'];
 
 if ($method === 'GET') {
@@ -325,15 +338,14 @@ if ($method === 'POST') {
     $resultado = executarMotorDecisao($input);
     $db = Database::getConnection();
 
-    // Salva Usuário/Projetista
-    $stmtUser = $db->prepare("INSERT INTO usuarios (nome_completo, documento_cpf_cnpj, email, instituicao_empresa) VALUES (?, ?, ?, ?)");
-    $stmtUser->execute([
-        trim(strip_tags((string)($input['autor_nome'] ?? 'Projetista Anônimo'))),
-        trim(strip_tags((string)($input['autor_documento'] ?? '000.000.000-00'))),
-        trim(strip_tags((string)($input['autor_email'] ?? 'contato@observatoriopi.br'))),
+    // Usuário/projetista: um cadastro por CPF/CNPJ (reaproveitado nas próximas verificações)
+    $usuarioId = Database::obterOuCriarUsuario(
+        $db,
+        $autorNomeVal,
+        $autorDocVal,
+        $autorEmailVal,
         trim(strip_tags((string)($input['instituicao_empresa'] ?? 'Independente')))
-    ]);
-    $usuarioId = (int)$db->lastInsertId();
+    );
 
     // Salva Projeto Avaliado
     $stmtProj = $db->prepare("
@@ -367,8 +379,9 @@ if ($method === 'POST') {
         INSERT INTO diagnosticos_gerados (
             projeto_id, score_protegibilidade, risco_contaminacao_licenca,
             protecao_inpi_primaria, protecao_inpi_secundaria,
-            licenca_hw_recomendada, licenca_sw_recomendada, json_parecer_completo
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            licenca_hw_recomendada, licenca_sw_recomendada,
+            modalidade_primaria_codigo, licenca_hw_codigo, licenca_sw_codigo, json_parecer_completo
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ");
     $stmtDiag->execute([
         $projetoId,
@@ -378,6 +391,9 @@ if ($method === 'POST') {
         $resultado['protecao_inpi_secundaria'],
         $resultado['licenca_hw_recomendada'],
         $resultado['licenca_sw_recomendada'],
+        $resultado['recomendacoes_inpi'][0]['codigo'] ?? null,
+        codigoLicencaCatalogo($resultado['licenca_hw_recomendada']),
+        codigoLicencaCatalogo($resultado['licenca_sw_recomendada']),
         json_encode($resultado, JSON_UNESCAPED_UNICODE)
     ]);
     $diagnosticoId = (int)$db->lastInsertId();

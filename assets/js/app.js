@@ -1065,7 +1065,8 @@ async function verificarExistenciaLocalEApi(dados, diag, acao = 'VERIFICAR') {
         classificacao_cip: corr.codigos_cip.map(c => c.split(' (')[0]).join(' ; '),
         modalidade_protecao: diag.protecao_inpi_primaria,
         camadas_protegidas: camadasAtivas,
-        trecho_codigo: trechoCodigo
+        trecho_codigo: trechoCodigo,
+        projeto_id: diag.projeto_id || null // liga a prova de autoria ao projeto salvo no banco
     };
 
     // 1. Tenta consultar / gravar na API PHP + Banco SQLite/MySQL
@@ -1827,7 +1828,9 @@ async function executarVerificacaoExistenciaCompleta(irParaRelatorio = false) {
 async function registrarTitularidadeFixaUsuario() {
     const dados = coletarDadosFormularioAtual();
     ultimoProjetoAvaliado = dados;
-    ultimoDiagnostico = motorDecisaoLocal(dados);
+    // Mantém os ids salvos no banco (projeto/diagnóstico) para ligar a prova de autoria ao projeto
+    const idsSalvos = ultimoDiagnostico ? { projeto_id: ultimoDiagnostico.projeto_id, diagnostico_id: ultimoDiagnostico.diagnostico_id } : {};
+    ultimoDiagnostico = Object.assign(motorDecisaoLocal(dados), idsSalvos);
 
     const resultado = await verificarExistenciaLocalEApi(dados, ultimoDiagnostico, 'REGISTRAR');
     renderizarPainelVerificacaoExistencia(resultado);

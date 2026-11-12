@@ -60,11 +60,12 @@ observatorio-pi-hardware/
 ├── config/
 │   └── database.php            # Conexão com o banco SQLite (criado automaticamente) ou MySQL
 ├── database/
-│   └── schema.sql              # Tabelas do banco de dados e registros iniciais
+│   └── schema.sql              # 6 tabelas do banco (ver docs/der) e registros iniciais
 └── docs/
     ├── MODELAGEM_DER_E_REGRAS.md
     ├── ARTIGO_CIENTIFICO_BASE.md
     ├── CORRECOES_AUDITORIA.md  # O que foi corrigido em relação à auditoria
+    ├── der/                    # DER conceitual e lógico (PDF, SVG, PNG) + dicionário de dados
     └── telas/                  # Telas do sistema (PDF, SVG editável para Figma e PNG)
 ```
 
@@ -75,7 +76,7 @@ observatorio-pi-hardware/
 ### Localmente (PHP)
 Na pasta raiz do projeto, rode no terminal:
 ```bash
-php -S localhost:8000
+php -S localhost:8000 router.php
 ```
 Depois, abra `http://localhost:8000` no navegador. O banco SQLite (`database/observatorio_pi.sqlite`) é criado sozinho na primeira vez que a API é chamada.
 
@@ -88,11 +89,11 @@ Depois, abra `http://localhost:8000` no navegador. O banco SQLite (`database/obs
    - `EPO_OPS_SECRET` = Consumer Secret
 5. O Railway refaz o deploy sozinho. No modal da verificação, o card "Patentes (EPO / Espacenet)" passa de "Apenas link" para "consultado".
 
-Para testar localmente: `EPO_OPS_KEY=... EPO_OPS_SECRET=... php -S localhost:8000`.
+Para testar localmente: `EPO_OPS_KEY=... EPO_OPS_SECRET=... php -S localhost:8000 router.php`.
 As chaves ficam só no servidor (nunca vão para o navegador), e buscas repetidas são guardadas por 24 h para economizar a cota gratuita.
 
 ### Hospedagem (Railway)
-O projeto já está configurado com `Dockerfile` e `railway.json` para rodar direto no **Railway** conectado ao repositório do GitHub, subindo o container `php:8.2-cli-alpine` na porta dinâmica do servidor (`php -S 0.0.0.0:${PORT:-8080}`).
+O projeto já está configurado com `Dockerfile` e `railway.json` para rodar direto no **Railway** conectado ao repositório do GitHub, subindo o container `php:8.2-cli-alpine` na porta dinâmica do servidor (`php -S 0.0.0.0:${PORT:-8080} ... router.php`). O `router.php` garante que só a página, `assets/` e `api/` fiquem acessíveis pela internet (o banco de dados e a configuração não podem ser baixados).
 
 **Para não perder os registros a cada deploy:** por padrão o banco SQLite fica dentro do container e é apagado quando o Railway faz um novo deploy. Para manter as provas de autoria gravadas:
 1. No projeto do Railway, crie um **Volume** ligado ao serviço com o caminho de montagem `/data`.
