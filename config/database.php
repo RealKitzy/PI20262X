@@ -80,10 +80,12 @@ class Database {
         } catch (PDOException $e) {
             http_response_code(500);
             header('Content-Type: application/json; charset=utf-8');
+            // O detalhe técnico vai só para o log do servidor (não expõe endereço/usuário do banco na resposta pública)
+            error_log('Observatório — falha na conexão com o banco: ' . $e->getMessage());
             echo json_encode([
                 'sucesso' => false,
-                'erro' => 'Falha na conexão com o banco de dados: ' . $e->getMessage()
-            ]);
+                'erro' => 'Falha na conexão com o banco de dados. Tente novamente em alguns instantes.'
+            ], JSON_UNESCAPED_UNICODE);
             exit;
         }
 

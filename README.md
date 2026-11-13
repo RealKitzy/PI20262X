@@ -104,6 +104,8 @@ A cada envio de código para o GitHub, os testes rodam sozinhos na aba **Actions
 ### Hospedagem (Railway)
 O projeto já está configurado com `Dockerfile` e `railway.json` para rodar direto no **Railway** conectado ao repositório do GitHub, subindo o container `php:8.2-cli-alpine` na porta dinâmica do servidor (`php -S 0.0.0.0:${PORT:-8080} ... router.php`). O `router.php` garante que só a página, `assets/` e `api/` fiquem acessíveis pela internet (o banco de dados e a configuração não podem ser baixados).
 
-**Para não perder os registros a cada deploy:** por padrão o banco SQLite fica dentro do container e é apagado quando o Railway faz um novo deploy. Para manter as provas de autoria gravadas:
+**Banco de dados no Railway:** se o serviço tiver a variável `DATABASE_URL` de um **PostgreSQL** do Railway (é o caso da nossa publicação), o sistema usa o PostgreSQL automaticamente, e os dados ficam no volume do próprio Postgres (`postgres-volume`), sem se perder nos deploys.
+
+**Sem PostgreSQL (SQLite):** o banco fica dentro do container e é apagado quando o Railway faz um novo deploy. Para manter as provas de autoria gravadas:
 1. No projeto do Railway, crie um **Volume** ligado ao serviço com o caminho de montagem `/data`.
 2. Na aba **Variables** do serviço, crie `SQLITE_PATH` = `/data/observatorio_pi.sqlite`.
