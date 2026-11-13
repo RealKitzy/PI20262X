@@ -58,6 +58,7 @@ async function preencherBloco1(page, { nome = 'Senpu', titular = 'Maria da Silva
     await page.fill('#autor_nome', titular);
     await page.fill('#autor_documento', cpf);
     await page.fill('#autor_email', email);
+    await page.check('#consentimento_lgpd');
     await page.click('#rodape-bloco-1-usuario button');
     await expect(page.locator('#relato_livre_usuario')).toBeVisible();
 }
@@ -97,6 +98,15 @@ test.describe('1. Segurança do servidor', () => {
         expect((await (await request.get('/api/patentes.php?q=fall&pais=BRA')).json()).sucesso).toBe(false);
     });
 
+    test('as APIs não publicam dados de outras pessoas e exigem consentimento', async ({ request }) => {
+        const diag = await (await request.get('/api/diagnostico.php')).json();
+        expect(diag.historico_avaliacoes, 'histórico de projetos não pode ser público').toBeUndefined();
+        if (!PUBLICADO) {
+            const semConsentimento = await request.post('/api/anterioridade.php', { data: { acao: 'REGISTRAR', nome_projeto: 'Projeto Sem Aceite', autor_nome: 'Maria da Silva', autor_documento: CPF_A, autor_email: 'maria@exemplo.com.br', resumo_tecnico: QUEDA } });
+            expect(semConsentimento.status(), 'gravar sem consentimento deve ser recusado').toBe(400);
+        }
+    });
+
     test('a API de anterioridade recusa dados inválidos e não mostra CPF completo', async ({ request }) => {
         const invalido = await request.post('/api/anterioridade.php', { data: '{json quebrado', headers: { 'Content-Type': 'application/json' } });
         expect((await invalido.json()).sucesso).toBe(false);
@@ -125,12 +135,25 @@ test.describe('2. Cadastro (Bloco 1)', () => {
         expect(page.alertas.pop(), 'deveria aparecer o aviso de CPF inválido').toContain('CPF ou CNPJ inválido');
     });
 
+    test('sem concordar com o uso dos dados (LGPD) não avança', async ({ page }) => {
+        await page.goto('/');
+        await page.fill('#nome_projeto', 'Senpu');
+        await page.fill('#autor_nome', 'Maria da Silva');
+        await page.fill('#autor_documento', CPF_A);
+        await page.fill('#autor_email', 'maria@exemplo.com.br');
+        await expect(page.locator('.aviso-lgpd')).toContainText('Como usamos seus dados');
+        await page.click('#rodape-bloco-1-usuario button');
+        expect(page.alertas.pop(), 'deveria pedir o consentimento').toContain('Li e concordo');
+        await expect(page.locator('#relato_livre_usuario')).toBeHidden();
+    });
+
     test('Enter no formulário avança para a descrição', async ({ page }) => {
         await page.goto('/');
         await page.fill('#nome_projeto', 'Senpu');
         await page.fill('#autor_nome', 'Maria da Silva');
         await page.fill('#autor_documento', CPF_A);
         await page.fill('#autor_email', 'maria@exemplo.com.br');
+        await page.check('#consentimento_lgpd');
         await page.press('#autor_email', 'Enter');
         await expect(page.locator('#relato_livre_usuario')).toBeVisible();
     });
@@ -236,6 +259,10 @@ test.describe('5. Verificação completa e relatório', () => {
         const meu = (lista.registros_fixos || []).find(r => r.nome_criacao_marca === 'Senpu Dois');
         expect(meu, 'registro gravado aparece na base').toBeTruthy();
         expect(meu.titular_documento).toBe('***.982.247-**');
+        // A descrição de quem gravou não é publicada (protege a novidade — Arts. 11 e 12 da LPI)
+        expect(meu.resumo_tecnico, 'descrição do usuário não pode sair na lista pública').toBeUndefined();
+        expect(meu.palavras_chave).toBeUndefined();
+        await expect(page.locator('#tabela-registros-fixos-body tr', { hasText: 'Senpu Dois' })).toContainText('Descrição não publicada');
     });
 
     test('outro titular não consegue gravar o mesmo projeto', async ({ page }) => {

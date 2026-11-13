@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Descubra se o seu projeto de hardware ou IoT já existe: busca em patentes (EPO), artigos (OpenAlex) e repositórios (GitHub), análise das 6 camadas de proteção no Brasil e prova de autoria com hash SHA-512.">
     <title>Observatório de Propriedade Intelectual e Hardware Aberto | Projeto Integrador</title>
     <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/styles.css?v=20261112v10">
+    <link rel="stylesheet" href="assets/css/styles.css?v=20261113v11">
     <script>
         // Aplica o tema salvo antes de desenhar a página (evita "piscar" claro → escuro)
         try {
@@ -126,6 +127,21 @@
                                     <label for="autor_email">E-mail</label>
                                     <input type="email" id="autor_email" required placeholder="voce@email.com.br">
                                 </div>
+                            </div>
+
+                            <!-- LGPD: aviso de uso dos dados e consentimento (Arts. 7º, I, 8º e 9º da Lei 13.709/2018) -->
+                            <div class="aviso-lgpd">
+                                <strong>Como usamos seus dados (LGPD — Lei 13.709/2018)</strong>
+                                <ul>
+                                    <li>Nome, CPF/CNPJ e e-mail servem só para identificar o titular no certificado e na prova de autoria, e ficam guardados no banco do Observatório.</li>
+                                    <li>Na lista pública da base aparecem apenas o nome do titular, o nome do projeto e o CPF/CNPJ mascarado (ex.: ***.982.247-**). A descrição do projeto não é publicada.</li>
+                                    <li>Para a busca, só palavras-chave da descrição (sem seus dados pessoais) são enviadas ao EPO, à OpenAlex e ao GitHub.</li>
+                                    <li>Para corrigir ou apagar seus dados, fale com a equipe do Projeto Integrador (Art. 18 da LGPD).</li>
+                                </ul>
+                                <label class="checkbox-item" for="consentimento_lgpd">
+                                    <input type="checkbox" id="consentimento_lgpd">
+                                    <div>Li e concordo com o uso dos meus dados para esta verificação e para a prova de autoria (Art. 7º, I da LGPD).</div>
+                                </label>
                             </div>
 
                             <div class="form-footer fim" id="rodape-bloco-1-usuario">
@@ -557,6 +573,6 @@
     </footer>
 
     <script src="assets/js/vocabulario.js?v=20261112v2"></script>
-    <script src="assets/js/app.js?v=20261113v24"></script>
+    <script src="assets/js/app.js?v=20261113v25"></script>
 </body>
 </html>

@@ -28,7 +28,7 @@ O sistema analisa o projeto dividindo o hardware em **6 camadas (A até F)**, co
 ## O que tem no sistema
 
 - **Fluxo guiado em 2 blocos (Etapa 1):**
-  - **Bloco 1 (Titular e nome do projeto):** validação de nome, CPF/CNPJ (11 ou 14 dígitos) e e-mail.
+  - **Bloco 1 (Titular e nome do projeto):** validação de nome, CPF/CNPJ (11 ou 14 dígitos) e e-mail, com aviso de uso dos dados e consentimento (LGPD). A lista pública da base mostra o CPF/CNPJ mascarado e não publica a descrição dos projetos, para não prejudicar a novidade (Art. 11 da LPI).
   - **Bloco 2 (Descrição do projeto):** validação em tempo real de **4 itens obrigatórios** (Art. 24 da LPI: texto real, peças, ação e aplicação), que bloqueia textos vazios, palavrões, letras aleatórias ou frases sem relação com hardware/IoT/software. Há um campo opcional de **palavras-chave**, que têm prioridade na busca.
   - As camadas jurídicas, normas da ANATEL e LGPD são detectadas automaticamente a partir da descrição.
 - **Busca de Anterioridade e Prova de Autoria (Etapa 02):**

@@ -534,6 +534,7 @@ function limparFormularioCompleto() {
     document.getElementById('autor_nome').value = '';
     document.getElementById('autor_documento').value = '';
     document.getElementById('autor_email').value = '';
+    if (document.getElementById('consentimento_lgpd')) document.getElementById('consentimento_lgpd').checked = false;
     document.getElementById('instituicao_empresa').value = '';
     document.getElementById('resumo_tecnico').value = '';
     if (document.getElementById('palavras_chave_extra')) document.getElementById('palavras_chave_extra').value = '';
@@ -1079,6 +1080,7 @@ async function verificarExistenciaLocalEApi(dados, diag, acao = 'VERIFICAR') {
         modalidade_protecao: diag.protecao_inpi_primaria,
         camadas_protegidas: camadasAtivas,
         trecho_codigo: trechoCodigo,
+        consentimento_lgpd: Boolean(dados.consentimento_lgpd),
         projeto_id: diag.projeto_id || null // liga a prova de autoria ao projeto salvo no banco
     };
 
@@ -2012,7 +2014,10 @@ function renderizarPainelVerificacaoExistencia(verif) {
             const badgeOrigem = reg.origem_base === 'REGISTRO_FIXO_USUARIO'
                 ? '<span class="inpi-badge" style="color:var(--ok);border-color:var(--ok-border);background:var(--ok-soft);">Gravado no Observatório</span>'
                 : '<span class="inpi-badge" title="Exemplo didático de produto conhecido — não é registro oficial do INPI">Acervo ilustrativo</span>';
-            const resumo = (reg.resumo_tecnico || '').length > 95 ? reg.resumo_tecnico.substring(0, 95) + '…' : (reg.resumo_tecnico || '');
+            // Registros de usuários não trazem a descrição (ela não é publicada, para não prejudicar a novidade — Art. 11 da LPI)
+            const resumo = ilustrativo
+                ? ((reg.resumo_tecnico || '').length > 95 ? reg.resumo_tecnico.substring(0, 95) + '…' : (reg.resumo_tecnico || ''))
+                : 'Descrição não publicada';
             return `
                 <tr>
                     <td>${badgeOrigem}<br><strong>${e(reg.protocolo_registro)}</strong></td>
@@ -2319,6 +2324,13 @@ function avancarBlocoUsuario(numeroBlocoDestino) {
             document.getElementById('autor_email').focus();
             return;
         }
+
+        const consentimento = document.getElementById('consentimento_lgpd');
+        if (consentimento && !consentimento.checked) {
+            alert('Para continuar, leia o aviso sobre o uso dos dados e marque "Li e concordo" (LGPD).');
+            consentimento.focus();
+            return;
+        }
     }
 
     // Validação rigorosa antes de liberar o Bloco 3
@@ -2402,6 +2414,8 @@ async function iniciarVerificacaoPorcentagemBloco2() {
     if (autorNome.length < 5) pendencias.push({ el: autorNomeEl, msg: 'Nome do titular (mínimo de 5 caracteres)' });
     if (!validarDocumentoCpfCnpjRigido(autorDoc)) pendencias.push({ el: autorDocEl, msg: 'CPF ou CNPJ válido' });
     if (!validarEmailRigido(autorEmail)) pendencias.push({ el: autorEmailEl, msg: 'E-mail válido' });
+    const consentimentoEl = document.getElementById('consentimento_lgpd');
+    if (consentimentoEl && !consentimentoEl.checked) pendencias.push({ el: consentimentoEl, msg: 'Concordar com o uso dos dados (LGPD)' });
     if (pendencias.length > 0) {
         alert('Corrija os dados do titular antes de verificar:\n\n• ' + pendencias.map(p => p.msg).join('\n• ') +
             '\n\nO sistema não preenche esses campos automaticamente, porque eles identificam o titular no certificado.');
@@ -2974,6 +2988,7 @@ function coletarDadosFormularioAtual() {
         instituicao_empresa: document.getElementById('instituicao_empresa').value.trim(),
         resumo_tecnico: document.getElementById('resumo_tecnico').value.trim(),
         palavras_chave_extra: document.getElementById('palavras_chave_extra') ? document.getElementById('palavras_chave_extra').value.trim().slice(0, 120) : '',
+        consentimento_lgpd: Boolean(document.getElementById('consentimento_lgpd') && document.getElementById('consentimento_lgpd').checked),
         grau_novidade_hardware: document.getElementById('grau_novidade_hardware').value,
         divulgacao_previa: document.getElementById('divulgacao_previa') ? document.getElementById('divulgacao_previa').value : 'SIGILO_MANTIDO',
         conectividade_iot_rf: document.getElementById('conectividade_iot_rf') ? document.getElementById('conectividade_iot_rf').value : 'MODULO_RF_HOMOLOGADO',

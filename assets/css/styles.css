@@ -604,3 +604,11 @@ details.mais > div { margin-top: 0.6rem; }
     *, *::before, *::after { animation: none !important; transition: none !important; }
     .tab-panel.active { opacity: 1 !important; transform: none !important; }
 }
+
+/* Aviso de uso dos dados (LGPD) no Bloco 1 */
+.aviso-lgpd { margin-top: 1rem; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface-2); padding: 0.85rem 1rem; font-size: 0.82rem; color: var(--text-2); }
+.aviso-lgpd > strong { display: block; margin-bottom: 0.35rem; color: var(--text); font-size: 0.85rem; }
+.aviso-lgpd ul { margin: 0 0 0.7rem; padding-left: 1.1rem; }
+.aviso-lgpd li { margin-bottom: 0.2rem; line-height: 1.45; }
+.aviso-lgpd .checkbox-item { font-weight: 600; color: var(--text); cursor: pointer; }
+.aviso-lgpd .checkbox-item input { margin-top: 0.15rem; width: 1rem; height: 1rem; accent-color: var(--accent); flex-shrink: 0; }

@@ -29,8 +29,8 @@ No repositório: **Settings** → **Secrets and variables** → **Actions** → 
 
 ## O que é testado
 
-1. **Segurança do servidor:** banco, configuração e documentos não podem ser baixados; as APIs recusam parâmetros inválidos; a lista pública mostra o CPF mascarado.
-2. **Cadastro:** campos vazios, CPF inválido e Enter no formulário.
+1. **Segurança e privacidade:** banco, configuração e documentos não podem ser baixados; as APIs recusam parâmetros inválidos; a lista pública mostra o CPF mascarado e não publica a descrição dos projetos; gravar sem consentimento (LGPD) é recusado.
+2. **Cadastro:** campos vazios, CPF inválido, consentimento LGPD obrigatório e Enter no formulário.
 3. **Descrição:** texto aleatório e descrição curta são recusados; descrição completa marca os 4 itens.
 4. **Termos de busca e classe CIP:** 7 descrições de áreas diferentes (queda, fumaça, campainha, impressora 3D, LiDAR, irrigação, coleira) precisam gerar os termos e a classe certos.
 5. **Verificação e relatório:** verificação completa, destaque dos mais parecidos, gravação da prova de autoria, certificado, colisão com outro titular, produto do acervo e Camada B.

@@ -127,3 +127,12 @@
 - Também podem testar o site publicado no Railway (à mão ou uma vez por dia). Nesse modo não gravam nada na base real. Instruções em `tests/LEIAME.md`.
 - Para os testes ficarem rápidos, o `app.js` aceita encurtar a pausa entre consultas do GitHub (`window.__TESTE_INTERVALO_GITHUB_MS`). Isso só é usado nos testes, em que o GitHub é simulado; no site a pausa continua de 6,5 s.
 - Conferido de propósito: ao desfazer três correções (descrição inválida liberada, resultado perdido após gravar), os testes falharam como esperado.
+
+## Acréscimo: privacidade (LGPD) e proteção da novidade
+
+- **A descrição dos projetos gravados era pública.** A tabela "Ver todos os itens da base" e a API (`GET /api/anterioridade.php`) mostravam o resumo técnico de quem gravou a prova de autoria. Para um projeto ainda não depositado no INPI, isso pode contar como divulgação e prejudicar a novidade (Art. 11 da LPI; o período de graça do Art. 12 só cobre 12 meses). Agora, nos registros de usuários, a lista pública mostra apenas nome do projeto, titular, CPF/CNPJ mascarado, modalidade e hash; a descrição aparece como "Descrição não publicada". Os itens do acervo ilustrativo continuam com o resumo.
+- **O histórico de projetos avaliados era público** (`GET /api/diagnostico.php` devolvia nomes de projetos de outras pessoas). Agora essa rota devolve só os catálogos de modalidades e licenças.
+- **Aviso de uso dos dados e consentimento (LGPD, Arts. 7º, I, 8º e 9º):** o Bloco 1 explica para que servem nome, CPF/CNPJ e e-mail, o que aparece publicamente, o que é enviado às bases externas (só palavras-chave) e como pedir correção ou exclusão (Art. 18). Sem marcar "Li e concordo", o cadastro não avança, e o servidor recusa salvar o diagnóstico ou gravar a prova de autoria.
+- `api/diagnostico.php` tinha as mesmas duas imprecisões já corrigidas no `app.js` (prazo de graça do desenho industrial e "Arts. 26 a 55" da Lei 11.484/2007). Corrigido.
+- A página ganhou uma descrição (`meta description`) para aparecer melhor em buscadores e ao ser compartilhada.
+- Testes automáticos: agora são 29 (consentimento, histórico não público, gravação sem consentimento recusada e descrição não publicada).

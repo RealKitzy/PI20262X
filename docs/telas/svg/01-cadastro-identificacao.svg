@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1224" viewBox="0 0 1440 1224">
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1434" viewBox="0 0 1440 1434">
 <title>Etapa 1 — Identificação do titular</title>
-<rect id="fundo" x="0" y="0" width="1440" height="1224" fill="rgb(245,246,248)"/>
+<rect id="fundo" x="0" y="0" width="1440" height="1434" fill="rgb(245,246,248)"/>
 <text id="texto-4" x="184.0" y="128.4" font-family="Inter, sans-serif" font-size="28" font-weight="700" letter-spacing="-0.56" fill="rgb(15,23,42)">Seu projeto de hardware já existe? Descubra antes de</text>
 <text id="texto-5" x="184.0" y="164.8" font-family="Inter, sans-serif" font-size="28" font-weight="700" letter-spacing="-0.56" fill="rgb(15,23,42)">registrar.</text>
 <text id="texto-7" x="184.0" y="199.0" font-family="Inter, sans-serif" font-size="15" font-weight="400" fill="rgb(51,65,85)">Descreva o que você criou. O sistema procura projetos parecidos em patentes, artigos científicos e</text>
@@ -28,7 +28,7 @@
 <text id="texto-37" x="247.0" y="395.3" font-family="Inter, sans-serif" font-size="11.52" font-weight="600" letter-spacing="0.6912" fill="rgb(100,116,139)">ETAPA 1 DE 2 — IDENTIFICAÇÃO</text>
 <text id="texto-39" x="247.0" y="417.6" font-family="Inter, sans-serif" font-size="16" font-weight="600" letter-spacing="-0.16" fill="rgb(15,23,42)">Preencha seus dados para começar.</text>
 <text id="texto-41" x="247.0" y="441.6" font-family="Inter, sans-serif" font-size="14.08" font-weight="400" fill="rgb(51,65,85)">Depois você descreve o projeto e o sistema faz a busca.</text>
-<rect id="card-44" x="184.5" y="485.5" width="1071.0" height="547.4" rx="11.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
+<rect id="card-44" x="184.5" y="485.5" width="1071.0" height="757.6" rx="11.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
 <text id="texto-48" x="209.0" y="529.3" font-family="Inter, sans-serif" font-size="20.8" font-weight="650" letter-spacing="-0.208" fill="rgb(15,23,42)">Conte o que você criou</text>
 <text id="texto-50" x="209.0" y="555.8" font-family="Inter, sans-serif" font-size="14.4" font-weight="400" fill="rgb(100,116,139)">Você não precisa entender de leis: o sistema identifica sozinho placas, sensores, conectividade e</text>
 <text id="texto-51" x="209.0" y="578.8" font-family="Inter, sans-serif" font-size="14.4" font-weight="400" fill="rgb(100,116,139)">software a partir da sua descrição.</text>
@@ -59,16 +59,24 @@
 <text id="texto-91" x="728.0" y="843.7" font-family="Inter, sans-serif" font-size="13.6" font-weight="600" fill="rgb(51,65,85)">E-mail</text>
 <rect id="campo-autor_email-92" x="728.5" y="857.8" width="502.0" height="44.4" rx="7.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(207,214,224)" stroke-opacity="1.000" stroke-width="1"/>
 <text id="texto-93" x="741.8" y="883.3" font-family="Inter, sans-serif" font-size="14.72" font-weight="400" fill="rgb(148,163,184)">voce@email.com.br</text>
-<rect id="rodape-bloco-1-usuario-94-borda-top" x="209.0" y="948.2" width="1022.0" height="1.0" fill="rgb(227,231,238)" fill-opacity="1.000"/>
-<rect id="btn-primary-95" x="1105.2" y="967.3" width="125.3" height="40.7" rx="7.5" fill="rgb(194,65,12)" fill-opacity="1.000" stroke="rgb(194,65,12)" stroke-opacity="1.000" stroke-width="1"/>
-<text id="texto-96" x="1124.8" y="991.5" font-family="Inter, sans-serif" font-size="14.4" font-weight="600" fill="rgb(255,255,255)">Continuar →</text>
-<rect id="footer-97-borda-top" x="160.0" y="1081.5" width="1120.0" height="1.0" fill="rgb(227,231,238)" fill-opacity="1.000"/>
-<text id="texto-100" x="184.0" y="1119.5" font-family="Inter, sans-serif" font-size="12.8" font-weight="600" fill="rgb(51,65,85)">Observatório de Propriedade Intelectual e Hardware Aberto</text>
-<text id="texto-101" x="554.1" y="1119.5" font-family="Inter, sans-serif" font-size="12.8" font-weight="400" fill="rgb(100,116,139)">— Projeto Integrador: Informática e Legislação</text>
-<text id="texto-102" x="184.0" y="1140.0" font-family="Inter, sans-serif" font-size="12.8" font-weight="400" fill="rgb(100,116,139)">Equipe: Antonio Kayky Gonçalves Vieira, Giullian Bernard Alencar Maia, Ítalo Brito da Costa e Luís Aquiles Lucena Sá</text>
-<text id="texto-104" x="184.0" y="1176.5" font-family="Inter, sans-serif" font-size="12.8" font-weight="400" fill="rgb(100,116,139)">CF/88 (Art. 5º, XXVII–XXIX) • Lei 9.279/96 • Lei 9.609/98 • Lei 9.610/98 • Lei 11.484/07</text>
-<rect id="topbar-105" x="0.0" y="0.0" width="1440.0" height="67.4" rx="0.0" fill="rgb(255,255,255)" fill-opacity="1.000"/>
-<svg id="img-109" x="184.0" y="13.2" width="40" height="40" viewBox="0 0 64 64">
+<rect id="aviso-lgpd-94" x="209.5" y="944.7" width="1021.0" height="193.2" rx="7.5" fill="rgb(248,250,252)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-96" x="226.0" y="972.6" font-family="Inter, sans-serif" font-size="13.6" font-weight="600" fill="rgb(15,23,42)">Como usamos seus dados (LGPD — Lei 13.709/2018)</text>
+<text id="texto-99" x="243.6" y="998.8" font-family="Inter, sans-serif" font-size="13.12" font-weight="400" fill="rgb(51,65,85)">Nome, CPF/CNPJ e e-mail servem só para identificar o titular no certificado e na prova de autoria, e ficam guardados no banco do Observatório.</text>
+<text id="texto-101" x="243.6" y="1021.0" font-family="Inter, sans-serif" font-size="13.12" font-weight="400" fill="rgb(51,65,85)">Na lista pública da base aparecem apenas o nome do titular, o nome do projeto e o CPF/CNPJ mascarado (ex.: ***.982.247-**). A descrição do projeto não</text>
+<text id="texto-102" x="243.6" y="1040.1" font-family="Inter, sans-serif" font-size="13.12" font-weight="400" fill="rgb(51,65,85)">é publicada.</text>
+<text id="texto-104" x="243.6" y="1062.3" font-family="Inter, sans-serif" font-size="13.12" font-weight="400" fill="rgb(51,65,85)">Para a busca, só palavras-chave da descrição (sem seus dados pessoais) são enviadas ao EPO, à OpenAlex e ao GitHub.</text>
+<text id="texto-106" x="243.6" y="1084.5" font-family="Inter, sans-serif" font-size="13.12" font-weight="400" fill="rgb(51,65,85)">Para corrigir ou apagar seus dados, fale com a equipe do Projeto Integrador (Art. 18 da LGPD).</text>
+<text id="texto-110" x="251.6" y="1115.9" font-family="Inter, sans-serif" font-size="13.6" font-weight="600" fill="rgb(15,23,42)">Li e concordo com o uso dos meus dados para esta verificação e para a prova de autoria (Art. 7º, I da LGPD).</text>
+<rect id="rodape-bloco-1-usuario-111-borda-top" x="209.0" y="1158.4" width="1022.0" height="1.0" fill="rgb(227,231,238)" fill-opacity="1.000"/>
+<rect id="btn-primary-112" x="1105.2" y="1177.5" width="125.3" height="40.7" rx="7.5" fill="rgb(194,65,12)" fill-opacity="1.000" stroke="rgb(194,65,12)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-113" x="1124.8" y="1201.7" font-family="Inter, sans-serif" font-size="14.4" font-weight="600" fill="rgb(255,255,255)">Continuar →</text>
+<rect id="footer-114-borda-top" x="160.0" y="1291.6" width="1120.0" height="1.0" fill="rgb(227,231,238)" fill-opacity="1.000"/>
+<text id="texto-117" x="184.0" y="1329.7" font-family="Inter, sans-serif" font-size="12.8" font-weight="600" fill="rgb(51,65,85)">Observatório de Propriedade Intelectual e Hardware Aberto</text>
+<text id="texto-118" x="554.1" y="1329.7" font-family="Inter, sans-serif" font-size="12.8" font-weight="400" fill="rgb(100,116,139)">— Projeto Integrador: Informática e Legislação</text>
+<text id="texto-119" x="184.0" y="1350.2" font-family="Inter, sans-serif" font-size="12.8" font-weight="400" fill="rgb(100,116,139)">Equipe: Antonio Kayky Gonçalves Vieira, Giullian Bernard Alencar Maia, Ítalo Brito da Costa e Luís Aquiles Lucena Sá</text>
+<text id="texto-121" x="184.0" y="1386.7" font-family="Inter, sans-serif" font-size="12.8" font-weight="400" fill="rgb(100,116,139)">CF/88 (Art. 5º, XXVII–XXIX) • Lei 9.279/96 • Lei 9.609/98 • Lei 9.610/98 • Lei 11.484/07</text>
+<rect id="topbar-122" x="0.0" y="0.0" width="1440.0" height="67.4" rx="0.0" fill="rgb(255,255,255)" fill-opacity="1.000"/>
+<svg id="img-126" x="184.0" y="13.2" width="40" height="40" viewBox="0 0 64 64">
   <defs>
     <linearGradient id="logo-gradiente" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#f97316"/>
@@ -92,12 +100,12 @@
     <path d="M35.2 35.2 41 41"/>
   </g>
 </svg>
-<text id="texto-112" x="236.8" y="27.3" font-family="Inter, sans-serif" font-size="16" font-weight="650" letter-spacing="-0.16" fill="rgb(15,23,42)">Observatório de Propriedade Intelectual &amp; Hardware Aberto</text>
-<text id="texto-114" x="236.8" y="46.6" font-family="Inter, sans-serif" font-size="12.48" font-weight="400" fill="rgb(100,116,139)">Projeto Integrador — Informática e Legislação</text>
-<rect id="engine-badge-116" x="1032.8" y="17.9" width="125.0" height="30.6" rx="15.3" fill="none" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
-<rect id="engine-dot-117" x="1045.3" y="29.7" width="7.0" height="7.0" rx="3.5" fill="rgb(21,128,61)" fill-opacity="1.000"/>
-<text id="texto-119" x="1059.5" y="36.2" font-family="Inter, sans-serif" font-size="12.48" font-weight="400" fill="rgb(100,116,139)">Sistema online</text>
-<rect id="botao-tema-120" x="1168.3" y="17.6" width="87.2" height="31.1" rx="15.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
-<text id="texto-122" x="1180.8" y="37.3" font-family="Inter, sans-serif" font-size="15.2" font-weight="500" fill="rgb(51,65,85)">☾</text>
-<text id="texto-124" x="1200.9" y="36.0" font-family="Inter, sans-serif" font-size="12.8" font-weight="500" fill="rgb(51,65,85)">Escuro</text>
+<text id="texto-129" x="236.8" y="27.3" font-family="Inter, sans-serif" font-size="16" font-weight="650" letter-spacing="-0.16" fill="rgb(15,23,42)">Observatório de Propriedade Intelectual &amp; Hardware Aberto</text>
+<text id="texto-131" x="236.8" y="46.6" font-family="Inter, sans-serif" font-size="12.48" font-weight="400" fill="rgb(100,116,139)">Projeto Integrador — Informática e Legislação</text>
+<rect id="engine-badge-133" x="1032.8" y="17.9" width="125.0" height="30.6" rx="15.3" fill="none" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
+<rect id="engine-dot-134" x="1045.3" y="29.7" width="7.0" height="7.0" rx="3.5" fill="rgb(21,128,61)" fill-opacity="1.000"/>
+<text id="texto-136" x="1059.5" y="36.2" font-family="Inter, sans-serif" font-size="12.48" font-weight="400" fill="rgb(100,116,139)">Sistema online</text>
+<rect id="botao-tema-137" x="1168.3" y="17.6" width="87.2" height="31.1" rx="15.5" fill="rgb(255,255,255)" fill-opacity="1.000" stroke="rgb(227,231,238)" stroke-opacity="1.000" stroke-width="1"/>
+<text id="texto-139" x="1180.8" y="37.3" font-family="Inter, sans-serif" font-size="15.2" font-weight="500" fill="rgb(51,65,85)">☾</text>
+<text id="texto-141" x="1200.9" y="36.0" font-family="Inter, sans-serif" font-size="12.8" font-weight="500" fill="rgb(51,65,85)">Escuro</text>
 </svg>

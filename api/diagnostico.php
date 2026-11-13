@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 require_once __DIR__ . '/../config/database.php';
 
 /**
- * Motor de Decisão Determinístico Multicritério (Matriz de 6 Camadas A a F — Equipe "Os Cara")
+ * Motor de Decisão Determinístico Multicritério (Matriz de 6 Camadas A a F)
  * Camada A: Documentação Técnica (Lei 9.610/98)
  * Camada B: Design do Produto (Desenho Industrial — LPI)
  * Camada C: Semicondutores (Topografia de Circuito Integrado — Lei 11.484/07 e PADIS)
@@ -63,7 +63,7 @@ function executarMotorDecisao(array $dados): array {
         $alertasLicenca[] = [
             'nivel' => 'ATENCAO',
             'titulo' => 'Alerta Urgente — Período de Graça em Curso (Art. 12 da Lei nº 9.279/1996)',
-            'descricao' => 'Como o projeto já foi divulgado publicamente (YouTube, GitHub, TCC ou feira) há menos de 12 meses, você ainda pode depositar Patente (PI/MU) ou Desenho Industrial invocando o Período de Graça (Art. 12 da LPI). Protocolize o pedido no INPI antes de completar 365 dias da primeira exposição pública.'
+            'descricao' => 'Como o projeto já foi divulgado publicamente (YouTube, GitHub, TCC ou feira) há menos de 12 meses, você ainda pode depositar Patente (PI/MU) invocando o Período de Graça (Art. 12 da LPI). Protocolize o pedido no INPI antes de completar 12 meses da primeira divulgação. Para Desenho Industrial o prazo é menor: 180 dias (Art. 96, § 3º da LPI).'
         ];
     } elseif ($divulgacao === 'DIVULGADO_MAIS_12M' && $novidadeHw !== 'MODULOS_PRONTOS_COTS') {
         $scoreProtegibilidade -= 10;
@@ -116,7 +116,7 @@ function executarMotorDecisao(array $dados): array {
         $recomendacoesInpi[] = [
             'codigo' => 'TCI',
             'titulo' => 'Camada C — Topografia de Circuito Integrado (Microchips / Silício)',
-            'base_legal' => 'Lei nº 11.484/2007 (Art. 26 a 55 — Institui também o PADIS)',
+            'base_legal' => 'Lei nº 11.484/2007 (Arts. 26 e seguintes — institui também o PADIS)',
             'prioridade' => 'Especialização Máxima em Semicondutores',
             'prazo' => '10 anos de vigência',
             'justificativa' => 'Tutela o leiaute tridimensional das camadas do microchip (arquivos GDSII/OASIS), ressalvadas as exceções legais para ensino, pesquisa acadêmica e engenharia reversa lícita, com elegibilidade aos incentivos fiscais do PADIS.'
@@ -296,20 +296,12 @@ if ($method === 'GET') {
     $db = Database::getConnection();
     $modalidades = $db->query("SELECT * FROM modalidades_inpi ORDER BY id ASC")->fetchAll();
     $licencas = $db->query("SELECT * FROM licencas_catalogo ORDER BY id ASC")->fetchAll();
-    $historico = $db->query("
-        SELECT p.id, p.nome_projeto, p.modelo_negocio, p.data_submissao,
-               d.score_protegibilidade, d.risco_contaminacao_licenca,
-               d.protecao_inpi_primaria, d.licenca_hw_recomendada, d.licenca_sw_recomendada
-        FROM projetos_avaliados p
-        INNER JOIN diagnosticos_gerados d ON d.projeto_id = p.id
-        ORDER BY p.id DESC LIMIT 15
-    ")->fetchAll();
-
+    // Só os catálogos são públicos. O histórico de projetos avaliados não sai mais pela API
+    // (expunha nomes de projetos de outras pessoas).
     echo json_encode([
         'sucesso' => true,
         'modalidades_inpi' => $modalidades,
-        'licencas_catalogo' => $licencas,
-        'historico_avaliacoes' => $historico
+        'licencas_catalogo' => $licencas
     ], JSON_UNESCAPED_UNICODE);
     exit;
 }
@@ -328,6 +320,13 @@ if ($method === 'POST') {
     $autorNomeVal = trim(strip_tags((string)($input['autor_nome'] ?? '')));
     $autorDocVal = preg_replace('/\D/', '', (string)($input['autor_documento'] ?? ''));
     $autorEmailVal = trim(strip_tags((string)($input['autor_email'] ?? '')));
+
+    // LGPD (Art. 7º, I): só guarda os dados pessoais com o consentimento marcado no formulário
+    if (empty($input['consentimento_lgpd'])) {
+        http_response_code(400);
+        echo json_encode(['sucesso' => false, 'erro' => 'É preciso concordar com o uso dos dados (LGPD) para continuar.']);
+        exit;
+    }
 
     if (mb_strlen($nomeProjVal, 'UTF-8') < 5 || mb_strlen($autorNomeVal, 'UTF-8') < 5 || (strlen($autorDocVal) !== 11 && strlen($autorDocVal) !== 14) || !filter_var($autorEmailVal, FILTER_VALIDATE_EMAIL)) {
         http_response_code(400);

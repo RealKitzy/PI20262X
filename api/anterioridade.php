@@ -195,9 +195,15 @@ function mascararDocumento($doc): string {
     if (strlen($d) === 14) return '**.' . substr($d, 2, 3) . '.' . substr($d, 5, 3) . '/' . substr($d, 8, 4) . '-**';
     return (string) $doc; // itens ilustrativos ("N/D ...")
 }
+// A lista da base é pública: sai sem o CPF/CNPJ completo e, nos registros de usuários, sem o resumo técnico.
+// Publicar a descrição de uma invenção ainda não depositada poderia contar como divulgação (Arts. 11 e 12 da LPI).
 function registrosPublicos(array $linhas): array {
     return array_map(function ($r) {
-        if (is_array($r) && array_key_exists('titular_documento', $r)) $r['titular_documento'] = mascararDocumento($r['titular_documento']);
+        if (!is_array($r)) return $r;
+        if (array_key_exists('titular_documento', $r)) $r['titular_documento'] = mascararDocumento($r['titular_documento']);
+        if (($r['origem_base'] ?? '') !== 'ACERVO_REFERENCIA_ILUSTRATIVO') {
+            unset($r['resumo_tecnico'], $r['palavras_chave'], $r['usuario_id'], $r['projeto_id']);
+        }
         return $r;
     }, $linhas);
 }
@@ -383,6 +389,11 @@ if ($method === 'POST') {
 
     // Se a ação for REGISTRAR, grava de forma fixa e permanente no banco SQLite/MySQL
     $novoRegistroGravado = null;
+    if ($acao === 'REGISTRAR' && empty($input['consentimento_lgpd'])) {
+        http_response_code(400);
+        echo json_encode(['sucesso' => false, 'erro' => 'É preciso concordar com o uso dos dados (LGPD) para gravar a prova de autoria.'], JSON_UNESCAPED_UNICODE);
+        exit;
+    }
     if ($acao === 'REGISTRAR') {
         if (!$podeRegistrar && $bloqueioTerceiro !== null) {
             echo json_encode([
