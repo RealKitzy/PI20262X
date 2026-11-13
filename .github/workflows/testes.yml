@@ -1,0 +1,66 @@
+# Testes automáticos do Observatório.
+# Rodam sozinhos a cada envio de código para o GitHub (push) e podem ser
+# disparados à mão na aba "Actions" → "Testes automáticos" → "Run workflow".
+name: Testes automáticos
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: 'Endereço do site publicado para testar (ex.: https://seu-site.up.railway.app). Deixe vazio para testar só o código.'
+        required: false
+        default: ''
+  # Uma vez por dia testa o site publicado, se a variável SITE_URL estiver configurada no repositório
+  schedule:
+    - cron: '17 10 * * *'
+
+permissions:
+  contents: read
+
+jobs:
+  testes:
+    name: Testar o Observatório
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    defaults:
+      run:
+        working-directory: tests
+
+    steps:
+      - name: Baixar o código
+        uses: actions/checkout@v4
+
+      - name: Instalar o PHP 8.2 (mesma versão do Railway)
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: pdo_sqlite, curl, mbstring
+          coverage: none
+
+      - name: Instalar o Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Instalar a ferramenta de testes (Playwright)
+        run: |
+          npm install --no-audit --no-fund
+          npx playwright install --with-deps chromium
+
+      - name: Rodar os testes
+        env:
+          BASE_URL: ${{ github.event.inputs.url || (github.event_name == 'schedule' && vars.SITE_URL) || '' }}
+        run: npx playwright test
+
+      - name: Guardar o relatório com prints
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: relatorio-dos-testes
+          path: |
+            tests/relatorio-html
+            tests/resultados
+          retention-days: 14
+          if-no-files-found: ignore

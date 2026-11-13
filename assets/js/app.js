@@ -1310,7 +1310,8 @@ const NIVEIS_RIGOR_VARREDURA = {
 // Só conta como anterioridade o resultado que contém pelo menos esta fração dos termos buscados
 const LIMIAR_RELEVANCIA_ANTERIORIDADE = 60;
 // API de busca do GitHub sem autenticação aceita 10 consultas por minuto
-const INTERVALO_ENTRE_CONSULTAS_GITHUB_MS = 6500;
+// (os testes automáticos podem encurtar a pausa definindo window.__TESTE_INTERVALO_GITHUB_MS, porque lá o GitHub é simulado)
+const INTERVALO_ENTRE_CONSULTAS_GITHUB_MS = (typeof window !== "undefined" && Number(window.__TESTE_INTERVALO_GITHUB_MS) >= 0 && window.__TESTE_INTERVALO_GITHUB_MS !== undefined) ? Number(window.__TESTE_INTERVALO_GITHUB_MS) : 6500;
 
 function obterNivelRigorSelecionado() {
     const el = document.getElementById('seletor-tempo-auditoria');

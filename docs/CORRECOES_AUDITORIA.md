@@ -119,3 +119,11 @@
 - A instituição padrão ficou mais simples ("Desenvolvimento independente", "Universidade / ICT", "Equipe de cofundadores").
 - As demais referências legais foram conferidas: LPI (Arts. 6º, 8º–13, 24, 25, 40, 88, 94, 96, 108, 124, 125, 129, 133, 189, 195), Lei 9.609/98, Lei 9.610/98 (Art. 7º, X e XII), Lei 10.973/04, LGPD (Arts. 5º, 6º, 7º, 11 e 46), LGT (Arts. 162 e 173), Res. ANATEL 715/2019, Ato ANATEL 14448/2017, RDC ANVISA 751/2022 e 657/2022, Res. INPI 158/2016 e CF/88 (Art. 5º, XXVII–XXIX).
 - `README.md` e as telas em `docs/telas/` foram atualizados para o site atual.
+
+## Acréscimo: testes automáticos (GitHub Actions)
+
+- Nova pasta `tests/` com 27 testes de navegador (Playwright) e um EPO simulado. Rodam sozinhos no GitHub a cada envio de código (`.github/workflows/testes.yml`) e mostram uma tabela ✓/✗ em português na página da execução.
+- Cobrem segurança do servidor, cadastro, descrição, termos de busca e classe CIP de 7 áreas, verificação completa, gravação da prova de autoria, certificado, colisão entre titulares, produto do acervo, tema, celular, impressão e os textos jurídicos corrigidos.
+- Também podem testar o site publicado no Railway (à mão ou uma vez por dia). Nesse modo não gravam nada na base real. Instruções em `tests/LEIAME.md`.
+- Para os testes ficarem rápidos, o `app.js` aceita encurtar a pausa entre consultas do GitHub (`window.__TESTE_INTERVALO_GITHUB_MS`). Isso só é usado nos testes, em que o GitHub é simulado; no site a pausa continua de 6,5 s.
+- Conferido de propósito: ao desfazer três correções (descrição inválida liberada, resultado perdido após gravar), os testes falharam como esperado.

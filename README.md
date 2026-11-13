@@ -63,6 +63,8 @@ observatorio-pi-hardware/
 ├── router.php                  # Libera só a página, assets/ e api/ (bloqueia banco e configuração)
 ├── config/
 │   └── database.php            # Conexão com o banco SQLite (criado automaticamente) ou MySQL
+├── tests/                      # Testes automáticos (rodam no GitHub Actions — ver tests/LEIAME.md)
+├── .github/workflows/testes.yml
 ├── database/
 │   └── schema.sql              # 6 tabelas do banco (ver docs/der) e registros iniciais
 └── docs/
@@ -95,6 +97,9 @@ Depois, abra `http://localhost:8000` no navegador. O banco SQLite (`database/obs
 
 Para testar localmente: `EPO_OPS_KEY=... EPO_OPS_SECRET=... php -S localhost:8000 router.php`.
 As chaves ficam só no servidor (nunca vão para o navegador), e buscas repetidas são guardadas por 24 h para economizar a cota gratuita.
+
+### Testes automáticos
+A cada envio de código para o GitHub, os testes rodam sozinhos na aba **Actions**. Eles abrem o site num navegador e conferem cadastro, descrição, verificação, gravação da prova de autoria, certificado, segurança e textos jurídicos, e mostram ✓/✗ para cada teste. Detalhes e como testar o site publicado: `tests/LEIAME.md`.
 
 ### Hospedagem (Railway)
 O projeto já está configurado com `Dockerfile` e `railway.json` para rodar direto no **Railway** conectado ao repositório do GitHub, subindo o container `php:8.2-cli-alpine` na porta dinâmica do servidor (`php -S 0.0.0.0:${PORT:-8080} ... router.php`). O `router.php` garante que só a página, `assets/` e `api/` fiquem acessíveis pela internet (o banco de dados e a configuração não podem ser baixados).
