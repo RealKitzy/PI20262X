@@ -75,6 +75,8 @@ const veredito = page => page.locator('#painel-resumo-leigo-direto .verdict-topo
 // ===========================================================================
 test.describe('1. Segurança do servidor', () => {
     test('arquivos privados não podem ser baixados', async ({ request }) => {
+        // Antes, confere se o site está no ar (senão tudo daria 404 e o teste passaria sem querer)
+        expect((await request.get('/')).status(), 'a página principal precisa abrir — confira o endereço do site').toBe(200);
         for (const caminho of ['/database/schema.sql', '/database/observatorio_pi.sqlite', '/config/database.php',
             '/router.php', '/README.md', '/Dockerfile', '/tests/package.json', '/docs/CORRECOES_AUDITORIA.md']) {
             const r = await request.get(caminho);
